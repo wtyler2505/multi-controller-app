@@ -1,0 +1,28 @@
+{
+  "name": "Arduino Driver",
+  "version": "1.0.0",
+  "description": "Driver for Arduino boards (Uno, Mega, Nano, etc.)",
+  "author": "Multi-Controller Team",
+  "supportedDevices": [
+    "Arduino Uno",
+    "Arduino Mega",
+    "Arduino Nano",
+    "Arduino Leonardo",
+    "Arduino Due"
+  ],
+  "supportedTransports": ["serial"],
+  "capabilities": {
+    "digitalIO": true,
+    "analogIO": true,
+    "pwm": true,
+    "i2c": true,
+    "spi": true,
+    "servo": true
+  },
+  "requirements": {
+    "firmware": "StandardFirmata v2.5+",
+    "baudRate": 115200
+  },
+  "icon": "arduino-icon.svg",
+  "homepage": "https://github.com/multi-controller/drivers/arduino"
+}

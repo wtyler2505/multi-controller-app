@@ -1,0 +1,198 @@
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Dependencies
+node_modules/
+packages/
+
+# Build outputs
+dist/
+build/
+out/
+bin/
+obj/
+*.exe
+*.dll
+*.pdb
+
+# TypeScript
+*.tsbuildinfo
+.tsc-cache/
+
+# Testing
+coverage/
+.nyc_output/
+*.lcov
+
+# IDE
+.vs/
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+!.vscode/launch.json
+!.vscode/tasks.json
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# OS
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msm
+*.msp
+*.lnk
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+data/
+
+# Cache
+.cache/
+.parcel-cache/
+.next/
+.nuxt/
+.vuepress/dist/
+.serverless/
+.fusebox/
+.dynamodb/
+.tern-port
+.yarn/cache/
+.yarn/unplugged/
+.yarn/build-state.yml
+.yarn/install-state.gz
+
+# Temporary files
+temp/
+tmp/
+*.tmp
+
+# MCP Server Caches
+.claude/.cache/
+.taskmaster/reports/
+.taskmaster/tasks/*.md
+.desktop-commander/.cache/
+.filescope/.cache/
+.clear-thought/.cache/
+.context7/.cache/
+.perplexity-ask/.cache/
+.memory/.cache/
+.time-server/.cache/
+
+# Security
+*.key
+*.pem
+*.crt
+*.p12
+*.pfx
+secrets/
+
+# Performance profiling
+*.heapsnapshot
+*.cpuprofile
+*.trace
+
+# Hardware specific
+*.hex
+*.bin
+*.elf
+
+# Documentation build
+docs/_build/
+docs/.jekyll-cache/
+
+# Package files
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# Virtual environments
+venv/
+ENV/
+env/
+.venv/
+
+# Rust
+target/
+Cargo.lock
+**/*.rs.bk
+
+# .NET
+*.user
+*.userosscache
+*.sln.docstates
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# NuGet
+*.nupkg
+*.snupkg
+.nuget/
+packages/
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Docker
+.docker/
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# Lock files (keep package-lock.json)
+yarn.lock
+pnpm-lock.yaml
+
+# Conversation exports
+2025-*.txt
+*-continued-from-*.txt
+
+# Accidental files
+nul

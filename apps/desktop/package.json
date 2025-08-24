@@ -1,0 +1,46 @@
+{
+  "name": "@multi-controller/desktop-app",
+  "version": "1.0.0",
+  "description": "Desktop application for Multi-Controller",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "build:full": "tsc && npm run build:cs",
+    "build:cs": "dotnet build -c Release",
+    "dev": "concurrently \"npm run dev:ts\" \"npm run dev:cs\"",
+    "dev:ts": "nodemon --watch 'src/**/*' -e ts,tsx --exec ts-node src/index.ts",
+    "dev:cs": "dotnet watch run",
+    "test": "jest && dotnet test",
+    "test:e2e": "playwright test",
+    "package": "npm run build && npm run package:cs",
+    "package:cs": "dotnet publish -c Release -p:PublishAot=true",
+    "lint": "eslint . --max-warnings 0",
+    "typecheck": "tsc --noEmit",
+    "clean": "rimraf dist coverage bin obj"
+  },
+  "dependencies": {
+    "@multi-controller/core": "workspace:*",
+    "@multi-controller/ui": "workspace:*",
+    "@multi-controller/telemetry": "workspace:*",
+    "@multi-controller/driver-arduino": "workspace:*",
+    "@multi-controller/transport-serial": "workspace:*",
+    "@multi-controller/transport-network": "workspace:*",
+    "electron": "^31.0.0"
+  },
+  "devDependencies": {
+    "@multi-controller/tsconfig": "workspace:*",
+    "@multi-controller/eslint-config": "workspace:*",
+    "@playwright/test": "^1.48.0",
+    "concurrently": "^9.0.0",
+    "electron-builder": "^25.0.0"
+  },
+  "files": [
+    "dist",
+    "src",
+    "bin",
+    "*.csproj"
+  ],
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

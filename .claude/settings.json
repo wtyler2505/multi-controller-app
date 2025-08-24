@@ -1,0 +1,51 @@
+{
+  "env": {
+    "USE_BUILTIN_RIPGREP": "1",
+    "CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR": "1",
+    "CLAUDE_CODE_DISABLE_TERMINAL_TITLE": "0",
+    "CLAUDE_CODE_ENABLE_TELEMETRY": "1"
+  },
+  "permissions": {
+    "allow": [
+      "Bash(git status)",
+      "Bash(git diff:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(git pull:*)",
+      "Bash(git log:*)",
+      "Bash(npm run lint)",
+      "Bash(npm run test:*)",
+      "Bash(npm run build)",
+      "Bash(npm start)",
+      "Bash(npm:*)",
+      "Bash(yarn:*)",
+      "Bash(node:*)",
+      "Bash(git:*)",
+      "Bash(docker:*)",
+      "Bash(python:*)",
+      "Bash(pip:*)",
+      "Read(**/*.json)",
+      "Read(**/*.js)",
+      "Read(**/*.ts)",
+      "Read(**/*.py)",
+      "Edit(**/*.js)",
+      "Edit(**/*.ts)",
+      "Edit(**/*.py)",
+      "Edit(**/*.json)",
+      "Write(**/*.js)",
+      "Write(**/*.ts)",
+      "Write(**/*.py)"
+    ],
+    "deny": [
+      "Read(./.env*)",
+      "Read(./secrets/**)",
+      "Bash(rm -rf:*)",
+      "Bash(sudo:*)"
+    ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "bash -c 'input=$(cat); MODEL=$(echo \"$input\" | jq -r \".model.display_name\"); DIR=$(echo \"$input\" | jq -r \".workspace.current_dir\"); VERSION=$(echo \"$input\" | jq -r \".version\"); NODE_VER=$(node --version 2>/dev/null || echo \"N/A\"); echo \"[$MODEL] 📁 ${DIR##*/} | Node $NODE_VER | Claude $VERSION\"'"
+  }
+}

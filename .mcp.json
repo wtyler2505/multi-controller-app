@@ -1,0 +1,63 @@
+{
+  "mcpServers": {
+    "context7": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["C:\\Users\\wtyle\\node_modules\\@upstash\\context7-mcp\\dist\\index.js"],
+      "env": {}
+    },
+    "memory": {
+      "type": "stdio",
+      "command": "node",
+      "args": [
+        "C:\\Users\\wtyle\\node_modules\\@modelcontextprotocol\\server-memory\\dist\\index.js"
+      ],
+      "env": {}
+    },
+    "taskmaster-ai": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["C:\\Users\\wtyle\\node_modules\\task-master-ai\\mcp-server\\server.js"],
+      "env": {
+        "ANTHROPIC_API_KEY": "${ANTHROPIC_API_KEY}",
+        "PERPLEXITY_API_KEY": "${PERPLEXITY_API_KEY}",
+        "OPENAI_API_KEY": "${OPENAI_API_KEY}"
+      }
+    },
+    "desktop-commander": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["C:\\Users\\wtyle\\node_modules\\@wonderwhy-er\\desktop-commander\\dist\\index.js"],
+      "env": {}
+    },
+    "clear-thought": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["C:\\Users\\wtyle\\node_modules\\@waldzellai\\clear-thought\\dist\\index.js"],
+      "env": {}
+    },
+    "perplexity-ask": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["C:\\Users\\wtyle\\node_modules\\server-perplexity-ask\\dist\\index.js"],
+      "env": {
+        "PERPLEXITY_API_KEY": "${PERPLEXITY_API_KEY}"
+      }
+    },
+    "time-server": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["C:\\Users\\wtyle\\RoverMissionControl\\kite-mcp-server-time\\dist\\index.js"],
+      "env": {}
+    },
+    "FileScopeMCP": {
+      "type": "stdio",
+      "command": "node",
+      "args": [
+        "C:\\Users\\wtyle\\FileScopeMCP\\dist\\mcp-server.js",
+        "--base-dir=C:\\Users\\wtyle\\maybe"
+      ],
+      "env": {}
+    }
+  }
+}

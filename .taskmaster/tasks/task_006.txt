@@ -1,0 +1,43 @@
+# Task ID: 6
+# Title: Develop Transport Layer (Serial, TCP/UDP, SSH)
+# Status: pending
+# Dependencies: 5
+# Priority: high
+# Description: Implement transport modules for serial, TCP/UDP (with mDNS/manual), and SSH (for Raspberry Pi), including reconnect/backoff logic.
+# Details:
+Use System.IO.Ports (C#) or serialport-rs (Rust) for serial; System.Net.Sockets (C#) or tokio (Rust) for TCP/UDP; SSH.NET (C#) or thrussh (Rust) for SSH. Implement exponential backoff for reconnects. Integrate transport selection via manifest. Ensure all transports meet latency budgets.
+
+# Test Strategy:
+Automated tests for device discovery, connection, and reconnection. Measure write→ack and network latency. Fuzz serial framing for robustness.
+
+# Subtasks:
+## 1. Implement Serial Transport Module [pending]
+### Dependencies: None
+### Description: Develop the serial communication transport using System.IO.Ports (C#) or serialport-rs (Rust), supporting configuration (baud rate, parity, stop bits, flow control) and robust data handling.
+### Details:
+Ensure correct initialization, connection management, and error handling for serial ports. Support asynchronous read/write and buffer management. Integrate event-driven or async patterns for data reception.
+
+## 2. Implement TCP/UDP Transport Module with mDNS and Manual Discovery [pending]
+### Dependencies: None
+### Description: Develop TCP/UDP transport using System.Net.Sockets (C#) or tokio (Rust), supporting both mDNS-based and manual device discovery.
+### Details:
+Implement connection setup, data transmission, and reception for both TCP and UDP. Integrate mDNS for automatic device discovery and fallback to manual IP/port entry. Ensure compatibility with network latency requirements.
+
+## 3. Implement SSH Transport Module for Raspberry Pi [pending]
+### Dependencies: None
+### Description: Develop SSH transport using SSH.NET (C#) or thrussh (Rust) to enable secure communication with Raspberry Pi devices.
+### Details:
+Support authentication, session management, and secure data tunneling. Handle connection setup, command execution, and data streaming over SSH.
+
+## 4. Integrate Exponential Backoff and Reconnect Logic [pending]
+### Dependencies: 6.1, 6.2, 6.3
+### Description: Implement exponential backoff and reconnection strategies for all transport modules to ensure robust recovery from connection failures.
+### Details:
+Design a unified reconnection framework with configurable backoff parameters. Ensure all transports can recover gracefully from transient errors and meet latency budgets.
+
+## 5. Implement Transport Selection and Manifest Integration [pending]
+### Dependencies: 6.1, 6.2, 6.3, 6.4
+### Description: Develop logic to select and configure the appropriate transport based on a manifest, ensuring seamless integration and adherence to latency requirements.
+### Details:
+Parse manifest files to determine transport configuration. Dynamically instantiate and manage transport modules as specified. Validate that selected transports meet performance and latency constraints.
+

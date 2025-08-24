@@ -1,0 +1,43 @@
+# Task ID: 8
+# Title: Integrate Scripting Runtime and API
+# Status: pending
+# Dependencies: 7
+# Priority: medium
+# Description: Embed a sandboxed scripting engine (JavaScript, Lua, or Python) with APIs for device control and telemetry.
+# Details:
+Select scripting engine based on performance and AOT compatibility (e.g., ClearScript for JS, MoonSharp for Lua, Python.NET for Python). Expose APIs: devices.list(), dev.call(endpoint, args). Restrict file/network access for sandboxing. Document API usage and error handling.
+
+# Test Strategy:
+Unit and integration tests for script execution, API calls, and sandbox enforcement. Run sample scripts to validate device control and telemetry access.
+
+# Subtasks:
+## 1. Evaluate and Select Scripting Engine [pending]
+### Dependencies: None
+### Description: Assess candidate scripting engines (JavaScript, Lua, Python) for performance, AOT compatibility, and sandboxing capabilities. Choose the most suitable engine for embedding.
+### Details:
+Compare engines such as ClearScript (JS), MoonSharp (Lua), and Python.NET (Python) with respect to execution speed, memory usage, ease of embedding, and ability to restrict file/network access. Document the selection rationale.
+
+## 2. Embed and Configure Sandboxed Scripting Runtime [pending]
+### Dependencies: 8.1
+### Description: Integrate the selected scripting engine into the host application and configure it to enforce sandboxing, restricting file and network access.
+### Details:
+Embed the engine, set up execution contexts, and apply sandboxing policies to prevent unauthorized file system and network operations. Ensure the runtime is isolated from the host environment.
+
+## 3. Expose Device Control and Telemetry APIs to Scripts [pending]
+### Dependencies: 8.2
+### Description: Implement and register APIs (devices.list(), dev.call(endpoint, args)) within the scripting environment for device control and telemetry access.
+### Details:
+Design API bindings that allow scripts to enumerate devices and invoke device endpoints securely. Ensure APIs are accessible only within the sandboxed context.
+
+## 4. Implement Error Handling and API Usage Documentation [pending]
+### Dependencies: 8.3
+### Description: Define error handling strategies for API calls and document API usage, expected inputs/outputs, and error cases for script developers.
+### Details:
+Standardize error responses for API failures. Create comprehensive documentation covering API signatures, usage examples, and error scenarios.
+
+## 5. Develop and Execute Integration and Security Tests [pending]
+### Dependencies: 8.4
+### Description: Create unit and integration tests for script execution, API calls, and sandbox enforcement. Validate the system with sample scripts and security scenarios.
+### Details:
+Design test cases covering normal and edge-case script usage, API interactions, and attempts to bypass sandbox restrictions. Include both automated and manual test scripts.
+

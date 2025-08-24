@@ -1,0 +1,61 @@
+{
+  "name": "DriverName",
+  "version": "1.0.0",
+  "description": "Driver description",
+  "author": "Author Name",
+  "supportedDevices": [
+    {
+      "vendor": "Arduino",
+      "model": "Uno",
+      "vendorId": "0x2341",
+      "productId": "0x0043"
+    }
+  ],
+  "supportedTransports": ["serial", "tcp", "udp"],
+  "capabilities": {
+    "digitalIO": true,
+    "analogIO": true,
+    "pwm": true,
+    "i2c": false,
+    "spi": false,
+    "telemetry": true
+  },
+  "configuration": {
+    "baudRate": 115200,
+    "dataBits": 8,
+    "stopBits": 1,
+    "parity": "none",
+    "timeout": 5000
+  },
+  "endpoints": [
+    {
+      "name": "digitalWrite",
+      "type": "command",
+      "parameters": [
+        {"name": "pin", "type": "int", "min": 0, "max": 13},
+        {"name": "value", "type": "bool"}
+      ]
+    },
+    {
+      "name": "analogRead",
+      "type": "query",
+      "parameters": [
+        {"name": "pin", "type": "int", "min": 0, "max": 5}
+      ],
+      "returns": {"type": "int", "min": 0, "max": 1023}
+    }
+  ],
+  "telemetryStreams": [
+    {
+      "name": "sensors",
+      "frequency": 10,
+      "format": "json",
+      "fields": [
+        {"name": "temperature", "type": "float", "unit": "celsius"},
+        {"name": "humidity", "type": "float", "unit": "percent"}
+      ]
+    }
+  ],
+  "entry": "index.js",
+  "dependencies": {}
+}

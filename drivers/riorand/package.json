@@ -1,0 +1,32 @@
+{
+  "name": "@multi-controller/driver-riorand",
+  "version": "1.0.0",
+  "description": "RioRand relay controller driver for Multi-Controller App",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "jest",
+    "test:hardware": "jest --testMatch='**/*.hardware.test.ts'",
+    "lint": "eslint . --max-warnings 0",
+    "typecheck": "tsc --noEmit",
+    "clean": "rimraf dist coverage"
+  },
+  "dependencies": {
+    "@multi-controller/core": "workspace:*",
+    "@multi-controller/transport-serial": "workspace:*"
+  },
+  "devDependencies": {
+    "@multi-controller/tsconfig": "workspace:*",
+    "@multi-controller/eslint-config": "workspace:*"
+  },
+  "files": [
+    "dist",
+    "src",
+    "manifest.json"
+  ],
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

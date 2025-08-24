@@ -1,0 +1,34 @@
+{
+  "name": "@multi-controller/driver-arduino",
+  "version": "1.0.0",
+  "description": "Arduino device driver for Multi-Controller App",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "jest",
+    "test:hardware": "jest --testMatch='**/*.hardware.test.ts'",
+    "lint": "eslint . --max-warnings 0",
+    "typecheck": "tsc --noEmit",
+    "clean": "rimraf dist coverage"
+  },
+  "dependencies": {
+    "@multi-controller/core": "workspace:*",
+    "@multi-controller/transport-serial": "workspace:*",
+    "serialport": "^12.0.0"
+  },
+  "devDependencies": {
+    "@multi-controller/tsconfig": "workspace:*",
+    "@multi-controller/eslint-config": "workspace:*",
+    "@types/serialport": "^8.0.5"
+  },
+  "files": [
+    "dist",
+    "src",
+    "manifest.json"
+  ],
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

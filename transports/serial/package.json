@@ -1,0 +1,34 @@
+{
+  "name": "@multi-controller/transport-serial",
+  "version": "1.0.0",
+  "description": "Serial transport implementation for Multi-Controller App",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "jest",
+    "test:loopback": "jest --testMatch='**/*.loopback.test.ts'",
+    "lint": "eslint . --max-warnings 0",
+    "typecheck": "tsc --noEmit",
+    "clean": "rimraf dist coverage"
+  },
+  "dependencies": {
+    "@multi-controller/core": "workspace:*",
+    "serialport": "^12.0.0",
+    "p-retry": "^6.2.0",
+    "eventemitter3": "^5.0.1"
+  },
+  "devDependencies": {
+    "@multi-controller/tsconfig": "workspace:*",
+    "@multi-controller/eslint-config": "workspace:*",
+    "@types/serialport": "^8.0.5"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

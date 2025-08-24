@@ -1,0 +1,123 @@
+groups:
+  - name: multi-controller-app
+    interval: 30s
+    rules:
+      # Performance budget alerts
+      - alert: StartupTimeBudgetExceeded
+        expr: app_startup_duration_seconds > 2
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Application startup time exceeded budget"
+          description: "Startup took {{ $value }}s (budget: 2s)"
+
+      - alert: IdleCPUBudgetExceeded
+        expr: app_cpu_usage_percent > 2
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Idle CPU usage exceeded budget"
+          description: "CPU usage is {{ $value }}% (budget: 2%)"
+
+      - alert: MemoryBudgetExceeded
+        expr: app_memory_usage_mb > 150
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Memory usage exceeded budget"
+          description: "Memory usage is {{ $value }}MB (budget: 150MB)"
+
+      - alert: SerialLatencyBudgetExceeded
+        expr: histogram_quantile(0.99, rate(serial_latency_ms_bucket[5m])) > 50
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Serial latency exceeded budget"
+          description: "P99 latency is {{ $value }}ms (budget: 50ms)"
+
+      - alert: NetworkLatencyBudgetExceeded
+        expr: histogram_quantile(0.99, rate(network_latency_ms_bucket[5m])) > 100
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Network latency exceeded budget"
+          description: "P99 latency is {{ $value }}ms (budget: 100ms)"
+
+      # System health alerts
+      - alert: HighErrorRate
+        expr: rate(commands_failed_total[5m]) / rate(commands_sent_total[5m]) > 0.1
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "High command failure rate"
+          description: "{{ $value | humanizePercentage }} of commands are failing"
+
+      - alert: DeviceConnectionFailures
+        expr: rate(device_disconnections_total[5m]) > 1
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Frequent device disconnections"
+          description: "{{ $value }} disconnections per second"
+
+      - alert: TelemetryBufferOverflow
+        expr: rate(telemetry_buffer_overflows_total[5m]) > 0
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Telemetry buffer overflows detected"
+          description: "Buffer overflows occurring at {{ $value }} per second"
+
+      - alert: HighTelemetryDropRate
+        expr: rate(telemetry_dropped_total[5m]) / rate(telemetry_received_total[5m]) > 0.05
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High telemetry drop rate"
+          description: "{{ $value | humanizePercentage }} of telemetry is being dropped"
+
+      - alert: TransportErrors
+        expr: rate(transport_errors_total[5m]) > 0.1
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Transport layer errors detected"
+          description: "{{ $value }} errors per second on {{ $labels.transport_type }}"
+
+      # Resource alerts
+      - alert: HighMemoryUsage
+        expr: app_memory_usage_mb > 200
+        for: 10m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Very high memory usage"
+          description: "Memory usage is {{ $value }}MB"
+
+      - alert: HighCPUUsage
+        expr: app_cpu_usage_percent > 80
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Very high CPU usage"
+          description: "CPU usage is {{ $value }}%"
+
+      - alert: EventLoopBlocked
+        expr: nodejs_eventloop_lag_seconds > 0.1
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Event loop is blocked"
+          description: "Event loop lag is {{ $value }}s"

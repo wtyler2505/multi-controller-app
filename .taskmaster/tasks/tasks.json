@@ -1,0 +1,581 @@
+{
+  "master": {
+    "tasks": [
+      {
+        "id": 1,
+        "title": "Verify Development Environment",
+        "description": "Ensure all required SDKs and toolchains (.NET 8 SDK, Rust toolchain, Node 18+) are installed and configured for Windows 11 development.",
+        "details": "Check for .NET 8 SDK (Native AOT support), Rust stable toolchain, and Node.js 18+ using PowerShell scripts. Validate installation paths and environment variables. Document any missing prerequisites.",
+        "testStrategy": "Run version checks for each toolchain; attempt to build and run a 'Hello World' for each environment to confirm setup.",
+        "priority": "high",
+        "dependencies": [],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Check .NET 8 SDK Installation and Native AOT Support",
+            "description": "Verify that the .NET 8 SDK is installed and configured, including support for Native AOT on Windows 11.",
+            "dependencies": [],
+            "details": "Use PowerShell scripts to check for the presence of the .NET 8 SDK and confirm Native AOT capabilities. Validate installation path and ensure relevant environment variables (e.g., PATH) are set.",
+            "status": "pending",
+            "testStrategy": "Run 'dotnet --list-sdks' and attempt to build and run a Native AOT 'Hello World' application."
+          },
+          {
+            "id": 2,
+            "title": "Verify Rust Stable Toolchain Installation",
+            "description": "Ensure the Rust stable toolchain is installed and properly configured for Windows 11 development.",
+            "dependencies": [],
+            "details": "Check for Rust installation using 'rustup' and confirm the stable MSVC toolchain is present. Validate that '%USERPROFILE%\\.cargo\\bin' is in the PATH environment variable. Confirm installation by running 'cargo --version' and 'rustc --version'.",
+            "status": "pending",
+            "testStrategy": "Run version checks and build a Rust 'Hello World' project to verify toolchain functionality.[1][3][4]"
+          },
+          {
+            "id": 3,
+            "title": "Validate Node.js 18+ Installation",
+            "description": "Confirm that Node.js version 18 or higher is installed and available for use.",
+            "dependencies": [],
+            "details": "Use PowerShell to check Node.js version and validate installation path. Ensure Node.js is accessible from the command line and included in the PATH environment variable.",
+            "status": "pending",
+            "testStrategy": "Run 'node --version' and execute a simple Node.js script to confirm operational status."
+          },
+          {
+            "id": 4,
+            "title": "Check and Document Environment Variables and Installation Paths",
+            "description": "Validate that all required environment variables and installation paths for .NET, Rust, and Node.js are correctly set.",
+            "dependencies": [],
+            "details": "Use PowerShell scripts to inspect PATH and other relevant environment variables. Document any misconfigurations or missing entries for each toolchain.",
+            "status": "pending",
+            "testStrategy": "Automate environment variable checks and verify that all SDK/toolchain executables are accessible from any command prompt."
+          },
+          {
+            "id": 5,
+            "title": "Report and Document Missing Prerequisites",
+            "description": "Identify and document any missing SDKs, toolchains, or configuration issues required for Windows 11 development.",
+            "dependencies": [],
+            "details": "Aggregate results from previous checks. Create a report listing missing prerequisites, misconfigurations, and recommended remediation steps.",
+            "status": "pending",
+            "testStrategy": "Review the generated report for completeness and accuracy; ensure all missing or misconfigured components are clearly documented."
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "title": "Scaffold Project Repository",
+        "description": "Create initial repository structure with required directories and configuration files.",
+        "details": "Set up folders: /app, /drivers, /transports, /docs, /tests. Add .gitignore, README, and initial config files (.mcp.json, .claude/settings.json). Use PowerShell scripts for automation. Ensure compatibility with Windows filesystem conventions.",
+        "testStrategy": "Verify directory structure and presence of all config files. Run repository initialization script and check for errors.",
+        "priority": "high",
+        "dependencies": [1],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Define Repository Directory Structure",
+            "description": "Specify and document the required top-level directories: /app, /drivers, /transports, /docs, /tests, ensuring alignment with project requirements and Windows filesystem conventions.",
+            "dependencies": [],
+            "details": "List all necessary directories and subdirectories, referencing Windows naming and path rules. Prepare a directory map for automation.",
+            "status": "pending",
+            "testStrategy": "Review the directory map for completeness and compatibility with Windows filesystem constraints."
+          },
+          {
+            "id": 2,
+            "title": "Prepare Initial Configuration and Documentation Files",
+            "description": "Draft and template the essential files: .gitignore, README, .mcp.json, and .claude/settings.json, ensuring correct formatting and initial content.",
+            "dependencies": ["2.1"],
+            "details": "Create sample content for each file, including basic ignore rules, project overview, and minimal valid JSON for config files.",
+            "status": "pending",
+            "testStrategy": "Validate file syntax and confirm presence of required sections in each file."
+          },
+          {
+            "id": 3,
+            "title": "Develop PowerShell Automation Script",
+            "description": "Write a PowerShell script to automate creation of the directory structure and placement of configuration files, ensuring idempotency and error handling.",
+            "dependencies": ["2.1", "2.2"],
+            "details": "Script should create all directories, copy or generate config files, and handle reruns without duplication or errors.",
+            "status": "pending",
+            "testStrategy": "Run the script on a clean environment and verify correct structure and file placement; rerun to confirm idempotency."
+          },
+          {
+            "id": 4,
+            "title": "Integrate Windows Filesystem Compatibility Checks",
+            "description": "Ensure all directory and file names, paths, and script logic comply with Windows filesystem conventions and limitations.",
+            "dependencies": ["2.3"],
+            "details": "Review naming, reserved characters, path lengths, and permissions. Update script and documentation as needed.",
+            "status": "pending",
+            "testStrategy": "Test repository initialization on Windows 11; check for errors related to naming, paths, or permissions."
+          },
+          {
+            "id": 5,
+            "title": "Verify Repository Initialization and Structure",
+            "description": "Execute the automation script and manually inspect the resulting repository to confirm all directories and files are present and correctly configured.",
+            "dependencies": ["2.4"],
+            "details": "Compare the generated structure against the specification. Document any discrepancies and update scripts or templates as needed.",
+            "status": "pending",
+            "testStrategy": "Run the full initialization process, review output, and cross-check with the directory map and file checklist."
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "title": "Prototype UI with Serial Echo (C# Native AOT and Rust)",
+        "description": "Develop minimal UIs in both C# (.NET 8 Native AOT) and Rust to test serial communication and measure resource usage.",
+        "details": "Implement a single-window UI in both C# (WinUI 3, Native AOT) and Rust (egui or native Win32 bindings). Integrate basic serial port echo functionality using System.IO.Ports (C#) and serialport-rs (Rust). Measure RAM, CPU, and cold-start times using Windows Performance Monitor.",
+        "testStrategy": "Run both prototypes on Windows 11. Measure startup time, idle CPU, and RAM usage. Validate serial echo functionality with a loopback device.",
+        "priority": "high",
+        "dependencies": [1],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Set Up Minimal C# WinUI 3 Project with Native AOT",
+            "description": "Create a single-window C# application using WinUI 3 and configure it for .NET 8 Native AOT compilation.",
+            "dependencies": [],
+            "details": "Initialize a new WinUI 3 project, add <PublishAot>true</PublishAot> to the project file, and ensure the app builds and runs as a native executable on Windows 11.",
+            "status": "pending",
+            "testStrategy": "Build and publish the app using Native AOT; verify the executable launches and displays the UI window."
+          },
+          {
+            "id": 2,
+            "title": "Set Up Minimal Rust UI Project",
+            "description": "Create a single-window Rust application using egui or native Win32 bindings.",
+            "dependencies": [],
+            "details": "Initialize a new Rust project, select and integrate a minimal UI framework (egui or Win32), and ensure the app builds and runs on Windows 11.",
+            "status": "pending",
+            "testStrategy": "Build and run the Rust app; verify the UI window appears and responds to basic user input."
+          },
+          {
+            "id": 3,
+            "title": "Implement Serial Port Echo Functionality in Both UIs",
+            "description": "Integrate basic serial port echo logic using System.IO.Ports in C# and serialport-rs in Rust.",
+            "dependencies": ["3.1", "3.2"],
+            "details": "Add code to both UIs to open a serial port, read incoming data, and immediately write it back (echo) to the sender.",
+            "status": "pending",
+            "testStrategy": "Connect a loopback device; send data through the UI and verify echoed data is received."
+          },
+          {
+            "id": 4,
+            "title": "Measure Resource Usage and Startup Performance",
+            "description": "Profile RAM, CPU, and cold-start times for both prototypes using Windows Performance Monitor.",
+            "dependencies": ["3.3"],
+            "details": "Use Windows Performance Monitor to record memory usage, CPU utilization, and startup time for each app under identical conditions.",
+            "status": "pending",
+            "testStrategy": "Document measurements for each metric; repeat tests to ensure consistency."
+          },
+          {
+            "id": 5,
+            "title": "Document Implementation and Benchmark Results",
+            "description": "Summarize implementation steps, challenges, and resource usage results for both C# and Rust prototypes.",
+            "dependencies": ["3.4"],
+            "details": "Prepare a report detailing setup, serial echo validation, and all measured performance metrics for both implementations.",
+            "status": "pending",
+            "testStrategy": "Review documentation for completeness and clarity; ensure all results and steps are reproducible."
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "title": "Compare Prototypes and Decide Language/Framework",
+        "description": "Analyze performance and developer experience of C# and Rust prototypes to select the optimal stack.",
+        "details": "Document RAM, CPU, and startup benchmarks. Evaluate UI responsiveness, AOT compatibility, and driver/plugin extensibility. Record trade-offs in docs/decisions/decision-log.md. Prefer .NET 8 Native AOT if performance budgets are met; otherwise, select Rust.",
+        "testStrategy": "Review benchmark data and developer feedback. Confirm decision is documented and justified in the decision log.",
+        "priority": "high",
+        "dependencies": [3],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Gather and Document Benchmark Data",
+            "description": "Collect RAM, CPU, and startup time benchmarks for both C# (.NET 8 Native AOT) and Rust prototypes on identical hardware.",
+            "dependencies": [],
+            "details": "Run standardized tests for each prototype, record results in a structured format, and ensure reproducibility. Document findings in docs/decisions/decision-log.md.",
+            "status": "pending",
+            "testStrategy": "Verify benchmark scripts produce consistent results across multiple runs. Confirm all data is logged and traceable."
+          },
+          {
+            "id": 2,
+            "title": "Evaluate UI Responsiveness and Developer Experience",
+            "description": "Assess UI responsiveness and developer workflow for both stacks, including build times, debugging, and tooling.",
+            "dependencies": [],
+            "details": "Perform hands-on testing of UI latency and responsiveness. Gather developer feedback on IDE support, error diagnostics, and productivity. Summarize pros/cons in the decision log.",
+            "status": "pending",
+            "testStrategy": "Use automated UI tests and developer surveys to quantify responsiveness and workflow satisfaction."
+          },
+          {
+            "id": 3,
+            "title": "Assess AOT Compatibility and Extensibility",
+            "description": "Analyze Ahead-of-Time (AOT) compilation support and plugin/driver extensibility for both C# and Rust prototypes.",
+            "dependencies": [],
+            "details": "Test Native AOT deployment for C# and compare with Rust's compilation model. Evaluate plugin loading mechanisms, manifest parsing, and extensibility features.",
+            "status": "pending",
+            "testStrategy": "Deploy sample plugins/drivers in both environments and verify hot-plug, manifest parsing, and extensibility requirements."
+          },
+          {
+            "id": 4,
+            "title": "Compare Trade-offs and Document Decision Rationale",
+            "description": "Synthesize benchmark, UI, AOT, and extensibility findings to compare trade-offs between C# and Rust.",
+            "dependencies": ["4.1", "4.2", "4.3"],
+            "details": "Summarize strengths, weaknesses, and risks for each stack. Record all trade-offs and rationale in docs/decisions/decision-log.md.",
+            "status": "pending",
+            "testStrategy": "Review documentation for completeness and clarity. Ensure all major criteria and findings are addressed."
+          },
+          {
+            "id": 5,
+            "title": "Select Optimal Language/Framework and Finalize Documentation",
+            "description": "Make a final decision on the language/framework based on performance budgets and documented trade-offs.",
+            "dependencies": ["4.4"],
+            "details": "If .NET 8 Native AOT meets performance budgets, select C#; otherwise, select Rust. Update the decision log with justification and notify stakeholders.",
+            "status": "pending",
+            "testStrategy": "Confirm the decision is clearly documented, justified, and communicated to the team."
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "title": "Implement Device Abstraction Layer",
+        "description": "Design and implement core interfaces (IDeviceDriver, IDeviceSession) for driver plugins and device management.",
+        "details": "Define interfaces in chosen language (C# or Rust) for device drivers and sessions. Support plugin loading from /drivers/<name> with manifest parsing (TOML/JSON). Ensure hot-plug detection, rate-limiting, and safety hooks (global stop). Use reflection (C#) or dynamic loading (Rust) for extensibility.",
+        "testStrategy": "Write unit tests for interface compliance, plugin loading, and manifest parsing. Simulate hot-plug events and verify safety actions.",
+        "priority": "high",
+        "dependencies": [4],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Define Core Device Interfaces",
+            "description": "Design the IDeviceDriver and IDeviceSession interfaces in the chosen language (C# or Rust), specifying required methods and properties for device abstraction and management.",
+            "dependencies": [],
+            "details": "Establish clear, concise interfaces that encapsulate device driver and session responsibilities, ensuring extensibility and maintainability. Follow best practices for abstraction layer API design, focusing on simplicity and documentation.",
+            "status": "pending",
+            "testStrategy": "Write unit tests to verify interface compliance and correct method/property signatures."
+          },
+          {
+            "id": 2,
+            "title": "Implement Plugin Loading and Manifest Parsing",
+            "description": "Develop the mechanism to load driver plugins from the /drivers/<name> directory, including parsing plugin manifests in TOML or JSON format.",
+            "dependencies": ["5.1"],
+            "details": "Utilize reflection (C#) or dynamic loading (Rust) to discover and instantiate plugins at runtime. Implement robust manifest parsing to extract metadata and configuration for each plugin.",
+            "status": "pending",
+            "testStrategy": "Create tests for plugin discovery, manifest parsing accuracy, and error handling for malformed manifests."
+          },
+          {
+            "id": 3,
+            "title": "Integrate Hot-Plug Detection and Rate-Limiting",
+            "description": "Add support for detecting device hot-plug events and implement rate-limiting to prevent resource exhaustion or rapid cycling.",
+            "dependencies": ["5.2"],
+            "details": "Monitor device connection/disconnection events and trigger appropriate driver/session lifecycle actions. Implement configurable rate-limiting to manage event frequency and system stability.",
+            "status": "pending",
+            "testStrategy": "Simulate hot-plug scenarios and verify correct detection, handling, and rate-limiting behavior."
+          },
+          {
+            "id": 4,
+            "title": "Implement Safety Hooks and Global Stop Mechanism",
+            "description": "Design and implement safety hooks, including a global stop function to ensure safe shutdown or interruption of all device operations.",
+            "dependencies": ["5.3"],
+            "details": "Provide a centralized mechanism to halt all device activity in response to critical errors or user commands, ensuring system safety and integrity.",
+            "status": "pending",
+            "testStrategy": "Test global stop under various operational states and verify all devices cease activity safely and promptly."
+          },
+          {
+            "id": 5,
+            "title": "Validate Extensibility and Interface Compliance",
+            "description": "Ensure the abstraction layer supports extensibility via reflection or dynamic loading, and that all plugins conform to the defined interfaces.",
+            "dependencies": ["5.4"],
+            "details": "Perform integration tests with multiple sample plugins, verifying correct loading, interface adherence, and runtime extensibility in both C# and Rust environments.",
+            "status": "pending",
+            "testStrategy": "Automate tests for plugin loading, interface compliance, and extensibility across supported platforms."
+          }
+        ]
+      },
+      {
+        "id": 6,
+        "title": "Develop Transport Layer (Serial, TCP/UDP, SSH)",
+        "description": "Implement transport modules for serial, TCP/UDP (with mDNS/manual), and SSH (for Raspberry Pi), including reconnect/backoff logic.",
+        "details": "Use System.IO.Ports (C#) or serialport-rs (Rust) for serial; System.Net.Sockets (C#) or tokio (Rust) for TCP/UDP; SSH.NET (C#) or thrussh (Rust) for SSH. Implement exponential backoff for reconnects. Integrate transport selection via manifest. Ensure all transports meet latency budgets.",
+        "testStrategy": "Automated tests for device discovery, connection, and reconnection. Measure write→ack and network latency. Fuzz serial framing for robustness.",
+        "priority": "high",
+        "dependencies": [5],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Implement Serial Transport Module",
+            "description": "Develop the serial communication transport using System.IO.Ports (C#) or serialport-rs (Rust), supporting configuration (baud rate, parity, stop bits, flow control) and robust data handling.",
+            "dependencies": [],
+            "details": "Ensure correct initialization, connection management, and error handling for serial ports. Support asynchronous read/write and buffer management. Integrate event-driven or async patterns for data reception.",
+            "status": "pending",
+            "testStrategy": "Automated tests for serial port enumeration, connection, data transmission, and error recovery. Fuzz serial framing for robustness."
+          },
+          {
+            "id": 2,
+            "title": "Implement TCP/UDP Transport Module with mDNS and Manual Discovery",
+            "description": "Develop TCP/UDP transport using System.Net.Sockets (C#) or tokio (Rust), supporting both mDNS-based and manual device discovery.",
+            "dependencies": [],
+            "details": "Implement connection setup, data transmission, and reception for both TCP and UDP. Integrate mDNS for automatic device discovery and fallback to manual IP/port entry. Ensure compatibility with network latency requirements.",
+            "status": "pending",
+            "testStrategy": "Automated tests for device discovery, connection, data transfer, and reconnection. Measure write→ack and network latency."
+          },
+          {
+            "id": 3,
+            "title": "Implement SSH Transport Module for Raspberry Pi",
+            "description": "Develop SSH transport using SSH.NET (C#) or thrussh (Rust) to enable secure communication with Raspberry Pi devices.",
+            "dependencies": [],
+            "details": "Support authentication, session management, and secure data tunneling. Handle connection setup, command execution, and data streaming over SSH.",
+            "status": "pending",
+            "testStrategy": "Automated tests for SSH authentication, session establishment, command execution, and data transfer. Validate reconnection and error handling."
+          },
+          {
+            "id": 4,
+            "title": "Integrate Exponential Backoff and Reconnect Logic",
+            "description": "Implement exponential backoff and reconnection strategies for all transport modules to ensure robust recovery from connection failures.",
+            "dependencies": ["6.1", "6.2", "6.3"],
+            "details": "Design a unified reconnection framework with configurable backoff parameters. Ensure all transports can recover gracefully from transient errors and meet latency budgets.",
+            "status": "pending",
+            "testStrategy": "Simulate connection failures and verify correct backoff, retry, and recovery behavior across all transports."
+          },
+          {
+            "id": 5,
+            "title": "Implement Transport Selection and Manifest Integration",
+            "description": "Develop logic to select and configure the appropriate transport based on a manifest, ensuring seamless integration and adherence to latency requirements.",
+            "dependencies": ["6.1", "6.2", "6.3", "6.4"],
+            "details": "Parse manifest files to determine transport configuration. Dynamically instantiate and manage transport modules as specified. Validate that selected transports meet performance and latency constraints.",
+            "status": "pending",
+            "testStrategy": "Automated tests for manifest parsing, transport selection, and end-to-end connectivity. Measure and verify latency budgets for each transport."
+          }
+        ]
+      },
+      {
+        "id": 7,
+        "title": "Build Single-Window UI and Manual Controls",
+        "description": "Develop the main application window with sidebar navigation and tabs for Manual, Scripts, Telemetry, Logs, and Profiles.",
+        "details": "Use WinUI 3 (C#) or egui/native Win32 (Rust) for UI. Implement device sidebar, tabbed navigation, and manual control widgets (sliders, buttons, toggles). Ensure accessibility and native Windows 11 look/feel. Integrate with device abstraction and transport layers.",
+        "testStrategy": "UI automation tests for navigation, control widgets, and device state display. Validate accessibility and responsiveness on Windows 11.",
+        "priority": "high",
+        "dependencies": [6],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Design Main Window Layout and Navigation",
+            "description": "Create the main application window structure with a sidebar for device navigation and tabbed interface for Manual, Scripts, Telemetry, Logs, and Profiles.",
+            "dependencies": [],
+            "details": "Define the window layout using WinUI 3 (C#) or egui/native Win32 (Rust), ensuring the sidebar and tabbed navigation are visually consistent with Windows 11 design guidelines.",
+            "status": "pending",
+            "testStrategy": "Verify window layout, sidebar, and tab navigation through UI automation tests for correct rendering and navigation flow."
+          },
+          {
+            "id": 2,
+            "title": "Implement Manual Control Widgets",
+            "description": "Develop interactive manual control widgets such as sliders, buttons, and toggles within the Manual tab.",
+            "dependencies": ["7.1"],
+            "details": "Use native controls provided by WinUI 3 or egui to ensure responsiveness and accessibility. Controls must support real-time updates and reflect device state.",
+            "status": "pending",
+            "testStrategy": "Automate tests for widget interaction, state changes, and accessibility compliance."
+          },
+          {
+            "id": 3,
+            "title": "Integrate Device Sidebar with Abstraction Layer",
+            "description": "Connect the device sidebar to the device abstraction and transport layers to display available devices and their statuses.",
+            "dependencies": ["7.1"],
+            "details": "Implement dynamic device listing and status updates by subscribing to device abstraction events. Ensure sidebar updates in real time as devices connect or disconnect.",
+            "status": "pending",
+            "testStrategy": "Simulate device connections/disconnections and verify sidebar updates and status indicators."
+          },
+          {
+            "id": 4,
+            "title": "Ensure Accessibility and Windows 11 Native Look",
+            "description": "Apply accessibility best practices and native Windows 11 styling to all UI components.",
+            "dependencies": ["7.1", "7.2"],
+            "details": "Use platform accessibility APIs (e.g., UI Automation, Narrator support) and follow Windows 11 design language for colors, spacing, and controls. Validate keyboard navigation and screen reader compatibility.",
+            "status": "pending",
+            "testStrategy": "Run accessibility audits and manual tests with assistive technologies on Windows 11."
+          },
+          {
+            "id": 5,
+            "title": "Integrate Tab Content with Device and Transport Layers",
+            "description": "Wire up each tab (Manual, Scripts, Telemetry, Logs, Profiles) to interact with the device abstraction and transport layers for real-time data and control.",
+            "dependencies": ["7.2", "7.3"],
+            "details": "Implement data bindings and event handlers so each tab displays and updates relevant device information, logs, and telemetry in real time.",
+            "status": "pending",
+            "testStrategy": "Automate end-to-end tests for tab interactions, data updates, and error handling with simulated device events."
+          }
+        ]
+      },
+      {
+        "id": 8,
+        "title": "Integrate Scripting Runtime and API",
+        "description": "Embed a sandboxed scripting engine (JavaScript, Lua, or Python) with APIs for device control and telemetry.",
+        "details": "Select scripting engine based on performance and AOT compatibility (e.g., ClearScript for JS, MoonSharp for Lua, Python.NET for Python). Expose APIs: devices.list(), dev.call(endpoint, args). Restrict file/network access for sandboxing. Document API usage and error handling.",
+        "testStrategy": "Unit and integration tests for script execution, API calls, and sandbox enforcement. Run sample scripts to validate device control and telemetry access.",
+        "priority": "medium",
+        "dependencies": [7],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Evaluate and Select Scripting Engine",
+            "description": "Assess candidate scripting engines (JavaScript, Lua, Python) for performance, AOT compatibility, and sandboxing capabilities. Choose the most suitable engine for embedding.",
+            "dependencies": [],
+            "details": "Compare engines such as ClearScript (JS), MoonSharp (Lua), and Python.NET (Python) with respect to execution speed, memory usage, ease of embedding, and ability to restrict file/network access. Document the selection rationale.",
+            "status": "pending",
+            "testStrategy": "Benchmark candidate engines with representative scripts. Validate AOT compatibility and confirm that sandboxing features can be enforced."
+          },
+          {
+            "id": 2,
+            "title": "Embed and Configure Sandboxed Scripting Runtime",
+            "description": "Integrate the selected scripting engine into the host application and configure it to enforce sandboxing, restricting file and network access.",
+            "dependencies": ["8.1"],
+            "details": "Embed the engine, set up execution contexts, and apply sandboxing policies to prevent unauthorized file system and network operations. Ensure the runtime is isolated from the host environment.",
+            "status": "pending",
+            "testStrategy": "Attempt to execute scripts that try to access restricted resources and verify that such actions are blocked. Run security-focused unit tests."
+          },
+          {
+            "id": 3,
+            "title": "Expose Device Control and Telemetry APIs to Scripts",
+            "description": "Implement and register APIs (devices.list(), dev.call(endpoint, args)) within the scripting environment for device control and telemetry access.",
+            "dependencies": ["8.2"],
+            "details": "Design API bindings that allow scripts to enumerate devices and invoke device endpoints securely. Ensure APIs are accessible only within the sandboxed context.",
+            "status": "pending",
+            "testStrategy": "Write and execute scripts that use the exposed APIs. Validate correct device enumeration and endpoint invocation. Confirm that APIs are not accessible outside the sandbox."
+          },
+          {
+            "id": 4,
+            "title": "Implement Error Handling and API Usage Documentation",
+            "description": "Define error handling strategies for API calls and document API usage, expected inputs/outputs, and error cases for script developers.",
+            "dependencies": ["8.3"],
+            "details": "Standardize error responses for API failures. Create comprehensive documentation covering API signatures, usage examples, and error scenarios.",
+            "status": "pending",
+            "testStrategy": "Review documentation for completeness and clarity. Test error handling by triggering API failures in scripts and verifying documented behavior."
+          },
+          {
+            "id": 5,
+            "title": "Develop and Execute Integration and Security Tests",
+            "description": "Create unit and integration tests for script execution, API calls, and sandbox enforcement. Validate the system with sample scripts and security scenarios.",
+            "dependencies": ["8.4"],
+            "details": "Design test cases covering normal and edge-case script usage, API interactions, and attempts to bypass sandbox restrictions. Include both automated and manual test scripts.",
+            "status": "pending",
+            "testStrategy": "Run all tests and sample scripts, ensuring correct API behavior, robust error handling, and strict sandbox enforcement. Review test results for coverage and security gaps."
+          }
+        ]
+      },
+      {
+        "id": 9,
+        "title": "Implement Telemetry, Profiles, and Logging",
+        "description": "Add real-time telemetry charts, profile save/load, and rolling logs for device I/O and events.",
+        "details": "Use fixed-size ring buffers (min 2k samples) for telemetry; render charts at ~30 FPS using WinUI 3 or Rust charting libs. Implement profile management with JSON/TOML hot-reload. Add rolling log buffers and one-click export. Ensure RAM usage stays within budget.",
+        "testStrategy": "Automated tests for telemetry rendering, profile load/save, and log export. Soak tests for RAM drift and performance over 8-hour runs.",
+        "priority": "medium",
+        "dependencies": [8],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Implement Fixed-Size Telemetry Ring Buffers",
+            "description": "Design and implement fixed-size ring buffers (minimum 2,000 samples) for capturing real-time telemetry data from device I/O and events.",
+            "dependencies": [],
+            "details": "Ensure efficient memory usage and thread-safe access for concurrent data producers and consumers. The buffer should support fast overwrite of oldest data and expose APIs for chart rendering and export.",
+            "status": "pending",
+            "testStrategy": "Unit test buffer wraparound, concurrent access, and sample retrieval. Soak test for memory leaks and performance over extended periods."
+          },
+          {
+            "id": 2,
+            "title": "Render Real-Time Telemetry Charts",
+            "description": "Integrate a charting library (WinUI 3 compatible, e.g., LiveCharts2, Telerik, or Syncfusion) to render telemetry data at approximately 30 FPS.",
+            "dependencies": ["9.1"],
+            "details": "Bind chart data sources to the ring buffer. Implement efficient UI updates and ensure smooth rendering with minimal CPU/GPU overhead. Support multiple chart types as needed for device telemetry.",
+            "status": "pending",
+            "testStrategy": "Automated UI tests for chart responsiveness and correctness. Performance profiling to verify frame rate and resource usage."
+          },
+          {
+            "id": 3,
+            "title": "Develop Profile Management with Hot-Reload",
+            "description": "Implement profile save/load functionality using JSON or TOML, supporting hot-reload of configuration changes at runtime.",
+            "dependencies": [],
+            "details": "Profiles should capture user and device settings. Monitor profile files for changes and apply updates without restarting the application. Ensure robust error handling for malformed profiles.",
+            "status": "pending",
+            "testStrategy": "Unit and integration tests for save/load, hot-reload, and error scenarios. Validate correct application of profile changes in real time."
+          },
+          {
+            "id": 4,
+            "title": "Implement Rolling Log Buffers and Export",
+            "description": "Create rolling log buffers for device I/O and event logs, with support for one-click export to file.",
+            "dependencies": [],
+            "details": "Use a fixed-size buffer to limit RAM usage. Provide APIs for appending, querying, and exporting logs. Ensure exported logs are complete and formatted for analysis.",
+            "status": "pending",
+            "testStrategy": "Unit tests for log rotation, export correctness, and buffer overflow handling. Manual verification of exported log files."
+          },
+          {
+            "id": 5,
+            "title": "Enforce RAM Usage Budget and Monitor Performance",
+            "description": "Integrate monitoring and safeguards to ensure total RAM usage for telemetry, profiles, and logs remains within defined limits.",
+            "dependencies": ["9.1", "9.2", "9.3", "9.4"],
+            "details": "Implement runtime checks and alerts for memory usage. Optimize data structures and buffer sizes as needed. Document RAM budget assumptions and provide configuration options.",
+            "status": "pending",
+            "testStrategy": "Automated soak tests for memory drift and performance over 8-hour runs. Validate alerts and adaptive behavior under stress."
+          }
+        ]
+      },
+      {
+        "id": 10,
+        "title": "Automated Testing and Final Acceptance",
+        "description": "Develop and run unit, loopback, soak, and acceptance tests to verify all functional and non-functional requirements.",
+        "details": "Use xUnit/NUnit (C#) or cargo test (Rust) for unit tests. Simulate device connections and control flows. Run soak tests for 8+ hours to monitor RAM drift and stability. Validate safety actions and performance budgets. Document results and acceptance criteria.",
+        "testStrategy": "Run full test suite; review logs and performance metrics. Confirm all success metrics and safety requirements are met before release.",
+        "priority": "high",
+        "dependencies": [9],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Develop and Execute Unit Tests",
+            "description": "Create and run unit tests for all core modules using xUnit/NUnit (C#) or cargo test (Rust) to verify functional correctness at the code level.",
+            "dependencies": [],
+            "details": "Set up test projects, implement test cases for individual functions and classes, and ensure all critical logic paths are covered. Use assertions to validate expected outcomes.",
+            "status": "pending",
+            "testStrategy": "Run automated unit test suite; review code coverage and ensure all tests pass without errors."
+          },
+          {
+            "id": 2,
+            "title": "Implement and Run Loopback Tests",
+            "description": "Simulate device connections and control flows to verify communication integrity and protocol handling between software components.",
+            "dependencies": ["10.1"],
+            "details": "Configure test harnesses to emulate device endpoints and control flows. Validate correct data transmission, reception, and error handling under loopback conditions.",
+            "status": "pending",
+            "testStrategy": "Automate loopback scenarios; monitor logs for protocol errors and confirm all control flows execute as expected."
+          },
+          {
+            "id": 3,
+            "title": "Conduct Soak Tests for Stability",
+            "description": "Run extended soak tests (8+ hours) to monitor RAM drift, resource leaks, and overall system stability under sustained load.",
+            "dependencies": ["10.2"],
+            "details": "Automate long-duration test runs with simulated device activity and control flows. Track memory usage, CPU load, and system responsiveness throughout the test period.",
+            "status": "pending",
+            "testStrategy": "Analyze resource metrics and logs for anomalies; confirm no memory leaks or stability issues over the soak duration."
+          },
+          {
+            "id": 4,
+            "title": "Validate Safety Actions and Performance Budgets",
+            "description": "Verify that all safety-critical actions and performance requirements are met under test conditions, including emergency controls and latency budgets.",
+            "dependencies": ["10.3"],
+            "details": "Test safety mechanisms (e.g., emergency stop, fail-safe triggers) and measure system performance against defined budgets. Simulate edge cases and failure scenarios.",
+            "status": "pending",
+            "testStrategy": "Automate safety and performance tests; review metrics and logs to confirm compliance with acceptance criteria."
+          },
+          {
+            "id": 5,
+            "title": "Document Test Results and Acceptance Criteria",
+            "description": "Compile and organize all test results, logs, and metrics. Clearly document acceptance criteria and final verification status for project release.",
+            "dependencies": ["10.4"],
+            "details": "Aggregate test outputs, summarize findings, and record pass/fail status for each requirement. Prepare documentation for stakeholder review and final acceptance.",
+            "status": "pending",
+            "testStrategy": "Ensure all documentation is complete, accurate, and accessible; confirm that acceptance criteria are explicitly met and traceable to test evidence."
+          }
+        ]
+      }
+    ],
+    "metadata": {
+      "created": "2025-08-23T18:31:02.168Z",
+      "updated": "2025-08-23T18:31:02.169Z",
+      "description": "Tasks for master context"
+    }
+  }
+}

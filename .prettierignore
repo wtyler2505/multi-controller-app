@@ -1,0 +1,48 @@
+# Dependencies
+node_modules/
+package-lock.json
+yarn.lock
+
+# Build outputs
+dist/
+build/
+out/
+bin/
+obj/
+*.exe
+*.dll
+
+# MCP server caches
+.claude/
+.taskmaster/tasks/*.md
+.taskmaster/reports/
+.desktop-commander/
+.filescope/
+.clear-thought/
+.context7/
+.perplexity-ask/
+.memory/
+.time-server/
+
+# Generated files
+*.min.js
+*.min.css
+*.map
+
+# IDE
+.vs/
+.vscode/
+.idea/
+*.suo
+*.user
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+
+# Documentation
+*.pdf

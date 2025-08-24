@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  # Development server with hot reload
+  app-dev:
+    build:
+      context: .
+      target: node-dev
+    container_name: multi-controller-dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - DEBUG=app:*
+    env_file:
+      - .env
+    command: npm run dev
+    networks:
+      - multi-controller-network
+
+  # Mock Serial Port Service for testing
+  mock-serial:
+    image: node:20-alpine
+    container_name: mock-serial-service
+    working_dir: /app
+    volumes:
+      - ./tests/mocks:/app
+    command: node serial-mock-server.js
+    ports:
+      - "9001:9001"
+    networks:
+      - multi-controller-network
+
+  # Redis for caching (optional)
+  redis:
+    image: redis:7-alpine
+    container_name: multi-controller-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - multi-controller-network
+
+  # SQLite web interface (optional)
+  sqlite-web:
+    image: tomdesinto/sqlite-web
+    container_name: multi-controller-sqlite
+    ports:
+      - "8090:8080"
+    volumes:
+      - ./data:/data
+    environment:
+      - SQLITE_DATABASE=/data/multi-controller.db
+    networks:
+      - multi-controller-network
+
+networks:
+  multi-controller-network:
+    driver: bridge
+
+volumes:
+  redis-data:

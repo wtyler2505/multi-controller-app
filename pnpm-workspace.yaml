@@ -1,0 +1,12 @@
+# pnpm workspace configuration for Multi-Controller App monorepo
+packages:
+  # Core packages
+  - 'packages/*'
+  # Device driver packages
+  - 'drivers/*'
+  # Transport layer packages
+  - 'transports/*'
+  # Applications
+  - 'apps/*'
+  # Development tools and utilities
+  - 'tools/*'

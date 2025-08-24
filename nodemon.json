@@ -1,0 +1,34 @@
+{
+  "watch": [
+    "src",
+    "drivers",
+    "transports",
+    ".env"
+  ],
+  "ext": "ts,js,json",
+  "ignore": [
+    "src/**/*.spec.ts",
+    "src/**/*.test.ts",
+    "node_modules",
+    "dist",
+    "coverage",
+    ".git",
+    "*.md"
+  ],
+  "exec": "ts-node",
+  "env": {
+    "NODE_ENV": "development",
+    "DEBUG": "app:*"
+  },
+  "events": {
+    "restart": "echo '\\n🔄 Restarting due to changes...\\n'",
+    "start": "echo '\\n🚀 Multi-Controller App Dev Server Starting...\\n'",
+    "crash": "echo '\\n💥 Application crashed! Waiting for file changes...\\n'"
+  },
+  "delay": "1000",
+  "verbose": false,
+  "colours": true,
+  "signal": "SIGTERM",
+  "stdin": true,
+  "stdout": true
+}

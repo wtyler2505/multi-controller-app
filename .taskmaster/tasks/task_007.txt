@@ -1,0 +1,43 @@
+# Task ID: 7
+# Title: Build Single-Window UI and Manual Controls
+# Status: pending
+# Dependencies: 6
+# Priority: high
+# Description: Develop the main application window with sidebar navigation and tabs for Manual, Scripts, Telemetry, Logs, and Profiles.
+# Details:
+Use WinUI 3 (C#) or egui/native Win32 (Rust) for UI. Implement device sidebar, tabbed navigation, and manual control widgets (sliders, buttons, toggles). Ensure accessibility and native Windows 11 look/feel. Integrate with device abstraction and transport layers.
+
+# Test Strategy:
+UI automation tests for navigation, control widgets, and device state display. Validate accessibility and responsiveness on Windows 11.
+
+# Subtasks:
+## 1. Design Main Window Layout and Navigation [pending]
+### Dependencies: None
+### Description: Create the main application window structure with a sidebar for device navigation and tabbed interface for Manual, Scripts, Telemetry, Logs, and Profiles.
+### Details:
+Define the window layout using WinUI 3 (C#) or egui/native Win32 (Rust), ensuring the sidebar and tabbed navigation are visually consistent with Windows 11 design guidelines.
+
+## 2. Implement Manual Control Widgets [pending]
+### Dependencies: 7.1
+### Description: Develop interactive manual control widgets such as sliders, buttons, and toggles within the Manual tab.
+### Details:
+Use native controls provided by WinUI 3 or egui to ensure responsiveness and accessibility. Controls must support real-time updates and reflect device state.
+
+## 3. Integrate Device Sidebar with Abstraction Layer [pending]
+### Dependencies: 7.1
+### Description: Connect the device sidebar to the device abstraction and transport layers to display available devices and their statuses.
+### Details:
+Implement dynamic device listing and status updates by subscribing to device abstraction events. Ensure sidebar updates in real time as devices connect or disconnect.
+
+## 4. Ensure Accessibility and Windows 11 Native Look [pending]
+### Dependencies: 7.1, 7.2
+### Description: Apply accessibility best practices and native Windows 11 styling to all UI components.
+### Details:
+Use platform accessibility APIs (e.g., UI Automation, Narrator support) and follow Windows 11 design language for colors, spacing, and controls. Validate keyboard navigation and screen reader compatibility.
+
+## 5. Integrate Tab Content with Device and Transport Layers [pending]
+### Dependencies: 7.2, 7.3
+### Description: Wire up each tab (Manual, Scripts, Telemetry, Logs, Profiles) to interact with the device abstraction and transport layers for real-time data and control.
+### Details:
+Implement data bindings and event handlers so each tab displays and updates relevant device information, logs, and telemetry in real time.
+

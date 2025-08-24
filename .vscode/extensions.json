@@ -1,0 +1,37 @@
+{
+  "recommendations": [
+    // Essential
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint",
+    "EditorConfig.EditorConfig",
+    
+    // C# Development
+    "ms-dotnettools.csharp",
+    "ms-dotnettools.vscode-dotnet-runtime",
+    "ms-dotnettools.csdevkit",
+    
+    // TypeScript/JavaScript
+    "ms-vscode.vscode-typescript-next",
+    
+    // Git
+    "eamodio.gitlens",
+    "mhutchie.git-graph",
+    
+    // Markdown
+    "yzhang.markdown-all-in-one",
+    "DavidAnson.vscode-markdownlint",
+    
+    // Hardware/Serial
+    "ms-vscode.vscode-serial-monitor",
+    
+    // Productivity
+    "streetsidesoftware.code-spell-checker",
+    "usernamehw.errorlens",
+    "christian-kohler.path-intellisense",
+    "formulahendry.auto-rename-tag",
+    
+    // Themes (optional)
+    "GitHub.github-vscode-theme",
+    "PKief.material-icon-theme"
+  ]
+}

@@ -1,0 +1,195 @@
+---
+project: Windows Multi-Controller App
+version: 2.2
+owner: Tyler (wtyler)
+environment: Windows 11 + PowerShell
+parser_target: taskmaster-ai
+---
+
+## Overview
+Build a lightweight **Windows-only** desktop application that can discover, connect to, and control heterogeneous hardware (Arduino / ESP32 / ESP8266 / RioRand / Raspberry Pi). The app must be efficient (< 2% idle CPU; < 150 MB base RAM), cold-start in < 2 s, use a single-window UI for manual control, scripting, and telemetry, and support a plugin driver API so new devices can be added without changing the core.
+
+## Goals
+- **Universal controller:** Portable `.exe` that discovers devices over **Serial**, **TCP/UDP** (mDNS + manual), and **SSH** (Raspberry Pi); expose simple control endpoints.
+- **Low resource usage:** Respect strict budgets for startup, CPU, and memory; avoid heavy frameworks; prefer **.NET 8 Native AOT** if feasible.
+- **Extensibility:** Stable driver API (`IDeviceDriver`, `IDeviceSession`) so new hardware can be integrated as drop-in plugins.
+- **Safety:** A global **Stop All Outputs** action; rate-limiting, clamping, and hot-plug resilience to prevent device damage.
+- **User workflows:** Manual controls, script execution (runtime chosen later), real-time telemetry charts, load/save **profiles**, and rolling logs.
+
+## Non-Goals (v1)
+- Cross-platform GUIs (macOS/Linux out of scope for v1).
+- Enterprise fleet provisioning / OTA updates.
+- Firmware development beyond minimal stubs for drivers and test devices.
+
+## Requirements
+
+### Functional
+1) **Discovery & Connection**
+   - Enumerate COM ports, TCP/UDP devices (mDNS + manual entry), and SSH-enabled Raspberry Pis.
+   - Detect hot-plug events; auto-reconnect with exponential backoff.
+
+2) **Control Modes**
+   - **Manual:** Sliders, buttons, toggles to send control signals to devices.
+   - **Scripted:** One default runtime (JavaScript/Lua/Python) with sandboxed APIs, e.g. `devices.list()`, `dev.call(endpoint, args)`.
+   - **Telemetry:** Subscribe to and display real-time signals (temp/voltage/current) targeting ~30 FPS with minimal latency.
+
+3) **Profiles**
+   - Save/load named configurations (device list, transport settings, control mappings).
+
+4) **Logging & Debugging**
+   - Rolling logs for device I/O and internal events.
+   - One-click export bundle for troubleshooting.
+
+5) **Extensibility**
+   - Driver interface (`IDeviceDriver`, `IDeviceSession`). Each driver lives under `/drivers/<name>` with a **manifest** describing supported transports and endpoints.
+
+### Non-Functional
+- **Performance budgets:**
+  - Startup < 2 s; idle CPU ≤ 2%; base RAM ≤ 150 MB (≤ 220 MB with charts).
+  - Serial write→ack latency ≤ 50 ms; network latency ≤ 100 ms.
+- **Packaging:** Single portable `.exe`, no admin required; prefer **.NET 8 Native AOT** (or **Rust + Win32**) — select by measurement.
+- **Security:** No default remote exec; SSH keys not passwords; deny access to `.env`/secrets; least-privilege policy.
+- **Stability:** Graceful disconnect handling; release COM handles; recover without restarting.
+
+## Success Metrics
+- Meets or beats all non-functional budgets.
+- Can control at least **one real device** (Arduino serial echo) and **one stub driver** through the UI.
+- Automated unit, loopback, and soak tests pass with ≤ 5% RAM drift over an **8-hour** run.
+- ≥ 100% of high-priority backlog tasks completed within milestones.
+
+## Milestones & Backlog
+(Dependencies are written in plain language so TaskMaster can infer ordering; milestone-level ordering is strict: **M1 -> M2 -> M3 -> M4 -> M5**.)
+
+### Milestone 1 — Project Setup & Prototyping
+- **M1-T1 — Verify environment (Node 18+, .NET 8 SDK, Rust toolchain)**  
+  Owner: AI | Status: To-Do
+- **M1-T2 — Scaffold repository** (`/app`, `/drivers`, `/transports`, `/docs`, `/tests`)  
+  Owner: AI | Status: To-Do  
+  Depends On: M1-T1
+- **M1-T3 — Create `Claude.md`, `.mcp.json`, `.claude/settings.json`, sub-agent defs**  
+  Owner: AI | Status: To-Do  
+  Depends On: M1-T2
+- **M1-T4 — Prototype C# Native AOT UI with serial echo; measure RAM & startup**  
+  Owner: AI | Status: To-Do  
+  Depends On: M1-T1
+- **M1-T5 — Prototype Rust UI with serial echo; measure RAM & startup**  
+  Owner: AI | Status: To-Do  
+  Depends On: M1-T1
+- **M1-T6 — Compare prototype results; decide language & UI framework**  
+  Owner: AI | Status: To-Do  
+  Depends On: M1-T4, M1-T5
+- **M1-T7 — Record trade-off decision in `docs/decisions/decision-log.md`**  
+  Owner: AI | Status: To-Do  
+  Depends On: M1-T6
+
+### Milestone 2 — Core Infrastructure
+- **M2-T1 — Device Abstraction Layer (`IDeviceDriver`, `IDeviceSession`)**  
+  Owner: AI | Status: Pending  
+  Depends On: M1-T6
+- **M2-T2 — Serial & TCP transports with reconnect/backoff**  
+  Owner: AI | Status: Pending  
+  Depends On: M2-T1
+- **M2-T3 — Fake device driver for UI testing**  
+  Owner: AI | Status: Pending  
+  Depends On: M2-T1
+- **M2-T4 — JSON/TOML profile loader with hot-reload**  
+  Owner: AI | Status: Pending  
+  Depends On: M2-T1
+
+### Milestone 3 — UI & Scripting
+- **M3-T1 — Single-window UI (Devices sidebar; tabs: Manual / Scripts / Telemetry / Logs / Profiles)**  
+  Owner: AI | Status: Pending  
+  Depends On: M2-T3
+- **M3-T2 — Integrate fake device; show connection state**  
+  Owner: AI | Status: Pending  
+  Depends On: M3-T1
+- **M3-T3 — Choose default scripting runtime (JS/Lua/Python)**  
+  Owner: AI | Status: Pending  
+  Depends On: M3-T1
+- **M3-T4 — Implement scripting API (`devices.list()`, `dev.call()`, …)**  
+  Owner: AI | Status: Pending  
+  Depends On: M3-T3
+- **M3-T5 — Telemetry ring buffers & charts (30 FPS)**  
+  Owner: AI | Status: Pending  
+  Depends On: M3-T1
+
+### Milestone 4 — Drivers & Testing
+- **M4-T1 — Arduino serial echo driver**  
+  Owner: AI | Status: Pending  
+  Depends On: M2-T2
+- **M4-T2 — ESP32 TCP echo driver**  
+  Owner: AI | Status: Pending  
+  Depends On: M2-T2
+- **M4-T3 — RioRand PWM stub driver**  
+  Owner: AI | Status: Pending  
+  Depends On: M2-T2
+- **M4-T4 — Unit, loopback, and soak tests for transports & DAL**  
+  Owner: AI | Status: Pending  
+  Depends On: M2-T2
+
+### Milestone 5 — Documentation & Release
+- **M5-T1 — Architecture & sequence diagrams (`docs/architecture/`)**  
+  Owner: AI | Status: Pending  
+  Depends On: M2-T1
+- **M5-T2 — User docs (quickstart, device setup, troubleshooting)**  
+  Owner: AI | Status: Pending  
+  Depends On: M3-T5, M4-T4
+- **M5-T3 — MCP docs (`docs/mcp/`), ops guide (`docs/ops/claude-code.md`), README**  
+  Owner: AI | Status: Pending  
+  Depends On: M3-T3
+- **M5-T4 — Final acceptance tests; verify budgets & safety**  
+  Owner: AI | Status: Pending  
+  Depends On: All
+
+## Risks & Mitigations
+- **Language/framework choice risk:** De-risk via M1 dual prototypes and measured decision.
+- **AOT compatibility risk:** Vet libraries for AOT; keep shims ready.
+- **Transport instability risk:** Add retries/backoff; fuzz serial framing; soak tests.
+- **PWM safety risk:** Clamp duty cycles; watchdog timers; global stop.
+- **MCP misconfig risk:** Provide ready-to-use Windows config; validate tools on first run.
+
+## Appendices
+
+### A. Driver Manifest (example)
+```toml
+# /drivers/<name>/driver.toml
+name = "riorand-pwm-stub"
+version = "0.1.0"
+supported_transports = ["serial", "tcp"]
+endpoints = [
+  { name = "pwm_set", args = ["channel", "duty"], rate_limit_hz = 50 },
+  { name = "stop_all", args = [], rate_limit_hz = 10 }
+]
+telemetry = ["voltage", "current", "temp"]
+```
+
+### B. Telemetry Buffers
+- Fixed-size ring buffers per stream (min 2k samples); coalesce to ~30 FPS render.
+- Back-pressure: drop oldest on burst; never block I/O thread.
+
+### C. PowerShell — Local Parse Run-Book (Windows)
+```powershell
+# From your project root
+# Recommended location for the PRD file:
+#   .taskmaster\docs\prd.txt
+# (Existing repos can also use scripts\prd.txt.)
+
+# Parse PRD into tasks.json (choose a target count you’re happy with)
+ task-master parse-prd .taskmaster\docs\prd.txt --num-tasks=24
+
+# Inspect & iterate
+ task-master list
+ task-master next
+ task-master show 1
+
+# Optional: expand complex tasks after analysis
+ task-master analyze-complexity
+ task-master complexity-report
+ task-master expand --all
+```
+
+### D. Parse-Friendly Writing Tips
+- Use unambiguous milestone ordering and plain-language **Depends On** lines.
+- Keep tables simple; mirror titles in task names.
+- Avoid inline citation artifacts, stray brackets, and footnote markers.
+- Keep numbers concrete (latency, FPS, RAM, CPU).

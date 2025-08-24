@@ -1,0 +1,43 @@
+# Task ID: 1
+# Title: Verify Development Environment
+# Status: pending
+# Dependencies: None
+# Priority: high
+# Description: Ensure all required SDKs and toolchains (.NET 8 SDK, Rust toolchain, Node 18+) are installed and configured for Windows 11 development.
+# Details:
+Check for .NET 8 SDK (Native AOT support), Rust stable toolchain, and Node.js 18+ using PowerShell scripts. Validate installation paths and environment variables. Document any missing prerequisites.
+
+# Test Strategy:
+Run version checks for each toolchain; attempt to build and run a 'Hello World' for each environment to confirm setup.
+
+# Subtasks:
+## 1. Check .NET 8 SDK Installation and Native AOT Support [pending]
+### Dependencies: None
+### Description: Verify that the .NET 8 SDK is installed and configured, including support for Native AOT on Windows 11.
+### Details:
+Use PowerShell scripts to check for the presence of the .NET 8 SDK and confirm Native AOT capabilities. Validate installation path and ensure relevant environment variables (e.g., PATH) are set.
+
+## 2. Verify Rust Stable Toolchain Installation [pending]
+### Dependencies: None
+### Description: Ensure the Rust stable toolchain is installed and properly configured for Windows 11 development.
+### Details:
+Check for Rust installation using 'rustup' and confirm the stable MSVC toolchain is present. Validate that '%USERPROFILE%\.cargo\bin' is in the PATH environment variable. Confirm installation by running 'cargo --version' and 'rustc --version'.
+
+## 3. Validate Node.js 18+ Installation [pending]
+### Dependencies: None
+### Description: Confirm that Node.js version 18 or higher is installed and available for use.
+### Details:
+Use PowerShell to check Node.js version and validate installation path. Ensure Node.js is accessible from the command line and included in the PATH environment variable.
+
+## 4. Check and Document Environment Variables and Installation Paths [pending]
+### Dependencies: None
+### Description: Validate that all required environment variables and installation paths for .NET, Rust, and Node.js are correctly set.
+### Details:
+Use PowerShell scripts to inspect PATH and other relevant environment variables. Document any misconfigurations or missing entries for each toolchain.
+
+## 5. Report and Document Missing Prerequisites [pending]
+### Dependencies: None
+### Description: Identify and document any missing SDKs, toolchains, or configuration issues required for Windows 11 development.
+### Details:
+Aggregate results from previous checks. Create a report listing missing prerequisites, misconfigurations, and recommended remediation steps.
+

@@ -1,0 +1,43 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+build/
+out/
+bin/
+obj/
+*.exe
+*.dll
+
+# Minified files
+*.min.js
+*.min.css
+
+# Type definitions
+*.d.ts
+
+# MCP server directories
+.claude/
+.taskmaster/
+.desktop-commander/
+.filescope/
+.clear-thought/
+.context7/
+.perplexity-ask/
+.memory/
+.time-server/
+
+# IDE
+.vs/
+.vscode/
+.idea/
+
+# Coverage
+coverage/
+
+# Git
+.git/
+
+# Husky
+.husky/

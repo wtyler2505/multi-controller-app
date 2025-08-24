@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <!-- Global C# analyzer configuration for all projects -->
+  <PropertyGroup>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <AnalysisLevel>latest</AnalysisLevel>
+    <AnalysisMode>AllEnabledByDefault</AnalysisMode>
+  </PropertyGroup>
+
+  <!-- Code Analysis Packages -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="8.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.556">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <!-- Performance settings for Multi-Controller App -->
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+    <Optimize>true</Optimize>
+    
+    <!-- Native AOT settings -->
+    <PublishAot>true</PublishAot>
+    <StripSymbols>true</StripSymbols>
+    <TrimMode>full</TrimMode>
+    <InvariantGlobalization>false</InvariantGlobalization>
+    <EnableUnsafeBinaryFormatterSerialization>false</EnableUnsafeBinaryFormatterSerialization>
+    <MetadataUpdaterSupport>false</MetadataUpdaterSupport>
+    <UseSystemResourceKeys>true</UseSystemResourceKeys>
+  </PropertyGroup>
+
+  <!-- Suppress specific warnings that are not relevant -->
+  <PropertyGroup>
+    <NoWarn>$(NoWarn);CS1591</NoWarn> <!-- Missing XML comment for publicly visible type -->
+    <NoWarn>$(NoWarn);SA1633</NoWarn> <!-- File should have header -->
+    <NoWarn>$(NoWarn);SA1200</NoWarn> <!-- Using directives should be placed correctly -->
+    <NoWarn>$(NoWarn);SA1101</NoWarn> <!-- Prefix local calls with this -->
+  </PropertyGroup>
+</Project>
