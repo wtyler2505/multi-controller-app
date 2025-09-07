@@ -1,0 +1,108 @@
+﻿{
+    "budgets":  {
+                    "IdleCpuPercent":  2,
+                    "BaseMemoryMB":  150,
+                    "MaxMemoryWithChartsMB":  220,
+                    "StartupTimeMs":  2000
+                },
+    "performance_gate":  {
+                             "failures":  [
+
+                                          ],
+                             "passed":  true
+                         },
+    "results":  {
+                    "startup":  {
+                                    "timeMs":  392,
+                                    "budgetMs":  2000,
+                                    "passed":  true
+                                },
+                    "memory":  {
+                                   "passed":  true,
+                                   "averageMB":  67.06,
+                                   "minimumMB":  11.5,
+                                   "samples":  [
+                                                   11.5,
+                                                   17.89,
+                                                   27.21,
+                                                   39.5,
+                                                   63.66,
+                                                   73.87,
+                                                   73.91,
+                                                   74.05,
+                                                   74.05,
+                                                   74.05,
+                                                   73.8,
+                                                   73.7,
+                                                   74.09,
+                                                   74.11,
+                                                   74.17,
+                                                   74.18,
+                                                   74.18,
+                                                   74.19,
+                                                   74.19,
+                                                   74.19,
+                                                   74.19,
+                                                   74.19,
+                                                   74.19,
+                                                   74.19,
+                                                   74.19,
+                                                   74.19,
+                                                   74.19,
+                                                   74.19,
+                                                   73.93,
+                                                   73.96
+                                               ],
+                                   "budgetMB":  150,
+                                   "maximumMB":  74.19
+                               },
+                    "cpu":  {
+                                "maximumPercent":  0,
+                                "budgetPercent":  2,
+                                "samples":  [
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                                0
+                                            ],
+                                "averagePercent":  0,
+                                "passed":  true
+                            }
+                },
+    "metadata":  {
+                     "timestamp":  "2025-08-25T00:38:40.424Z",
+                     "sampleCount":  30,
+                     "powershellVersion":  "5.1.19041.6216",
+                     "monitorDuration":  30,
+                     "osVersion":  "Microsoft Windows NT 10.0.19045.0",
+                     "totalBenchmarkTime":  32.49,
+                     "executablePath":  "C:\\Users\\wtyle\\multi-controller-rust\\prototypes\\rust-egui\\target\\release\\multi-controller-rust-prototype.exe",
+                     "benchmarkType":  "rust-prototype"
+                 }
+}

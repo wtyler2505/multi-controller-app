@@ -1,0 +1,25 @@
+{
+  "startup": {
+    "max_ms": 2000,
+    "warn_ms": 1500,
+    "measure_command": "dotnet run --project apps/desktop/MultiControllerApp.csproj --configuration Release"
+  },
+  "memory": {
+    "max_mb": 150,
+    "warn_mb": 130,
+    "chart_active_max_mb": 220
+  },
+  "cpu_idle": {
+    "max_percent": 2,
+    "warn_percent": 1.5
+  },
+  "latency": {
+    "serial_write_ack_max_ms": 50,
+    "network_operation_max_ms": 100
+  },
+  "validation": {
+    "enabled": true,
+    "block_on_failure": true,
+    "log_metrics": true
+  }
+}

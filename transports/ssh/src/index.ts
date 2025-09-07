@@ -1,7 +1,7 @@
 // @multi-controller/transport-ssh - SSH transport implementation
 import { EventEmitter } from 'eventemitter3';
 import type { ITransport } from '@multi-controller/core';
-import { Client } from 'ssh2';
+import { Client, ClientChannel, ConnectConfig } from 'ssh2';
 import pRetry from 'p-retry';
 
 export class SshTransport extends EventEmitter implements ITransport {
@@ -9,7 +9,7 @@ export class SshTransport extends EventEmitter implements ITransport {
   name: string;
   type: 'ssh' = 'ssh';
   private client?: Client;
-  private stream?: any;
+  private stream?: ClientChannel;
   private host: string;
   private port: number;
   private username: string;
@@ -63,7 +63,7 @@ export class SshTransport extends EventEmitter implements ITransport {
           reject(err);
         });
 
-        const connectConfig: any = {
+        const connectConfig: ConnectConfig = {
           host: this.host,
           port: this.port,
           username: this.username
@@ -100,7 +100,7 @@ export class SshTransport extends EventEmitter implements ITransport {
     }
 
     return new Promise((resolve, reject) => {
-      this.stream.write(data, (err?: Error) => {
+      this.stream!.write(data, (err?: Error | null | undefined) => {
         if (err) reject(err);
         else resolve();
       });

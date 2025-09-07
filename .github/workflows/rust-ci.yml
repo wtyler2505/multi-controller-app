@@ -1,0 +1,246 @@
+name: Rust CI
+
+on:
+  push:
+    branches: [main, master, develop, development]
+  pull_request:
+    branches: [main, master, develop, development]
+
+env:
+  CARGO_TERM_COLOR: always
+  RUST_BACKTRACE: 1
+
+jobs:
+  # Quick checks that run on all platforms
+  lint:
+    name: Lint & Format
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - uses: dtolnay/rust-toolchain@stable
+      with:
+        components: rustfmt, clippy
+    
+    - name: Cache dependencies
+      uses: Swatinem/rust-cache@v2
+    
+    - name: Check formatting
+      run: cargo fmt --all -- --check
+    
+    - name: Run clippy
+      run: cargo clippy --all-targets --all-features -- -D warnings
+    
+    - name: Check documentation
+      run: cargo doc --no-deps --all-features
+      env:
+        RUSTDOCFLAGS: -D warnings
+
+  # Run tests on all platforms
+  test:
+    name: Test - ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        rust: [stable]
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - uses: dtolnay/rust-toolchain@stable
+      with:
+        toolchain: ${{ matrix.rust }}
+    
+    - name: Cache dependencies
+      uses: Swatinem/rust-cache@v2
+    
+    - name: Build
+      run: cargo build --all-features --verbose
+    
+    - name: Run tests
+      run: cargo test --all-features --verbose
+    
+    - name: Run tests (no default features)
+      run: cargo test --no-default-features --verbose
+    
+    # Upload test results for Windows (since we can't get proper coverage there)
+    - name: Save test output (Windows)
+      if: matrix.os == 'windows-latest'
+      shell: pwsh
+      run: |
+        cargo test --all-features --verbose -- --nocapture > test-output.txt 2>&1
+        
+        # Parse results for summary
+        $passed = (Select-String -Path test-output.txt -Pattern "test result: ok" -AllMatches).Matches.Count
+        $failed = (Select-String -Path test-output.txt -Pattern "test result: FAILED" -AllMatches).Matches.Count
+        
+        Write-Host "Tests: $passed passed, $failed failed"
+      continue-on-error: true
+    
+    - name: Upload Windows test results
+      if: matrix.os == 'windows-latest'
+      uses: actions/upload-artifact@v4
+      with:
+        name: windows-test-results
+        path: test-output.txt
+        retention-days: 7
+
+  # Coverage measurement (Linux only, where tarpaulin works)
+  coverage:
+    name: Code Coverage
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - uses: dtolnay/rust-toolchain@stable
+    
+    - name: Cache dependencies
+      uses: Swatinem/rust-cache@v2
+    
+    - name: Install tarpaulin
+      run: cargo install cargo-tarpaulin
+    
+    - name: Generate coverage
+      run: |
+        cargo tarpaulin --verbose \
+          --all-features \
+          --workspace \
+          --timeout 300 \
+          --out Xml \
+          --out Html \
+          --output-dir ./coverage \
+          --exclude-files "*/tests/*" \
+          --exclude-files "*/examples/*" \
+          --exclude-files "*/target/*"
+    
+    - name: Check coverage threshold
+      id: coverage-check
+      run: |
+        # Extract coverage percentage
+        COVERAGE=$(grep -oP 'line-rate="\K[^"]+' coverage/cobertura.xml | head -1)
+        COVERAGE_PCT=$(echo "$COVERAGE * 100" | bc -l | cut -d. -f1)
+        
+        echo "Coverage: ${COVERAGE_PCT}%"
+        echo "coverage=${COVERAGE_PCT}" >> $GITHUB_OUTPUT
+        
+        # Check threshold
+        THRESHOLD=80
+        if [ "$COVERAGE_PCT" -lt "$THRESHOLD" ]; then
+          echo "::error::Coverage ${COVERAGE_PCT}% is below threshold ${THRESHOLD}%"
+          exit 1
+        fi
+        
+        echo "::notice::Coverage ${COVERAGE_PCT}% meets threshold ${THRESHOLD}%"
+    
+    - name: Upload to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        files: ./coverage/cobertura.xml
+        flags: unittests
+        name: rust-coverage
+        fail_ci_if_error: false
+    
+    - name: Upload coverage report
+      uses: actions/upload-artifact@v4
+      with:
+        name: coverage-report
+        path: |
+          coverage/tarpaulin-report.html
+          coverage/cobertura.xml
+        retention-days: 7
+    
+    - name: Create coverage badge
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      run: |
+        COVERAGE=${{ steps.coverage-check.outputs.coverage }}
+        COLOR="red"
+        if [ "$COVERAGE" -ge 80 ]; then COLOR="green"; 
+        elif [ "$COVERAGE" -ge 60 ]; then COLOR="yellow"; fi
+        
+        echo "{\"schemaVersion\": 1, \"label\": \"coverage\", \"message\": \"${COVERAGE}%\", \"color\": \"$COLOR\"}" > coverage-badge.json
+    
+    - name: Upload badge data
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      uses: actions/upload-artifact@v4
+      with:
+        name: coverage-badge
+        path: coverage-badge.json
+        retention-days: 90
+
+  # Performance benchmarks (optional, only on main branch)
+  bench:
+    name: Benchmarks
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    steps:
+    - uses: actions/checkout@v4
+    
+    - uses: dtolnay/rust-toolchain@stable
+    
+    - name: Cache dependencies
+      uses: Swatinem/rust-cache@v2
+    
+    - name: Run benchmarks
+      run: cargo bench --all-features --verbose
+      continue-on-error: true
+    
+    - name: Run performance tests
+      run: |
+        cargo test --test performance_tests --release -- --ignored
+      continue-on-error: true
+
+  # Security audit
+  security:
+    name: Security Audit
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - uses: rustsec/audit-check@v1
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+  # Summary job for PR status
+  ci-success:
+    name: CI Success
+    if: always()
+    needs: [lint, test, coverage, security]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check all jobs
+      run: |
+        if [[ "${{ needs.lint.result }}" != "success" ]] ||
+           [[ "${{ needs.test.result }}" != "success" ]] ||
+           [[ "${{ needs.coverage.result }}" != "success" ]] ||
+           [[ "${{ needs.security.result }}" != "success" ]]; then
+          echo "::error::One or more CI jobs failed"
+          exit 1
+        fi
+        
+        echo "✅ All CI checks passed!"
+    
+    - name: Comment PR
+      if: github.event_name == 'pull_request'
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const message = `## ✅ CI Status
+          
+          | Check | Status |
+          |-------|--------|
+          | Lint & Format | ${{ needs.lint.result == 'success' && '✅' || '❌' }} |
+          | Tests | ${{ needs.test.result == 'success' && '✅' || '❌' }} |
+          | Coverage | ${{ needs.coverage.result == 'success' && '✅' || '❌' }} |
+          | Security | ${{ needs.security.result == 'success' && '✅' || '❌' }} |
+          
+          All checks must pass before merging.`;
+          
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: message
+          });
+      continue-on-error: true

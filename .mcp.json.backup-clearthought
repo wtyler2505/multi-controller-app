@@ -1,0 +1,31 @@
+{
+  "$schema": "https://schemas.modelcontextprotocol.org/v1/mcp.json",
+  "mcpServers": {
+    "cipher-aggregator": {
+      "command": "node",
+      "args": [
+        "C:\\Users\\wtyle\\AppData\\Roaming\\npm\\node_modules\\@byterover\\cipher\\dist\\src\\app\\index.cjs",
+        "--mode",
+        "mcp",
+        "--agent",
+        "./.cipher/cipher.yml"
+      ],
+      "timeout": 60000,
+      "env": {
+        "ANTHROPIC_API_KEY": "${ANTHROPIC_API_KEY}",
+        "PERPLEXITY_API_KEY": "${PERPLEXITY_API_KEY}",
+        "OPENAI_API_KEY": "${OPENAI_API_KEY}",
+        "USE_MEMORY_ONLY": "false",
+        "CIPHER_MAX_MEMORY_MB": "512",
+        "CIPHER_LOG_LEVEL": "info",
+        "CIPHER_PERSISTENCE_PATH": "./.cipher/memory/",
+        "CIPHER_EMBEDDINGS_ENABLED": "true",
+        "CIPHER_EMBEDDINGS_PROVIDER": "ollama",
+        "OLLAMA_BASE_URL": "http://localhost:11434",
+        "OLLAMA_MODEL": "nomic-embed-text",
+        "EMBEDDING_MODEL": "nomic-embed-text",
+        "MCP_SERVER_MODE": "aggregator"
+      }
+    }
+  }
+}

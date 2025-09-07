@@ -1,0 +1,218 @@
+# Task ID: 23
+# Title: Configure Cipher Memory Systems for Multi-Controller Project
+# Status: pending
+# Dependencies: 22
+# Priority: high
+# Description: Set up vector store, knowledge graph, and workspace memory tailored for Multi-Controller development
+# Details:
+**PRIORITY: Work on this AFTER Task 22**
+
+Configure Cipher's advanced memory capabilities:
+
+1. Vector Store Setup:
+   - Choose between Qdrant Cloud (free tier) or local in-memory start
+   - Configure collections for different knowledge domains
+   - Set up persistence and backup strategy
+
+2. Knowledge Categories Configuration:
+   - Multi-Controller architecture decisions
+   - Rust implementation patterns  
+   - Device driver interfaces (IDeviceDriver, ITransport)
+   - Performance benchmarks and optimizations
+   - Task completion history from Task Master
+
+3. Workspace Memory Setup:
+   - Enable team progress tracking (USE_WORKSPACE_MEMORY=true)
+   - Configure PR summary storage
+   - Set up bug pattern tracking
+   - Device driver knowledge sharing
+
+4. Custom Memory Prompts:
+   - Serial/TCP/UDP transport patterns
+   - Rust async/await patterns with Tokio
+   - egui UI patterns
+   - Performance optimization techniques
+
+5. Integration with existing systems:
+   - Task Master tasks → Cipher memory
+   - Performance benchmarks → Knowledge graph
+   - Decision log → Persistent memory
+
+# Test Strategy:
+Verify memory persistence across sessions, test knowledge retrieval accuracy, validate workspace memory sharing, ensure no token overhead from memory operations
+
+# Subtasks:
+## 1. Set up vector store backend [pending]
+### Dependencies: None
+### Description: Configure either Qdrant Cloud or local in-memory vector store for Cipher
+### Details:
+For Qdrant Cloud:
+- Create free account at cloud.qdrant.io
+- Create collection for Multi-Controller project
+- Configure API key and URL in .env
+- Test connection with cipher memory test
+
+For local in-memory:
+- Configure USE_MEMORY_ONLY=true
+- Set memory limits
+- Configure persistence strategy
+
+## 2. Configure knowledge categories [pending]
+### Dependencies: 23.1
+### Description: Set up knowledge categories in Cipher for different domains of the Multi-Controller project
+### Details:
+Create categories in cipher.yml:
+- architecture_decisions: Tech stack, design patterns
+- rust_patterns: Rust async, egui, memory safety
+- device_drivers: IDeviceDriver, ITransport interfaces
+- performance: Benchmarks, optimizations, budgets
+- task_history: Completed tasks from Task Master
+- bug_patterns: Common issues and fixes
+- transport_protocols: Serial, TCP, UDP, SSH patterns
+
+## 3. Set up workspace memory [pending]
+### Dependencies: 23.2
+### Description: Enable and configure Cipher's workspace memory for team collaboration and progress tracking
+### Details:
+Configure in .env:
+- USE_WORKSPACE_MEMORY=true
+- WORKSPACE_NAME=multi-controller
+- TEAM_ID=multi-controller-dev
+
+Set up memory types:
+- PR summaries and reviews
+- Bug tracking and resolutions
+- Task completion history
+- Performance measurement history
+- Device driver implementations
+
+## 4. Create custom memory prompts [pending]
+### Dependencies: 23.3
+### Description: Define custom memory prompts for common Multi-Controller development patterns
+### Details:
+Create prompts in .cipher/prompts/:
+- serial_transport.md: Serial communication patterns
+- tcp_udp_patterns.md: Network transport best practices
+- rust_async.md: Tokio and async/await patterns
+- egui_ui.md: egui UI component patterns
+- performance_opt.md: Optimization techniques
+- device_driver.md: Driver implementation patterns
+
+Test each prompt with cipher memory query
+
+## 5. Integrate with existing systems [pending]
+### Dependencies: 23.4
+### Description: Connect Cipher memory with Task Master, performance monitoring, and decision log
+### Details:
+Create integration scripts:
+- scripts/sync-taskmaster-to-cipher.ps1
+- scripts/import-performance-data.ps1
+- scripts/sync-decision-log.ps1
+
+Set up automated syncing:
+- Task completion → Cipher memory
+- Performance benchmarks → Knowledge graph
+- Decision log entries → Persistent memory
+
+Test data migration and verify integrity
+
+## 6. Set up Qdrant vector store [pending]
+### Dependencies: None
+### Description: Configure Qdrant vector database for Cipher's persistent memory system
+### Details:
+Set up vector store options:
+
+Option 1 - Qdrant Cloud (recommended):
+- Create free account at cloud.qdrant.io
+- Set up cluster for Multi-Controller project
+- Configure collections for different memory types
+- Get API key and cluster URL
+- Test connection and basic operations
+
+Option 2 - Local Qdrant:
+- Install Qdrant locally via Docker
+- Configure persistence settings
+- Set up collections
+
+Document chosen approach and configuration
+
+## 7. Configure System 1 memory layer [pending]
+### Dependencies: 23.6
+### Description: Set up Cipher's System 1 memory for fast concept and logic storage
+### Details:
+Configure System 1 memory in cipher.yml:
+- Enable fast concept storage
+- Configure memory categories for Multi-Controller project:
+  * Architecture decisions and patterns
+  * Rust implementation techniques  
+  * Device driver interfaces (IDeviceDriver, ITransport)
+  * Performance optimization patterns
+  * Common bug patterns and fixes
+- Set up automatic memory persistence
+- Configure memory retrieval thresholds
+- Test concept storage and retrieval speed
+
+## 8. Configure System 2 reasoning traces [pending]
+### Dependencies: 23.7
+### Description: Set up Cipher's System 2 memory for storing detailed reasoning processes and decision traces
+### Details:
+Configure System 2 memory for reasoning storage:
+- Enable reasoning trace storage
+- Configure categories for complex decisions:
+  * Technology choice reasoning (Rust vs C#)
+  * Architecture design decisions  
+  * Performance optimization strategies
+  * Security and safety considerations
+  * Testing and validation approaches
+- Set up trace persistence and retrieval
+- Configure trace linking and relationships
+- Test reasoning trace storage and playback
+
+## 9. Set up workspace memory [pending]
+### Dependencies: 23.8
+### Description: Configure Cipher's workspace memory for team collaboration and shared context
+### Details:
+Configure workspace memory in .env and cipher.yml:
+- Enable workspace memory: USE_WORKSPACE_MEMORY=true
+- Set workspace name: WORKSPACE_NAME=multi-controller
+- Configure team ID: TEAM_ID=multi-controller-dev
+- Set up shared memory categories:
+  * Task completion history and patterns
+  * Bug reports and resolutions
+  * Performance benchmarks and optimizations
+  * Code review insights
+  * Development workflow improvements
+- Configure memory sharing permissions
+- Test workspace memory persistence and sharing
+
+## 10. Configure knowledge graph [pending]
+### Dependencies: 23.9
+### Description: Set up Cipher's knowledge graph for entity relationships and semantic connections
+### Details:
+Configure knowledge graph in cipher.yml:
+- Enable knowledge graph functionality
+- Define entity types for Multi-Controller project:
+  * Components: UI, drivers, transports, devices
+  * Concepts: patterns, interfaces, protocols
+  * Performance: metrics, budgets, optimizations
+  * Dependencies: libraries, tools, services
+- Configure relationship types and semantics
+- Set up graph persistence and querying
+- Configure graph visualization options
+- Test entity creation and relationship mapping
+
+## 11. Test memory persistence [pending]
+### Dependencies: 23.10
+### Description: Verify that all memory systems persist data correctly across Cipher restarts and sessions
+### Details:
+Comprehensive memory persistence testing:
+- Test System 1 memory persistence across restarts
+- Verify System 2 reasoning traces survive sessions
+- Test workspace memory data integrity
+- Verify knowledge graph relationships persist
+- Test memory retrieval after Cipher restart
+- Measure memory load/save performance
+- Validate no data corruption or loss
+- Test backup and recovery procedures
+- Document memory persistence behavior and limitations
+

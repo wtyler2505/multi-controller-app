@@ -1,0 +1,66 @@
+{
+  "project": {
+    "name": "Multi-Controller App",
+    "description": "Hardware controller management for Arduino, ESP32, ESP8266, RioRand, Raspberry Pi",
+    "repository": "https://github.com/wtyler2505/multi-controller-app",
+    "mainBranch": "main",
+    "devBranch": "development"
+  },
+  "worktrees": {
+    "basePath": "../mc-app-worktrees",
+    "templates": [
+      {
+        "name": "task",
+        "pattern": "task-{taskId}",
+        "branch": "feature/task-{taskId}",
+        "description": "Worktree for TaskMaster task implementation"
+      },
+      {
+        "name": "bugfix",
+        "pattern": "fix-{issue}",
+        "branch": "bugfix/{issue}",
+        "description": "Worktree for bug fixes"
+      },
+      {
+        "name": "experimental",
+        "pattern": "exp-{name}",
+        "branch": "experimental/{name}",
+        "description": "Worktree for experimental features"
+      }
+    ],
+    "maxParallel": 5,
+    "autoCleanup": true
+  },
+  "claude": {
+    "defaultCommand": "claude",
+    "autoLaunch": true,
+    "sessionConfig": {
+      "preserveContext": true,
+      "shareMemory": true,
+      "cipherPath": ".cipher"
+    }
+  },
+  "taskmaster": {
+    "enabled": true,
+    "autoAssign": true,
+    "complexityThreshold": 5,
+    "parallelTrigger": 3
+  },
+  "memory": {
+    "sharedCipher": true,
+    "syncInterval": 300,
+    "namespacing": {
+      "enabled": true,
+      "pattern": "worktree:{name}:{taskId}"
+    }
+  },
+  "performance": {
+    "monitoring": true,
+    "budgets": {
+      "startup": "2s",
+      "ram": "150MB",
+      "serialLatency": "50ms",
+      "networkLatency": "100ms"
+    }
+  }
+}

@@ -1,0 +1,200 @@
+# Transport Manifest Configuration
+# This file tells the Multi-Controller App where to find your hardware
+
+version = "1.0"
+
+# Global defaults for all transports
+[defaults]
+auto_reconnect = true
+max_reconnect_attempts = 3
+reconnect_delay_ms = 1000
+read_timeout_ms = 1000
+
+# Auto-discovery settings
+[discovery]
+enabled = true
+serial_scan = true     # Automatically find serial devices
+mdns = true           # Find network devices via mDNS
+broadcast = false     # UDP broadcast discovery
+timeout_ms = 5000
+
+# ============================================
+# TRANSPORT DEFINITIONS
+# ============================================
+
+# Primary Arduino on Serial Port
+[[transports]]
+id = "arduino_primary"
+name = "Arduino Uno (Primary)"
+device_type = "arduino_uno"
+transport_type = "Serial"
+priority = 10  # Highest priority
+enabled = true
+fallback = "arduino_backup"  # Use backup if this fails
+
+[transports.connection]
+type = "Serial"
+port = "COM3"  # Change to your Arduino's port (COM3, /dev/ttyUSB0, etc.)
+baud_rate = 115200
+auto_detect = true
+
+[transports.performance]
+max_latency_ms = 50  # Serial must respond within 50ms
+
+# List of capabilities this device supports
+transports.capabilities = [
+    "digital_io",
+    "analog_read", 
+    "pwm",
+    "hall_sensor",
+    "imu",
+    "temperature",
+    "pressure",
+    "ultrasonic",
+    "servo_control",
+    "stepper_control",
+]
+
+# Backup Arduino on different port
+[[transports]]
+id = "arduino_backup"
+name = "Arduino Uno (Backup)"
+device_type = "arduino_uno"
+transport_type = "Serial"
+priority = 9
+enabled = true
+fallback = "esp32_wifi"
+
+[transports.connection]
+type = "Serial"
+port = "COM4"  # Secondary Arduino port
+baud_rate = 115200
+auto_detect = true
+
+[transports.performance]
+max_latency_ms = 50
+
+transports.capabilities = [
+    "digital_io",
+    "analog_read",
+    "pwm",
+]
+
+# ESP32 over WiFi
+[[transports]]
+id = "esp32_wifi"
+name = "ESP32 DevKit (WiFi)"
+device_type = "esp32"
+transport_type = "Tcp"
+priority = 8
+enabled = true
+
+[transports.connection]
+type = "Tcp"
+host = "192.168.1.100"  # ESP32's IP address
+port = 8080
+mdns_service = "_esp32._tcp.local"  # Auto-discovery via mDNS
+
+[transports.performance]
+max_latency_ms = 100
+min_throughput = 10000  # Minimum 10KB/s
+reliability = 0.95
+
+transports.capabilities = [
+    "wifi",
+    "bluetooth",
+    "digital_io",
+    "analog_read",
+    "pwm",
+    "hall_sensor",
+    "temperature",
+    "touch_sensors",
+    "dac_output",
+]
+
+# ESP8266 over UDP (for sensor telemetry)
+[[transports]]
+id = "esp8266_telemetry"
+name = "ESP8266 Sensor Node"
+device_type = "esp8266"
+transport_type = "Udp"
+priority = 6
+enabled = false  # Disabled by default
+
+[transports.connection]
+type = "Udp"
+host = "192.168.1.101"
+port = 9090
+broadcast = false
+bind_port = 0  # Use any available local port
+
+[transports.performance]
+max_latency_ms = 200
+
+transports.capabilities = [
+    "wifi",
+    "temperature",
+    "humidity",
+    "light_sensor",
+]
+
+# Raspberry Pi over SSH
+[[transports]]
+id = "raspberry_pi"
+name = "Raspberry Pi 4"
+device_type = "raspberry_pi"
+transport_type = "Ssh"
+priority = 7
+enabled = false  # Enable when SSH is configured
+
+[transports.connection]
+type = "Ssh"
+host = "192.168.1.50"
+port = 22
+username = "pi"
+
+[transports.connection.auth]
+method = "Key"
+path = "~/.ssh/id_rsa"  # Path to SSH private key
+# passphrase = "optional_key_passphrase"  # Uncomment if key has passphrase
+
+# Alternative password auth (less secure):
+# [transports.connection.auth]
+# method = "Password"
+# password = "raspberry"
+
+[transports.performance]
+max_latency_ms = 150
+min_throughput = 100000  # 100KB/s minimum
+reliability = 0.99
+
+transports.capabilities = [
+    "full_linux",
+    "gpio",
+    "i2c",
+    "spi",
+    "camera",
+    "usb_devices",
+    "network_services",
+]
+
+# Local simulator for testing
+[[transports]]
+id = "simulator"
+name = "Local Device Simulator"
+device_type = "simulator"
+transport_type = "Tcp"
+priority = 1  # Lowest priority
+enabled = false  # Enable for testing
+
+[transports.connection]
+type = "Tcp"
+host = "127.0.0.1"
+port = 7777
+
+transports.capabilities = [
+    "digital_io",
+    "analog_read",
+    "pwm",
+    "simulated_sensors",
+]

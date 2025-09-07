@@ -44,27 +44,49 @@ git checkout -b feature/your-feature-name
 
 ## 💻 Development Process
 
-### 1. Check existing issues
+### MANDATORY: Verification-First Development
+
+**Before ANY work:**
+1. Never claim implementation without proof
+2. Always check TaskMaster for next task
+3. Never create files unless explicitly requested
+4. Always validate performance budgets
+5. Always use file:line format for code references
+
+### 1. Task Management Protocol (REQUIRED)
+
+```bash
+# ALWAYS run before starting work
+npx task-master-ai next                    # Get next available task
+npx task-master-ai get-task --id=<id>     # Review task details
+npx task-master-ai validate-dependencies   # Check dependencies
+
+# During work
+npx task-master-ai set-status --id=<id> --status=in-progress
+npx task-master-ai update-subtask --id=<id> --prompt="progress notes"
+
+# After completion
+npx task-master-ai set-status --id=<id> --status=review
+# After review
+npx task-master-ai set-status --id=<id> --status=done
+```
+
+### 2. Check existing issues
 - Look for existing issues or create a new one
 - Comment on the issue to indicate you're working on it
-
-### 2. Use Task Master
-```bash
-# Get next task
-npx task-master-ai next
-
-# Update task status
-npx task-master-ai set-status --id=<task-id> --status=in-progress
-```
+- Reference Task ID in issue comments
 
 ### 3. Follow TDD approach
 - Write tests first
 - Implement the feature
 - Ensure all tests pass
 
-### 4. Performance validation
-- Check against performance budgets
-- Run performance tests if applicable
+### 4. Performance validation (MANDATORY)
+- **Startup**: Must be < 2s
+- **Idle CPU**: Must be ≤ 2%
+- **Base RAM**: Must be ≤ 150MB
+- **Serial latency**: Must be ≤ 50ms
+- Run performance tests and document results
 
 ## 📝 Coding Standards
 

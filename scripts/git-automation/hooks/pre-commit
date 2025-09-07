@@ -1,0 +1,124 @@
+#!/bin/bash
+
+# Pre-commit hook for Multi-Controller App
+# Runs safety checks before allowing commits
+
+# Colors for output
+RED='\033[0;31m'
+YELLOW='\033[1;33m'
+GREEN='\033[0;32m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+echo -e "${BLUE}╔══════════════════════════════════════╗${NC}"
+echo -e "${BLUE}║     Pre-Commit Validation Suite      ║${NC}"
+echo -e "${BLUE}╚══════════════════════════════════════╝${NC}"
+
+# Get the repository root
+REPO_ROOT=$(git rev-parse --show-toplevel)
+cd "$REPO_ROOT"
+
+# Track if all checks pass
+ALL_PASSED=true
+
+# 1. Run secrets scanner
+echo -e "\n${YELLOW}[1/3] Running secrets scanner...${NC}"
+if [ -f "scripts/git-automation/secrets-scanner.js" ]; then
+    node scripts/git-automation/secrets-scanner.js
+    if [ $? -ne 0 ]; then
+        ALL_PASSED=false
+        echo -e "${RED}❌ Secrets check failed${NC}"
+    else
+        echo -e "${GREEN}✅ Secrets check passed${NC}"
+    fi
+else
+    echo -e "${YELLOW}⚠️  Secrets scanner not found, skipping${NC}"
+fi
+
+# 2. Run performance validation (only if .NET files changed)
+echo -e "\n${YELLOW}[2/3] Checking performance requirements...${NC}"
+DOTNET_CHANGED=$(git diff --cached --name-only | grep -E '\.(cs|csproj|xaml)$' | wc -l)
+if [ "$DOTNET_CHANGED" -gt 0 ]; then
+    if [[ "$OSTYPE" == "msys" ]] || [[ "$OSTYPE" == "win32" ]]; then
+        # Windows - use PowerShell script
+        if [ -f "scripts/git-automation/performance-gate.ps1" ]; then
+            powershell -ExecutionPolicy Bypass -File scripts/git-automation/performance-gate.ps1 -SkipStartup
+            if [ $? -ne 0 ]; then
+                ALL_PASSED=false
+                echo -e "${RED}❌ Performance check failed${NC}"
+            else
+                echo -e "${GREEN}✅ Performance check passed${NC}"
+            fi
+        else
+            echo -e "${YELLOW}⚠️  Performance gate script not found${NC}"
+        fi
+    else
+        # Linux/Mac - use bash script
+        if [ -f "scripts/git-automation/performance-gate.sh" ]; then
+            bash scripts/git-automation/performance-gate.sh --skip-startup
+            if [ $? -ne 0 ]; then
+                ALL_PASSED=false
+                echo -e "${RED}❌ Performance check failed${NC}"
+            else
+                echo -e "${GREEN}✅ Performance check passed${NC}"
+            fi
+        else
+            echo -e "${YELLOW}⚠️  Performance gate script not found${NC}"
+        fi
+    fi
+else
+    echo -e "${GREEN}✅ No .NET files changed, skipping performance check${NC}"
+fi
+
+# 3. Check for debug code and TODOs
+echo -e "\n${YELLOW}[3/3] Checking for debug code...${NC}"
+DEBUG_FOUND=false
+
+# Check for console.log in TypeScript files
+CONSOLE_LOGS=$(git diff --cached --name-only -z | xargs -0 grep -l "console\.log" 2>/dev/null | grep -E '\.(ts|tsx|js|jsx)$')
+if [ ! -z "$CONSOLE_LOGS" ]; then
+    echo -e "${YELLOW}⚠️  console.log statements found in:${NC}"
+    echo "$CONSOLE_LOGS" | while read file; do
+        echo "    - $file"
+    done
+    DEBUG_FOUND=true
+fi
+
+# Check for Debug.WriteLine in C# files
+DEBUG_WRITES=$(git diff --cached --name-only -z | xargs -0 grep -l "Debug\.WriteLine" 2>/dev/null | grep '\.cs$')
+if [ ! -z "$DEBUG_WRITES" ]; then
+    echo -e "${YELLOW}⚠️  Debug.WriteLine statements found in:${NC}"
+    echo "$DEBUG_WRITES" | while read file; do
+        echo "    - $file"
+    done
+    DEBUG_FOUND=true
+fi
+
+# Check for TODO comments
+TODO_FOUND=$(git diff --cached --name-only -z | xargs -0 grep -l "TODO" 2>/dev/null)
+if [ ! -z "$TODO_FOUND" ]; then
+    echo -e "${YELLOW}ℹ️  TODO comments found in:${NC}"
+    echo "$TODO_FOUND" | while read file; do
+        echo "    - $file"
+    done
+fi
+
+if [ "$DEBUG_FOUND" = false ]; then
+    echo -e "${GREEN}✅ No debug code found${NC}"
+fi
+
+# Final result
+echo -e "\n${BLUE}════════════════════════════════════════${NC}"
+
+if [ "$ALL_PASSED" = true ]; then
+    echo -e "${GREEN}✅ All pre-commit checks passed!${NC}"
+    echo -e "${BLUE}════════════════════════════════════════${NC}\n"
+    exit 0
+else
+    echo -e "${RED}❌ Pre-commit validation failed!${NC}"
+    echo -e "\n${YELLOW}Options:${NC}"
+    echo "  • Fix the issues and try again"
+    echo "  • Use 'git commit --no-verify' to bypass (not recommended)"
+    echo -e "${BLUE}════════════════════════════════════════${NC}\n"
+    exit 1
+fi

@@ -1,0 +1,55 @@
+# Task ID: 14
+# Title: Implement Automatic Reconnection with Exponential Backoff and Connection State Tracking for All Transports
+# Status: pending
+# Dependencies: 6, 11
+# Priority: high
+# Description: Add robust automatic reconnection logic with exponential backoff (1s, 2s, 4s, 8s, up to 30s) for all transport modules, triggering on disconnect events, and implement connection state tracking.
+# Details:
+Update all transport modules (serial, TCP/UDP, SSH) to support automatic reconnection when a disconnect is detected, using an exponential backoff strategy. The backoff sequence should start at 1 second and double on each failure (1s, 2s, 4s, 8s, etc.), capping at a maximum delay of 30 seconds. On each disconnect, initiate the reconnection loop, resetting the delay to 1s upon a successful connection. Ensure the logic is resilient to rapid connect/disconnect cycles and does not leak resources (e.g., timers, event listeners). Implement connection state tracking (e.g., 'disconnected', 'connecting', 'connected', 'reconnecting', 'failed') and expose state changes via events or callbacks. Integrate this logic into the transport base class or a shared utility to avoid duplication. Consider adding optional jitter to backoff delays to prevent thundering herd problems in multi-device scenarios. Document the reconnection flow and state transitions clearly in code comments.
+
+# Test Strategy:
+1. Write unit tests for each transport to simulate disconnect events and verify that reconnection attempts occur with the correct exponential backoff timing (1s, 2s, 4s, 8s, up to 30s). 2. Test that the delay resets to 1s after a successful reconnection. 3. Simulate rapid connect/disconnect cycles to ensure no resource leaks or duplicate timers. 4. Verify that connection state transitions are emitted correctly and in the expected order. 5. Use integration tests to simulate real network failures and confirm that transports recover automatically. 6. Optionally, test with multiple transports to ensure jitter (if implemented) prevents synchronized retries.
+
+# Subtasks:
+## 1. Design Shared Reconnection and Exponential Backoff Logic [pending]
+### Dependencies: None
+### Description: Create a reusable reconnection module that implements exponential backoff (1s, 2s, 4s, 8s, up to 30s), supports optional jitter, and can be integrated by all transport modules.
+### Details:
+Define the API and configuration options (initial delay, max delay, factor, jitter, max retries). Ensure the logic can distinguish between retryable and non-retryable errors, and is resilient to rapid connect/disconnect cycles. Plan for resource cleanup (timers, listeners) and extensibility.
+
+## 2. Implement Exponential Backoff and Reconnection for Serial Transport [pending]
+### Dependencies: 14.1
+### Description: Integrate the shared reconnection and backoff logic into the serial transport module, triggering reconnection on disconnect events.
+### Details:
+Update the serial transport to use the shared logic. Ensure correct handling of serial-specific errors and resource cleanup. Reset backoff delay on successful connection.
+
+## 3. Implement Exponential Backoff and Reconnection for TCP/UDP Transport [pending]
+### Dependencies: 14.1
+### Description: Integrate the shared reconnection and backoff logic into the TCP/UDP transport modules, triggering reconnection on disconnect events.
+### Details:
+Update TCP and UDP transports to use the shared logic. Handle protocol-specific disconnect scenarios and ensure proper resource management. Reset backoff delay on successful connection.
+
+## 4. Implement Exponential Backoff and Reconnection for SSH Transport [pending]
+### Dependencies: 14.1
+### Description: Integrate the shared reconnection and backoff logic into the SSH transport module, triggering reconnection on disconnect events.
+### Details:
+Update SSH transport to use the shared logic. Handle SSH-specific disconnects and authentication failures. Ensure resource cleanup and reset backoff delay on successful connection.
+
+## 5. Add Connection State Tracking and Event Emission [pending]
+### Dependencies: 14.2, 14.3, 14.4
+### Description: Implement connection state tracking (e.g., 'disconnected', 'connecting', 'connected', 'reconnecting', 'failed') and expose state changes via events or callbacks in all transports.
+### Details:
+Define state enums and ensure all transports update and emit state changes appropriately. Provide a mechanism for consumers to subscribe to state change events.
+
+## 6. Integrate Optional Jitter into Backoff Delays [pending]
+### Dependencies: 14.1
+### Description: Enhance the backoff logic to support optional jitter, reducing the risk of thundering herd problems in multi-device scenarios.
+### Details:
+Implement jitter as a configurable option in the shared logic. Ensure all transports can enable or disable jitter as needed.
+
+## 7. Document Reconnection Flow and State Transitions [pending]
+### Dependencies: 14.5, 14.6
+### Description: Write clear code comments and documentation describing the reconnection flow, backoff sequence, jitter usage, and connection state transitions.
+### Details:
+Ensure documentation covers the reconnection algorithm, state machine, event emission, and integration points for each transport. Include usage examples and configuration guidance.
+

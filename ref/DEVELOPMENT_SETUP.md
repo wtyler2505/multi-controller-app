@@ -1,22 +1,43 @@
 # Development Setup Reference
 
+**Last Updated**: 2025-08-25  
+**Setup Time**: ~30 minutes  
+**Platform**: Windows 11  
+**Technology Stack**: Rust + egui (decided 2025-08-25)
+
 ## Prerequisites
 
 ### Required SDKs and Tools
 
-#### .NET 8 SDK
+#### Rust Toolchain (PRIMARY - REQUIRED)
+
+- **Version**: Stable channel 1.75+
+- **Target**: x86_64-pc-windows-msvc
+- **Install**: 
+  ```powershell
+  # Option 1: Download from https://rustup.rs/
+  # Option 2: Use winget
+  winget install Rustlang.Rustup
+  ```
+- **Configure**:
+  ```bash
+  rustup default stable
+  rustup target add x86_64-pc-windows-msvc
+  rustup component add rust-analyzer clippy rustfmt
+  ```
+- **Verify**: 
+  ```bash
+  rustc --version   # Should show 1.75+
+  cargo --version   # Should show 1.75+
+  ```
+
+#### .NET 8 SDK (OPTIONAL - for C# prototype only)
 
 - **Version**: 8.0 or later
-- **Features**: Native AOT support required
+- **Features**: Native AOT support
 - **Download**: https://dotnet.microsoft.com/download/dotnet/8.0
 - **Verify**: `dotnet --version`
-
-#### Rust Toolchain
-
-- **Version**: Stable channel
-- **Target**: x86_64-pc-windows-msvc
-- **Install**: https://rustup.rs/
-- **Verify**: `rustc --version`
+- **Note**: Only needed for benchmarking against C# prototype
 
 #### Node.js
 
@@ -44,6 +65,47 @@
 - **Version**: Windows 11 SDK
 - **Purpose**: Native Windows APIs
 - **Install**: Via Visual Studio Installer
+
+## Verification-First Development Requirements
+
+### Core Principles
+
+Before starting any development work:
+
+1. **Verification Before Claims**: Never claim implementation without proof
+2. **Task Management**: Always check TaskMaster for next task before starting
+3. **File Management**: Never create files unless explicitly requested
+4. **Performance Validation**: Always validate against performance budgets
+5. **Code References**: Always use file:line format for references
+
+### Performance Validation Tools
+
+Required for monitoring performance budgets:
+
+- **Windows Performance Monitor**: For CPU and memory profiling
+- **.NET Diagnostics**: `dotnet-counters`, `dotnet-trace`
+- **Benchmark.NET**: For micro-benchmarks
+- **Application Insights**: For telemetry (optional)
+
+### Self-Verification Commands
+
+Essential commands for verification:
+
+```bash
+# Verify changes were made
+grep -n "search_term" file.md
+
+# Count lines to verify additions
+wc -l file.md
+
+# Check task status
+mcp__taskmaster-ai__next_task
+mcp__taskmaster-ai__get_task --id=X.Y
+
+# Validate performance
+dotnet build -c Release /p:PublishAot=true
+# Measure startup time and memory
+```
 
 ## Environment Configuration
 
@@ -137,7 +199,24 @@ claude mcp add desktop-commander -- npx -y @wonderwhy-er/desktop-commander
 claude mcp add clear-thought -- npx -y @chirag127/clear-thought-mcp-server
 ```
 
-### Step 4: Create Project Structure
+### Step 4: Install Git Hooks
+
+```bash
+# Install git automation hooks (REQUIRED)
+npm run git:install-hooks        # Windows
+npm run git:install-hooks-bash   # Linux/Mac
+
+# This installs:
+# - pre-commit: Secrets scanning, performance validation
+# - commit-msg: Conventional commit enforcement
+# - pre-push: Final validation before push
+
+# Verify installation
+ls .git/hooks/
+# Should show: pre-commit, commit-msg, pre-push (without .sample)
+```
+
+### Step 5: Create Project Structure
 
 ```powershell
 # PowerShell script for Windows
@@ -155,7 +234,7 @@ New-Item -ItemType Directory -Path @(
 
 ## Development Workflows
 
-### C# Native AOT Setup
+### Rust Setup (PRIMARY WORKFLOW)
 
 #### Project Creation
 
@@ -188,8 +267,6 @@ dotnet build
 # Release with AOT
 dotnet publish -c Release -r win-x64
 ```
-
-### Rust Setup
 
 #### Project Creation
 
@@ -230,12 +307,23 @@ strip = true
 # Debug build
 cargo build
 
-# Release build
+# Release build (optimized)
 cargo build --release
 
-# Run with profiling
+# Run application
 cargo run --release
+
+# Check without building
+cargo check
+
+# Format code
+cargo fmt
+
+# Lint with clippy
+cargo clippy -- -D warnings
 ```
+
+### C# Native AOT Setup (LEGACY - for comparison only)
 
 ## Testing Setup
 
@@ -347,6 +435,35 @@ Measure-Command { .\MultiControllerApp.exe }
 - Check API keys in environment
 - Verify Node.js installation
 - Run with `--mcp-debug` flag
+
+### Issue: PowerShell Script Failures
+
+**Problem**: PowerShell scripts fail with "Unexpected token" or encoding errors
+**Solution**:
+
+1. **Check for Unicode/Emojis**:
+   ```bash
+   # Validate PowerShell script
+   npm run validate:ps1 scripts/myscript.ps1
+   ```
+
+2. **Common character replacements**:
+   - ✅ → [OK]
+   - ❌ → [ERROR]
+   - ⚠️ → [WARNING]
+   - ℹ️ → [INFO]
+   - ╔══╗ → +==+
+
+3. **Fix automatically**:
+   ```powershell
+   # Replace emojis in file
+   (Get-Content script.ps1) -replace '✅','[OK]' -replace '❌','[ERROR]' | Set-Content script-fixed.ps1
+   ```
+
+4. **Prevention**:
+   - Always use ASCII characters in PowerShell scripts
+   - Test scripts with `powershell -File script.ps1` before committing
+   - Use the validation tool before any PowerShell script commit
 
 ## Build Automation
 

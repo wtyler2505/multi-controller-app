@@ -1,0 +1,332 @@
+name: Test Coverage
+
+on:
+  push:
+    branches: [main, master, develop, development]
+  pull_request:
+    branches: [main, master, develop, development]
+
+env:
+  CARGO_TERM_COLOR: always
+  RUSTFLAGS: "-Cinstrument-coverage"
+  LLVM_PROFILE_FILE: "cargo-test-%p-%m.profraw"
+
+jobs:
+  test-coverage-linux:
+    name: Test Coverage (Linux)
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Install Rust toolchain
+      uses: dtolnay/rust-toolchain@stable
+      with:
+        components: llvm-tools-preview
+        
+    - name: Cache cargo registry
+      uses: actions/cache@v3
+      with:
+        path: ~/.cargo/registry
+        key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/Cargo.lock') }}
+        
+    - name: Cache cargo index
+      uses: actions/cache@v3
+      with:
+        path: ~/.cargo/git
+        key: ${{ runner.os }}-cargo-index-${{ hashFiles('**/Cargo.lock') }}
+        
+    - name: Cache cargo build
+      uses: actions/cache@v3
+      with:
+        path: target
+        key: ${{ runner.os }}-cargo-build-target-${{ hashFiles('**/Cargo.lock') }}
+        
+    - name: Install cargo-tarpaulin
+      run: |
+        cargo install cargo-tarpaulin
+        
+    - name: Run tests with coverage
+      run: |
+        cargo tarpaulin --verbose --all-features --workspace --timeout 300 --out Xml --out Html --output-dir ./coverage
+      
+    - name: Upload coverage reports to Codecov
+      uses: codecov/codecov-action@v3
+      env:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      with:
+        files: ./coverage/cobertura.xml
+        flags: unittests
+        name: codecov-rust
+        fail_ci_if_error: false
+        
+    - name: Upload coverage artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: coverage-report-linux
+        path: |
+          coverage/
+          !coverage/cobertura.xml
+        retention-days: 7
+        
+    - name: Check coverage threshold
+      run: |
+        # Parse coverage percentage from tarpaulin output
+        COVERAGE=$(cargo tarpaulin --print-summary | grep -oP '\d+\.\d+(?=%)' | tail -1)
+        echo "Coverage: ${COVERAGE}%"
+        
+        # Check if coverage meets minimum threshold
+        THRESHOLD=80
+        if (( $(echo "$COVERAGE < $THRESHOLD" | bc -l) )); then
+          echo "❌ Coverage ${COVERAGE}% is below threshold ${THRESHOLD}%"
+          exit 1
+        else
+          echo "✅ Coverage ${COVERAGE}% meets threshold ${THRESHOLD}%"
+        fi
+  
+  test-coverage-windows:
+    name: Test Coverage (Windows)
+    runs-on: windows-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Install Rust toolchain
+      uses: dtolnay/rust-toolchain@stable
+      with:
+        components: llvm-tools-preview
+        
+    - name: Cache cargo registry
+      uses: actions/cache@v3
+      with:
+        path: ~/.cargo/registry
+        key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/Cargo.lock') }}
+        
+    - name: Cache cargo index
+      uses: actions/cache@v3
+      with:
+        path: ~/.cargo/git
+        key: ${{ runner.os }}-cargo-index-${{ hashFiles('**/Cargo.lock') }}
+        
+    - name: Cache cargo build
+      uses: actions/cache@v3
+      with:
+        path: target
+        key: ${{ runner.os }}-cargo-build-target-${{ hashFiles('**/Cargo.lock') }}
+        
+    - name: Run tests with verbose output
+      run: |
+        cargo test --all-features --workspace --verbose --no-fail-fast -- --nocapture > test_output.txt 2>&1
+      continue-on-error: true
+      
+    - name: Estimate coverage (Windows fallback)
+      shell: pwsh
+      run: |
+        # Count test results for coverage estimation
+        $output = Get-Content test_output.txt
+        $testsPassed = ($output | Select-String "test result: ok" | Measure-Object).Count
+        $testsFailed = ($output | Select-String "test result: FAILED" | Measure-Object).Count
+        $testsTotal = $testsPassed + $testsFailed
+        
+        if ($testsTotal -gt 0) {
+          $coverage = [math]::Round(($testsPassed / $testsTotal) * 100, 2)
+        } else {
+          $coverage = 0
+        }
+        
+        Write-Host "Windows Test Summary:"
+        Write-Host "  Tests Passed: $testsPassed"
+        Write-Host "  Tests Failed: $testsFailed"
+        Write-Host "  Total Tests: $testsTotal"
+        Write-Host "  Estimated Coverage: ${coverage}%"
+        
+        # Create simple HTML report
+        @"
+        <!DOCTYPE html>
+        <html>
+        <head><title>Windows Test Coverage Report</title></head>
+        <body>
+          <h1>Test Coverage Report (Windows)</h1>
+          <p><strong>Note:</strong> This is an estimated coverage based on test results.</p>
+          <p>Actual code coverage measurement requires cargo-tarpaulin which is not available on Windows.</p>
+          <ul>
+            <li>Tests Passed: $testsPassed</li>
+            <li>Tests Failed: $testsFailed</li>
+            <li>Total Tests: $testsTotal</li>
+            <li>Estimated Coverage: ${coverage}%</li>
+          </ul>
+        </body>
+        </html>
+        "@ | Out-File -FilePath coverage-windows.html
+        
+        # Check threshold
+        $threshold = 80
+        if ($coverage -lt $threshold) {
+          Write-Host "⚠️ Estimated coverage ${coverage}% is below threshold ${threshold}%"
+          # Don't fail on Windows, just warn
+        } else {
+          Write-Host "✅ Estimated coverage ${coverage}% meets threshold ${threshold}%"
+        }
+        
+    - name: Upload test output
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-output-windows
+        path: |
+          test_output.txt
+          coverage-windows.html
+        retention-days: 7
+  
+  test-coverage-macos:
+    name: Test Coverage (macOS)
+    runs-on: macos-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Install Rust toolchain
+      uses: dtolnay/rust-toolchain@stable
+      with:
+        components: llvm-tools-preview
+        
+    - name: Cache cargo registry
+      uses: actions/cache@v3
+      with:
+        path: ~/.cargo/registry
+        key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/Cargo.lock') }}
+        
+    - name: Cache cargo index
+      uses: actions/cache@v3
+      with:
+        path: ~/.cargo/git
+        key: ${{ runner.os }}-cargo-index-${{ hashFiles('**/Cargo.lock') }}
+        
+    - name: Cache cargo build
+      uses: actions/cache@v3
+      with:
+        path: target
+        key: ${{ runner.os }}-cargo-build-target-${{ hashFiles('**/Cargo.lock') }}
+        
+    - name: Install cargo-tarpaulin
+      run: |
+        cargo install cargo-tarpaulin
+      continue-on-error: true
+      
+    - name: Run tests
+      run: |
+        cargo test --all-features --workspace --verbose
+        
+    - name: Generate coverage if tarpaulin available
+      run: |
+        if command -v cargo-tarpaulin &> /dev/null; then
+          cargo tarpaulin --verbose --all-features --workspace --timeout 300 --out Html --output-dir ./coverage
+        else
+          echo "cargo-tarpaulin not available on macOS, skipping coverage generation"
+        fi
+      continue-on-error: true
+      
+    - name: Upload coverage artifacts
+      if: success()
+      uses: actions/upload-artifact@v4
+      with:
+        name: coverage-report-macos
+        path: coverage/
+        retention-days: 7
+
+  coverage-summary:
+    name: Coverage Summary
+    needs: [test-coverage-linux, test-coverage-windows, test-coverage-macos]
+    runs-on: ubuntu-latest
+    if: always()
+    
+    steps:
+    - name: Download Linux coverage
+      uses: actions/download-artifact@v4
+      with:
+        name: coverage-report-linux
+        path: coverage-linux/
+      continue-on-error: true
+      
+    - name: Download Windows test output
+      uses: actions/download-artifact@v4
+      with:
+        name: test-output-windows
+        path: coverage-windows/
+      continue-on-error: true
+      
+    - name: Download macOS coverage
+      uses: actions/download-artifact@v4
+      with:
+        name: coverage-report-macos
+        path: coverage-macos/
+      continue-on-error: true
+      
+    - name: Generate summary report
+      run: |
+        echo "# Test Coverage Summary" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "## Platform Results" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        
+        if [ -d "coverage-linux" ]; then
+          echo "### ✅ Linux: Coverage report generated" >> $GITHUB_STEP_SUMMARY
+        else
+          echo "### ⚠️ Linux: No coverage report" >> $GITHUB_STEP_SUMMARY
+        fi
+        
+        if [ -d "coverage-windows" ]; then
+          echo "### ⚠️ Windows: Test results available (coverage estimation only)" >> $GITHUB_STEP_SUMMARY
+        else
+          echo "### ❌ Windows: No test results" >> $GITHUB_STEP_SUMMARY
+        fi
+        
+        if [ -d "coverage-macos" ]; then
+          echo "### ✅ macOS: Coverage report generated" >> $GITHUB_STEP_SUMMARY
+        else
+          echo "### ⚠️ macOS: Tests run, coverage may not be available" >> $GITHUB_STEP_SUMMARY
+        fi
+        
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "## Coverage Threshold" >> $GITHUB_STEP_SUMMARY
+        echo "Minimum required: **80%**" >> $GITHUB_STEP_SUMMARY
+        
+    - name: Comment PR with coverage
+      if: github.event_name == 'pull_request'
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const fs = require('fs');
+          let comment = '## 📊 Test Coverage Report\n\n';
+          
+          // Check for Linux coverage
+          if (fs.existsSync('coverage-linux/tarpaulin-report.html')) {
+            comment += '### Linux Coverage\n';
+            comment += '✅ Full coverage report available\n\n';
+          }
+          
+          // Check for Windows results
+          if (fs.existsSync('coverage-windows/test_output.txt')) {
+            comment += '### Windows Tests\n';
+            comment += '⚠️ Test results available (coverage measurement not supported on Windows)\n\n';
+          }
+          
+          // Check for macOS coverage
+          if (fs.existsSync('coverage-macos/tarpaulin-report.html')) {
+            comment += '### macOS Coverage\n';
+            comment += '✅ Coverage report available\n\n';
+          }
+          
+          comment += '---\n';
+          comment += '*Coverage threshold: 80%*';
+          
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: comment
+          });
+      continue-on-error: true

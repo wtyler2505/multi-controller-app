@@ -1,0 +1,441 @@
+# Test Cases Documentation
+# Format: YAML for machine-readable test specifications
+
+metadata:
+  project: Multi-Controller App
+  version: 1.0.0
+  total_tests: 276
+  last_updated: 2025-09-05
+  windows_compatibility: true
+
+test_suites:
+  transport_reconnection:
+    file: tests/transport_reconnection_test.rs
+    description: Validates transport layer reconnection logic with exponential backoff
+    test_count: 30
+    test_cases:
+      - id: TR-001
+        name: test_serial_reconnection
+        category: reconnection
+        priority: critical
+        setup: Mock serial transport with failure injection
+        input: Connection failure after initial connect
+        expected_outcome: Reconnects with exponential backoff (100ms, 200ms, 400ms)
+        validation: Connection restored within 3 attempts
+        windows_notes: COM port naming differs (COM3 vs /dev/ttyUSB0)
+        
+      - id: TR-002
+        name: test_tcp_reconnection
+        category: reconnection
+        priority: critical
+        setup: Mock TCP transport
+        input: Network disconnection
+        expected_outcome: Reconnects with backoff, respects max_retries
+        validation: Connection restored or max_retries exceeded
+        
+      - id: TR-003
+        name: test_udp_reconnection
+        category: reconnection
+        priority: high
+        setup: Mock UDP transport
+        input: Packet loss simulation
+        expected_outcome: Detects connection loss, attempts reconnect
+        validation: Connection state properly tracked
+        
+      - id: TR-004
+        name: test_ssh_reconnection
+        category: reconnection
+        priority: high
+        setup: Mock SSH transport with auth
+        input: SSH session timeout
+        expected_outcome: Re-authenticates and reconnects
+        validation: Session restored with same credentials
+        
+      - id: TR-005
+        name: test_max_retries_exceeded
+        category: error_handling
+        priority: high
+        setup: Transport with max_retries=3
+        input: Continuous connection failures
+        expected_outcome: Stops after 3 attempts, returns error
+        validation: Error state properly set
+        
+      - id: TR-006
+        name: test_latency_enforcement
+        category: performance
+        priority: medium
+        setup: Transport with 50ms min latency
+        input: Rapid command sequence
+        expected_outcome: Commands spaced ≥50ms apart
+        validation: Timing measurements confirm enforcement
+
+  loopback_serial:
+    file: tests/loopback/serial_loopback.rs
+    description: Hardware-in-loop testing for serial transport
+    test_count: 11
+    test_cases:
+      - id: LS-001
+        name: test_basic_loopback
+        category: data_integrity
+        priority: critical
+        setup: Serial port with echo server
+        input: Send "Hello, World!"
+        expected_outcome: Receive identical string back
+        validation: Byte-for-byte comparison
+        hardware_required: true
+        ignore_in_ci: true
+        
+      - id: LS-002
+        name: test_binary_data
+        category: data_integrity
+        priority: high
+        setup: Serial port in binary mode
+        input: Random binary data (1KB)
+        expected_outcome: Identical binary data received
+        validation: CRC32 checksum match
+        
+      - id: LS-003
+        name: test_framing
+        category: protocol
+        priority: high
+        setup: Serial with frame markers
+        input: Multiple framed messages
+        expected_outcome: Frames properly delimited
+        validation: Frame boundaries preserved
+        
+      - id: LS-004
+        name: test_stress_throughput
+        category: performance
+        priority: medium
+        setup: High-speed serial (115200 baud)
+        input: Continuous data stream (10MB)
+        expected_outcome: No data loss, stable throughput
+        validation: All data received, throughput >10KB/s
+
+  loopback_tcp:
+    file: tests/loopback/tcp_loopback.rs
+    description: TCP transport loopback testing
+    test_count: 11
+    test_cases:
+      - id: LT-001
+        name: test_tcp_connection
+        category: connection
+        priority: critical
+        setup: TCP echo server on localhost:8080
+        input: Connect and send test data
+        expected_outcome: Connection established, data echoed
+        validation: Connection state and data integrity
+        
+      - id: LT-002
+        name: test_tcp_large_payload
+        category: data_transfer
+        priority: high
+        setup: TCP connection established
+        input: 100MB payload
+        expected_outcome: Complete transfer without corruption
+        validation: SHA256 hash match
+        
+      - id: LT-003
+        name: test_tcp_concurrent_connections
+        category: concurrency
+        priority: high
+        setup: Multiple TCP clients
+        input: 10 concurrent connections
+        expected_outcome: All connections handled
+        validation: No connection refused errors
+
+  driver_arduino_uno:
+    file: tests/drivers/arduino_uno_tests.rs
+    description: Arduino Uno driver comprehensive testing
+    test_count: 24
+    test_cases:
+      - id: DA-001
+        name: test_probe_detection
+        category: initialization
+        priority: critical
+        setup: Mock Arduino Uno transport
+        input: Send probe command "?"
+        expected_outcome: Receive "Multi-Controller:Arduino"
+        validation: Device correctly identified
+        
+      - id: DA-002
+        name: test_gpio_write
+        category: gpio
+        priority: critical
+        setup: Initialized Arduino driver
+        input: digitalWrite(13, HIGH)
+        expected_outcome: Pin 13 set high
+        validation: State change confirmed
+        
+      - id: DA-003
+        name: test_pwm_output
+        category: pwm
+        priority: high
+        setup: PWM-capable pin
+        input: analogWrite(9, 128)
+        expected_outcome: 50% duty cycle on pin 9
+        validation: PWM value = 128
+        
+      - id: DA-004
+        name: test_analog_read
+        category: analog
+        priority: high
+        setup: Analog input on A0
+        input: analogRead(A0)
+        expected_outcome: Value 0-1023 returned
+        validation: Value within ADC range
+        
+      - id: DA-005
+        name: test_telemetry_stream
+        category: telemetry
+        priority: medium
+        setup: Telemetry enabled
+        input: Start telemetry at 100Hz
+        expected_outcome: Continuous data stream
+        validation: Data rate ≥100 samples/sec
+        
+      - id: DA-006
+        name: test_error_recovery
+        category: error_handling
+        priority: high
+        setup: Driver with error injection
+        input: Corrupt command sent
+        expected_outcome: Error handled gracefully
+        validation: Driver remains operational
+
+  integration_transport_driver:
+    file: tests/integration/transport_driver.rs
+    description: Transport-driver integration testing
+    test_count: 8
+    test_cases:
+      - id: IT-001
+        name: test_driver_over_serial
+        category: integration
+        priority: critical
+        setup: Arduino driver + Serial transport
+        input: Driver commands via serial
+        expected_outcome: Commands executed correctly
+        validation: Response received via transport
+        
+      - id: IT-002
+        name: test_driver_over_tcp
+        category: integration
+        priority: high
+        setup: Arduino driver + TCP transport
+        input: Driver commands via TCP
+        expected_outcome: Commands executed over network
+        validation: TCP transport handles driver protocol
+        
+      - id: IT-003
+        name: test_transport_switching
+        category: failover
+        priority: high
+        setup: Multiple transports available
+        input: Primary transport fails
+        expected_outcome: Automatic failover to backup
+        validation: No command loss during switch
+
+  integration_device_manager:
+    file: tests/integration/device_manager.rs
+    description: Device manager orchestration testing
+    test_count: 9
+    test_cases:
+      - id: DM-001
+        name: test_multi_device_management
+        category: orchestration
+        priority: critical
+        setup: 3 devices (2 Arduino, 1 RPi)
+        input: Concurrent commands to all devices
+        expected_outcome: All devices respond correctly
+        validation: Command routing works
+        
+      - id: DM-002
+        name: test_device_discovery
+        category: initialization
+        priority: high
+        setup: Devices on various transports
+        input: Scan for devices
+        expected_outcome: All devices discovered
+        validation: Device list complete
+        
+      - id: DM-003
+        name: test_hot_swap
+        category: dynamic_config
+        priority: medium
+        setup: Running system
+        input: Add/remove device at runtime
+        expected_outcome: Device integrated without restart
+        validation: System remains operational
+
+  performance_latency:
+    file: tests/performance/latency.rs
+    description: Latency measurement and enforcement
+    test_count: 12
+    test_cases:
+      - id: PL-001
+        name: bench_serial_latency
+        category: benchmark
+        priority: high
+        setup: Serial transport benchmark
+        input: 1000 round-trip measurements
+        expected_outcome: P50 <100ms, P99 <200ms
+        validation: Statistical analysis
+        benchmark: true
+        
+      - id: PL-002
+        name: bench_tcp_latency
+        category: benchmark
+        priority: high
+        setup: TCP transport benchmark
+        input: 1000 round-trip measurements
+        expected_outcome: P50 <50ms, P99 <100ms
+        validation: Latency distribution analysis
+        benchmark: true
+        
+      - id: PL-003
+        name: test_latency_enforcement
+        category: performance
+        priority: critical
+        setup: 50ms minimum latency configured
+        input: Rapid command burst
+        expected_outcome: Commands throttled to 50ms spacing
+        validation: Timestamp analysis
+
+  performance_throughput:
+    file: tests/performance/throughput.rs
+    description: Throughput and bandwidth testing
+    test_count: 15
+    test_cases:
+      - id: PT-001
+        name: bench_serial_throughput
+        category: benchmark
+        priority: high
+        setup: Serial at 115200 baud
+        input: Continuous data transfer
+        expected_outcome: >10KB/s sustained
+        validation: "Throughput measurement"
+        benchmark: true
+        
+      - id: PT-002
+        name: bench_tcp_throughput
+        category: benchmark
+        priority: high
+        setup: TCP on localhost
+        input: Large data transfer
+        expected_outcome: >1MB/s sustained
+        validation: Bandwidth calculation
+        benchmark: true
+        
+      - id: PT-003
+        name: test_concurrent_throughput
+        category: concurrency
+        priority: medium
+        setup: 10 concurrent streams
+        input: Parallel data transfers
+        expected_outcome: Total >100KB/s
+        validation: Aggregate throughput
+
+  performance_stress:
+    file: tests/performance/stress.rs
+    description: System stress testing
+    test_count: 20
+    test_cases:
+      - id: PS-001
+        name: test_connection_storm
+        category: stress
+        priority: high
+        setup: Stress test framework
+        input: 100 connections in 1 second
+        expected_outcome: System remains stable
+        validation: No crashes, memory stable
+        
+      - id: PS-002
+        name: test_sustained_load
+        category: stress
+        priority: high
+        setup: 20 active sessions
+        input: 24-hour continuous operation
+        expected_outcome: No degradation
+        validation: Performance metrics stable
+        duration: 24h
+        
+      - id: PS-003
+        name: test_memory_stress
+        category: resource
+        priority: critical
+        setup: Memory monitoring enabled
+        input: Create/destroy 1000 sessions
+        expected_outcome: No memory leaks
+        validation: Memory returns to baseline
+
+test_categories:
+  unit:
+    description: Individual component testing
+    count: 53
+    coverage: 82%
+    
+  integration:
+    description: Component interaction testing
+    count: 46
+    coverage: 78%
+    
+  loopback:
+    description: Hardware-in-loop testing
+    count: 47
+    coverage: 85%
+    hardware_required: true
+    
+  performance:
+    description: Benchmarks and stress tests
+    count: 43
+    coverage: 75%
+    
+  safety:
+    description: Safety-critical testing
+    count: 15
+    coverage: 88%
+    priority: critical
+
+coverage_metrics:
+  overall: 80.2%
+  target: 80%
+  status: target_met
+  
+  by_module:
+    transport: 82%
+    drivers: 81%
+    reconnection: 92%
+    error_handling: 87%
+    performance: 78%
+    safety: 88%
+    
+  by_priority:
+    critical: 91%
+    high: 85%
+    medium: 72%
+    low: 45%
+
+windows_compatibility:
+  notes: |
+    - cargo-tarpaulin not supported on Windows
+    - Use PowerShell script for coverage measurement
+    - COM port naming differs from Unix
+    - Some async tests require longer timeouts
+    - Path separators need normalization
+    
+  fallback_tools:
+    coverage: scripts/measure-coverage.ps1
+    test_runner: cargo test --release
+    
+known_limitations:
+  - Hardware tests require physical devices
+  - SSH tests need key setup
+  - Performance benchmarks are system-dependent
+  - Some tests marked #[ignore] for CI
+
+update_procedures:
+  - Run tests after code changes
+  - Update test cases when adding features
+  - Review coverage metrics weekly
+  - Document new test rationale
+  - Tag hardware-dependent tests

@@ -1,0 +1,176 @@
+[package]
+name = "multi-controller-app"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "multi_controller_app"
+path = "src/lib.rs"
+
+[[bin]]
+name = "multi-controller-app"
+path = "src/main.rs"
+
+[[bin]]
+name = "manifest_tool"
+path = "src/bin/manifest_tool.rs"
+
+# Commented out temporarily - test files moved
+# [[bin]]
+# name = "hardware_test"
+# path = "tests/hardware_test.rs"
+
+# [[bin]]
+# name = "interactive_reconnect"
+# path = "tests/interactive_reconnect_test.rs"
+
+# [[bin]]
+# name = "full_lifecycle"
+# path = "tests/full_lifecycle_test.rs"
+
+[[bin]]
+name = "list_ports"
+path = "list_ports.rs"
+
+[[example]]
+name = "arduino_control"
+path = "examples/arduino_control.rs"
+
+[[example]]
+name = "telemetry_test"
+path = "examples/telemetry_test.rs"
+
+[features]
+default = ["enterprise-monitoring"]
+hardware-tests = []  # Enable hardware validation tests that require real Arduino
+enterprise-monitoring = [
+    "inferno", 
+    "tracing-opentelemetry",
+    "opentelemetry",
+    "opentelemetry-otlp",
+    "memory-stats",
+    "statrs",
+    "criterion",
+    "egui-toast"
+]
+
+# Release optimization for size
+[profile.release]
+lto = true          # Link-time optimization
+codegen-units = 1   # Better optimization  
+strip = true        # Remove debug symbols
+opt-level = "z"     # Optimize for size
+
+# Development profile with faster builds
+[profile.dev]
+opt-level = 0
+debug = true
+overflow-checks = true
+
+[dependencies]
+# Core async runtime
+tokio = { version = "1.40", features = ["full"] }
+async-trait = "0.1"
+
+# GUI framework
+eframe = "0.29"
+egui = "0.29"
+egui_plot = "0.29"
+
+# Serialization
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+toml = "0.8"
+
+# Error handling
+thiserror = "1.0"
+anyhow = "1.0"
+
+# Logging
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+# Plugin system
+libloading = "0.8"
+once_cell = "1.19"
+
+# Hot-plug detection  
+notify = "6.1"
+
+# Serial port communication
+serialport = "4.3"
+
+# Rate limiting
+governor = "0.6"
+nonzero_ext = "0.3"
+
+# Scripting engine
+rhai = { version = "1.17", features = ["sync"] }
+
+# Utilities
+uuid = { version = "1.10", features = ["v4"] }
+rand = "0.8"
+chrono = "0.4"
+dirs = "5.0"
+
+# Thread-safe primitives
+parking_lot = "0.12"
+
+# Data export formats
+csv = "1.3"
+bincode = "1.3"
+rmp-serde = "1.1"
+flate2 = "1.0"
+
+# System information
+num_cpus = "1.16"
+sysinfo = "0.31"
+
+# Performance profiling (Unix-only)
+[target.'cfg(unix)'.dependencies]
+pprof = { version = "0.13", features = ["flamegraph", "criterion"], optional = true }
+
+# Performance profiling (cross-platform)
+inferno = { version = "0.11", optional = true }
+
+# Distributed tracing
+tracing-opentelemetry = { version = "0.27", optional = true }
+opentelemetry = { version = "0.27", features = ["trace", "metrics"], optional = true }
+opentelemetry-otlp = { version = "0.27", optional = true }
+
+# Memory profiling
+memory-stats = { version = "1.2", optional = true }
+
+# Statistical analysis
+statrs = { version = "0.17", optional = true }
+criterion = { version = "0.5", features = ["html_reports"], optional = true }
+
+# Dashboard enhancements
+egui-toast = { version = "0.15", optional = true }
+
+[dev-dependencies]
+tempfile = "3.8"
+# Base64 encoding for SSH tests
+base64 = "0.22"
+# Coverage testing (install: cargo install cargo-tarpaulin)
+# Note: cargo-tarpaulin requires Linux/macOS or WSL on Windows
+
+# Coverage configuration
+[package.metadata.tarpaulin]
+# Exclude files from coverage
+exclude = [
+    "*/tests/*",
+    "*/examples/*", 
+    "*/bin/*",
+    "src/bin/*"
+]
+# Timeout for tests
+timeout = 120
+# Output formats
+out = ["Html", "Lcov"]
+# Exclude panics from coverage
+ignore-panics = true
+# Run with all features
+all-features = false
+# Run with hardware-tests feature when available
+features = []

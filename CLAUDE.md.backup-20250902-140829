@@ -1,0 +1,1175 @@
+# This file provides operational guidance to **Claude Code** when working in this repository.
+
+# VERIFICATION-FIRST DEVELOPMENT
+
+## The Cardinal Rule
+**NEVER claim something is done without proving it.**
+
+Before ANY response claiming implementation:
+1. Check the file was actually modified
+2. Verify new content exists with grep
+3. Test any provided commands
+4. Show evidence of changes
+
+Phrases that REQUIRE verification:
+- "I've added..." → Show grep output
+- "This implements..." → Show diff
+- "Now includes..." → Show line numbers
+- "Has been updated..." → Show before/after
+
+**If you cannot verify, you must say**: "I've created a plan to..." NOT "I've implemented..."
+
+## Repository Information
+
+- **GitHub URL**: https://github.com/wtyler2505/multi-controller-app
+- **Owner**: wtyler2505
+- **Email**: wtyler2505@outlook.com
+- **Primary Branch**: `main`
+- **Development Branch**: `development`
+- **License**: MIT
+
+## Project Reference Documentation
+
+Comprehensive reference documentation is available in the `/ref` directory:
+
+- **[Project Overview](./ref/PROJECT_OVERVIEW.md)** - **UPDATED 2025-08-25**: Executive summary, current status (15.79% complete), technology decision (Rust selected)
+- **[Architecture Reference](./ref/ARCHITECTURE.md)** - **UPDATED 2025-08-25**: Rust architecture, interface definitions, performance metrics, migration path
+- **[Git Workflow Guide](./ref/GIT_WORKFLOW.md)** - Complete git automation system (9 components), smart tools, and workflows
+- **[Development Setup](./ref/DEVELOPMENT_SETUP.md)** - Environment setup, git hooks installation, PowerShell troubleshooting
+- **[MCP Servers Guide](./ref/MCP_SERVERS.md)** - Configuration for 8 MCP servers aggregated through Cipher
+- **[Task Management](./ref/TASK_MANAGEMENT.md)** - Task Master AI integration, CCPM parallel execution, GitHub sync
+- **[Agents Reference](./ref/AGENTS.md)** - Comprehensive guide to all 17 specialized Claude Code agents (including cipher-orchestrator)
+- **[Coding Standards](./ref/CODING_STANDARDS.md)** - PowerShell script standards, TypeScript patterns, commit guidelines
+- **[Style Guide](./docs/STYLE_GUIDE.md)** - Visual code examples and patterns specific to Multi-Controller App
+
+## Task Management Protocol - HYBRID WORKFLOW
+
+### Parallel Execution Mode (NEW)
+For tasks with multiple subtasks, leverage CCPM parallel execution:
+
+1. **Convert Task to Epic**
+   ```bash
+   /bridge:tm-to-epic [task-id]  # Convert Task Master task to CCPM epic
+   ```
+
+2. **Launch Parallel Execution**
+   ```bash
+   /bridge:parallel-start [task-id]  # Start parallel agents in worktree
+   ```
+
+3. **Sync with GitHub**
+   ```bash
+   /bridge:sync-all  # Push tasks to GitHub Issues for visibility
+   ```
+
+### Traditional Sequential Mode
+For simple tasks or when parallel execution isn't beneficial:
+
+### Pre-Work Verification (MANDATORY)
+ALWAYS execute this sequence before ANY implementation work:
+
+1. **Check Current Sprint Status**
+   ```bash
+   mcp__taskmaster-ai__next_task     # Identify next available task
+   mcp__taskmaster-ai__get_task      # Get detailed requirements
+   npm run task:branch <id>           # Create and switch to task branch
+   mcp__taskmaster-ai__complexity_report  # Review complexity analysis if exists
+   ```
+
+2. **Validate Dependencies**
+   - Check if dependent tasks are complete: `mcp__taskmaster-ai__validate_dependencies`
+   - Review blocking issues or deferred items
+   - Confirm no conflicting work in progress
+
+3. **Task Lifecycle Management**
+   - **Starting**: Task branch creation automatically sets status to in-progress
+   - **During**: Log ALL decisions/changes: `mcp__taskmaster-ai__update_subtask --id=<id> --prompt="<details>"`
+   - **Completing**: 
+     - Run all tests and linting
+     - Verify performance budgets
+     - `mcp__taskmaster-ai__set_task_status --id=<id> --status=review`
+     - After review: `mcp__taskmaster-ai__set_task_status --id=<id> --status=done`
+
+4. **Progress Documentation**
+   - Log implementation approach before starting
+   - Document any deviations from original plan
+   - Record performance measurements
+   - Note any technical debt incurred
+   - Update with lessons learned
+
+### Task ID Reference Format
+- Always reference tasks in commits: `feat(component): description (task X.Y)`
+- Include task ID in code comments for complex implementations
+- Cross-reference related tasks in documentation
+
+## Imports
+
+**Import TaskMaster's workflow rules as‑is (authoritative).**\
+@./.taskmaster/CLAUDE.md
+
+**Import CCPM parallel execution and GitHub sync capabilities.**\
+@./.claude/ccpm/CLAUDE.md
+
+**Import Desktop‑Commander's file/terminal rules.**\
+@./.desktop-commander/CLAUDE.md
+
+**Import FileScope code‑graphing rules.**\
+@./.filescope/CLAUDE.md
+
+**Import Clear‑Thought structured‑reasoning rules.**\
+@./.clear-thought/CLAUDE.md
+
+**Import Context7 official‑docs rules.**\
+@./.context7/CLAUDE.md
+
+**Import Perplexity‑Ask research rules.**\
+@./.perplexity-ask/CLAUDE.md
+
+**Import Memory server rules.**\
+@./.memory/CLAUDE.md
+
+**Import Time‑Server rules.**\
+@./.time-server/CLAUDE.md
+
+> Imports are authoritative for their domain. When domains overlap, prefer: TaskMaster ▶ Context7 ▶ FileScope ▶ Desktop‑Commander ▶ Perplexity‑Ask ▶ Memory ▶ Time‑Server.
+
+## MCP Operating Rules (global)
+
+- Prefer MCP tools over freeform guesses. When a tool exists, **use it** to fetch evidence before coding or deciding.
+- For git operations, prefer npm scripts over direct commands:
+  - `npm run task:*` for task workflows
+  - `npm run validate:*` for validation
+  - `npm run sync:*` for synchronization
+- When creating PowerShell scripts via MCP tools, validate for ASCII-only characters
+- Use Desktop Commander for script execution with proper encoding handling
+- Show a tiny plan before risky ops (schema changes, file deletes, credential handling) and run a dry‑run when possible.
+- Keep edits minimal and localized. Do not reformat huge files unless explicitly asked.
+- Never write secrets into logs or commit history. Scrub tokens/keys from copied snippets.
+- For docs inserted into code, include **the smallest relevant snippet** next to the callsite; link the full source in the comment.
+- Slash commands: use `/mcp` to inspect connected servers and prompts; use server prompts when available.
+
+## ZERO TOLERANCE QUALITY PROTOCOL
+
+### ABSOLUTE REQUIREMENTS - NO EXCEPTIONS
+**HALF-ASSED WORK = IMMEDIATE FAILURE**. Every implementation MUST be complete, tested, and verified.
+
+### The Iron Laws of Development
+1. **NEVER SKIP ERRORS** - Every error must be fixed and re-tested
+2. **NEVER ACCEPT PARTIAL** - If it doesn't work 100%, it's 0%
+3. **NEVER SETTLE** - "Good enough" is NEVER good enough
+4. **ALWAYS VERIFY** - Test, re-test, then test again
+5. **ALWAYS ANALYZE** - Root cause → Fix → Prevent recurrence
+
+### Error Response Protocol (MANDATORY)
+When ANY error occurs:
+1. **STOP** - Do NOT proceed or work around it
+2. **FIX** - Resolve the root cause completely
+3. **TEST** - Verify the fix works
+4. **ANALYZE** - Determine why it happened
+5. **PREVENT** - Update process to prevent recurrence
+6. **DOCUMENT** - Record fix and prevention measures
+
+### Quality Gates (NON-NEGOTIABLE)
+- Build errors: MUST compile successfully
+- Test failures: MUST pass 100%
+- Performance budgets: MUST meet ALL targets
+- Documentation: MUST be complete and accurate
+
+### Punishment for Violations
+- "Work with what we have" → STOP and fix properly
+- Skipping errors → Mandatory root cause analysis
+- Partial implementations → Complete redo from scratch
+- Untested code → Delete and reimplement with tests
+
+## PARALLEL EXECUTION PROTOCOL (CCPM INTEGRATION)
+
+### When to Use Parallel Execution
+**MANDATORY for tasks with 3+ subtasks**. Sequential execution wastes context and time.
+
+### Parallel Execution Decision Matrix
+| Criteria | Use Parallel | Use Sequential |
+|----------|-------------|----------------|
+| Subtask Count | ≥3 subtasks | 1-2 subtasks |
+| Dependencies | Independent subtasks | Sequential/dependent |
+| File Overlap | Different modules | Same files |
+| Complexity | High (score >5) | Low (score ≤5) |
+| Time Criticality | Urgent delivery | Normal pace |
+| Context Usage | >50% consumed | <50% consumed |
+
+### Parallel Workflow Steps
+1. **ANALYZE** - Check task complexity: `mcp__taskmaster-ai__complexity_report`
+2. **CONVERT** - Transform to CCPM epic: `/bridge:tm-to-epic [task-id]`
+3. **PREPARE** - Create worktree: `git worktree add ../mc-app-task-[id]`
+4. **LAUNCH** - Start parallel agents: `/bridge:parallel-start [task-id]`
+5. **MONITOR** - Track progress in main thread (minimal context)
+6. **SYNC** - Push to GitHub: `/bridge:sync-all`
+7. **MERGE** - Consolidate results back to main branch
+
+### Performance Metrics
+- **Expected**: 3-5x faster delivery
+- **Context Preservation**: 80-90% (vs 40% sequential)
+- **Quality**: 75% fewer bugs (spec-driven)
+- **Measurement**: Track with `git log --oneline | wc -l`
+
+### Enforcement
+- Tasks with 3+ subtasks MUST use parallel execution
+- Document reason if sequential chosen despite criteria
+- Update Task Master with execution mode used
+
+## MANDATORY AGENT UTILIZATION PROTOCOL
+
+### Critical Requirement
+**Agent usage < 80% = TASK FAILURE**. You MUST use specialized agents for domain-specific work.
+
+### Before ANY Task Implementation
+1. **STOP** - Identify the task domain and type
+2. **SELECT** - Choose primary agent(s) from the matrix below
+3. **INVOKE** - Use Task tool with appropriate `subagent_type`
+4. **COORDINATE** - Chain agents as needed for complex tasks
+5. **VERIFY** - Always use task-checker for validation
+
+### Agent Selection Matrix
+
+| Task Type | Primary Agent | Support Agents | Trigger Keywords | Parallel Mode |
+|-----------|--------------|----------------|------------------|---------------|
+| **Task Management** | task-orchestrator | task-executor, task-checker | "next task", "parallel work", "dependencies" | Coordinator |
+| **Driver Development** | driver-engineer | test-runner, safety-guardian | "Arduino", "ESP32", "RioRand", "driver", "IDeviceDriver" | Parallelizable |
+| **Transport Work** | transport-engineer | performance-profiler | "Serial", "TCP", "UDP", "SSH", "reconnect", "async I/O" | Parallelizable |
+| **UI Development** | ui-telemetry-analyst | performance-profiler | "WinUI", "WPF", "charts", "telemetry", "real-time" | Parallelizable |
+| **PowerShell Scripts** | security-hygiene | general-purpose | ".ps1", "PowerShell", "script", "automation" | Sequential |
+| **C# Native AOT** | performance-profiler | packaging-release | "Native AOT", ".NET", "C#", "startup time" | Sequential |
+| **Rust Development** | transport-engineer | performance-profiler | "Rust", "cargo", "egui", "memory safety" | Parallelizable |
+| **Research Tasks** | research-librarian | docs-scribe | "compare", "evaluate", "research", "best practices" | Sequential |
+| **Documentation** | docs-scribe | memory-steward | "document", "README", "CLAUDE.md", "decision log" | Parallelizable |
+| **Testing** | test-runner | task-checker | "test", "unit test", "integration", "soak test" | Parallelizable |
+| **Security** | security-hygiene | general-purpose | "credentials", "secrets", "API keys", "gitignore" | Sequential |
+| **Performance** | performance-profiler | ui-telemetry-analyst | "memory", "CPU", "startup", "optimization" | Sequential |
+| **Release/Build** | packaging-release | performance-profiler | "build", "AOT", "distribution", "signing" | Sequential |
+| **MCP Setup** | mcp-toolsmith | general-purpose | "MCP server", "configuration", "connection" | Sequential |
+| **Cipher Framework** | cipher-orchestrator | mcp-toolsmith, memory-steward | "Cipher", "ByteRover", "MCP aggregator", "memory framework" | Sequential |
+| **Memory/Facts** | memory-steward | docs-scribe | "store", "remember", "convention", "decision" | Sequential |
+| **Parallel Execution** | ccpm-parallel-worker | All domain agents | "parallel", "worktree", "simultaneous" | Controller |
+
+### Agent Chain Templates
+
+#### For New Feature Development
+1. task-orchestrator → Analyze requirements and dependencies
+2. research-librarian → Research best practices and patterns  
+3. [domain-agent] → Design and implement
+4. test-runner → Create and run tests
+5. task-checker → Validate implementation
+6. docs-scribe → Update documentation
+
+#### For Bug Fixes
+1. task-orchestrator → Identify scope
+2. [domain-agent] → Diagnose and fix
+3. test-runner → Verify fix
+4. task-checker → Validate no regressions
+
+#### For Performance Issues
+1. performance-profiler → Measure baseline
+2. [domain-agent] → Implement optimization
+3. performance-profiler → Verify improvement
+4. task-checker → Validate budgets met
+
+### Enforcement Mechanisms
+- **Pre-task Ritual**: Always ask "Which agent owns this domain?"
+- **TodoWrite Integration**: Include `assignedAgent` field in todos
+- **Task Master**: Add agent assignments to task details
+- **Monitoring**: Track agent invocations per session
+- **Review Gates**: task-checker validates ALL implementations
+
+### Failure Recovery
+If you catch yourself implementing without agents:
+1. STOP immediately
+2. Identify the appropriate agent
+3. Delegate the work to that agent
+4. Document the agent usage in task notes
+
+## WORKTREE MANAGEMENT RULES
+
+### Worktree Naming Convention
+- Pattern: `../mc-app-task-[id]/` (e.g., `../mc-app-task-5/`)
+- Branch: `feature/task-[id]` or `feature/task-[id]-[description]`
+- Location: Always parallel to main repo (../ prefix)
+
+### Worktree Lifecycle
+1. **CREATE** - Before parallel execution:
+   ```bash
+   git worktree add ../mc-app-task-[id] -b feature/task-[id]
+   ```
+2. **VALIDATE** - Check isolation:
+   ```bash
+   git worktree list  # Verify created
+   cd ../mc-app-task-[id] && git status  # Clean state
+   ```
+3. **EXECUTE** - Run agents in worktree context
+4. **MERGE** - After completion:
+   ```bash
+   cd main-repo && git merge feature/task-[id]
+   ```
+5. **CLEANUP** - Remove after merge:
+   ```bash
+   git worktree remove ../mc-app-task-[id]
+   git branch -d feature/task-[id]
+   ```
+
+### Worktree Rules
+- **One worktree per task** - Never reuse across tasks
+- **Clean state required** - No uncommitted changes before agent launch
+- **Isolated execution** - Agents work only in their worktree
+- **No cross-contamination** - Agents cannot access other worktrees
+- **Atomic commits** - Each subtask gets its own commit in worktree
+
+### Conflict Prevention
+- Check file overlap before parallel execution
+- Use file locking patterns if needed
+- Merge frequently to minimize divergence
+- Resolve conflicts in worktree before merging to main
+
+## CONTEXT PRESERVATION MANDATE
+
+### Context Firewall Principles
+**Main thread must NEVER see implementation details from parallel agents**
+
+### What Stays in Main Thread
+- Task status updates (minimal)
+- Final results summary
+- Error notifications
+- Merge confirmations
+- Performance metrics
+
+### What Stays in Agent Context
+- Implementation details
+- Debug output
+- Intermediate test results
+- Code exploration
+- Trial-and-error attempts
+- Verbose logs
+
+### Context Reporting Format
+Agents return ONLY:
+```
+Task [ID]: [Status]
+Files Modified: [count]
+Tests Passed: [X/Y]
+Performance: [metrics if relevant]
+Issues: [blocker list if any]
+Ready for: [next action]
+```
+
+### Context Usage Targets
+- Sequential workflow: 100% context used by task end
+- Parallel workflow: <20% context used in main thread
+- Agent context: Disposable after merge
+- Measurement: Track with token counter
+
+### Enforcement
+- Reject verbose agent reports
+- Summarize before returning to main
+- Use structured formats only
+- Log details to files, not conversation
+
+## FAILURE RECOVERY PROTOCOL
+
+### Agent Failure Handling
+**NEVER let one agent failure stop parallel execution**
+
+### Failure Detection
+1. **Timeout** - Agent exceeds time limit (default: 30 min)
+2. **Error** - Agent reports blocking error
+3. **Crash** - Agent process terminates unexpectedly
+4. **Deadlock** - Agent waiting indefinitely
+5. **Context Explosion** - Agent exceeds token limit
+
+### Recovery Actions
+| Failure Type | Immediate Action | Recovery Strategy |
+|-------------|------------------|-------------------|
+| Timeout | Continue others | Reassign subtask to new agent |
+| Error | Log and continue | Fix in main thread after merge |
+| Crash | Clean worktree | Restart with reduced scope |
+| Deadlock | Kill agent | Split subtask smaller |
+| Context Explosion | Terminate | Use more focused agent |
+
+### Failure Reporting
+```
+AGENT FAILURE: [agent-name]
+Task: [subtask-id]
+Failure Type: [timeout/error/crash]
+Impact: [what's blocked]
+Workaround: [manual fix needed]
+Other Agents: [X still running]
+```
+
+### Graceful Degradation
+1. **Continue** all healthy agents
+2. **Document** failed subtasks in Task Master
+3. **Complete** what's possible
+4. **Report** partial success
+5. **Plan** manual completion of failed parts
+
+### Post-Mortem Requirements
+After parallel execution with failures:
+- Update task with failure analysis
+- Document in decision log
+- Adjust agent selection for future
+- Consider sequential fallback if >50% fail
+
+## GITHUB INTEGRATION MANDATE
+
+### Automatic Issue Creation
+**Every Task Master task MUST have a GitHub Issue**
+
+### Issue Sync Workflow
+1. **On Task Creation**:
+   ```bash
+   /bridge:sync-all  # Creates GitHub Issues for all tasks
+   ```
+2. **On Status Change**:
+   - Task Master status → GitHub labels
+   - in-progress → "in-progress" label
+   - review → "needs-review" label
+   - done → Close issue
+3. **On Parallel Start**:
+   - Create sub-issues for each subtask
+   - Link to parent issue
+   - Assign to virtual agents (bot account)
+
+### Issue Template
+```markdown
+[Task {id}] {title}
+
+**Task Master ID**: {id}
+**Status**: {status}
+**Complexity**: {score}
+**Execution Mode**: {parallel/sequential}
+
+## Description
+{description}
+
+## Subtasks
+- [ ] {subtask-1}
+- [ ] {subtask-2}
+
+## Test Strategy
+{testStrategy}
+
+---
+_Automated by Task Master + CCPM_
+```
+
+### Visibility Benefits
+- **Team Awareness** - Real-time progress tracking
+- **Stakeholder Updates** - No manual status reports
+- **Audit Trail** - Complete history in GitHub
+- **Collaboration** - Comments and discussions preserved
+
+### Sync Commands
+- `/bridge:sync-all` - Full bidirectional sync
+- `/bridge:issue-update [task-id]` - Update specific issue
+- `/bridge:import-comments` - Pull GitHub comments to Task Master
+
+## PARALLEL VERIFICATION PROTOCOL
+
+### Pre-Launch Verification
+**MUST verify before starting parallel execution**
+
+```bash
+# 1. Check task eligibility
+mcp__taskmaster-ai__get_task --id=[task-id]  # Has subtasks?
+mcp__taskmaster-ai__validate_dependencies     # Dependencies met?
+
+# 2. Verify clean state
+git status                                     # No uncommitted changes
+git worktree list                             # No conflicting worktrees
+
+# 3. Check resources
+ps aux | grep claude                          # No zombie agents
+df -h ../                                     # Disk space for worktree
+
+# 4. Validate file overlap
+grep -l "class\|function" $(git ls-files)    # Identify shared files
+```
+
+### During Execution Verification
+```bash
+# Monitor agent health (every 5 min)
+for dir in ../mc-app-task-*/; do
+  echo "=== $dir ==="
+  cd "$dir" && git status && git log --oneline -5
+done
+
+# Check context usage
+/context  # Should stay under 20% in main thread
+
+# Verify no cross-contamination
+git diff --stat origin/development  # Each worktree
+```
+
+### Post-Execution Verification
+**Before merging results**
+
+| Check | Command | Expected Result |
+|-------|---------|-----------------|
+| All tests pass | `npm test` in worktree | 100% pass |
+| No conflicts | `git merge --no-commit` | Clean merge |
+| Performance maintained | `npm run validate:perf` | Within budgets |
+| Coverage maintained | `npm run coverage` | ≥ baseline |
+| No secrets exposed | `npm run validate:secrets` | Clean |
+
+### Merge Verification Checklist
+- [ ] All subtasks complete or documented as failed
+- [ ] Worktree builds successfully
+- [ ] No regression in performance metrics
+- [ ] Task Master updated with results
+- [ ] GitHub Issues synced
+- [ ] Decision log updated if needed
+
+## CONTEXT FIREWALL ENFORCEMENT
+
+### Firewall Rules for Agents
+**Agents MUST follow strict output filtering**
+
+### Prohibited in Agent Returns
+❌ **NEVER RETURN**:
+- Full file contents
+- Verbose error stacktraces
+- Step-by-step implementation details
+- Debug print statements
+- Test output beyond pass/fail
+- Git diff details
+- npm install output
+- Build command output
+
+### Required Agent Output Format
+✅ **ALWAYS RETURN**:
+```
+=== AGENT REPORT: [agent-name] ===
+Task: [subtask-id] - [title]
+Status: [✅ Complete | ⚠️ Partial | ❌ Failed]
+Files Modified: [count]
+Tests: [passed]/[total]
+Performance: [metric if relevant]
+Issues: [none | list blockers only]
+Commit: [hash - message]
+Next: [ready to merge | needs manual fix]
+===================================
+```
+
+### Context Budget Enforcement
+| Component | Max Context | Measurement |
+|-----------|-------------|-------------|
+| Main Thread | 20% per task | Token counter |
+| Single Agent | 10% per subtask | Agent metrics |
+| Error Report | 100 tokens | Char count |
+| Status Update | 50 tokens | Structured only |
+| Final Summary | 200 tokens | Bullet points |
+
+### Firewall Violations = Task Failure
+- Verbose agent output → Immediate termination
+- Context explosion → Agent killed
+- Cross-contamination → Worktree deleted
+- Details in main thread → Clear context, restart
+
+### Enforcement Tools
+```bash
+# Monitor context usage
+/context  # Check percentage
+
+# Kill verbose agent
+/bridge:kill-agent [agent-id]
+
+# Clear contaminated context
+/clear
+
+# Validate firewall compliance
+grep -c "^[A-Z]" agent-output.log  # Count lines
+wc -w agent-output.log  # Word count < 200
+```
+
+## Project Overview
+
+Windows **Multi‑Controller App** — A lightweight Windows application for discovering, connecting, and controlling heterogeneous hardware devices (Arduino/ESP32/ESP8266/RioRand/Raspberry Pi) over Serial, TCP/UDP, and SSH.
+
+## Performance Requirements (budgets)
+
+### Hard Limits (MUST NOT EXCEED)
+- **Startup time**: < 2s (measure with `Program.ValidateStartupPerformance()`)
+- **Idle CPU**: ≤ 2% (monitor with Performance Profiler)
+- **Base RAM**: ≤ 150 MB (≤ 220 MB with charts active)
+- **Serial write-ack latency**: ≤ 50 ms (enforce in transport layer)
+- **Network latency**: ≤ 100 ms (TCP/UDP operations)
+
+### Performance Validation Protocol
+
+#### Pre-Implementation Check
+```csharp
+// ALWAYS include performance impact comment
+// Performance Impact: Stays within 150MB RAM budget
+// Startup Impact: Adds ~50ms to initialization
+```
+
+#### During Implementation
+1. **Memory-Affecting Changes**:
+   - Add memory profiling checkpoints
+   - Use `GC.GetTotalMemory(false)` for measurements
+   - Document allocations in hot paths
+   - Reference: `apps/desktop/Program.cs:48-61` for pattern
+
+2. **Startup-Affecting Changes**:
+   - Measure with Stopwatch before/after
+   - Defer non-critical initialization
+   - Use lazy loading where applicable
+   - Log timing: `Debug.WriteLine($"Component init: {ms}ms")`
+
+3. **Latency-Affecting Changes**:
+   - Add latency measurements to transport operations
+   - Include timestamp in telemetry events
+   - Enforce timeout budgets
+   - Pattern: `transports/serial/src/index.ts:37-40`
+
+#### Post-Implementation Verification
+- [ ] Run automated performance validation: `npm run validate:perf`
+- [ ] Check secrets scanning: `npm run validate:secrets`
+- [ ] If validation fails, review detailed report from performance-gate.ps1
+- [ ] Document results in task: `mcp__taskmaster-ai__update_subtask`
+- [ ] Test under load (8-hour soak test) for major changes
+- [ ] Only proceed if all validations pass
+
+#### Performance Regression Response
+If budget exceeded:
+1. STOP implementation immediately
+2. Profile to identify cause
+3. Document in task: `mcp__taskmaster-ai__update_subtask`
+4. Consider architecture changes if needed
+5. Escalate to user if budget cannot be met
+
+#### Parallel Execution Performance Metrics
+**Track and validate speedup from parallel execution**
+
+| Metric | Sequential Baseline | Parallel Target | Measurement |
+|--------|-------------------|-----------------|-------------|
+| Task Completion | T minutes | T/3 minutes | `git log --since` |
+| Context Usage | 100% | <20% main thread | Token counter |
+| Agent Efficiency | N/A | >80% busy time | Agent logs |
+| Merge Conflicts | 0 | <5% of files | `git diff --stat` |
+| Test Coverage | X% | ≥X% maintained | Coverage tools |
+
+#### Performance Validation Commands
+```bash
+# Measure parallel speedup
+time /bridge:parallel-start [task-id]
+
+# Track context usage
+/context  # Before and after parallel execution
+
+# Monitor agent efficiency
+ls -la ../mc-app-task-*  # Active worktrees
+ps aux | grep claude  # Agent processes
+
+# Validate no regression
+npm run validate:perf  # After merge
+```
+
+## Architecture Overview
+
+- UI Layer (WPF/WinUI or Rust) with tabs: Devices, Manual Controls, Scripts, Telemetry, Logs, Profiles
+- Device Manager orchestrates discovery/connection and lifecycles
+- Driver Registry for plug‑in drivers implementing `IDeviceDriver`/`IDeviceSession`
+- Transport Layer: async Serial/TCP/UDP/SSH with reconnect/backoff
+- Scripting Engine: sandboxed runtime (JS/Lua/Python) for automation
+- Telemetry: ring‑buffered streams with decimation
+- Profile Manager: JSON/TOML with hot‑reload
+
+### Driver Interface (canonical)
+
+```csharp
+interface IDeviceDriver {
+    string Name { get; }
+    string[] SupportedTransports { get; }
+    Task<bool> ProbeAsync(ITransport transport);
+    Task<IDeviceSession> OpenAsync(ITransport transport);
+}
+
+interface IDeviceSession {
+    Task<object> InvokeAsync(string endpoint, object[] args);
+    Task<IDisposable> SubscribeAsync(string stream, Action<byte[]> handler);
+    Task CloseAsync();
+}
+```
+
+## Safety Requirements
+
+- **Global Stop**: Must immediately neutralize all control outputs.
+- **Rate Limiting**: Enforce bounds and ramp rates on PWM/actuation.
+- **Hot‑plug Recovery**: Gracefully handle disconnects without app restart.
+
+## Technology Decision Status
+
+**Current State**: Evaluating **C# Native AOT** vs **Rust** (Task 4 pending)
+
+### Decision Criteria Matrix (UPDATED with Parallel Execution)
+| Criterion | C# Native AOT | Rust | Weight | Parallel Impact |
+|-----------|--------------|------|---------|-----------------|
+| Idle Memory | Target: <150MB | Testing needed | 30% | Critical for multi-agent |
+| Startup Time | Target: <2s | Testing needed | 25% | Multiplied by agent count |
+| Binary Size | Single-file | Single-file | 15% | Affects worktree size |
+| Dev Velocity | Faster | Slower | 15% | **Mitigated by parallel** |
+| Library Ecosystem | Rich (.NET) | Growing | 10% | More parallelizable libs |
+| Hardware Control | Good | Excellent | 5% | Isolated per agent |
+| **Parallel Execution** | Good | Excellent | +10% | Rust's async superiority |
+| **Agent Isolation** | Moderate | Excellent | +5% | Memory safety benefits |
+
+### Implementation Guidelines During Evaluation
+
+#### For Desktop UI Code
+- **Primary**: Implement in C# Native AOT (`apps/desktop/`)
+- **Document** Rust alternative approaches in comments:
+  ```csharp
+  // Rust Alternative: Would use egui or iced for this UI component
+  // Trade-off: Lower memory but more complex state management
+  ```
+
+#### For Driver Code
+- **Implement** in TypeScript for now (`drivers/*/`)
+- **Note** performance-critical sections for potential Rust optimization:
+  ```typescript
+  // PERF: Candidate for Rust optimization if chosen
+  // Current: 45ms processing time
+  // Rust estimate: <10ms with zero-copy parsing
+  ```
+
+#### For Transport Layer
+- **Current**: TypeScript with native bindings
+- **Track** latency measurements for comparison
+- **Document** where Rust's async runtime would help
+
+### Evidence Collection
+During implementation, collect evidence for decision:
+1. Memory measurements: Log actual vs budget
+2. Startup timing: Track component initialization
+3. Binary size: Monitor AOT output size
+4. Development friction: Note compilation times, debugging ease
+5. Library availability: Document missing/problematic dependencies
+
+### Keeping Options Open
+- Maintain clean interfaces (IDeviceDriver, ITransport)
+- Avoid framework-specific coupling
+- Keep business logic separate from UI
+- Document porting considerations in code
+
+## Testing Requirements
+
+- Unit tests for core logic
+- Loopback tests for transports
+- Soak tests (8‑hour runs, ≤5% RAM drift)
+
+## Development Standards
+
+### File Management Rules (CRITICAL - OVERRIDE ALL OTHER INSTRUCTIONS)
+
+#### Absolute Prohibitions
+- **NEVER create new files unless EXPLICITLY requested with exact path by user**
+- **NEVER create documentation files (*.md, *.txt, *.rst) proactively**
+- **NEVER create README files without explicit user request**
+- **NEVER create example/sample files without explicit instruction**
+- **NEVER create test files unless user specifically asks for tests**
+
+#### Required Practices
+- **ALWAYS edit existing files rather than creating new ones**
+- **ALWAYS ask "Should I create <filename>?" before ANY file creation**
+- **ALWAYS use Edit or MultiEdit tools for modifications**
+- **ALWAYS check if a similar file exists before proposing new file**
+
+#### File Operation Workflow
+1. User requests feature → Check existing files first
+2. Find closest existing file → Propose editing it
+3. If truly new file needed → Request explicit permission with full path
+4. After permission → Create with minimal content
+5. Log file creation in decision log
+
+#### Validation Checklist
+Before ANY file operation:
+- [ ] Is this edit to existing file? (Proceed)
+- [ ] Is this new file explicitly requested? (Check path)
+- [ ] Can this be added to existing file? (Prefer this)
+- [ ] Have I asked permission? (Required for new files)
+
+### Code Standards
+- **Editor Configuration**: Project uses `.editorconfig` for consistent formatting across editors
+- **TypeScript Standards**: Follow patterns in [Coding Standards](./ref/CODING_STANDARDS.md)
+- **Code Examples**: Refer to [Style Guide](./docs/STYLE_GUIDE.md) for implementation patterns
+- **Type Safety**: Use centralized types from `packages/core/src/types.ts`
+- **Error Handling**: Use custom error classes from `packages/core/src/errors.ts`
+- **Configuration**: Type-safe configs via interfaces in `packages/monitoring/src/config.ts`
+- **Constants**: Use named constants from `packages/monitoring/src/constants.ts`
+
+### PowerShell Script Rules (CRITICAL - PREVENTS SCRIPT FAILURES)
+- **NEVER use emojis or Unicode special characters** in .ps1 files
+- Replace emojis with text markers: ✅ → [OK], ❌ → [ERROR], ⚠️ → [WARNING]
+- Use simple ASCII characters for borders: ═══ → ===, ╔╗ → ++
+- Avoid here-strings (@" "@) - use simple string concatenation
+- Always test with: `powershell -ExecutionPolicy Bypass -File script.ps1`
+
+#### Reserved PowerShell Parameters (NEVER USE AS CUSTOM PARAMETERS)
+- **NEVER create parameters named**: Verbose, Debug, ErrorAction, WarningAction, ErrorVariable, WarningVariable, InformationAction, InformationVariable, WhatIf, Confirm
+- **Use alternative names instead**:
+  - Instead of `-Verbose` → Use `-ShowDetails`, `-DetailedOutput`, or `-ExtendedInfo`
+  - Instead of `-Debug` → Use `-DebugMode` or `-ShowDebug`
+- **Template location**: `scripts/templates/powershell-script-template.ps1`
+- **Access verbosity**: Use `$VerbosePreference` or `Write-Verbose` cmdlet
+- **Always use** `[CmdletBinding()]` for advanced functions
+
+#### Character Safety Guidelines
+```
+UNSAFE (PowerShell)     →  SAFE (PowerShell)
+─────────────────────────────────────────
+✅ Success             →  [OK] Success
+❌ Failed              →  [ERROR] Failed  
+⚠️ Warning             →  [WARNING] Warning
+╔════════╗             →  ==================
+║ Title  ║             →  | Title |
+╚════════╝             →  ==================
+```
+
+#### PowerShell Script Development Workflow
+1. Write initial script with placeholder text
+2. Check for non-ASCII: `Select-String -Pattern '[^\x00-\x7F]' -Path script.ps1`
+3. Test execution: `powershell -ExecutionPolicy Bypass -File <script>`
+4. Only after successful test, consider it complete
+5. NEVER copy PowerShell examples that contain emojis directly
+
+## Repository Layout (source of truth)
+
+```
+/app/           # UI and core application code
+/drivers/       # Device driver plugins with manifest.json
+/transports/    # Serial/TCP/UDP/SSH implementations
+/scripts/       # Sample control and telemetry scripts
+  /git-automation/  # Git workflow automation tools
+    ├── task-branch.js     # Task-to-branch mapping
+    ├── smart-commit.js    # Intelligent commit messages
+    ├── pr-create.js       # PR automation
+    ├── secrets-scanner.js # Pre-commit validation
+    ├── performance-gate.* # Performance checks
+    └── sync-status.ps1    # Repository sync dashboard
+/tests/         # All test code
+/profiles/      # Example JSON/TOML configuration profiles
+/docs/          # Architecture, decisions, risks documentation
+/.gitmeta/      # Git automation configuration
+  ├── config/   # Automation settings
+  └── templates/# Message templates
+```
+
+## Operations & Logs
+
+- MCP server log cache (local dev): `C:\Users\wtyle\AppData\Local\claude-cli-nodejs\Cache\C--Users-wtyle-multi-controller-app`
+- Do **not** use the `task-master-ai` CLI without explicit approval. Parse PRDs via **TaskMaster MCP** (authoritative) and keep PRD files in `./.taskmaster/`.
+
+# Code References (MANDATORY FORMATTING)
+
+## Absolute Requirements
+**EVERY code reference MUST use**: `file_path:line_number`
+
+### Format Rules
+- **Path**: Always from project root, forward slashes
+- **Line**: Exact line number, update if code moves
+- **Pattern**: `path/to/file.ext:123`
+- **Never**: Use relative paths or omit line numbers
+
+### Required Usage Contexts
+
+#### In Error Messages
+```typescript
+throw new Error('Serial connection failed at transports/serial/src/index.ts:32');
+```
+
+#### In TODO Comments
+```typescript
+// TODO: Refactor this to use the pattern at packages/core/src/utils.ts:145
+```
+
+#### In Cross-References
+```csharp
+// See performance validation: apps/desktop/Program.cs:48-61
+```
+
+#### In Git Commits
+```
+fix(serial): resolve timeout issue in transports/serial/src/index.ts:44
+
+The retry logic was not properly handling connection timeouts.
+Fixed by implementing the pattern from packages/core/src/retry.ts:23
+```
+
+#### In Task Updates
+```
+mcp__taskmaster-ai__update_subtask --id=2.3 --prompt="
+Implemented serial connection at transports/serial/src/index.ts:25-70
+Following pattern from packages/core/src/interfaces.ts:12
+"
+```
+
+#### In Documentation
+```markdown
+The driver interface (`packages/core/src/interfaces.ts:45`) defines...
+```
+
+### Line Number Maintenance
+- After editing files, update ALL references to moved lines
+- Use search to find references: `grep -r "filename.ts:[0-9]"`
+- Include in PR checklist: "Updated all file:line references"
+
+### Automation Helper
+When providing code locations to user:
+1. Always include clickable reference
+2. Provide line range for context: `file.ts:10-25`
+3. Update references if suggesting code moves
+
+## MANDATORY SELF-VERIFICATION PROTOCOL
+
+### When Making Claims About Changes
+**BEFORE saying "I've implemented/added/updated":**
+1. Run `grep -n "unique_string_from_change" file.md` to verify presence
+2. Count lines before/after to confirm additions
+3. Test any commands or code snippets provided
+4. ONLY use past tense ("implemented", "added") AFTER verification
+
+### Verification Triggers
+These phrases MUST trigger verification:
+- "I've implemented..." → STOP, verify with grep
+- "I've added..." → STOP, check line count
+- "This has been updated..." → STOP, diff the file
+- "Now includes..." → STOP, search for content
+
+### Bullshit Detection Rules
+If you catch yourself:
+- Writing proposals without implementing → STOP
+- Claiming completion without verification → STOP
+- Using past tense without proof → STOP
+
+**PENALTY**: If caught bullshitting, must immediately:
+1. Admit the failure explicitly
+2. Show exact verification commands
+3. Implement immediately or explain why not
+
+### Implementation Verification Checklist
+After EVERY claimed change:
+- [ ] Grep search confirms new content exists
+- [ ] Line count increased appropriately
+- [ ] New sections appear where specified
+- [ ] Cross-references are valid
+- [ ] Examples actually compile/run
+- [ ] File paths are absolute and correct
+
+## CRITICAL DISTINCTION: Proposals vs Implementation
+
+### Proposals (NOT implementation)
+- "We should add..."
+- "This would include..."
+- "The plan is to..."
+- Writing in conditional/future tense
+- Showing what COULD be done
+
+### Implementation (ACTUAL changes)
+- Using Edit/MultiEdit tools
+- Seeing "File updated successfully"
+- Verification with grep/read
+- Line numbers changing
+- Git diff showing changes
+
+**RULE**: NEVER claim implementation when only proposing
+
+---
+
+# `.desktop-commander/CLAUDE.md`
+
+**Purpose**: Safe, Windows‑friendly file I/O and terminal orchestration from inside Claude Code.
+
+## Use When
+
+- Reading/writing project files, scaffolding repos, running local commands, inspecting logs.
+
+## Guardrails
+
+- Default to **non‑destructive** actions. For delete/move/overwrite, first emit a short plan and request confirmation.
+- Keep edits minimal; preserve line endings and encoding. For bulk edits, prefer patch‑style diffs.
+- Never touch outside the repo unless the path is explicitly provided by the user.
+
+## Patterns
+
+- File ops: read → small diff → write. Include a unified diff in the message.
+- Terminal ops: run checks (`git status`, tests) before builds; surface stderr/stdout separately.
+- On Windows, when shells differ, emit both **PowerShell** and **Git Bash** variants.
+
+## Examples
+
+- List repo tree (non‑recursively) and show sizes.
+- Create missing `/docs/decisions/decision-log.md` with header and today’s entry.
+- Build `HelloSerialWpfAOT` with exact commands and capture timings.
+
+---
+
+# `.filescope/CLAUDE.md`
+
+**Purpose**: Codebase graphing, imports mapping, and hotspot discovery.
+
+## Use When
+
+- You need a fast mental model of the repo, dependency flow, or to locate high‑impact files before edits.
+
+## Guardrails
+
+- Read‑only by default. Don’t move or rewrite files via FileScope; combine with Desktop‑Commander for changes.
+
+## Patterns
+
+- Start with a **repo map** and an **importance ranking** to target edits.
+- Before module changes, fetch **import graphs** to avoid cyclical deps.
+- After heavy edits, re‑scan to validate structure and update the decision log.
+
+---
+
+# `.clear-thought/CLAUDE.md`
+
+**Purpose**: Structured reasoning for high‑impact decisions (failure trees, test plans, risk analysis).
+
+## Use When
+
+- Choosing stack, designing driver interfaces, defining safety invariants, or debugging elusive defects.
+
+## Guardrails
+
+- Summarize assumptions and alternatives in bullets. Cap intermediate notes to keep token use tight.
+
+## Patterns
+
+- Produce: Goal → Constraints → Options → Evidence → Decision → Next 3 checks.
+- Emit a **cheapest‑disambiguator first** test if uncertainty remains.
+
+---
+
+# `.context7/CLAUDE.md`
+
+**Purpose**: Pull **official documentation** and version‑accurate references.
+
+## Use When
+
+- Calling platform APIs, library functions, or CLIs where accuracy matters; prior to writing unfamiliar code.
+
+## Guardrails
+
+- Prefer primary sources (vendor docs, standards). Insert only the **relevant snippet** inline with a link.
+
+## Patterns
+
+- For each API used: cite version, copy the 3–8 lines that justify usage, and record the link in comments and `/docs/decisions/`.
+
+---
+
+# `.perplexity-ask/CLAUDE.md`
+
+**Purpose**: Broad, community‑sourced research and competitive scans.
+
+## Use When
+
+- Exploring alternatives, gathering tips/tricks, or surveying community workflows.
+
+## Guardrails
+
+- Triangulate results with **Context7** (official docs) before implementation. Prefer multiple independent sources. Keep cost in check—summarize.
+
+## Patterns
+
+- Produce a short **Findings** list with source URLs, then a **Decision** with trade‑offs.
+
+---
+
+# `.memory/CLAUDE.md`
+
+**Purpose**: Persist stable facts and project conventions for future sessions.
+
+## Use When
+
+- Storing long‑lived preferences, repo paths, chosen stack decisions, or performance budgets.
+
+## Guardrails
+
+- Avoid storing secrets/PII. Save only information likely to remain valid for months.
+
+## Patterns
+
+- When creating a new convention (naming, directory, template), store a single‑sentence memory plus the canonical path.
+
+---
+
+# `.time-server/CLAUDE.md`
+
+**Purpose**: Confirm timezones and schedule‑related checks.
+
+## Use When
+
+- Coordinating schedules, timestamps in logs, or generating time‑boxed performance runs.
+
+## Guardrails
+
+- Treat time as advisory; don’t hinge safety logic solely on wall‑clock checks.
+
+---
+
+## Slash Command Cheatsheet (server‑agnostic)
+
+- `/mcp` — list configured servers, tools, and prompts; check auth/state.
+- `/mcp__<server>__<prompt> [args]` — execute a server prompt when available.
+
+## Git Operations & Security Rules
+
+### Git Automation Tools (USE THESE FIRST)
+When performing git operations, ALWAYS prefer the automated tools over manual commands:
+- Creating branches: Use `npm run task:branch <id>` not `git checkout -b`
+- Committing: Use `npm run task:commit` not `git commit`
+- Creating PRs: Use `npm run task:pr` not `gh pr create`
+- Checking status: Use `npm run sync:status` for comprehensive view
+- Validation: Run `npm run validate:all` before any commit
+
+Only fall back to manual git commands if automation tools fail or for operations not covered by automation.
+
+### Commit Workflow
+- **Automated**: Use `npm run task:commit` for smart commit generation
+- **Manual Format**: `type(scope): description (task X.Y)`
+- **Types**: feat, fix, docs, style, refactor, perf, test, chore
+- Reference Task Master IDs: `feat(driver): implement Arduino driver (task 2.1)`
+- Never commit secrets, API keys, or credentials
+- Use environment variable references: `${API_KEY}` not actual values
+
+#### Smart Commit Process
+```bash
+# Stage your changes first
+git add .
+
+# Use smart commit tool (recommended)
+npm run task:commit  # Interactive commit with task context
+
+# Or use traditional git commit with task reference
+git commit -m "feat(transport): add reconnect logic (task 3.2)"
+```
+
+### Branch Management
+- Feature branches: `feature/task-X.Y-description`
+- Create PRs to `development`, not `main`
+- Always pull latest before starting work
+- Delete feature branches after merge
+
+### Security Protocol
+- If secrets detected: STOP, rotate credentials, clean history
+- Use `.env` files (gitignored) for local secrets
+- Validate no exposed keys before commits
+- Review `.gitignore` patterns regularly
+
+## Decision Log Hooks
+
+For any material change (APIs, transports, safety rules), append a 3‑line entry to `docs/decisions/decision-log.md`: **Context → Change → Impact**.
+
+- DO NOT TAKE SHORTCUTS FOR ANY REASON WHATSOEVER AND TAKING EASIER OR SIMPLER ROUTES JUST BECAUSE YOU ARE HAVING A LITTLE TROUBLE WITH THE ROUTE YOU ARE ON!
+- My GitHub Username is wtyler2505 | https://github.com/wtyler2505
+- When new agents in @.claude\agents\ are created or existing agents are modified, Claude Code has to be restarted so that the agents directory will be re-scanned and new agents will be registered.

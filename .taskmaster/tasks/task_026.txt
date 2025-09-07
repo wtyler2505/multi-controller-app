@@ -1,0 +1,139 @@
+# Task ID: 26
+# Title: Configure Ruler for Multi-Agent Distribution and Team Workflow
+# Status: pending
+# Dependencies: 25
+# Priority: high
+# Description: Set up ruler.toml configuration and integrate Ruler into development workflow for all AI agents
+# Details:
+**PRIORITY: Work on this AFTER Task 25**
+
+Configure Ruler for comprehensive multi-agent support:
+
+1. Configure ruler.toml:
+   - Set default agents: claude, cursor, copilot, windsurf
+   - Define all MCP servers (will work with Cipher aggregator)
+   - Configure agent-specific output paths
+   - Set up merge strategies for MCP configs
+
+2. Workflow Integration:
+   - Add npm scripts for ruler commands:
+     * "ruler:apply": "ruler apply"
+     * "ruler:revert": "ruler revert"  
+     * "ruler:validate": "ruler apply --verbose"
+   - Update git workflow for .ruler/ directory
+   - Document in CONTRIBUTING.md
+
+3. Team Collaboration Setup:
+   - Standardize rule categories
+   - Create templates for different domains
+   - Document when to use .ruler/ vs CLAUDE.md
+   - Set up global configuration for team defaults
+
+4. Integration with Cipher:
+   - Ruler: Static rule distribution
+   - Cipher: Dynamic memory and context
+   - Together: Consistent rules + persistent memory
+
+# Test Strategy:
+Test rule application to all configured agents, verify npm scripts work correctly, validate git workflow handles .ruler/ properly, ensure team documentation is clear and complete
+
+# Subtasks:
+## 1. Configure comprehensive ruler.toml [pending]
+### Dependencies: None
+### Description: Set up complete ruler.toml configuration for all AI agents and MCP servers
+### Details:
+Configure sections:
+[agents]
+- claude, cursor, copilot, windsurf, cline
+- Output paths for each agent
+- Agent-specific settings
+
+[mcp]
+- All 8 MCP servers (via Cipher)
+- Merge strategy = "combine"
+- API key management
+
+[workflow]
+- Auto-apply on git pull
+- Pre-commit hooks
+
+## 2. Add npm scripts for Ruler [pending]
+### Dependencies: 26.1
+### Description: Create npm scripts in package.json for common Ruler operations
+### Details:
+Add to package.json scripts:
+- "ruler:apply": "ruler apply"
+- "ruler:revert": "ruler revert"
+- "ruler:validate": "ruler apply --verbose"
+- "ruler:diff": "ruler diff"
+- "ruler:status": "ruler status"
+
+Test each script works correctly
+Document in CONTRIBUTING.md
+
+## 3. Update git workflow for .ruler/ [pending]
+### Dependencies: 26.2
+### Description: Configure git to properly handle the .ruler/ directory and integrate with workflow
+### Details:
+Git configuration:
+- Ensure .ruler/ is tracked (not ignored)
+- Add .ruler/.gitignore for auto-managed files
+- Create pre-commit hook for ruler validate
+- Add post-checkout hook for ruler apply
+
+Test git operations:
+- Commit .ruler/ changes
+- Branch switching applies rules
+- Merge conflicts handled properly
+
+## 4. Document team collaboration setup [pending]
+### Dependencies: 26.3
+### Description: Create comprehensive documentation for team usage of Ruler
+### Details:
+Document in CONTRIBUTING.md:
+- When to use .ruler/ vs CLAUDE.md
+- Rule categorization guidelines
+- Template creation process
+- Agent-specific customizations
+
+Create .ruler/README.md:
+- Directory structure explanation
+- Rule priority and merging
+- Common patterns and examples
+
+## 5. Integrate Ruler with Cipher [pending]
+### Dependencies: 26.4
+### Description: Document and configure how Ruler and Cipher work together for complete AI enhancement
+### Details:
+Integration points:
+- Ruler: Static rule distribution to agents
+- Cipher: Dynamic memory and context management
+- Combined: Consistent rules + persistent memory
+
+Configuration:
+- Ruler manages agent instructions
+- Cipher manages MCP aggregation
+- Both configured in .mcp.json
+
+Test integration:
+- Rules apply correctly
+- Memory persists across sessions
+- No conflicts between systems
+
+## 6. Test complete multi-agent distribution [pending]
+### Dependencies: 26.5
+### Description: Verify that all configured AI agents receive correct instructions through Ruler
+### Details:
+Test each agent:
+- Claude: Verify CLAUDE.md updated correctly
+- Cursor: Check .cursorrules applied
+- Copilot: Verify GitHub Copilot instructions
+- Windsurf: Check .windsurf/instructions.md
+- Cline: Verify .cline/instructions.md
+
+Validate:
+- All agents have consistent core rules
+- Agent-specific customizations work
+- MCP configurations distributed properly
+- Document test results
+

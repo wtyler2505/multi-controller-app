@@ -1,0 +1,109 @@
+# Task ID: 21
+# Title: Install and Configure Cipher Memory Framework
+# Status: in-progress
+# Dependencies: None
+# Priority: high
+# Description: Install Cipher as MCP aggregator hub to unify all MCP servers and add persistent memory capabilities
+# Details:
+**PRIORITY: Work on this BEFORE other pending tasks**
+
+Cipher is a memory-powered AI agent framework that will act as an MCP Aggregator Hub, providing:
+- Single integration point for all 8 existing MCP servers
+- Dual memory layer (System 1: concepts/logic, System 2: reasoning traces)
+- Team workspace memory for sharing context
+- Knowledge graph for entity relationships
+- Support for stdio, SSE, and streamable-http transports
+
+Installation steps:
+1. Install Cipher globally: npm install -g @byterover/cipher
+2. Create .cipher/ configuration directory in project root
+3. Set up environment variables for vector store (Qdrant recommended)
+4. Configure cipher.yml for aggregator mode with all existing MCP servers
+5. Migrate from current memory server to Cipher's enhanced memory system
+
+# Test Strategy:
+Verify all MCP servers accessible through Cipher aggregator, test memory persistence, validate no performance regression, ensure all tools work correctly through unified interface
+
+# Subtasks:
+## 6. Install Cipher globally via npm [done]
+### Dependencies: None
+### Description: Install the Cipher framework globally using npm and verify successful installation with version check
+### Details:
+Run: npm install -g @byterover/cipher
+Verify installation: cipher --version
+Check Node.js version meets requirements (v18+)
+Document installation path and version in decision log
+Ensure global npm permissions are correct on Windows
+
+## 7. Create .cipher directory structure [in-progress]
+### Dependencies: 21.6
+### Description: Set up the .cipher directory in project root with required configuration files and folder structure
+### Details:
+Create .cipher/ directory in project root
+Create subdirectories: .cipher/config/, .cipher/memory/, .cipher/logs/, .cipher/prompts/
+Add appropriate entries to .gitignore (keep config, ignore memory/logs)
+Create placeholder files for configuration
+Document directory structure in ref/MCP_SERVERS.md
+
+## 8. Configure environment variables for vector store [pending]
+### Dependencies: 21.7
+### Description: Set up environment variables for Qdrant vector store or configure for local in-memory operation
+### Details:
+Option 1: Qdrant Cloud (recommended for production)
+- Sign up for free tier at cloud.qdrant.io
+- Create cluster and get API key/URL
+- Add to .env: QDRANT_URL, QDRANT_API_KEY
+
+Option 2: Local in-memory (development/testing)
+- Set USE_MEMORY_ONLY=true in .env
+- Configure max memory limits
+- Set persistence options
+
+Document chosen approach and rationale in decision log
+
+## 9. Set up initial cipher.yml configuration [pending]
+### Dependencies: 21.8
+### Description: Create initial cipher.yml configuration file in .cipher directory with basic settings
+### Details:
+Create .cipher/cipher.yml with:
+- Basic aggregator configuration
+- Memory persistence settings
+- Logging configuration
+- Transport preferences (stdio, SSE, streamable-http)
+- Placeholder for MCP server configurations
+- Development vs production settings
+
+Validate configuration syntax
+Test basic Cipher functionality
+
+## 10. Test Cipher installation [pending]
+### Dependencies: 21.9
+### Description: Verify Cipher is working correctly with basic operations and configuration validation
+### Details:
+Run comprehensive tests:
+- cipher --version (verify installation)
+- cipher validate (validate configuration)
+- cipher memory test (verify memory operations)
+- cipher server list (check server detection)
+- Test basic memory storage and retrieval operations
+
+Verify logs are created in .cipher/logs/
+Document any issues and resolutions
+Create troubleshooting notes for common problems
+
+## 11. Document setup process [pending]
+### Dependencies: 21.10
+### Description: Create comprehensive documentation of the Cipher installation and setup process
+### Details:
+Update documentation files:
+- Add Cipher section to ref/MCP_SERVERS.md
+- Document installation steps and requirements
+- Create troubleshooting guide
+- Add configuration examples
+- Document vector store options and trade-offs
+
+Update docs/decisions/decision-log.md with:
+- Cipher adoption decision
+- Configuration approach chosen
+- Performance and security considerations
+

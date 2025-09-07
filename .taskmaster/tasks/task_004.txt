@@ -1,6 +1,6 @@
 # Task ID: 4
 # Title: Compare Prototypes and Decide Language/Framework
-# Status: pending
+# Status: done
 # Dependencies: 3
 # Priority: high
 # Description: Analyze performance and developer experience of C# and Rust prototypes to select the optimal stack.
@@ -11,31 +11,31 @@ Document RAM, CPU, and startup benchmarks. Evaluate UI responsiveness, AOT compa
 Review benchmark data and developer feedback. Confirm decision is documented and justified in the decision log.
 
 # Subtasks:
-## 1. Gather and Document Benchmark Data [pending]
+## 1. Gather and Document Benchmark Data [done]
 ### Dependencies: None
 ### Description: Collect RAM, CPU, and startup time benchmarks for both C# (.NET 8 Native AOT) and Rust prototypes on identical hardware.
 ### Details:
 Run standardized tests for each prototype, record results in a structured format, and ensure reproducibility. Document findings in docs/decisions/decision-log.md.
 
-## 2. Evaluate UI Responsiveness and Developer Experience [pending]
+## 2. Evaluate UI Responsiveness and Developer Experience [done]
 ### Dependencies: None
 ### Description: Assess UI responsiveness and developer workflow for both stacks, including build times, debugging, and tooling.
 ### Details:
 Perform hands-on testing of UI latency and responsiveness. Gather developer feedback on IDE support, error diagnostics, and productivity. Summarize pros/cons in the decision log.
 
-## 3. Assess AOT Compatibility and Extensibility [pending]
+## 3. Assess AOT Compatibility and Extensibility [done]
 ### Dependencies: None
 ### Description: Analyze Ahead-of-Time (AOT) compilation support and plugin/driver extensibility for both C# and Rust prototypes.
 ### Details:
 Test Native AOT deployment for C# and compare with Rust's compilation model. Evaluate plugin loading mechanisms, manifest parsing, and extensibility features.
 
-## 4. Compare Trade-offs and Document Decision Rationale [pending]
+## 4. Compare Trade-offs and Document Decision Rationale [done]
 ### Dependencies: 4.1, 4.2, 4.3
 ### Description: Synthesize benchmark, UI, AOT, and extensibility findings to compare trade-offs between C# and Rust.
 ### Details:
 Summarize strengths, weaknesses, and risks for each stack. Record all trade-offs and rationale in docs/decisions/decision-log.md.
 
-## 5. Select Optimal Language/Framework and Finalize Documentation [pending]
+## 5. Select Optimal Language/Framework and Finalize Documentation [done]
 ### Dependencies: 4.4
 ### Description: Make a final decision on the language/framework based on performance budgets and documented trade-offs.
 ### Details:

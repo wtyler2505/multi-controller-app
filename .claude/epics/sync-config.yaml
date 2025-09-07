@@ -1,0 +1,106 @@
+# CCPM-TaskMaster Sync Configuration
+# Enables bidirectional synchronization between Task Master and CCPM epics
+
+sync:
+  enabled: true
+  direction: bidirectional
+  interval_seconds: 60
+  
+mapping:
+  # Task Master ID -> Epic ID mapping
+  tasks_to_epics:
+    27: epic-27-device-connection
+    28: epic-28-handshake-protocol
+    29: epic-29-control-widgets
+    30: epic-30-command-processing
+    31: epic-31-telemetry-collection
+    32: epic-32-telemetry-visualization
+    33: epic-33-logging-system
+    34: epic-34-scripting-engine
+    35: epic-35-profile-management
+    36: epic-36-performance-optimization
+    
+  # Status mapping
+  status_map:
+    taskmaster_to_ccpm:
+      pending: pending
+      in-progress: in_progress
+      done: completed
+      blocked: blocked
+      deferred: deferred
+      cancelled: cancelled
+    ccpm_to_taskmaster:
+      pending: pending
+      in_progress: in-progress
+      completed: done
+      blocked: blocked
+      deferred: deferred
+      cancelled: cancelled
+
+agents:
+  # Agent assignments preserved across systems
+  assignments:
+    27: serial-comm-specialist
+    28: handshake-protocol-engineer
+    29: ui-controls-architect
+    30: command-processor
+    31: telemetry-collector
+    32: visualization-engineer
+    33: logging-integrator
+    34: scripting-architect
+    35: profile-manager
+    36: performance-optimizer
+    
+  # Agent file locations
+  locations:
+    base_path: .claude/agents/
+    
+execution:
+  # Parallel execution groups
+  groups:
+    - name: "Phase 1 - Foundation"
+      tasks: [27]
+      parallel: false
+      estimated_days: 3
+      
+    - name: "Phase 2 - Protocol"
+      tasks: [28]
+      parallel: false
+      estimated_days: 2
+      dependencies: [27]
+      
+    - name: "Phase 3 - Core Features"
+      tasks: [29, 30]
+      parallel: false  # Sequential due to dependency
+      estimated_days: 4
+      dependencies: [28]
+      
+    - name: "Phase 4 - Parallel Features"
+      tasks: [31, 33, 34, 35]
+      parallel: true  # Can run simultaneously
+      estimated_days: 3
+      dependencies: [30]
+      
+    - name: "Phase 5 - Visualization"
+      tasks: [32]
+      parallel: false
+      estimated_days: 2
+      dependencies: [31]
+      
+    - name: "Phase 6 - Optimization"
+      tasks: [36]
+      parallel: false
+      estimated_days: 3
+      dependencies: [32, 33, 34, 35]
+
+reporting:
+  # Progress reporting configuration
+  output_format: markdown
+  report_path: .claude/epics/progress-report.md
+  include_metrics:
+    - tasks_completed
+    - tasks_in_progress
+    - tasks_pending
+    - estimated_completion
+    - agent_performance
+    - quality_gates_passed

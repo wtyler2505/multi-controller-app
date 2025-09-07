@@ -15,7 +15,7 @@
     ".git",
     "*.md"
   ],
-  "exec": "ts-node",
+  "exec": "ts-node -r tsconfig-paths/register",
   "env": {
     "NODE_ENV": "development",
     "DEBUG": "app:*"

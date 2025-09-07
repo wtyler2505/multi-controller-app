@@ -1,8 +1,25 @@
-# Create Onboarding Guide
+---
+allowed-tools: Read, Write, Edit, Bash
+argument-hint: [role-type] | --developer | --designer | --devops | --comprehensive | --interactive
+description: Create comprehensive developer onboarding guide with environment setup, workflows, and interactive tutorials
+model: sonnet
+---
 
-Create developer onboarding guide
+# Developer Onboarding Guide Generator
 
-## Instructions
+Create developer onboarding guide: $ARGUMENTS
+
+## Current Team Context
+
+- Project setup: @package.json or @requirements.txt or @Cargo.toml (detect tech stack)
+- Existing docs: @docs/ or @README.md (if exists)
+- Development tools: !`find . -name ".env*" -o -name "docker-compose.yml" -o -name "Makefile" | head -3`
+- Team structure: @CODEOWNERS or @.github/ (if exists)
+- CI/CD setup: !`find .github/workflows -name "*.yml" 2>/dev/null | head -3`
+
+## Task
+
+Create comprehensive onboarding experience tailored to role and project needs:
 
 1. **Onboarding Requirements Analysis**
    - Analyze current team structure and skill requirements

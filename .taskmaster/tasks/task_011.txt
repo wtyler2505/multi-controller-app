@@ -1,0 +1,53 @@
+# Task ID: 11
+# Title: Fix Memory Leaks in Transport Layers by Implementing Event Listener Cleanup
+# Status: pending
+# Dependencies: 6
+# Priority: high
+# Description: Resolve critical memory leaks in the serial, TCP, and SSH transport modules by ensuring all event listeners are properly removed on reconnect and disconnect. Introduce a removeListeners() method in each transport and call it before disconnect.
+# Details:
+Review the code in transports/serial/src/index.ts (lines 42-48), transports/tcp-udp/src/index.ts (lines 42-48), and transports/ssh/src/index.ts (lines 50-56) to identify all event listeners registered during connection setup. Implement a removeListeners() method in each transport class that unregisters all event listeners attached to sockets, streams, or other resources. Ensure removeListeners() is invoked before any disconnect or reconnect logic to prevent accumulation of orphaned listeners and associated memory leaks. Refactor connection lifecycle management to guarantee that listeners are always cleaned up, even in error or edge cases. Document the new method and update any relevant lifecycle diagrams or developer notes. Consider using automated tools or static analysis to verify that no listeners remain after disconnect. Ensure the implementation is consistent across all transport types.
+
+# Test Strategy:
+1. Write unit tests for each transport to verify that after calling removeListeners(), no event listeners remain attached to sockets or streams. 
+2. Use automated soak tests to repeatedly connect and disconnect each transport type, monitoring memory usage for signs of leaks. 
+3. Employ memory profiling tools (such as Valgrind, LeakSanitizer, or platform-specific profilers) to confirm that memory usage remains stable over repeated reconnect cycles[1][3]. 
+4. Manually inspect listener counts (where supported) before and after disconnect to ensure cleanup. 
+5. Validate that normal operation and error handling paths both invoke removeListeners() reliably.
+
+# Subtasks:
+## 1. Review Event Listener Registration in Serial, TCP/UDP, and SSH Transports [pending]
+### Dependencies: None
+### Description: Analyze the code in transports/serial/src/index.ts (lines 42-48), transports/tcp-udp/src/index.ts (lines 42-48), and transports/ssh/src/index.ts (lines 50-56) to identify all event listeners registered during connection setup for each transport type.
+### Details:
+Document each event listener, its target (socket, stream, etc.), and the conditions under which it is registered. Note any listeners that may be missed during disconnect or reconnect.
+
+## 2. Design and Implement removeListeners() Method for Serial Transport [pending]
+### Dependencies: 11.1
+### Description: Create a removeListeners() method in the Serial transport class that unregisters all event listeners attached to sockets, streams, or other resources.
+### Details:
+Ensure the method covers all listeners identified in the code review. Validate that listeners are removed on both disconnect and reconnect paths.
+
+## 3. Design and Implement removeListeners() Method for TCP/UDP Transport [pending]
+### Dependencies: 11.1
+### Description: Develop a removeListeners() method for the TCP/UDP transport class to unregister all event listeners from relevant resources.
+### Details:
+Address all listeners found in the TCP/UDP code review. Confirm that cleanup occurs before disconnect and reconnect logic.
+
+## 4. Design and Implement removeListeners() Method for SSH Transport [pending]
+### Dependencies: 11.1
+### Description: Implement a removeListeners() method in the SSH transport class to remove all event listeners from sockets, streams, or other SSH-related resources.
+### Details:
+Ensure comprehensive cleanup based on the SSH code review. Test removal in all lifecycle scenarios.
+
+## 5. Refactor Connection Lifecycle Management for Consistent Listener Cleanup [pending]
+### Dependencies: 11.2, 11.3, 11.4
+### Description: Update connection lifecycle logic in all transport modules to guarantee removeListeners() is invoked before any disconnect or reconnect, including error and edge cases.
+### Details:
+Refactor code paths to ensure listener cleanup is robust and consistent. Use automated tools or static analysis to verify no listeners remain after disconnect.
+
+## 6. Document Changes and Update Lifecycle Diagrams [pending]
+### Dependencies: 11.5
+### Description: Document the new removeListeners() methods, update developer notes, and revise lifecycle diagrams to reflect the improved event listener management.
+### Details:
+Provide clear documentation for future maintainers. Include examples and diagrams showing listener registration and cleanup flow.
+

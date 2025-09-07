@@ -17,11 +17,32 @@
     "pwm": true,
     "i2c": true,
     "spi": true,
-    "servo": true
+    "servo": true,
+    "hallSensor": true,
+    "telemetry": true
+  },
+  "usbDetection": {
+    "vendorIds": ["0x2341", "0x1A86", "0x0403"],
+    "productIds": {
+      "0x2341": ["0x0043", "0x0042", "0x7523"],
+      "0x1A86": ["0x7523"],
+      "0x0403": ["0x6001"]
+    },
+    "manufacturers": ["Arduino", "Arduino LLC", "FTDI", "wch.cn"],
+    "products": ["Arduino Uno", "Arduino Mega", "Arduino Nano", "USB-SERIAL CH340"]
+  },
+  "protocol": {
+    "type": "text",
+    "commands": ["PROBE", "PIN_MODE", "DIGITAL_WRITE", "DIGITAL_READ", "ANALOG_READ", "PWM_WRITE", "HALL_CONFIG", "HALL_READ"],
+    "lineEnding": "\r\n",
+    "responseTimeout": 500
   },
   "requirements": {
-    "firmware": "StandardFirmata v2.5+",
-    "baudRate": 115200
+    "firmware": "Custom lightweight protocol (Firmata v2.5+ planned)",
+    "baudRate": 115200,
+    "dataBits": 8,
+    "parity": "none",
+    "stopBits": 1
   },
   "icon": "arduino-icon.svg",
   "homepage": "https://github.com/multi-controller/drivers/arduino"
