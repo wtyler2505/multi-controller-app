@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
+    <PackageReference Include="xunit" Version="2.8.0" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.8.0" />
+    <PackageReference Include="Moq" Version="4.20.70" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+    <PackageReference Include="System.Threading.Channels" Version="8.0.0" />
+    <PackageReference Include="coverlet.collector" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="../Services/Commands/CommandTypes.cs" />
+    <Compile Include="../Services/Commands/ICommandProcessor.cs" />
+    <Compile Include="../Services/Commands/CommandSerializer.cs" />
+    <Compile Include="../Services/Commands/CommandQueue.cs" />
+    <Compile Include="../Services/Commands/CommandTransmitter.cs" />
+    <Compile Include="../Services/Commands/CommandHistory.cs" />
+    <Compile Include="../Services/Commands/CommandProcessor.cs" />
+  </ItemGroup>
+</Project>
