@@ -76,6 +76,9 @@ public class CommandQueue : IDisposable
                 command.Id, command.Type, command.Priority, command.DeviceId);
 
             CommandQueued?.Invoke(this, new CommandQueuedEventArgs { Command = command });
+            
+            // Update statistics immediately for real-time accuracy
+            UpdateStatistics(null);
 
             return command.Id;
         }

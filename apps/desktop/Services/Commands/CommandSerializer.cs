@@ -47,6 +47,7 @@ public class CommandSerializer : ICommandSerializer
                     break;
                 case "arduino":
                     data = SerializeToArduino(payload, config);
+                    // Arduino format handles checksum internally, skip general checksum
                     break;
                 case "custom":
                     data = SerializeCustomFormat(payload, config);
@@ -55,7 +56,8 @@ public class CommandSerializer : ICommandSerializer
                     throw new NotSupportedException($"Serialization format '{config.Format}' is not supported");
             }
 
-            if (config.IncludeChecksum)
+            // Apply general checksum for non-Arduino formats
+            if (config.IncludeChecksum && config.Format.ToLowerInvariant() != "arduino")
             {
                 data = AddChecksum(data, config.ChecksumAlgorithm ?? "crc32");
             }
@@ -291,10 +293,26 @@ public class CommandSerializer : ICommandSerializer
             }
         }
 
+        // For Arduino protocol, handle checksum as text
+        if (config.IncludeChecksum)
+        {
+            var encoding = GetEncoding(config.Encoding);
+            var baseData = encoding.GetBytes(commandString.ToString());
+            
+            var checksum = config.ChecksumAlgorithm?.ToLowerInvariant() switch
+            {
+                "crc8" => CalculateCrc8(baseData)[0].ToString("X2"),
+                "xor" => CalculateXorChecksum(baseData).ToString("X2"),
+                _ => CalculateXorChecksum(baseData).ToString("X2")
+            };
+            
+            commandString.Append(checksum);
+        }
+        
         commandString.Append(suffix);
         
-        var encoding = GetEncoding(config.Encoding);
-        return encoding.GetBytes(commandString.ToString());
+        var encoding2 = GetEncoding(config.Encoding);
+        return encoding2.GetBytes(commandString.ToString());
     }
 
     private byte[] SerializeCustomFormat(object payload, SerializationConfig config)

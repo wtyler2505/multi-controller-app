@@ -18,7 +18,7 @@ public interface IMemoryOptimizationService
     /// <summary>
     /// Return an object to the pool for reuse
     /// </summary>
-    void Return<T>(T item) where T : class;
+    void Return<T>(T item) where T : class, new();
     
     /// <summary>
     /// Get current pool statistics
@@ -84,7 +84,7 @@ public class MemoryOptimizationService : IMemoryOptimizationService, IDisposable
         return item;
     }
     
-    public void Return<T>(T item) where T : class
+    public void Return<T>(T item) where T : class, new()
     {
         if (_disposed || item == null)
             return;
