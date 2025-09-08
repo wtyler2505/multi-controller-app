@@ -5,7 +5,7 @@
 
 # Dependencies
 node_modules/
-packages/
+# packages/ - commented out to allow workspace packages
 
 # Build outputs
 dist/
@@ -173,7 +173,7 @@ bld/
 *.nupkg
 *.snupkg
 .nuget/
-packages/
+# packages/ - this refers to NuGet packages, not workspace packages
 project.lock.json
 project.fragment.lock.json
 artifacts/
