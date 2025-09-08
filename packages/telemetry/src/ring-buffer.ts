@@ -1,4 +1,4 @@
-import type { IRingBuffer } from '../../core/dist/index';
+import type { IRingBuffer } from './types';
 
 /**
  * Thread-safe ring buffer implementation for telemetry data

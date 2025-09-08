@@ -1,13 +1,20 @@
 import { EventEmitter } from 'eventemitter3';
+import { setInterval, clearInterval } from 'node:timers';
 import type { 
   ITelemetryCollector, 
   ITelemetryConfig, 
   ITelemetryDataPoint, 
   ITelemetryParser,
   ITransport 
-} from '../../core/dist/index';
+} from './types';
 import { RingBuffer } from './ring-buffer';
 import { TelemetryParserFactory } from './parsers';
+
+// Constants for configuration defaults
+const DEFAULT_SAMPLING_RATE = 100; // Hz
+const DEFAULT_BUFFER_CAPACITY = 2000;
+const DEFAULT_DECIMATION_FACTOR = 10;
+const DEFAULT_MAX_RETRIES = 3;
 
 /**
  * Real-time telemetry data collector with buffering and processing capabilities
@@ -26,11 +33,11 @@ export class TelemetryCollector extends EventEmitter implements ITelemetryCollec
     super();
     
     this.config = {
-      samplingRate: config.samplingRate ?? 100, // 100 Hz default
-      bufferCapacity: config.bufferCapacity ?? 2000,
-      decimationFactor: config.decimationFactor ?? 10,
+      samplingRate: config.samplingRate ?? DEFAULT_SAMPLING_RATE,
+      bufferCapacity: config.bufferCapacity ?? DEFAULT_BUFFER_CAPACITY,
+      decimationFactor: config.decimationFactor ?? DEFAULT_DECIMATION_FACTOR,
       enableErrorCorrection: config.enableErrorCorrection ?? true,
-      maxRetries: config.maxRetries ?? 3,
+      maxRetries: config.maxRetries ?? DEFAULT_MAX_RETRIES,
       ...config
     };
 
@@ -145,7 +152,10 @@ export class TelemetryCollector extends EventEmitter implements ITelemetryCollec
     if (!this.subscribers.has(stream)) {
       this.subscribers.set(stream, new Set());
     }
-    this.subscribers.get(stream)!.add(handler);
+    const streamSubscribers = this.subscribers.get(stream);
+    if (streamSubscribers) {
+      streamSubscribers.add(handler);
+    }
 
     // Create buffer for new stream
     if (!this.streams.has(stream)) {

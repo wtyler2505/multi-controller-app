@@ -1,4 +1,11 @@
-import type { ITelemetryParser, ITelemetryDataPoint } from '../../core/dist/index';
+import type { ITelemetryParser, ITelemetryDataPoint } from './types';
+
+// Constants for parser configuration
+const MIN_CSV_FIELDS = 3;
+const MIN_BINARY_LENGTH = 9;
+const BINARY_TIMESTAMP_SIZE = 4;
+const BINARY_STRING_LENGTH_SIZE = 4;
+const BINARY_VALUE_SIZE = 4;
 
 /**
  * Base class for telemetry parsers with common validation logic
