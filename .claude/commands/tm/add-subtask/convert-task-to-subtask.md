@@ -1,3 +1,11 @@
+---
+model: claude-sonnet-4-20250514
+category: task-management
+priority: medium
+tags: ["task-management", "tasks"]
+description: Command for convert-task-to-subtask operations
+---
+
 Convert an existing task into a subtask.
 
 Arguments: $ARGUMENTS
@@ -13,7 +21,7 @@ Converts an existing standalone task into a subtask of another task.
 - "move task 8 under 5"
 - "make 8 a subtask of 5"
 - "nest 8 in 5"
-- "5 8" → make task 8 a subtask of task 5
+- "5 8" â†’ make task 8 a subtask of task 5
 
 ## Execution
 
@@ -54,10 +62,10 @@ task-master add-subtask --parent=<parent-id> --task-id=<task-to-convert>
 
 ```
 /project:tm/add-subtask/from-task 5 8
-→ Converting: Task #8 becomes subtask #5.1
-→ Updated: 3 dependency references
-→ Parent task #5 now has 1 subtask
-→ Note: Subtask inherits parent's priority
+â†’ Converting: Task #8 becomes subtask #5.1
+â†’ Updated: 3 dependency references
+â†’ Parent task #5 now has 1 subtask
+â†’ Note: Subtask inherits parent's priority
 
 Before: #8 "Implement validation" (standalone)
 After:  #5.1 "Implement validation" (subtask of #5)
@@ -69,3 +77,5 @@ After:  #5.1 "Implement validation" (subtask of #5)
 - List updated dependencies
 - Verify project integrity
 - Suggest related conversions
+
+

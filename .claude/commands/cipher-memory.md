@@ -1,3 +1,124 @@
+---
+model: claude-sonnet-4-20250514
+category: utilities-tools
+priority: critical
+tags: ["utilities-tools"]
+description: Store and retrieve code patterns, solutions, and knowledge using Cipher memory
+
+# Enhanced Context-Aware Agent Integration
+enhanced-integration:
+  enabled: true
+  agent-selection-criteria:
+    domain-expertise: ["memory-management", "knowledge-storage", "pattern-recognition"]
+    complexity-factors: ["memory-operations", "knowledge-extraction", "pattern-analysis"]
+    specialized-tools: ["cipher-memory", "knowledge-management", "pattern-storage"]
+  preferred-agents:
+    primary: "general-purpose"
+    secondary: "memory-specialist"
+    fallback: ["task-orchestrator"]
+  tool-requirements:
+    mcp-servers: ["cipher-memory", "memory"]
+    specialized-functions: ["memory-operations", "knowledge-storage"]
+
+# Universal Cipher Memory Integration (MANDATORY FOR ALL COMMANDS)
+cipher-memory-integration:
+  enabled: true
+  priority: "critical"
+  
+  # Pre-execution Memory Operations
+  pre-execution-memory:
+    context-search:
+      - query-pattern: "memory-management + knowledge-storage + pattern-recognition"
+      - tools: ["mcp__cipher-memory__search_nodes", "mcp__cipher-memory__open_nodes"]
+      - context-retrieval: "memory-patterns + knowledge-management-techniques"
+    
+    knowledge-preparation:
+      - domain: "memory-operations"
+      - pattern-search: "memory-patterns + storage-strategies + retrieval-techniques"
+      - tools: ["mcp__cipher-memory__read_graph"]
+  
+  # Execution Memory Operations
+  execution-memory:
+    progress-tracking:
+      - tool: "mcp__cipher-memory__add_observations"
+      - capture-points: ["memory-operations", "pattern-extraction", "knowledge-storage"]
+      - entity-updates: "real-time-progress"
+    
+    decision-logging:
+      - tool: "mcp__cipher-memory__create_entities"
+      - log-decisions: "memory-strategies + storage-approaches + retrieval-methods"
+      - pattern-recognition: "memory-operation-patterns"
+  
+  # Post-execution Memory Operations
+  post-execution-memory:
+    result-storage:
+      - tools: ["mcp__cipher-memory__create_entities"]
+      - store-patterns: ["memory-operation-results", "knowledge-patterns", "storage-insights"]
+      - knowledge-extraction: "memory-management-techniques + pattern-recognition-methods"
+    
+    relationship-creation:
+      - tools: ["mcp__cipher-memory__create_relations"]
+      - link-concepts: ["memory-relationships", "knowledge-connections", "pattern-associations"]
+      - cross-reference: "related-memory-operations"
+    
+    knowledge-refinement:
+      - tools: ["mcp__cipher-memory__add_observations"]
+      - enrich-existing: "memory-knowledge + storage-patterns"
+      - continuous-learning: "memory-operation-optimization"
+
+# Centralized Logging Integration
+logging-integration:
+  enabled: true
+  log-file: ".claude/command-execution.jsonl"
+  
+  # Comprehensive Execution Logging
+  log-level: "comprehensive"
+  
+  capture-points:
+    - command-initiation
+    - agent-selection-process
+    - memory-operations
+    - pattern-recognition
+    - knowledge-storage
+    - retrieval-operations
+    - error-handling
+    - completion-status
+  
+  # Structured Log Format
+  log-structure:
+    timestamp: "ISO-8601"
+    command: "cipher-memory"
+    execution-id: "UUID"
+    agent-assignments: "selected-agents-with-reasoning"
+    memory-operations: "cipher-memory-transactions"
+    performance-metrics: "execution-time + memory-usage + success-rate"
+    outcome-summary: "memory-operation-results + knowledge-insights"
+
+# Cross-Command Learning Integration
+cross-command-learning:
+  enabled: true
+  share-insights: ["memory-patterns", "knowledge-storage-techniques", "pattern-recognition-methods"]
+  learn-from: ["all-commands"]
+  contribute-to: "universal-memory-knowledge-base"
+
+# Workflow Integration
+workflow-integration:
+  pre-execution:
+    - validate-memory-access
+    - prepare-memory-context
+    - select-optimal-agents
+  
+  execution:
+    - parallel-memory-operations
+    - continuous-memory-updates
+    - real-time-insight-capture
+  
+  post-execution:
+    - comprehensive-result-storage
+    - cross-reference-generation
+    - memory-pattern-extraction
+---
+
 # Cipher Memory Commands
 Custom commands for interacting with Cipher's memory system during development.
 
@@ -186,3 +307,5 @@ Create backup of current memory state.
 - Run `/memory-review` after completing major features
 - Use `/memory-stats` weekly to monitor health
 - Backup before major refactoring
+
+

@@ -1,152 +1,125 @@
 ---
+model: claude-sonnet-4-20250514
+category: testing-quality
+priority: high
+tags: ["testing-quality"]
+description: Prime Testing Environment
 allowed-tools: Bash, Read, Write, LS
----
+argument-hint: [framework-type] | --auto-detect | --manual | --validate
 
-# Prime Testing Environment
+# Enhanced Context-Aware Agent Integration
+enhanced-integration:
+  enabled: true
+  agent-selection-criteria:
+    domain-expertise: ["test-environment-setup", "framework-detection", "test-configuration"]
+    complexity-factors: ["framework-analysis", "environment-validation", "test-orchestration"]
+    specialized-tools: ["test-framework-tools", "environment-setup", "configuration-management"]
+  preferred-agents:
+    primary: "mock-test-orchestrator"
+    secondary: "cargo-build-engineer"
+    fallback: ["general-purpose"]
+  tool-requirements:
+    mcp-servers: ["desktop-commander", "taskmaster-ai", "cipher-memory"]
+    specialized-functions: ["test-setup", "framework-detection"]
 
-This command prepares the testing environment by detecting the test framework, validating dependencies, and configuring the test-runner agent for optimal test execution.
+# Universal Cipher Memory Integration (MANDATORY FOR ALL COMMANDS)
+cipher-memory-integration:
+  enabled: true
+  priority: "high"
+  
+  # Pre-execution Memory Operations
+  pre-execution-memory:
+    context-search:
+      - query-pattern: "test-environment-setup + framework-detection + test-configuration"
+      - tools: ["mcp__cipher-memory__search_nodes", "mcp__cipher-memory__open_nodes"]
+      - context-retrieval: "testing-patterns + setup-knowledge"
+    
+    knowledge-preparation:
+      - domain: "test-environment-setup"
+      - pattern-search: "setup-strategies + configuration-patterns + testing-techniques"
+      - tools: ["mcp__cipher-memory__read_graph"]
+  
+  # Execution Memory Operations
+  execution-memory:
+    progress-tracking:
+      - tool: "mcp__cipher-memory__add_observations"
+      - capture-points: ["framework-detection", "environment-setup", "configuration-validation"]
+      - entity-updates: "real-time-progress"
+    
+    decision-logging:
+      - tool: "mcp__cipher-memory__create_entities"
+      - log-decisions: "setup-strategies + configuration-approaches + testing-decisions"
+      - pattern-recognition: "test-setup-patterns"
+  
+  # Post-execution Memory Operations
+  post-execution-memory:
+    result-storage:
+      - tools: ["mcp__cipher-memory__create_entities"]
+      - store-patterns: ["setup-results", "configuration-insights", "testing-techniques"]
+      - knowledge-extraction: "setup-methodologies + configuration-patterns"
+    
+    relationship-creation:
+      - tools: ["mcp__cipher-memory__create_relations"]
+      - link-concepts: ["setup-relationships", "configuration-dependencies", "testing-connections"]
+      - cross-reference: "related-testing-processes"
+    
+    knowledge-refinement:
+      - tools: ["mcp__cipher-memory__add_observations"]
+      - enrich-existing: "setup-knowledge + configuration-patterns"
+      - continuous-learning: "test-setup-optimization"
 
-## Preflight Checklist
+# Centralized Logging Integration
+logging-integration:
+  enabled: true
+  log-file: ".claude/command-execution.jsonl"
+  
+  # Comprehensive Execution Logging
+  log-level: "comprehensive"
+  
+  capture-points:
+    - command-initiation
+    - agent-selection-process
+    - memory-operations
+    - framework-detection
+    - environment-setup
+    - configuration-validation
+    - dependency-checks
+    - error-handling
+    - completion-status
+  
+  # Structured Log Format
+  log-structure:
+    timestamp: "ISO-8601"
+    command: "testing-prime"
+    execution-id: "UUID"
+    agent-assignments: "selected-agents-with-reasoning"
+    memory-operations: "cipher-memory-transactions"
+    performance-metrics: "execution-time + memory-usage + success-rate"
+    outcome-summary: "setup-results + configuration-insights"
 
-Before proceeding, complete these validation steps.
-Do not bother the user with preflight checks progress ("I'm not going to ..."). Just do them and move on.
+# Cross-Command Learning Integration
+cross-command-learning:
+  enabled: true
+  share-insights: ["setup-patterns", "configuration-techniques", "testing-strategies"]
+  learn-from: ["testing-run", "generate-tests", "test-coverage"]
+  contribute-to: "test-setup-knowledge-base"
 
-### 1. Test Framework Detection
-
-**JavaScript/Node.js:**
-- Check package.json for test scripts: `grep -E '"test"|"spec"|"jest"|"mocha"' package.json 2>/dev/null`
-- Look for test config files: `ls -la jest.config.* mocha.opts .mocharc.* 2>/dev/null`
-- Check for test directories: `find . -type d \( -name "test" -o -name "tests" -o -name "__tests__" -o -name "spec" \) -maxdepth 3 2>/dev/null`
-
-**Python:**
-- Check for pytest: `find . -name "pytest.ini" -o -name "conftest.py" -o -name "setup.cfg" 2>/dev/null | head -5`
-- Check for unittest: `find . -path "*/test*.py" -o -path "*/test_*.py" 2>/dev/null | head -5`
-- Check requirements: `grep -E "pytest|unittest|nose" requirements.txt 2>/dev/null`
-
-**Rust:**
-- Check for Cargo tests: `grep -E '\[dev-dependencies\]' Cargo.toml 2>/dev/null`
-- Look for test modules: `find . -name "*.rs" -exec grep -l "#\[cfg(test)\]" {} \; 2>/dev/null | head -5`
-
-**Go:**
-- Check for test files: `find . -name "*_test.go" 2>/dev/null | head -5`
-- Check go.mod exists: `test -f go.mod && echo "Go module found"`
-
-**Other Languages:**
-- Ruby: Check for RSpec: `find . -name ".rspec" -o -name "spec_helper.rb" 2>/dev/null`
-- Java: Check for JUnit: `find . -name "pom.xml" -exec grep -l "junit" {} \; 2>/dev/null`
-
-### 2. Test Environment Validation
-
-If no test framework detected:
-- Tell user: "⚠️ No test framework detected. Please specify your testing setup."
-- Ask: "What test command should I use? (e.g., npm test, pytest, cargo test)"
-- Store response for future use
-
-### 3. Dependency Check
-
-**For detected framework:**
-- Node.js: Run `npm list --depth=0 2>/dev/null | grep -E "jest|mocha|chai|jasmine"`
-- Python: Run `pip list 2>/dev/null | grep -E "pytest|unittest|nose"`
-- Verify test dependencies are installed
-
-If dependencies missing:
-- Tell user: "❌ Test dependencies not installed"
-- Suggest: "Run: npm install (or pip install -r requirements.txt)"
-
-## Instructions
-
-### 1. Framework-Specific Configuration
-
-Based on detected framework, create test configuration:
-
-#### JavaScript/Node.js (Jest)
-```yaml
-framework: jest
-test_command: npm test
-test_directory: __tests__
-config_file: jest.config.js
-options:
-  - --verbose
-  - --no-coverage
-  - --runInBand
-environment:
-  NODE_ENV: test
-```
-
-#### JavaScript/Node.js (Mocha)
-```yaml
-framework: mocha
-test_command: npm test
-test_directory: test
-config_file: .mocharc.js
-options:
-  - --reporter spec
-  - --recursive
-  - --bail
-environment:
-  NODE_ENV: test
-```
-
-#### Python (Pytest)
-```yaml
-framework: pytest
-test_command: pytest
-test_directory: tests
-config_file: pytest.ini
-options:
-  - -v
-  - --tb=short
-  - --strict-markers
-environment:
-  PYTHONPATH: .
-```
-
-#### Rust
-```yaml
-framework: cargo
-test_command: cargo test
-test_directory: tests
-config_file: Cargo.toml
-options:
-  - --verbose
-  - --nocapture
-environment: {}
-```
-
-#### Go
-```yaml
-framework: go
-test_command: go test
-test_directory: .
-config_file: go.mod
-options:
-  - -v
-  - ./...
-environment: {}
-```
-
-### 2. Test Discovery
-
-Scan for test files:
-- Count total test files found
-- Identify test naming patterns used
-- Note any test utilities or helpers
-- Check for test fixtures or data
-
-```bash
-# Example for Node.js
-find . -path "*/node_modules" -prune -o -name "*.test.js" -o -name "*.spec.js" | wc -l
-```
-
-### 3. Create Test Runner Configuration
-
-Create `.claude/testing-config.md` with discovered information:
-
-```markdown
----
-framework: {detected_framework}
-test_command: {detected_command}
-created: [Use REAL datetime from: date -u +"%Y-%m-%dT%H:%M:%SZ"]
+# Workflow Integration
+workflow-integration:
+  pre-execution:
+    - validate-project-access
+    - prepare-memory-context
+    - select-optimal-agents
+  
+  execution:
+    - parallel-framework-detection
+    - continuous-memory-updates
+    - real-time-setup-monitoring
+  
+  post-execution:
+    - comprehensive-result-storage
+    - cross-reference-generation
+    - setup-pattern-extraction
 ---
 
 # Testing Configuration
@@ -226,31 +199,31 @@ After configuration:
 ### 6. Output Summary
 
 ```
-🧪 Testing Environment Primed
+ðŸ§ª Testing Environment Primed
 
-🔍 Detection Results:
-  ✅ Framework: {framework_name} {version}
-  ✅ Test Files: {count} files in {directories}
-  ✅ Config: {config_file}
-  ✅ Dependencies: All installed
+ðŸ” Detection Results:
+  âœ… Framework: {framework_name} {version}
+  âœ… Test Files: {count} files in {directories}
+  âœ… Config: {config_file}
+  âœ… Dependencies: All installed
 
-📋 Test Structure:
+ðŸ“‹ Test Structure:
   - Pattern: {test_file_pattern}
   - Directories: {test_directories}
   - Utilities: {test_helpers}
 
-🤖 Agent Configuration:
-  ✅ Test-runner agent configured
-  ✅ Verbose output enabled
-  ✅ Sequential execution set
-  ✅ Real services (no mocks)
+ðŸ¤– Agent Configuration:
+  âœ… Test-runner agent configured
+  âœ… Verbose output enabled
+  âœ… Sequential execution set
+  âœ… Real services (no mocks)
 
-⚡ Ready Commands:
+âš¡ Ready Commands:
   - Run all tests: /testing:run
   - Run specific: /testing:run {test_file}
   - Run pattern: /testing:run {pattern}
 
-💡 Tips:
+ðŸ’¡ Tips:
   - Always run tests with verbose output
   - Check test structure if tests fail
   - Use real services, not mocks
@@ -262,20 +235,20 @@ After configuration:
 **Common Issues:**
 
 **No Framework Detected:**
-- Message: "⚠️ No test framework found"
+- Message: "âš ï¸ No test framework found"
 - Solution: "Please specify test command manually"
 - Store user's response for future use
 
 **Missing Dependencies:**
-- Message: "❌ Test framework not installed"
+- Message: "âŒ Test framework not installed"
 - Solution: "Install dependencies first: npm install / pip install -r requirements.txt"
 
 **No Test Files:**
-- Message: "⚠️ No test files found"
+- Message: "âš ï¸ No test files found"
 - Solution: "Create tests first or check test directory location"
 
 **Permission Issues:**
-- Message: "❌ Cannot access test files"
+- Message: "âŒ Cannot access test files"
 - Solution: "Check file permissions"
 
 ### 8. Save Configuration
@@ -295,3 +268,6 @@ If successful, save configuration for future sessions:
 - **Store configuration** for consistent future runs
 
 $ARGUMENTS
+
+
+

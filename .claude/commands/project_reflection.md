@@ -1,3 +1,125 @@
+---
+model: claude-sonnet-4-20250514
+category: utilities-tools
+priority: high
+tags: ["utilities-tools"]
+description: Project Reflection - AI Code Assistant Optimization
+
+# Enhanced Context-Aware Agent Integration
+enhanced-integration:
+  enabled: true
+  agent-selection-criteria:
+    domain-expertise: ["project-analysis", "ai-optimization", "development-practices"]
+    complexity-factors: ["codebase-introspection", "pattern-recognition", "optimization-strategies"]
+    specialized-tools: ["project-analysis", "ai-assistant-optimization", "development-insights"]
+  preferred-agents:
+    primary: "general-purpose"
+    secondary: "agent-expert"
+    fallback: ["task-orchestrator"]
+  tool-requirements:
+    mcp-servers: ["FileScopeMCP", "clear-thought", "cipher-memory"]
+    specialized-functions: ["project-analysis", "ai-optimization"]
+
+# Universal Cipher Memory Integration (MANDATORY FOR ALL COMMANDS)
+cipher-memory-integration:
+  enabled: true
+  priority: "critical"
+  
+  # Pre-execution Memory Operations
+  pre-execution-memory:
+    context-search:
+      - query-pattern: "project-analysis + ai-optimization + development-practices"
+      - tools: ["mcp__cipher-memory__search_nodes", "mcp__cipher-memory__open_nodes"]
+      - context-retrieval: "project-patterns + ai-optimization-knowledge"
+    
+    knowledge-preparation:
+      - domain: "project-reflection"
+      - pattern-search: "project-structures + ai-patterns + optimization-strategies"
+      - tools: ["mcp__cipher-memory__read_graph"]
+  
+  # Execution Memory Operations
+  execution-memory:
+    progress-tracking:
+      - tool: "mcp__cipher-memory__add_observations"
+      - capture-points: ["project-analysis", "pattern-recognition", "optimization-generation"]
+      - entity-updates: "real-time-progress"
+    
+    decision-logging:
+      - tool: "mcp__cipher-memory__create_entities"
+      - log-decisions: "analysis-strategies + optimization-approaches + reflection-methodologies"
+      - pattern-recognition: "project-reflection-patterns"
+  
+  # Post-execution Memory Operations
+  post-execution-memory:
+    result-storage:
+      - tools: ["mcp__cipher-memory__create_entities"]
+      - store-patterns: ["reflection-results", "optimization-insights", "project-analysis-techniques"]
+      - knowledge-extraction: "reflection-methodologies + optimization-patterns"
+    
+    relationship-creation:
+      - tools: ["mcp__cipher-memory__create_relations"]
+      - link-concepts: ["project-relationships", "optimization-dependencies", "reflection-connections"]
+      - cross-reference: "related-analysis-processes"
+    
+    knowledge-refinement:
+      - tools: ["mcp__cipher-memory__add_observations"]
+      - enrich-existing: "project-knowledge + optimization-patterns"
+      - continuous-learning: "reflection-process-optimization"
+
+# Centralized Logging Integration
+logging-integration:
+  enabled: true
+  log-file: ".claude/command-execution.jsonl"
+  
+  # Comprehensive Execution Logging
+  log-level: "comprehensive"
+  
+  capture-points:
+    - command-initiation
+    - agent-selection-process
+    - memory-operations
+    - project-analysis
+    - pattern-recognition
+    - optimization-generation
+    - reflection-synthesis
+    - error-handling
+    - completion-status
+  
+  # Structured Log Format
+  log-structure:
+    timestamp: "ISO-8601"
+    command: "project_reflection"
+    execution-id: "UUID"
+    agent-assignments: "selected-agents-with-reasoning"
+    memory-operations: "cipher-memory-transactions"
+    performance-metrics: "execution-time + memory-usage + success-rate"
+    outcome-summary: "reflection-results + optimization-insights"
+
+# Cross-Command Learning Integration
+cross-command-learning:
+  enabled: true
+  share-insights: ["project-patterns", "optimization-techniques", "reflection-methodologies"]
+  learn-from: ["initref", "directory-deep-dive", "create-architecture-documentation"]
+  contribute-to: "project-optimization-knowledge-base"
+
+# Workflow Integration
+workflow-integration:
+  pre-execution:
+    - validate-project-state
+    - prepare-memory-context
+    - select-optimal-agents
+  
+  execution:
+    - parallel-analysis-processing
+    - continuous-memory-updates
+    - real-time-optimization-generation
+  
+  post-execution:
+    - comprehensive-result-storage
+    - cross-reference-generation
+    - reflection-pattern-extraction
+---
+
 # Project Reflection - AI Code Assistant Optimization
 
 You are an expert in prompt engineering, specializing in optimizing AI code assistant instructions for maximum effectiveness and efficiency.
@@ -121,25 +243,25 @@ Present findings as:
 ```
 # Project Reflection Analysis
 
-## 📊 Project Overview
+## ðŸ“Š Project Overview
 [High-level summary]
 
-## 🏗️ Architecture Insights
+## ðŸ—ï¸ Architecture Insights
 [Key architectural findings]
 
-## 📝 Code Patterns Detected
+## ðŸ“ Code Patterns Detected
 [Common patterns and practices]
 
-## ⚠️ Areas for Improvement
+## âš ï¸ Areas for Improvement
 [Technical debt and issues]
 
-## 🤖 AI Assistant Optimization
+## ðŸ¤– AI Assistant Optimization
 [Specific instructions for AI assistants]
 
-## 📋 Recommended CLAUDE.md Updates
+## ðŸ“‹ Recommended CLAUDE.md Updates
 [Proposed additions/changes to CLAUDE.md]
 
-## ✅ Action Items
+## âœ… Action Items
 [Concrete next steps]
 ```
 
@@ -150,3 +272,5 @@ Run this command periodically to keep AI assistant instructions optimized as the
 - New team members joining
 - Significant feature additions
 - Architecture updates
+
+

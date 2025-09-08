@@ -282,7 +282,17 @@
       "mcp__taskmaster-ai__parse_prd",
       "mcp__taskmaster-ai__analyze_project_complexity",
       "mcp__taskmaster-ai__expand_all",
-      "mcp__taskmaster-ai__update"
+      "mcp__taskmaster-ai__update",
+      "Bash(do echo \"=== $file ===\")",
+      "Bash(head:*)",
+      "mcp__desktop-commander__write_file",
+      "Bash(rm:*)",
+      "Bash(od:*)",
+      "Bash(xxd:*)",
+      "Bash(touch:*)",
+      "Bash(mv:*)",
+      "Bash(gh repo view:*)",
+      "Bash(gh secret:*)"
     ],
     "deny": [],
     "ask": [],

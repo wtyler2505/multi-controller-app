@@ -1,3 +1,11 @@
+---
+model: claude-sonnet-4-20250514
+category: task-management
+priority: medium
+tags: ["task-management", "tasks"]
+description: Command for update-tasks-from-id operations
+---
+
 Update multiple tasks starting from a specific ID.
 
 Arguments: $ARGUMENTS
@@ -59,7 +67,7 @@ AI analyzes the update context and:
 3. **Change Preview**
    ```
    Bulk Update Preview
-   ━━━━━━━━━━━━━━━━━━
+   â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
    Starting from: Task #5
    Tasks to update: 8 tasks + 12 subtasks
    
@@ -78,18 +86,18 @@ AI analyzes the update context and:
 
 ```
 /project:tm/update/from-id 5: change database to PostgreSQL
-→ Analyzing impact starting from task #5
-→ Found 6 related tasks to update
-→ Updates will maintain consistency
-→ Preview changes? (y/n)
+â†’ Analyzing impact starting from task #5
+â†’ Found 6 related tasks to update
+â†’ Updates will maintain consistency
+â†’ Preview changes? (y/n)
 
 Applied updates:
-✓ Task #5: Updated connection logic references
-✓ Task #6: Changed migration approach
-✓ Task #7: Updated query syntax notes
-✓ Task #8: Revised testing strategy
-✓ Task #9: Updated deployment steps
-✓ Task #12: Changed backup procedures
+âœ“ Task #5: Updated connection logic references
+âœ“ Task #6: Changed migration approach
+âœ“ Task #7: Updated query syntax notes
+âœ“ Task #8: Revised testing strategy
+âœ“ Task #9: Updated deployment steps
+âœ“ Task #12: Changed backup procedures
 ```
 
 ## Safety Features
@@ -106,3 +114,5 @@ Applied updates:
 - Consistency verification
 - Suggest review tasks
 - Update timeline if needed
+
+

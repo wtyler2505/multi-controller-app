@@ -1,78 +1,127 @@
 ---
+model: claude-sonnet-4-20250514
+category: context-management
+priority: high
+tags: ["context-management"]
+description: Create comprehensive initial project context
 allowed-tools: Bash, Read, Write, LS
+argument-hint: [context-type] | --full | --minimal | --custom
+
+# Enhanced Context-Aware Agent Integration
+enhanced-integration:
+  enabled: true
+  agent-selection-criteria:
+    domain-expertise: ["context-creation", "project-analysis", "documentation-generation"]
+    complexity-factors: ["project-understanding", "context-synthesis", "documentation-structuring"]
+    specialized-tools: ["project-analysis", "context-generation", "documentation-tools"]
+  preferred-agents:
+    primary: "general-purpose"
+    secondary: "documentation-specialist"
+    fallback: ["task-orchestrator"]
+  tool-requirements:
+    mcp-servers: ["desktop-commander", "FileScopeMCP", "cipher-memory"]
+    specialized-functions: ["context-creation", "project-analysis"]
+
+# Universal Cipher Memory Integration (MANDATORY FOR ALL COMMANDS)
+cipher-memory-integration:
+  enabled: true
+  priority: "high"
+  
+  # Pre-execution Memory Operations
+  pre-execution-memory:
+    context-search:
+      - query-pattern: "context-creation + project-analysis + documentation-generation"
+      - tools: ["mcp__cipher-memory__search_nodes", "mcp__cipher-memory__open_nodes"]
+      - context-retrieval: "context-patterns + analysis-knowledge"
+    
+    knowledge-preparation:
+      - domain: "context-management"
+      - pattern-search: "context-strategies + analysis-patterns + documentation-techniques"
+      - tools: ["mcp__cipher-memory__read_graph"]
+  
+  # Execution Memory Operations
+  execution-memory:
+    progress-tracking:
+      - tool: "mcp__cipher-memory__add_observations"
+      - capture-points: ["context-analysis", "documentation-creation", "project-mapping"]
+      - entity-updates: "real-time-progress"
+    
+    decision-logging:
+      - tool: "mcp__cipher-memory__create_entities"
+      - log-decisions: "context-strategies + documentation-approaches + analysis-decisions"
+      - pattern-recognition: "context-creation-patterns"
+  
+  # Post-execution Memory Operations
+  post-execution-memory:
+    result-storage:
+      - tools: ["mcp__cipher-memory__create_entities"]
+      - store-patterns: ["context-results", "analysis-insights", "documentation-techniques"]
+      - knowledge-extraction: "context-methodologies + analysis-patterns"
+    
+    relationship-creation:
+      - tools: ["mcp__cipher-memory__create_relations"]
+      - link-concepts: ["context-relationships", "analysis-dependencies", "documentation-connections"]
+      - cross-reference: "related-context-processes"
+    
+    knowledge-refinement:
+      - tools: ["mcp__cipher-memory__add_observations"]
+      - enrich-existing: "context-knowledge + analysis-patterns"
+      - continuous-learning: "context-creation-optimization"
+
+# Centralized Logging Integration
+logging-integration:
+  enabled: true
+  log-file: ".claude/command-execution.jsonl"
+  
+  # Comprehensive Execution Logging
+  log-level: "comprehensive"
+  
+  capture-points:
+    - command-initiation
+    - agent-selection-process
+    - memory-operations
+    - context-analysis
+    - documentation-creation
+    - project-mapping
+    - structure-analysis
+    - error-handling
+    - completion-status
+  
+  # Structured Log Format
+  log-structure:
+    timestamp: "ISO-8601"
+    command: "context-create"
+    execution-id: "UUID"
+    agent-assignments: "selected-agents-with-reasoning"
+    memory-operations: "cipher-memory-transactions"
+    performance-metrics: "execution-time + memory-usage + success-rate"
+    outcome-summary: "context-creation-results + analysis-insights"
+
+# Cross-Command Learning Integration
+cross-command-learning:
+  enabled: true
+  share-insights: ["context-patterns", "analysis-techniques", "documentation-strategies"]
+  learn-from: ["context-prime", "context-update", "project-analysis"]
+  contribute-to: "context-management-knowledge-base"
+
+# Workflow Integration
+workflow-integration:
+  pre-execution:
+    - validate-project-access
+    - prepare-memory-context
+    - select-optimal-agents
+  
+  execution:
+    - parallel-context-analysis
+    - continuous-memory-updates
+    - real-time-documentation-generation
+  
+  post-execution:
+    - comprehensive-result-storage
+    - cross-reference-generation
+    - context-pattern-extraction
 ---
 
-# Create Initial Context
-
-This command creates the initial project context documentation in `.claude/context/` by analyzing the current project state and establishing comprehensive baseline documentation.
-
-## Required Rules
-
-**IMPORTANT:** Before executing this command, read and follow:
-- `.claude/rules/datetime.md` - For getting real current date/time
-
-## Preflight Checklist
-
-Before proceeding, complete these validation steps.
-Do not bother the user with preflight checks progress ("I'm not going to ..."). Just do them and move on.
-
-### 1. Context Directory Check
-- Run: `ls -la .claude/context/ 2>/dev/null`
-- If directory exists and has files:
-  - Count existing files: `ls -1 .claude/context/*.md 2>/dev/null | wc -l`
-  - Ask user: "⚠️ Found {count} existing context files. Overwrite all context? (yes/no)"
-  - Only proceed with explicit 'yes' confirmation
-  - If user says no, suggest: "Use /context:update to refresh existing context"
-
-### 2. Project Type Detection
-- Check for project indicators:
-  - Node.js: `test -f package.json && echo "Node.js project detected"`
-  - Python: `test -f requirements.txt || test -f pyproject.toml && echo "Python project detected"`
-  - Rust: `test -f Cargo.toml && echo "Rust project detected"`
-  - Go: `test -f go.mod && echo "Go project detected"`
-- Run: `git status 2>/dev/null` to confirm this is a git repository
-- If not a git repo, ask: "⚠️ Not a git repository. Continue anyway? (yes/no)"
-
-### 3. Directory Creation
-- If `.claude/` doesn't exist, create it: `mkdir -p .claude/context/`
-- Verify write permissions: `touch .claude/context/.test && rm .claude/context/.test`
-- If permission denied, tell user: "❌ Cannot create context directory. Check permissions."
-
-### 4. Get Current DateTime
-- Run: `date -u +"%Y-%m-%dT%H:%M:%SZ"`
-- Store this value for use in all context file frontmatter
-
-## Instructions
-
-### 1. Pre-Analysis Validation
-- Confirm project root directory is correct (presence of .git, package.json, etc.)
-- Check for existing documentation that can inform context (README.md, docs/)
-- If README.md doesn't exist, ask user for project description
-
-### 2. Systematic Project Analysis
-Gather information in this order:
-
-**Project Detection:**
-- Run: `find . -maxdepth 2 -name 'package.json' -o -name 'requirements.txt' -o -name 'Cargo.toml' -o -name 'go.mod' 2>/dev/null`
-- Run: `git remote -v 2>/dev/null` to get repository information
-- Run: `git branch --show-current 2>/dev/null` to get current branch
-
-**Codebase Analysis:**
-- Run: `find . -type f -name '*.js' -o -name '*.py' -o -name '*.rs' -o -name '*.go' 2>/dev/null | head -20`
-- Run: `ls -la` to see root directory structure
-- Read README.md if it exists
-
-### 3. Context File Creation with Frontmatter
-
-Each context file MUST include frontmatter with real datetime:
-
-```yaml
----
-created: [Use REAL datetime from date command]
-last_updated: [Use REAL datetime from date command]
-version: 1.0
-author: Claude Code PM System
----
 ```
 
 Generate the following initial context files:
@@ -105,9 +154,9 @@ After creating each file:
 ### 5. Error Handling
 
 **Common Issues:**
-- **No write permissions:** "❌ Cannot write to .claude/context/. Check permissions."
-- **Disk space:** "❌ Insufficient disk space for context files."
-- **File creation failed:** "❌ Failed to create {filename}. Error: {error}"
+- **No write permissions:** "âŒ Cannot write to .claude/context/. Check permissions."
+- **Disk space:** "âŒ Insufficient disk space for context files."
+- **File creation failed:** "âŒ Failed to create {filename}. Error: {error}"
 
 If any file fails to create:
 - Report which files were successfully created
@@ -118,25 +167,25 @@ If any file fails to create:
 
 Provide comprehensive summary:
 ```
-📋 Context Creation Complete
+ðŸ“‹ Context Creation Complete
 
-📁 Created context in: .claude/context/
-✅ Files created: {count}/9
+ðŸ“ Created context in: .claude/context/
+âœ… Files created: {count}/9
 
-📊 Context Summary:
+ðŸ“Š Context Summary:
   - Project Type: {detected_type}
   - Language: {primary_language}
   - Git Status: {clean/changes}
   - Dependencies: {count} packages
 
-📝 File Details:
-  ✅ progress.md ({lines} lines) - Current status and recent work
-  ✅ project-structure.md ({lines} lines) - Directory organization
+ðŸ“ File Details:
+  âœ… progress.md ({lines} lines) - Current status and recent work
+  âœ… project-structure.md ({lines} lines) - Directory organization
   [... list all files with line counts and brief description ...]
 
-⏰ Created: {timestamp}
-🔄 Next: Use /context:prime to load context in new sessions
-💡 Tip: Run /context:update regularly to keep context current
+â° Created: {timestamp}
+ðŸ”„ Next: Use /context:prime to load context in new sessions
+ðŸ’¡ Tip: Run /context:update regularly to keep context current
 ```
 
 ## Context Gathering Commands
@@ -159,3 +208,6 @@ Use these commands to gather project information:
 - **Handle errors gracefully** with specific guidance
 
 $ARGUMENTS
+
+
+

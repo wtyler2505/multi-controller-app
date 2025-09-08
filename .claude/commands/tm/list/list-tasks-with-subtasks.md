@@ -1,3 +1,11 @@
+---
+model: claude-sonnet-4-20250514
+category: task-management
+priority: medium
+tags: ["task-management", "tasks"]
+description: Command for list-tasks-with-subtasks operations
+---
+
 List all tasks including their subtasks in a hierarchical view.
 
 This command shows all tasks with their nested subtasks, providing a complete project overview.
@@ -27,3 +35,5 @@ Based on the task hierarchy:
 - Indicate critical path items
 
 This gives you a complete tree view of your project structure.
+
+

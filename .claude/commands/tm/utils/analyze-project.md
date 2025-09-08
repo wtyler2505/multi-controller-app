@@ -1,3 +1,11 @@
+---
+model: claude-sonnet-4-20250514
+category: taskmaster-core
+priority: medium
+tags: ["taskmaster-core", "analysis"]
+description: Command for analyze-project operations
+---
+
 Advanced project analysis with actionable insights and recommendations.
 
 Arguments: $ARGUMENTS
@@ -9,20 +17,20 @@ Multi-dimensional analysis based on requested focus area.
 ### 1. **Analysis Modes**
 
 Based on $ARGUMENTS:
-- "velocity" → Sprint velocity and trends
-- "quality" → Code quality metrics
-- "risk" → Risk assessment and mitigation
-- "dependencies" → Dependency graph analysis
-- "team" → Workload and skill distribution
-- "architecture" → System design coherence
-- Default → Full spectrum analysis
+- "velocity" â†’ Sprint velocity and trends
+- "quality" â†’ Code quality metrics
+- "risk" â†’ Risk assessment and mitigation
+- "dependencies" â†’ Dependency graph analysis
+- "team" â†’ Workload and skill distribution
+- "architecture" â†’ System design coherence
+- Default â†’ Full spectrum analysis
 
 ### 2. **Velocity Analytics**
 
 ```
-📊 Velocity Analysis
-━━━━━━━━━━━━━━━━━━━
-Current Sprint: 24 points/week ↗️ +20%
+ðŸ“Š Velocity Analysis
+â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+Current Sprint: 24 points/week â†—ï¸ +20%
 Rolling Average: 20 points/week
 Efficiency: 85% (17/20 tasks on time)
 
@@ -56,8 +64,8 @@ Recommendations:
 Visual dependency analysis:
 ```
 Critical Path: 
-#12 → #15 → #23 → #45 → #50 (20 days)
-         ↘ #24 → #46 ↗
+#12 â†’ #15 â†’ #23 â†’ #45 â†’ #50 (20 days)
+         â†˜ #24 â†’ #46 â†—
 
 Optimization: Parallelize #15 and #24
 Time Saved: 3 days
@@ -95,3 +103,5 @@ High-level summary with:
 - Success probability
 
 Result: Data-driven decisions with clear action paths.
+
+

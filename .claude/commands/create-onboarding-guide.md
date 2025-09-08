@@ -1,8 +1,125 @@
 ---
+model: claude-sonnet-4-20250514
+category: documentation
+priority: high
+tags: ["documentation"]
+description: Developer Onboarding Guide Generator
 allowed-tools: Read, Write, Edit, Bash
 argument-hint: [role-type] | --developer | --designer | --devops | --comprehensive | --interactive
-description: Create comprehensive developer onboarding guide with environment setup, workflows, and interactive tutorials
-model: sonnet
+
+# Enhanced Context-Aware Agent Integration
+enhanced-integration:
+  enabled: true
+  agent-selection-criteria:
+    domain-expertise: ["onboarding-design", "developer-experience", "documentation-creation"]
+    complexity-factors: ["role-based-customization", "interactive-content", "learning-pathways"]
+    specialized-tools: ["content-generation", "interactive-documentation", "learning-design"]
+  preferred-agents:
+    primary: "general-purpose"
+    secondary: "content-creator"
+    fallback: ["task-orchestrator"]
+  tool-requirements:
+    mcp-servers: ["desktop-commander", "context7", "cipher-memory"]
+    specialized-functions: ["documentation-generation", "content-organization"]
+
+# Universal Cipher Memory Integration (MANDATORY FOR ALL COMMANDS)
+cipher-memory-integration:
+  enabled: true
+  priority: "high"
+  
+  # Pre-execution Memory Operations
+  pre-execution-memory:
+    context-search:
+      - query-pattern: "onboarding-design + developer-experience + learning-pathways"
+      - tools: ["mcp__cipher-memory__search_nodes", "mcp__cipher-memory__open_nodes"]
+      - context-retrieval: "onboarding-patterns + developer-experience-knowledge"
+    
+    knowledge-preparation:
+      - domain: "developer-onboarding"
+      - pattern-search: "onboarding-strategies + learning-design + developer-workflows"
+      - tools: ["mcp__cipher-memory__read_graph"]
+  
+  # Execution Memory Operations
+  execution-memory:
+    progress-tracking:
+      - tool: "mcp__cipher-memory__add_observations"
+      - capture-points: ["onboarding-analysis", "guide-creation", "content-organization"]
+      - entity-updates: "real-time-progress"
+    
+    decision-logging:
+      - tool: "mcp__cipher-memory__create_entities"
+      - log-decisions: "onboarding-strategies + content-approaches + role-customization"
+      - pattern-recognition: "onboarding-design-patterns"
+  
+  # Post-execution Memory Operations
+  post-execution-memory:
+    result-storage:
+      - tools: ["mcp__cipher-memory__create_entities"]
+      - store-patterns: ["onboarding-guides", "developer-experience-insights", "learning-strategies"]
+      - knowledge-extraction: "onboarding-methodologies + developer-experience-patterns"
+    
+    relationship-creation:
+      - tools: ["mcp__cipher-memory__create_relations"]
+      - link-concepts: ["onboarding-relationships", "learning-dependencies", "role-connections"]
+      - cross-reference: "related-onboarding-processes"
+    
+    knowledge-refinement:
+      - tools: ["mcp__cipher-memory__add_observations"]
+      - enrich-existing: "onboarding-knowledge + developer-experience-patterns"
+      - continuous-learning: "onboarding-process-optimization"
+
+# Centralized Logging Integration
+logging-integration:
+  enabled: true
+  log-file: ".claude/command-execution.jsonl"
+  
+  # Comprehensive Execution Logging
+  log-level: "comprehensive"
+  
+  capture-points:
+    - command-initiation
+    - agent-selection-process
+    - memory-operations
+    - onboarding-analysis
+    - guide-creation
+    - content-customization
+    - role-adaptation
+    - error-handling
+    - completion-status
+  
+  # Structured Log Format
+  log-structure:
+    timestamp: "ISO-8601"
+    command: "create-onboarding-guide"
+    execution-id: "UUID"
+    agent-assignments: "selected-agents-with-reasoning"
+    memory-operations: "cipher-memory-transactions"
+    performance-metrics: "execution-time + memory-usage + success-rate"
+    outcome-summary: "onboarding-guide-results + developer-experience-insights"
+
+# Cross-Command Learning Integration
+cross-command-learning:
+  enabled: true
+  share-insights: ["onboarding-patterns", "developer-experience-techniques", "learning-design-methods"]
+  learn-from: ["setup-development-environment", "interactive-documentation", "docs-maintenance"]
+  contribute-to: "developer-experience-knowledge-base"
+
+# Workflow Integration
+workflow-integration:
+  pre-execution:
+    - validate-project-context
+    - prepare-memory-context
+    - select-optimal-agents
+  
+  execution:
+    - parallel-guide-creation
+    - continuous-memory-updates
+    - real-time-content-generation
+  
+  post-execution:
+    - comprehensive-result-storage
+    - cross-reference-generation
+    - onboarding-pattern-extraction
 ---
 
 # Developer Onboarding Guide Generator
@@ -91,3 +208,4 @@ Create comprehensive onboarding experience tailored to role and project needs:
     - Create onboarding metrics and success tracking
     - Establish onboarding guide maintenance and update procedures
     - Set up new hire success monitoring and support systems
+

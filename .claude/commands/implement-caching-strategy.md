@@ -1,8 +1,125 @@
 ---
+model: claude-sonnet-4-20250514
+category: performance-optimization
+priority: high
+tags: ["performance-optimization"]
+description: Implement Caching Strategy
 allowed-tools: Read, Bash, Grep, Glob
 argument-hint: [cache-type] | --browser | --application | --database
-description: Design and implement comprehensive caching solutions for improved performance and scalability
-model: sonnet
+
+# Enhanced Context-Aware Agent Integration
+enhanced-integration:
+  enabled: true
+  agent-selection-criteria:
+    domain-expertise: ["caching-strategies", "performance-optimization", "system-architecture"]
+    complexity-factors: ["multi-layer-caching", "cache-invalidation", "performance-tuning"]
+    specialized-tools: ["performance-analysis", "caching-implementation", "optimization-techniques"]
+  preferred-agents:
+    primary: "performance-optimizer"
+    secondary: "general-purpose"
+    fallback: ["task-orchestrator"]
+  tool-requirements:
+    mcp-servers: ["context7", "perplexity-ask", "cipher-memory"]
+    specialized-functions: ["performance-optimization", "caching-strategies"]
+
+# Universal Cipher Memory Integration (MANDATORY FOR ALL COMMANDS)
+cipher-memory-integration:
+  enabled: true
+  priority: "high"
+  
+  # Pre-execution Memory Operations
+  pre-execution-memory:
+    context-search:
+      - query-pattern: "caching-strategies + performance-optimization + system-architecture"
+      - tools: ["mcp__cipher-memory__search_nodes", "mcp__cipher-memory__open_nodes"]
+      - context-retrieval: "caching-patterns + performance-knowledge"
+    
+    knowledge-preparation:
+      - domain: "performance-optimization"
+      - pattern-search: "caching-strategies + optimization-techniques + performance-patterns"
+      - tools: ["mcp__cipher-memory__read_graph"]
+  
+  # Execution Memory Operations
+  execution-memory:
+    progress-tracking:
+      - tool: "mcp__cipher-memory__add_observations"
+      - capture-points: ["caching-analysis", "strategy-implementation", "performance-optimization"]
+      - entity-updates: "real-time-progress"
+    
+    decision-logging:
+      - tool: "mcp__cipher-memory__create_entities"
+      - log-decisions: "caching-approaches + optimization-strategies + architecture-decisions"
+      - pattern-recognition: "caching-implementation-patterns"
+  
+  # Post-execution Memory Operations
+  post-execution-memory:
+    result-storage:
+      - tools: ["mcp__cipher-memory__create_entities"]
+      - store-patterns: ["caching-implementations", "performance-insights", "optimization-techniques"]
+      - knowledge-extraction: "caching-methodologies + performance-patterns"
+    
+    relationship-creation:
+      - tools: ["mcp__cipher-memory__create_relations"]
+      - link-concepts: ["caching-relationships", "performance-dependencies", "optimization-connections"]
+      - cross-reference: "related-performance-strategies"
+    
+    knowledge-refinement:
+      - tools: ["mcp__cipher-memory__add_observations"]
+      - enrich-existing: "performance-knowledge + caching-patterns"
+      - continuous-learning: "caching-strategy-optimization"
+
+# Centralized Logging Integration
+logging-integration:
+  enabled: true
+  log-file: ".claude/command-execution.jsonl"
+  
+  # Comprehensive Execution Logging
+  log-level: "comprehensive"
+  
+  capture-points:
+    - command-initiation
+    - agent-selection-process
+    - memory-operations
+    - caching-analysis
+    - strategy-implementation
+    - performance-optimization
+    - validation-testing
+    - error-handling
+    - completion-status
+  
+  # Structured Log Format
+  log-structure:
+    timestamp: "ISO-8601"
+    command: "implement-caching-strategy"
+    execution-id: "UUID"
+    agent-assignments: "selected-agents-with-reasoning"
+    memory-operations: "cipher-memory-transactions"
+    performance-metrics: "execution-time + memory-usage + success-rate"
+    outcome-summary: "caching-implementation-results + performance-insights"
+
+# Cross-Command Learning Integration
+cross-command-learning:
+  enabled: true
+  share-insights: ["caching-patterns", "performance-techniques", "optimization-strategies"]
+  learn-from: ["optimize-bundle-size", "setup-monitoring-observability", "system-behavior-simulator"]
+  contribute-to: "performance-optimization-knowledge-base"
+
+# Workflow Integration
+workflow-integration:
+  pre-execution:
+    - validate-performance-requirements
+    - prepare-memory-context
+    - select-optimal-agents
+  
+  execution:
+    - parallel-caching-analysis
+    - continuous-memory-updates
+    - real-time-performance-tracking
+  
+  post-execution:
+    - comprehensive-result-storage
+    - cross-reference-generation
+    - optimization-pattern-extraction
 ---
 
 # Implement Caching Strategy
@@ -82,3 +199,4 @@ Design and implement caching solutions: **$ARGUMENTS**
     - Validate cache security and data isolation requirements
 
 Focus on implementing caching strategies that provide the most significant performance improvements while maintaining data consistency and system reliability. Always measure cache effectiveness and adjust strategies based on real-world usage patterns.
+

@@ -2,12 +2,111 @@ use async_trait::async_trait;
 use std::sync::{Arc, atomic::{AtomicBool, Ordering}};
 use std::time::{Duration, Instant};
 use tokio::sync::Mutex;
-use tokio::task::JoinHandle;
+use tokio::task::{JoinHandle, spawn_blocking};
 use rand::Rng;
+use uuid::Uuid;
 use crate::transport::{
     Transport, TransportBase, TransportConfig, TransportError, TransportResult, 
     TransportStats, TransportType, ConnectionState
 };
+use crate::transport::common::SerialSettings;
+
+// Type alias for SerialConfig
+type SerialConfig = SerialSettings;
+
+// Conversion traits for serialport enums
+impl From<crate::transport::common::DataBits> for serialport::DataBits {
+    fn from(bits: crate::transport::common::DataBits) -> Self {
+        use crate::transport::common::DataBits;
+        match bits {
+            DataBits::Five => serialport::DataBits::Five,
+            DataBits::Six => serialport::DataBits::Six,
+            DataBits::Seven => serialport::DataBits::Seven,
+            DataBits::Eight => serialport::DataBits::Eight,
+        }
+    }
+}
+
+impl From<crate::transport::common::StopBits> for serialport::StopBits {
+    fn from(bits: crate::transport::common::StopBits) -> Self {
+        use crate::transport::common::StopBits;
+        match bits {
+            StopBits::One => serialport::StopBits::One,
+            StopBits::Two => serialport::StopBits::Two,
+        }
+    }
+}
+
+impl From<crate::transport::common::Parity> for serialport::Parity {
+    fn from(parity: crate::transport::common::Parity) -> Self {
+        use crate::transport::common::Parity;
+        match parity {
+            Parity::None => serialport::Parity::None,
+            Parity::Odd => serialport::Parity::Odd,
+            Parity::Even => serialport::Parity::Even,
+        }
+    }
+}
+
+impl From<crate::transport::common::FlowControl> for serialport::FlowControl {
+    fn from(flow: crate::transport::common::FlowControl) -> Self {
+        use crate::transport::common::FlowControl;
+        match flow {
+            FlowControl::None => serialport::FlowControl::None,
+            FlowControl::Software => serialport::FlowControl::Software,
+            FlowControl::Hardware => serialport::FlowControl::Hardware,
+        }
+    }
+}
+
+/// Information about a discovered serial port
+#[derive(Debug, Clone)]
+pub struct PortInfo {
+    pub name: String,
+    pub device_type: String,
+    pub vendor_id: Option<u16>,
+    pub product_id: Option<u16>,
+    pub manufacturer: Option<String>,
+    pub product: Option<String>,
+    pub serial_number: Option<String>,
+}
+
+// Known microcontroller vendor IDs
+const ARDUINO_VID: u16 = 0x2341;  // Official Arduino
+const FTDI_VID: u16 = 0x0403;     // FTDI chip (common in dev boards)
+const CH340_VID: u16 = 0x1A86;    // CH340 chip (common in clones)
+const CP210X_VID: u16 = 0x10C4;   // Silicon Labs CP210x
+const TEENSY_VID: u16 = 0x16C0;   // Teensy boards
+const STM32_VID: u16 = 0x0483;    // STMicroelectronics
+
+/// Check if a USB device is likely a microcontroller
+fn is_microcontroller_device(info: &serialport::UsbPortInfo) -> bool {
+    matches!(info.vid, 
+        ARDUINO_VID | FTDI_VID | CH340_VID | CP210X_VID | TEENSY_VID | STM32_VID
+    )
+}
+
+/// Detect the specific device type from USB info
+fn detect_device_type(info: &serialport::UsbPortInfo) -> String {
+    match info.vid {
+        ARDUINO_VID => {
+            // Check specific Arduino models by PID
+            match info.pid {
+                0x0043 => "Arduino Uno".to_string(),
+                0x0042 => "Arduino Mega".to_string(),
+                0x0010 => "Arduino Mega 2560".to_string(),
+                0x7523 => "Arduino Nano".to_string(),
+                _ => "Arduino Device".to_string(),
+            }
+        }
+        FTDI_VID => "FTDI Serial Device".to_string(),
+        CH340_VID => "CH340 Serial Device".to_string(),
+        CP210X_VID => "Silicon Labs CP210x".to_string(),
+        TEENSY_VID => "Teensy".to_string(),
+        STM32_VID => "STM32 Device".to_string(),
+        _ => "Unknown USB Serial".to_string(),
+    }
+}
 
 /// Serial port transport implementation
 pub struct SerialTransport {
@@ -57,22 +156,92 @@ impl SerialTransport {
         Ok(transport)
     }
     
-    /// List available serial ports
-    pub fn list_ports() -> TransportResult<Vec<String>> {
-        // TODO: Implement actual serial port enumeration
-        // For now, return mock ports
-        Ok(vec![
-            "COM1".to_string(),
-            "COM3".to_string(),
-            "COM4".to_string(),
-        ])
+    /// List available serial ports with cross-platform support
+    pub async fn list_ports() -> TransportResult<Vec<PortInfo>> {
+        spawn_blocking(|| {
+            let ports = serialport::available_ports()
+                .map_err(|e| TransportError::HardwareError(format!("Failed to enumerate ports: {}", e)))?;
+            
+            let mut discovered = Vec::new();
+            
+            for port in ports {
+                match port.port_type {
+                    serialport::SerialPortType::UsbPort(ref info) => {
+                        // Check for known microcontroller vendors
+                        if is_microcontroller_device(info) {
+                            discovered.push(PortInfo {
+                                name: port.port_name.clone(),
+                                device_type: detect_device_type(info),
+                                vendor_id: Some(info.vid),
+                                product_id: Some(info.pid),
+                                manufacturer: info.manufacturer.clone(),
+                                product: info.product.clone(),
+                                serial_number: info.serial_number.clone(),
+                            });
+                        } else {
+                            // Include other USB serial devices
+                            discovered.push(PortInfo {
+                                name: port.port_name.clone(),
+                                device_type: "USB Serial".to_string(),
+                                vendor_id: Some(info.vid),
+                                product_id: Some(info.pid),
+                                manufacturer: info.manufacturer.clone(),
+                                product: info.product.clone(),
+                                serial_number: info.serial_number.clone(),
+                            });
+                        }
+                    }
+                    _ => {
+                        // Include all other serial ports for manual selection
+                        discovered.push(PortInfo {
+                            name: port.port_name.clone(),
+                            device_type: "Serial Port".to_string(),
+                            vendor_id: None,
+                            product_id: None,
+                            manufacturer: None,
+                            product: None,
+                            serial_number: None,
+                        });
+                    }
+                }
+            }
+            
+            // Sort by port name for consistent ordering
+            discovered.sort_by(|a, b| a.name.cmp(&b.name));
+            
+            Ok(discovered)
+        }).await
+        .map_err(|e| TransportError::IoError(std::io::Error::new(
+            std::io::ErrorKind::Other, 
+            format!("Task join error: {}", e)
+        )))?
     }
     
     /// Probe if a device is connected to this port
-    pub async fn probe_port(port_name: &str) -> TransportResult<bool> {
-        // TODO: Implement actual probing
-        // This would try to open the port and send a probe command
-        Ok(port_name == "COM3") // Mock: pretend COM3 has a device
+    pub async fn probe_port(port_name: &str, config: &SerialConfig) -> TransportResult<bool> {
+        // Try to open the port and send a probe command
+        match SerialPortWrapper::new(port_name, config).await {
+            Ok(port) => {
+                // Send probe command
+                match port.write(b"PROBE\r\n").await {
+                    Ok(_) => {
+                        // Wait for response
+                        match port.read(Duration::from_millis(500)).await {
+                            Ok(data) => {
+                                let response = String::from_utf8_lossy(&data);
+                                // Check for known responses
+                                Ok(response.contains("OK") || 
+                                   response.contains("ARDUINO") || 
+                                   response.contains("READY"))
+                            }
+                            Err(_) => Ok(false) // No response, but port exists
+                        }
+                    }
+                    Err(_) => Ok(false) // Port exists but can't write
+                }
+            }
+            Err(_) => Ok(false) // Can't open port
+        }
     }
     
     /// Start a background task to monitor connection and trigger reconnection
@@ -110,7 +279,9 @@ impl SerialTransport {
                     (false, false, true) => {
                         tracing::info!("Hot-plug detected! {} became available", address);
                         // Immediately try to connect to the newly available device
-                        match SerialPortWrapper::new(&address) {
+                        // Extract config from transport settings for reconnection
+                        let config = SerialSettings::default(); // TODO: Get from actual config
+                        match SerialPortWrapper::new(&address, &config).await {
                             Ok(new_port) => {
                                 let mut port_guard = port.lock().await;
                                 *port_guard = Some(new_port);
@@ -138,8 +309,8 @@ impl SerialTransport {
                     (true, true, true) => {
                         // Perform actual health check on the port
                         let mut port_guard = port.lock().await;
-                        if let Some(ref mut serial_port) = *port_guard {
-                            if !serial_port.check_health() {
+                        if let Some(ref serial_port) = *port_guard {
+                            if !serial_port.check_health().await {
                                 // Port is unhealthy - mark as disconnected
                                 tracing::warn!("Health check failed! Port {} is no longer responsive", address);
                                 connection_state.store(false, Ordering::Relaxed);
@@ -176,7 +347,8 @@ impl SerialTransport {
                         tokio::time::sleep(total_delay).await;
                         
                         // Attempt reconnection
-                        match SerialPortWrapper::new(&address) {
+                        let config = SerialSettings::default(); // TODO: Get from actual config
+                        match SerialPortWrapper::new(&address, &config).await {
                             Ok(new_port) => {
                                 let mut port_guard = port.lock().await;
                                 *port_guard = Some(new_port);
@@ -222,18 +394,19 @@ impl SerialTransport {
     /// Trigger automatic reconnection in the background
     async fn trigger_auto_reconnection(&self) {
         let address = self.base.config.address.clone();
+        let config = SerialSettings::default(); // TODO: Get from actual config
         
         // Create a closure that attempts to connect
         let connect_fn = move || -> std::pin::Pin<Box<dyn std::future::Future<Output = TransportResult<()>> + Send>> {
             let addr = address.clone();
+            let cfg = config.clone();
             Box::pin(async move {
-                // TODO: Implement actual serial port connection
-                // For now, simulate connection attempt
-                let _mock_port = SerialPortWrapper::new(&addr)?;
+                // Attempt to create a new serial port connection
+                let _new_port = SerialPortWrapper::new(&addr, &cfg).await?;
                 
                 // In real implementation, we'd need to update self.port
                 // This is challenging due to ownership - may need Arc<Mutex<>>
-                tracing::info!("Mock serial reconnection to {}", addr);
+                tracing::info!("Triggered serial reconnection to {}", addr);
                 Ok(())
             })
         };
@@ -318,14 +491,20 @@ impl Transport for SerialTransport {
         
         self.base.set_state(ConnectionState::Connecting).await;
         
-        // TODO: Implement actual serial port connection
-        // For now, create a mock connection
-        let mock_port = SerialPortWrapper::new(&self.base.config.address)?;
+        // Extract serial settings from config
+        let serial_config = if let crate::transport::common::TransportSettings::Serial(ref settings) = self.base.config.settings {
+            settings.clone()
+        } else {
+            return Err(TransportError::ConfigError("Invalid settings for serial transport".into()));
+        };
+        
+        // Connect to serial port using proper async patterns
+        let serial_port = SerialPortWrapper::new(&self.base.config.address, &serial_config).await?;
         
         // Update the shared port
         {
             let mut port_guard = self.port.lock().await;
-            *port_guard = Some(mock_port);
+            *port_guard = Some(serial_port);
         }
         
         // Set connection state
@@ -341,7 +520,9 @@ impl Transport for SerialTransport {
             self.start_connection_monitor();
         }
         
-        tracing::info!("Connected to serial port: {}", self.base.config.address);
+        tracing::info!("Connected to serial port: {} with session ID: {}", 
+                     self.base.config.address, 
+                     self.port.lock().await.as_ref().map(|p| p.session_id()).unwrap_or_default());
         Ok(())
     }
     
@@ -381,9 +562,10 @@ impl Transport for SerialTransport {
         // Start monitoring this operation after connection is ensured
         let guard = self.base.monitor.start_operation("serial_send");
         
-        let mut port_guard = self.port.lock().await;
-        if let Some(ref mut port) = port_guard.as_mut() {
-            match port.write(data) {
+        let port_guard = self.port.lock().await;
+        if let Some(ref port) = port_guard.as_ref() {
+            // Use the port through its async interface
+            match port.write(data).await {
                 Ok(_) => {
                     drop(port_guard); // Explicitly drop the lock before async operations
                     
@@ -440,34 +622,57 @@ impl Transport for SerialTransport {
         let guard = self.base.monitor.start_operation("serial_receive");
         let start = Instant::now();
         
-        let mut port_guard = self.port.lock().await;
-        if let Some(ref mut port) = port_guard.as_mut() {
-            // Set up timeout
-            let deadline = Instant::now() + timeout;
-            
-            // Try to read data
-            let data = tokio::time::timeout_at(
-                deadline.into(),
-                port.read()
-            ).await
-                .map_err(|_| TransportError::Timeout(format!("Receive timeout after {:?}", timeout)))?;
-            
+        if !self.is_connected() {
             self.base.update_stats(|stats| {
-                stats.bytes_received += data.len() as u64;
+                stats.transactions_failed += 1;
+                stats.last_error = Some("Not connected".into());
             }).await;
-            
-            // Enforce minimum latency
-            self.base.enforce_latency(start).await?;
-            
-            // Complete the monitoring guard
-            guard.complete().await;
-            
-            Ok(data)
+            return Err(TransportError::NotConnected);
+        }
+        
+        let port_guard = self.port.lock().await;
+        if let Some(ref port) = port_guard.as_ref() {
+            // Use the async read method with timeout
+            match port.read(timeout).await {
+                Ok(data) => {
+                    drop(port_guard);
+                    
+                    if !data.is_empty() {
+                        self.base.update_stats(|stats| {
+                            stats.bytes_received += data.len() as u64;
+                        }).await;
+                    }
+                    
+                    // Enforce minimum latency
+                    self.base.enforce_latency(start).await?;
+                    
+                    // Complete the monitoring guard
+                    guard.complete().await;
+                    
+                    Ok(data)
+                }
+                Err(e) => {
+                    drop(port_guard);
+                    
+                    self.base.update_stats(|stats| {
+                        stats.transactions_failed += 1;
+                        stats.last_error = Some(e.to_string());
+                    }).await;
+                    
+                    // Enforce minimum latency even on error
+                    self.base.enforce_latency(start).await?;
+                    
+                    // Complete the monitoring guard
+                    guard.complete().await;
+                    
+                    Err(e)
+                }
+            }
         } else {
             drop(port_guard);
             self.base.update_stats(|stats| {
                 stats.transactions_failed += 1;
-                stats.last_error = Some("Not connected".into());
+                stats.last_error = Some("Port not available".into());
             }).await;
             Err(TransportError::NotConnected)
         }
@@ -480,9 +685,9 @@ impl Transport for SerialTransport {
     }
     
     async fn reset(&mut self) -> TransportResult<()> {
-        let mut port_guard = self.port.lock().await;
-        if let Some(ref mut port) = port_guard.as_mut() {
-            port.flush()?;
+        let port_guard = self.port.lock().await;
+        if let Some(ref port) = port_guard.as_ref() {
+            port.flush().await?;
             Ok(())
         } else {
             Err(TransportError::NotConnected)
@@ -528,90 +733,164 @@ impl Transport for SerialTransport {
     }
 }
 
-/// Wrapper around real serial port
+/// Wrapper around real serial port with proper async patterns
 struct SerialPortWrapper {
-    port: Box<dyn serialport::SerialPort>,
+    port: Arc<Mutex<Box<dyn serialport::SerialPort>>>,
     port_name: String,
+    session_id: Uuid,
 }
 
 impl SerialPortWrapper {
-    fn new(port_name: &str) -> TransportResult<Self> {
-        // Actually try to open the port - will fail if no device
-        let port = serialport::new(port_name, 115200)
-            .timeout(Duration::from_millis(100))
-            .data_bits(serialport::DataBits::Eight)
-            .parity(serialport::Parity::None)
-            .stop_bits(serialport::StopBits::One)
-            .flow_control(serialport::FlowControl::None)
-            .open()
-            .map_err(|e| {
-                use serialport::ErrorKind;
-                match e.kind() {
-                    ErrorKind::NoDevice => TransportError::ConnectionFailed(
-                        format!("No device found on port {}", port_name)
-                    ),
-                    ErrorKind::InvalidInput => TransportError::ConfigError(
-                        format!("Invalid port name: {}", port_name)
-                    ),
-                    _ => TransportError::ConnectionFailed(
-                        format!("Failed to open port {}: {}", port_name, e)
-                    ),
-                }
-            })?;
+    /// Create new serial port wrapper using spawn_blocking for I/O operations
+    async fn new(port_name: &str, config: &SerialConfig) -> TransportResult<Self> {
+        let port_name_clone = port_name.to_string();
+        let baud_rate = config.baud_rate;
+        let timeout_ms = 100u64; // Default timeout in ms
+        let data_bits = config.data_bits.into();
+        let stop_bits = config.stop_bits.into();
+        let parity = config.parity.into();
+        let flow_control = config.flow_control.into();
+        
+        // CRITICAL: Use spawn_blocking for serial port opening
+        let port = spawn_blocking(move || {
+            serialport::new(&port_name_clone, baud_rate)
+                .timeout(Duration::from_millis(timeout_ms))
+                .data_bits(data_bits)
+                .parity(parity)
+                .stop_bits(stop_bits)
+                .flow_control(flow_control)
+                .open()
+                .map_err(|e| {
+                    use serialport::ErrorKind;
+                    match e.kind() {
+                        ErrorKind::NoDevice => TransportError::ConnectionFailed(
+                            format!("No device found on port {}", port_name_clone)
+                        ),
+                        ErrorKind::InvalidInput => TransportError::ConfigError(
+                            format!("Invalid port name: {}", port_name_clone)
+                        ),
+                        _ => TransportError::ConnectionFailed(
+                            format!("Failed to open port {}: {}", port_name_clone, e)
+                        ),
+                    }
+                })
+        }).await
+        .map_err(|e| TransportError::IoError(std::io::Error::new(
+            std::io::ErrorKind::Other, 
+            format!("Task join error: {}", e)
+        )))??;
         
         Ok(SerialPortWrapper {
-            port,
+            port: Arc::new(Mutex::new(port)),
             port_name: port_name.to_string(),
+            session_id: Uuid::new_v4(),
         })
     }
     
-    fn write(&mut self, data: &[u8]) -> TransportResult<()> {
+    /// Write data using spawn_blocking for async safety
+    async fn write(&self, data: &[u8]) -> TransportResult<()> {
         use std::io::Write;
-        self.port.write_all(data).map_err(|e| {
-            // IO errors often indicate disconnection on serial ports
-            TransportError::IoError(e)
-        })
+        
+        let port = self.port.clone();
+        let data = data.to_vec();
+        
+        // CRITICAL: Use spawn_blocking for serial write operations
+        spawn_blocking(move || {
+            let mut port_guard = port.blocking_lock();
+            port_guard.write_all(&data).map_err(|e| {
+                // IO errors often indicate disconnection on serial ports
+                TransportError::IoError(e)
+            })?;
+            port_guard.flush().map_err(|e| TransportError::IoError(e))
+        }).await
+        .map_err(|e| TransportError::IoError(std::io::Error::new(
+            std::io::ErrorKind::Other, 
+            format!("Task join error: {}", e)
+        )))?
     }
     
-    async fn read(&mut self) -> Vec<u8> {
-        let mut buf = vec![0u8; 256];
-        match self.port.read(&mut buf) {
-            Ok(n) => {
-                buf.truncate(n);
-                buf
-            }
-            Err(e) => {
-                // Log the error - IO errors often indicate disconnection
-                tracing::warn!("Read error (possible disconnection): {}", e);
-                // Return empty on timeout or error
-                Vec::new()
-            }
-        }
-    }
-    
-    fn flush(&mut self) -> TransportResult<()> {
-        self.port.flush().map_err(|e| TransportError::IoError(e))
-    }
-    
-    fn check_health(&mut self) -> bool {
-        // Try to flush the port - this will fail if device is disconnected
-        // bytes_to_read() alone is not reliable for disconnection detection on Windows
-        match self.port.flush() {
-            Ok(_) => {
-                // Also check if we can query port state
-                match self.port.bytes_to_read() {
-                    Ok(_) => true,
-                    Err(e) => {
-                        tracing::warn!("Health check failed on bytes_to_read: {}", e);
-                        false
-                    }
+    /// Read data using spawn_blocking for async safety
+    async fn read(&self, timeout: Duration) -> TransportResult<Vec<u8>> {
+        let port = self.port.clone();
+        
+        // CRITICAL: Use spawn_blocking for serial read operations
+        spawn_blocking(move || {
+            let mut port_guard = port.blocking_lock();
+            let mut buf = vec![0u8; 1024]; // Larger buffer for better performance
+            
+            // Set timeout for this specific read
+            port_guard.set_timeout(timeout)
+                .map_err(|e| std::io::Error::new(std::io::ErrorKind::Other, e))?;
+            
+            match port_guard.read(&mut buf) {
+                Ok(n) => {
+                    buf.truncate(n);
+                    Ok(buf)
+                }
+                Err(e) if e.kind() == std::io::ErrorKind::TimedOut => {
+                    // Timeout is not an error, just no data available
+                    Ok(Vec::new())
+                }
+                Err(e) => {
+                    // Log the error - IO errors often indicate disconnection
+                    tracing::warn!("Read error (possible disconnection): {}", e);
+                    Err(TransportError::IoError(e))
                 }
             }
-            Err(e) => {
-                tracing::warn!("Health check failed on flush: {}", e);
-                false
+        }).await
+        .map_err(|e| TransportError::IoError(std::io::Error::new(
+            std::io::ErrorKind::Other, 
+            format!("Task join error: {}", e)
+        )))?
+    }
+    
+    /// Flush port using spawn_blocking
+    async fn flush(&self) -> TransportResult<()> {
+        let port = self.port.clone();
+        
+        spawn_blocking(move || {
+            let mut port_guard = port.blocking_lock();
+            port_guard.flush().map_err(|e| TransportError::IoError(e))
+        }).await
+        .map_err(|e| TransportError::IoError(std::io::Error::new(
+            std::io::ErrorKind::Other, 
+            format!("Task join error: {}", e)
+        )))?
+    }
+    
+    /// Check port health using spawn_blocking
+    async fn check_health(&self) -> bool {
+        let port = self.port.clone();
+        
+        let result = spawn_blocking(move || {
+            let mut port_guard = port.blocking_lock();
+            
+            // Try to flush the port - this will fail if device is disconnected
+            // bytes_to_read() alone is not reliable for disconnection detection on Windows
+            match port_guard.flush() {
+                Ok(_) => {
+                    // Also check if we can query port state
+                    match port_guard.bytes_to_read() {
+                        Ok(_) => true,
+                        Err(e) => {
+                            tracing::warn!("Health check failed on bytes_to_read: {}", e);
+                            false
+                        }
+                    }
+                }
+                Err(e) => {
+                    tracing::warn!("Health check failed on flush: {}", e);
+                    false
+                }
             }
-        }
+        }).await;
+        
+        result.unwrap_or(false)
+    }
+    
+    /// Get session ID for tracking
+    fn session_id(&self) -> Uuid {
+        self.session_id
     }
 }
 

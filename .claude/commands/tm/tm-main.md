@@ -1,3 +1,11 @@
+---
+model: claude-sonnet-4-20250514
+category: taskmaster-core
+priority: critical
+tags: ["taskmaster-core", "taskmaster"]
+description: Task Master main command - central hub for task management operations
+---
+
 # Task Master Command Reference
 
 Comprehensive command structure for Task Master integration with Claude Code.
@@ -144,3 +152,5 @@ Commands requiring IDs intelligently parse from $ARGUMENTS:
 
 ### Smart Defaults
 Commands provide intelligent defaults and suggestions based on context.
+
+

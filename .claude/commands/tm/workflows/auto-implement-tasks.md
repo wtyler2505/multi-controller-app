@@ -1,3 +1,33 @@
+---
+model: claude-sonnet-4-20250514
+category: task-management
+priority: medium
+tags: ["task-management", "tasks"]
+description: Command for auto-implement-tasks operations
+
+# Agent and Tool Integration
+assigned-agent: task-orchestrator
+required-tools:
+  - "mcp__taskmaster-ai__get_tasks"
+  - "mcp__taskmaster-ai__next_task"
+  - "mcp__taskmaster-ai__set_task_status"
+  - "mcp__desktop-commander__start_process"
+tool-chain: task-coordination
+auto-deploy: true
+parallel-execution: true
+max-agent-count: 3
+
+# Workflow Configuration
+pre-execution:
+  validate-tools: true
+  load-context: true
+  prepare-environment: true
+post-execution:
+  store-results: true
+  update-tasks: true
+  generate-report: true
+---
+
 Enhanced auto-implementation with intelligent code generation and testing.
 
 Arguments: $ARGUMENTS
@@ -58,11 +88,11 @@ Based on task type and context:
 
 Step-by-step with validation:
 ```
-Step 1/5: Setting up component structure ✓
-Step 2/5: Implementing core logic ✓
-Step 3/5: Adding error handling ⚡ (in progress)
-Step 4/5: Writing tests ⏳
-Step 5/5: Integration testing ⏳
+Step 1/5: Setting up component structure âœ“
+Step 2/5: Implementing core logic âœ“
+Step 3/5: Adding error handling âš¡ (in progress)
+Step 4/5: Writing tests â³
+Step 5/5: Integration testing â³
 
 Current: Adding try-catch blocks and validation...
 ```
@@ -95,3 +125,5 @@ After completion:
 - Update task relationships
 
 Result: High-quality, production-ready implementations.
+
+

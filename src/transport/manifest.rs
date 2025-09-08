@@ -373,15 +373,15 @@ impl ManifestManager {
         
         // Discover serial ports
         if self.manifest.discovery.serial_scan {
-            if let Ok(ports) = crate::transport::serial::SerialTransport::list_ports() {
-                for port in ports {
+            if let Ok(ports) = crate::transport::serial::SerialTransport::list_ports().await {
+                for port_info in ports {
                     let entry = TransportEntry {
-                        id: format!("discovered_serial_{}", port.replace("/", "_").replace("\\", "_")),
-                        name: format!("Serial Device ({})", port),
-                        device_type: "unknown".to_string(),
+                        id: format!("discovered_serial_{}", port_info.name.replace("/", "_").replace("\\", "_")),
+                        name: format!("Serial Device ({})", port_info.name),
+                        device_type: port_info.device_type,
                         transport_type: TransportType::Serial,
                         connection: ConnectionDetails::Serial {
-                            port: port.clone(),
+                            port: port_info.name.clone(),
                             baud_rate: 115200,
                             auto_detect: true,
                         },

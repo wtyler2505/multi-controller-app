@@ -2,7 +2,7 @@
 
 /**
  * Task Master ↔ GitHub Issues Bidirectional Sync
- * 
+ *
  * This script synchronizes Task Master tasks with GitHub Issues
  * for team visibility and collaboration.
  */
@@ -12,25 +12,29 @@ const path = require('path');
 const { execSync } = require('child_process');
 
 // Configuration paths
-const TASKS_FILE = path.join('.taskmaster', 'tasks', 'tasks.json');
-const GITHUB_MAP_FILE = path.join('.taskmaster', 'github-map.json');
-const SYNC_LOG_DIR = path.join('.taskmaster', 'sync-logs');
+const TASKS_FILE = path.join(process.cwd(), '..', '..', '.taskmaster', 'tasks', 'tasks.json');
+const GITHUB_MAP_FILE = path.join(process.cwd(), '..', '..', '.taskmaster', 'github-map.json');
+const SYNC_LOG_DIR = path.join(process.cwd(), '..', '..', '.taskmaster', 'sync-logs');
+
+// Task ID range constants for sync filtering
+const SYNC_TASK_ID_MIN = 27;
+const SYNC_TASK_ID_MAX = 36;
 
 // Status mapping
 const STATUS_MAP = {
   taskmaster_to_github: {
-    'pending': { state: 'open', labels: [] },
+    pending: { state: 'open', labels: [] },
     'in-progress': { state: 'open', labels: ['in-progress'] },
-    'review': { state: 'open', labels: ['review'] },
-    'done': { state: 'closed', labels: [] },
-    'blocked': { state: 'open', labels: ['blocked'] },
-    'deferred': { state: 'open', labels: ['deferred'] },
-    'cancelled': { state: 'closed', labels: [] }
+    review: { state: 'open', labels: ['review'] },
+    done: { state: 'closed', labels: [] },
+    blocked: { state: 'open', labels: ['blocked'] },
+    deferred: { state: 'open', labels: ['deferred'] },
+    cancelled: { state: 'closed', labels: [] },
   },
   github_to_taskmaster: {
-    'open': 'pending',
-    'closed': 'done'
-  }
+    open: 'pending',
+    closed: 'done',
+  },
 };
 
 class TaskMasterGitHubSync {
@@ -44,7 +48,7 @@ class TaskMasterGitHubSync {
       created: 0,
       updated: 0,
       errors: 0,
-      skipped: 0
+      skipped: 0,
     };
   }
 
@@ -73,34 +77,38 @@ class TaskMasterGitHubSync {
   log(message, level = 'info') {
     if (this.verbose || level === 'error') {
       const timestamp = new Date().toISOString();
-      console.log(`[${timestamp}] [${level.toUpperCase()}] ${message}`);
+      console.info(`[${timestamp}] [${level.toUpperCase()}] ${message}`);
     }
   }
 
-  async syncTaskToGitHub(task) {
+  syncTaskToGitHub(task) {
     const issueNumber = this.githubMap.tasks[task.id];
-    
+
     if (issueNumber) {
       // Update existing issue
-      await this.updateGitHubIssue(task, issueNumber);
+      this.updateGitHubIssue(task, issueNumber);
     } else if (task.status !== 'done' && task.status !== 'cancelled') {
       // Create new issue only for active tasks
-      await this.createGitHubIssue(task);
+      this.createGitHubIssue(task);
     } else {
       this.log(`Skipping completed/cancelled task ${task.id}: ${task.title}`);
       this.syncStats.skipped++;
     }
   }
 
-  async createGitHubIssue(task) {
+  createGitHubIssue(task) {
     const title = `[Task ${task.id}] ${task.title}`;
     const body = this.formatIssueBody(task);
     const labels = this.getLabelsForTask(task);
 
     const command = [
-      'gh', 'issue', 'create',
-      '--title', JSON.stringify(title),
-      '--body', JSON.stringify(body)
+      'gh',
+      'issue',
+      'create',
+      '--title',
+      JSON.stringify(title),
+      '--body',
+      JSON.stringify(body),
     ];
 
     if (labels.length > 0) {
@@ -127,7 +135,7 @@ class TaskMasterGitHubSync {
     }
   }
 
-  async updateGitHubIssue(task, issueNumber) {
+  updateGitHubIssue(task, issueNumber) {
     const githubStatus = STATUS_MAP.taskmaster_to_github[task.status];
     const labels = this.getLabelsForTask(task);
 
@@ -140,7 +148,7 @@ class TaskMasterGitHubSync {
       // Check if state needs updating
       if (githubStatus.state !== currentIssue.state) {
         const action = githubStatus.state === 'closed' ? 'close' : 'reopen';
-        
+
         if (this.dryRun) {
           this.log(`[DRY RUN] Would ${action} issue #${issueNumber}`, 'info');
         } else {
@@ -150,14 +158,19 @@ class TaskMasterGitHubSync {
       }
 
       // Update labels if needed
-      const currentLabelNames = currentIssue.labels.map(l => l.name);
-      const labelsDiff = labels.filter(l => !currentLabelNames.includes(l));
-      
+      const currentLabelNames = currentIssue.labels.map((l) => l.name);
+      const labelsDiff = labels.filter((l) => !currentLabelNames.includes(l));
+
       if (labelsDiff.length > 0) {
         if (this.dryRun) {
-          this.log(`[DRY RUN] Would add labels to issue #${issueNumber}: ${labelsDiff.join(', ')}`, 'info');
+          this.log(
+            `[DRY RUN] Would add labels to issue #${issueNumber}: ${labelsDiff.join(', ')}`,
+            'info'
+          );
         } else {
-          execSync(`gh issue edit ${issueNumber} --add-label ${labelsDiff.join(',')}`, { encoding: 'utf8' });
+          execSync(`gh issue edit ${issueNumber} --add-label ${labelsDiff.join(',')}`, {
+            encoding: 'utf8',
+          });
           this.log(`Added labels to issue #${issueNumber}: ${labelsDiff.join(', ')}`, 'success');
         }
       }
@@ -171,14 +184,14 @@ class TaskMasterGitHubSync {
 
   formatIssueBody(task) {
     let body = `## Description\n${task.description}\n\n`;
-    
+
     if (task.details) {
       body += `## Details\n${task.details}\n\n`;
     }
 
     if (task.subtasks && task.subtasks.length > 0) {
       body += `## Subtasks\n`;
-      task.subtasks.forEach(subtask => {
+      task.subtasks.forEach((subtask) => {
         const checked = subtask.status === 'done' ? 'x' : ' ';
         body += `- [${checked}] ${subtask.title}\n`;
       });
@@ -187,7 +200,7 @@ class TaskMasterGitHubSync {
 
     if (task.dependencies && task.dependencies.length > 0) {
       body += `## Dependencies\n`;
-      task.dependencies.forEach(dep => {
+      task.dependencies.forEach((dep) => {
         const depIssue = this.githubMap.tasks[dep];
         if (depIssue) {
           body += `- Depends on #${depIssue} (Task ${dep})\n`;
@@ -206,7 +219,7 @@ class TaskMasterGitHubSync {
     body += `- Task Master ID: ${task.id}\n`;
     body += `- Priority: ${task.priority || 'medium'}\n`;
     body += `- Status: ${task.status}\n`;
-    
+
     if (task.complexityScore) {
       body += `- Complexity Score: ${task.complexityScore}\n`;
     }
@@ -216,7 +229,7 @@ class TaskMasterGitHubSync {
 
   getLabelsForTask(task) {
     const labels = ['task:multi-controller'];
-    
+
     // Add priority label
     const priorityLabel = this.githubMap.config.priorityLabels[task.priority];
     if (priorityLabel) {
@@ -246,7 +259,7 @@ class TaskMasterGitHubSync {
       timestamp: new Date().toISOString(),
       repository: this.repository,
       stats: this.syncStats,
-      mappings: this.githubMap.tasks
+      mappings: this.githubMap.tasks,
     };
 
     const reportFile = path.join(
@@ -255,28 +268,28 @@ class TaskMasterGitHubSync {
     );
 
     await fs.writeFile(reportFile, JSON.stringify(report, null, 2));
-    
-    console.log('\n=== Sync Report ===');
-    console.log(`Created: ${this.syncStats.created} issues`);
-    console.log(`Updated: ${this.syncStats.updated} issues`);
-    console.log(`Skipped: ${this.syncStats.skipped} tasks`);
-    console.log(`Errors: ${this.syncStats.errors}`);
-    console.log(`Report saved to: ${reportFile}`);
+
+    console.info('\n=== Sync Report ===');
+    console.info(`Created: ${this.syncStats.created} issues`);
+    console.info(`Updated: ${this.syncStats.updated} issues`);
+    console.info(`Skipped: ${this.syncStats.skipped} tasks`);
+    console.info(`Errors: ${this.syncStats.errors}`);
+    console.info(`Report saved to: ${reportFile}`);
   }
 
   async run() {
     try {
       await this.init();
 
-      // Sync pending tasks only (27-36)
-      const pendingTasks = this.tasks.filter(t => 
-        t.id >= 27 && t.id <= 36 && t.status === 'pending'
+      // Sync pending tasks only (SYNC_TASK_ID_MIN-SYNC_TASK_ID_MAX)
+      const pendingTasks = this.tasks.filter(
+        (t) => t.id >= SYNC_TASK_ID_MIN && t.id <= SYNC_TASK_ID_MAX && t.status === 'pending'
       );
 
-      console.log(`\nSyncing ${pendingTasks.length} pending tasks to GitHub...`);
+      console.info(`\nSyncing ${pendingTasks.length} pending tasks to GitHub...`);
 
       for (const task of pendingTasks) {
-        await this.syncTaskToGitHub(task);
+        this.syncTaskToGitHub(task);
       }
 
       if (!this.dryRun) {
@@ -296,11 +309,11 @@ if (require.main === module) {
   const args = process.argv.slice(2);
   const options = {
     dryRun: args.includes('--dry-run'),
-    verbose: args.includes('--verbose') || args.includes('-v')
+    verbose: args.includes('--verbose') || args.includes('-v'),
   };
 
   if (args.includes('--help') || args.includes('-h')) {
-    console.log(`
+    console.info(`
 Task Master ↔ GitHub Issues Sync
 
 Usage: node taskmaster-github-sync.js [options]

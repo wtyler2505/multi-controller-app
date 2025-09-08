@@ -1,13 +1,130 @@
 ---
+model: claude-sonnet-4-20250514
+category: utilities-tools
+priority: high
+tags: ["utilities-tools", "workflow"]
+description: Orchestrate complex automation workflows with task dependencies and scheduling
 allowed-tools: Read, Write, Edit, Bash
 argument-hint: [workflow-name] | create | run | schedule | monitor
-description: Orchestrate complex automation workflows with task dependencies, scheduling, and cross-platform execution
-model: sonnet
+
+# Enhanced Context-Aware Agent Integration
+enhanced-integration:
+  enabled: true
+  agent-selection-criteria:
+    domain-expertise: ["workflow-orchestration", "automation-management", "task-scheduling"]
+    complexity-factors: ["dependency-complexity", "scheduling-requirements", "monitoring-scope"]
+    specialized-tools: ["workflow-automation", "task-orchestration", "scheduling-management"]
+  preferred-agents:
+    primary: "general-purpose"
+    secondary: "workflow-orchestrator"
+    fallback: ["task-orchestrator"]
+  tool-requirements:
+    mcp-servers: ["desktop-commander", "FileScopeMCP", "cipher-memory"]
+    specialized-functions: ["workflow-orchestration", "automation-management"]
+
+# Universal Cipher Memory Integration (MANDATORY FOR ALL COMMANDS)
+cipher-memory-integration:
+  enabled: true
+  priority: "high"
+  
+  # Pre-execution Memory Operations
+  pre-execution-memory:
+    context-search:
+      - query-pattern: "workflow-orchestration + automation-management + task-scheduling"
+      - tools: ["mcp__cipher-memory__search_nodes", "mcp__cipher-memory__open_nodes"]
+      - context-retrieval: "workflow-patterns + automation-knowledge"
+    
+    knowledge-preparation:
+      - domain: "workflow-orchestration"
+      - pattern-search: "orchestration-strategies + automation-patterns + scheduling-optimization"
+      - tools: ["mcp__cipher-memory__read_graph"]
+  
+  # Execution Memory Operations
+  execution-memory:
+    progress-tracking:
+      - tool: "mcp__cipher-memory__add_observations"
+      - capture-points: ["workflow-design", "automation-setup", "scheduling-configuration"]
+      - entity-updates: "real-time-progress"
+    
+    decision-logging:
+      - tool: "mcp__cipher-memory__create_entities"
+      - log-decisions: "workflow-strategies + automation-approaches + orchestration-decisions"
+      - pattern-recognition: "workflow-orchestration-patterns"
+  
+  # Post-execution Memory Operations
+  post-execution-memory:
+    result-storage:
+      - tools: ["mcp__cipher-memory__create_entities"]
+      - store-patterns: ["workflow-results", "automation-insights", "orchestration-techniques"]
+      - knowledge-extraction: "workflow-methodologies + orchestration-patterns"
+    
+    relationship-creation:
+      - tools: ["mcp__cipher-memory__create_relations"]
+      - link-concepts: ["workflow-relationships", "automation-dependencies", "orchestration-connections"]
+      - cross-reference: "related-workflow-processes"
+    
+    knowledge-refinement:
+      - tools: ["mcp__cipher-memory__add_observations"]
+      - enrich-existing: "workflow-knowledge + orchestration-patterns"
+      - continuous-learning: "workflow-orchestration-optimization"
+
+# Centralized Logging Integration
+logging-integration:
+  enabled: true
+  log-file: ".claude/command-execution.jsonl"
+  
+  # Comprehensive Execution Logging
+  log-level: "comprehensive"
+  
+  capture-points:
+    - command-initiation
+    - agent-selection-process
+    - memory-operations
+    - workflow-design
+    - automation-setup
+    - scheduling-configuration
+    - orchestration-execution
+    - error-handling
+    - completion-status
+  
+  # Structured Log Format
+  log-structure:
+    timestamp: "ISO-8601"
+    command: "workflow-orchestrator"
+    execution-id: "UUID"
+    agent-assignments: "selected-agents-with-reasoning"
+    memory-operations: "cipher-memory-transactions"
+    performance-metrics: "execution-time + memory-usage + success-rate"
+    outcome-summary: "workflow-results + orchestration-insights"
+
+# Cross-Command Learning Integration
+cross-command-learning:
+  enabled: true
+  share-insights: ["workflow-patterns", "orchestration-techniques", "automation-methodologies"]
+  learn-from: ["test-automation-orchestrator", "setup-comprehensive-testing", "project-health-check"]
+  contribute-to: "workflow-orchestration-knowledge-base"
+
+# Workflow Integration
+workflow-integration:
+  pre-execution:
+    - validate-orchestration-requirements
+    - prepare-memory-context
+    - select-optimal-agents
+  
+  execution:
+    - parallel-workflow-design
+    - continuous-memory-updates
+    - real-time-orchestration-optimization
+  
+  post-execution:
+    - comprehensive-result-storage
+    - cross-reference-generation
+    - workflow-pattern-extraction
 ---
 
 # Workflow Orchestrator
 
-Orchestrate complex automation workflows: $ARGUMENTS
+Orchestrate complex automation workflows with intelligent dependency management and comprehensive monitoring: $ARGUMENTS
 
 ## Current Workflow State
 
@@ -574,3 +691,4 @@ async function sendSlackNotification(message, channel = '#deployments') {
 ```
 
 This workflow orchestrator provides enterprise-grade automation capabilities with dependency management, monitoring, and cross-platform execution support.
+

@@ -1,3 +1,11 @@
+---
+model: claude-sonnet-4-20250514
+category: development-setup
+priority: medium
+tags: ["development-setup", "setup", "tasks", "taskmaster"]
+description: Check and install in one command
+---
+
 Quick install Task Master globally if not already installed.
 
 Execute this streamlined installation:
@@ -20,3 +28,5 @@ If you see "command not found" after installation, you may need to:
 Once installed, you can use all the Task Master commands!
 
 Quick test: Run `/project:help` to see all available commands.
+
+

@@ -1,183 +1,129 @@
 ---
-allowed-tools: Bash, Read, Write, LS, Task
+model: claude-sonnet-4-20250514
+category: project-management
+priority: high
+tags: ["project-management", "github", "integration"]
+description: Command for epic-sync operations
+allowed-tools: Bash, Read, Write, LS, Task, mcp__taskmaster-ai__get_tasks, mcp__desktop-commander__read_multiple_files
+argument-hint: <epic_name> | --dry-run | --force-update
+
+# Enhanced Context-Aware Agent Integration
+enhanced-integration:
+  enabled: true
+  agent-selection-criteria:
+    domain-expertise: ["epic-synchronization", "github-integration", "data-migration"]
+    complexity-factors: ["multi-platform-sync", "data-transformation", "reference-updating"]
+    specialized-tools: ["epic-management", "github-operations", "data-synchronization"]
+  preferred-agents:
+    primary: "task-orchestrator"
+    secondary: "general-purpose"
+    fallback: ["task-executor"]
+  tool-requirements:
+    mcp-servers: ["taskmaster-ai", "desktop-commander", "cipher-memory"]
+    specialized-functions: ["epic-synchronization", "github-integration"]
+
+# Universal Cipher Memory Integration (MANDATORY FOR ALL COMMANDS)
+cipher-memory-integration:
+  enabled: true
+  priority: "high"
+  
+  # Pre-execution Memory Operations
+  pre-execution-memory:
+    context-search:
+      - query-pattern: "epic-synchronization + github-integration + data-migration"
+      - tools: ["mcp__cipher-memory__search_nodes", "mcp__cipher-memory__open_nodes"]
+      - context-retrieval: "synchronization-patterns + integration-knowledge + migration-strategies"
+    
+    knowledge-preparation:
+      - domain: "epic-synchronization"
+      - pattern-search: "synchronization-strategies + integration-patterns + migration-techniques"
+      - tools: ["mcp__cipher-memory__read_graph"]
+  
+  # Execution Memory Operations
+  execution-memory:
+    progress-tracking:
+      - tool: "mcp__cipher-memory__add_observations"
+      - capture-points: ["sync-preparation", "data-migration", "reference-updating"]
+      - entity-updates: "real-time-progress"
+    
+    decision-logging:
+      - tool: "mcp__cipher-memory__create_entities"
+      - log-decisions: "synchronization-strategies + integration-approaches + migration-decisions"
+      - pattern-recognition: "epic-synchronization-patterns"
+  
+  # Post-execution Memory Operations
+  post-execution-memory:
+    result-storage:
+      - tools: ["mcp__cipher-memory__create_entities"]
+      - store-patterns: ["synchronization-results", "integration-insights", "migration-techniques"]
+      - knowledge-extraction: "synchronization-methodologies + integration-patterns"
+    
+    relationship-creation:
+      - tools: ["mcp__cipher-memory__create_relations"]
+      - link-concepts: ["synchronization-relationships", "integration-dependencies", "migration-connections"]
+      - cross-reference: "related-synchronization-processes"
+    
+    knowledge-refinement:
+      - tools: ["mcp__cipher-memory__add_observations"]
+      - enrich-existing: "synchronization-knowledge + integration-patterns"
+      - continuous-learning: "epic-synchronization-optimization"
+
+# Centralized Logging Integration
+logging-integration:
+  enabled: true
+  log-file: ".claude/command-execution.jsonl"
+  
+  # Comprehensive Execution Logging
+  log-level: "comprehensive"
+  
+  capture-points:
+    - command-initiation
+    - agent-selection-process
+    - memory-operations
+    - sync-preparation
+    - data-migration
+    - reference-updating
+    - github-operations
+    - validation-checks
+    - error-handling
+    - completion-status
+  
+  # Structured Log Format
+  log-structure:
+    timestamp: "ISO-8601"
+    command: "pm-epic-sync"
+    execution-id: "UUID"
+    agent-assignments: "selected-agents-with-reasoning"
+    memory-operations: "cipher-memory-transactions"
+    performance-metrics: "execution-time + memory-usage + success-rate"
+    outcome-summary: "synchronization-results + integration-insights"
+
+# Cross-Command Learning Integration
+cross-command-learning:
+  enabled: true
+  share-insights: ["synchronization-patterns", "integration-techniques", "migration-strategies"]
+  learn-from: ["epic-create", "github-operations", "data-synchronization"]
+  contribute-to: "epic-synchronization-knowledge-base"
+
+# Workflow Integration
+workflow-integration:
+  pre-execution:
+    - validate-sync-prerequisites
+    - prepare-memory-context
+    - select-optimal-agents
+  
+  execution:
+    - parallel-synchronization-operations
+    - continuous-memory-updates
+    - real-time-integration-monitoring
+  
+  post-execution:
+    - comprehensive-result-storage
+    - cross-reference-generation
+    - synchronization-pattern-extraction
 ---
 
-# Epic Sync
-
-Push epic and tasks to GitHub as issues.
-
-## Usage
-```
-/pm:epic-sync <feature_name>
-```
-
-## Quick Check
-
-```bash
-# Verify epic exists
-test -f .claude/epics/$ARGUMENTS/epic.md || echo "❌ Epic not found. Run: /pm:prd-parse $ARGUMENTS"
-
-# Count task files
-ls .claude/epics/$ARGUMENTS/*.md 2>/dev/null | grep -v epic.md | wc -l
-```
-
-If no tasks found: "❌ No tasks to sync. Run: /pm:epic-decompose $ARGUMENTS"
-
-## Instructions
-
-### 1. Create Epic Issue
-
-Strip frontmatter and prepare GitHub issue body:
-```bash
-# Extract content without frontmatter
-sed '1,/^---$/d; 1,/^---$/d' .claude/epics/$ARGUMENTS/epic.md > /tmp/epic-body-raw.md
-
-# Remove "## Tasks Created" section and replace with Stats
-awk '
-  /^## Tasks Created/ { 
-    in_tasks=1
-    next
-  }
-  /^## / && in_tasks { 
-    in_tasks=0
-    # When we hit the next section after Tasks Created, add Stats
-    if (total_tasks) {
-      print "## Stats\n"
-      print "Total tasks: " total_tasks
-      print "Parallel tasks: " parallel_tasks " (can be worked on simultaneously)"
-      print "Sequential tasks: " sequential_tasks " (have dependencies)"
-      if (total_effort) print "Estimated total effort: " total_effort " hours"
-      print ""
-    }
-  }
-  /^Total tasks:/ && in_tasks { total_tasks = $3; next }
-  /^Parallel tasks:/ && in_tasks { parallel_tasks = $3; next }
-  /^Sequential tasks:/ && in_tasks { sequential_tasks = $3; next }
-  /^Estimated total effort:/ && in_tasks { 
-    gsub(/^Estimated total effort: /, "")
-    total_effort = $0
-    next 
-  }
-  !in_tasks { print }
-  END {
-    # If we were still in tasks section at EOF, add stats
-    if (in_tasks && total_tasks) {
-      print "## Stats\n"
-      print "Total tasks: " total_tasks
-      print "Parallel tasks: " parallel_tasks " (can be worked on simultaneously)"
-      print "Sequential tasks: " sequential_tasks " (have dependencies)"
-      if (total_effort) print "Estimated total effort: " total_effort
-    }
-  }
-' /tmp/epic-body-raw.md > /tmp/epic-body.md
-
-# Determine epic type (feature vs bug) from content
-if grep -qi "bug\|fix\|issue\|problem\|error" /tmp/epic-body.md; then
-  epic_type="bug"
-else
-  epic_type="feature"
-fi
-
-# Create epic issue with labels
-epic_number=$(gh issue create \
-  --title "Epic: $ARGUMENTS" \
-  --body-file /tmp/epic-body.md \
-  --label "epic,epic:$ARGUMENTS,$epic_type" \
-  --json number -q .number)
-```
-
-Store the returned issue number for epic frontmatter update.
-
-### 2. Create Task Sub-Issues
-
-Check if gh-sub-issue is available:
-```bash
-if gh extension list | grep -q "yahsan2/gh-sub-issue"; then
-  use_subissues=true
-else
-  use_subissues=false
-  echo "⚠️ gh-sub-issue not installed. Using fallback mode."
-fi
-```
-
-Count task files to determine strategy:
-```bash
-task_count=$(ls .claude/epics/$ARGUMENTS/[0-9][0-9][0-9].md 2>/dev/null | wc -l)
-```
-
-### For Small Batches (< 5 tasks): Sequential Creation
-
-```bash
-if [ "$task_count" -lt 5 ]; then
-  # Create sequentially for small batches
-  for task_file in .claude/epics/$ARGUMENTS/[0-9][0-9][0-9].md; do
-    [ -f "$task_file" ] || continue
-    
-    # Extract task name from frontmatter
-    task_name=$(grep '^name:' "$task_file" | sed 's/^name: *//')
-    
-    # Strip frontmatter from task content
-    sed '1,/^---$/d; 1,/^---$/d' "$task_file" > /tmp/task-body.md
-    
-    # Create sub-issue with labels
-    if [ "$use_subissues" = true ]; then
-      task_number=$(gh sub-issue create \
-        --parent "$epic_number" \
-        --title "$task_name" \
-        --body-file /tmp/task-body.md \
-        --label "task,epic:$ARGUMENTS" \
-        --json number -q .number)
-    else
-      task_number=$(gh issue create \
-        --title "$task_name" \
-        --body-file /tmp/task-body.md \
-        --label "task,epic:$ARGUMENTS" \
-        --json number -q .number)
-    fi
-    
-    # Record mapping for renaming
-    echo "$task_file:$task_number" >> /tmp/task-mapping.txt
-  done
-  
-  # After creating all issues, update references and rename files
-  # This follows the same process as step 3 below
-fi
-```
-
-### For Larger Batches: Parallel Creation
-
-```bash
-if [ "$task_count" -ge 5 ]; then
-  echo "Creating $task_count sub-issues in parallel..."
-  
-  # Check if gh-sub-issue is available for parallel agents
-  if gh extension list | grep -q "yahsan2/gh-sub-issue"; then
-    subissue_cmd="gh sub-issue create --parent $epic_number"
-  else
-    subissue_cmd="gh issue create"
-  fi
-  
-  # Batch tasks for parallel processing
-  # Spawn agents to create sub-issues in parallel with proper labels
-  # Each agent must use: --label "task,epic:$ARGUMENTS"
-fi
-```
-
-Use Task tool for parallel creation:
-```yaml
-Task:
-  description: "Create GitHub sub-issues batch {X}"
-  subagent_type: "general-purpose"
-  prompt: |
-    Create GitHub sub-issues for tasks in epic $ARGUMENTS
-    Parent epic issue: #$epic_number
-    
-    Tasks to process:
-    - {list of 3-4 task files}
-    
-    For each task file:
-    1. Extract task name from frontmatter
-    2. Strip frontmatter using: sed '1,/^---$/d; 1,/^---$/d'
+$/d'
     3. Create sub-issue using:
        - If gh-sub-issue available: 
          gh sub-issue create --parent $epic_number --title "$task_name" \
@@ -390,17 +336,17 @@ git pull origin main
 # Create worktree for epic
 git worktree add ../epic-$ARGUMENTS -b epic/$ARGUMENTS
 
-echo "✅ Created worktree: ../epic-$ARGUMENTS"
+echo "âœ… Created worktree: ../epic-$ARGUMENTS"
 ```
 
 ### 8. Output
 
 ```
-✅ Synced to GitHub
+âœ… Synced to GitHub
   - Epic: #{epic_number} - {epic_title}
   - Tasks: {count} sub-issues created
   - Labels applied: epic, task, epic:{name}
-  - Files renamed: 001.md → {issue_id}.md
+  - Files renamed: 001.md â†’ {issue_id}.md
   - References updated: depends_on/conflicts_with now use issue IDs
   - Worktree: ../epic-$ARGUMENTS
 
@@ -425,3 +371,5 @@ If any issue creation fails:
 - Don't pre-check for duplicates
 - Update frontmatter only after successful creation
 - Keep operations simple and atomic
+
+

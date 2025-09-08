@@ -1,3 +1,11 @@
+---
+model: claude-sonnet-4-20250514
+category: task-management
+priority: medium
+tags: ["task-management", "tasks"]
+description: Command for remove-subtask operations
+---
+
 Remove a subtask from its parent task.
 
 Arguments: $ARGUMENTS
@@ -12,8 +20,8 @@ Remove a subtask and optionally convert it back to a standalone task.
 
 - "remove subtask 5.1"
 - "delete 5.1"
-- "convert 5.1 to task" → remove and convert
-- "5.1 standalone" → convert to standalone
+- "convert 5.1 to task" â†’ remove and convert
+- "5.1 standalone" â†’ convert to standalone
 
 ## Execution Options
 
@@ -64,16 +72,16 @@ task-master remove-subtask --id=<parentId.subtaskId> --convert
 
 ```
 /project:tm/remove-subtask 5.1
-→ Warning: Subtask #5.1 is in-progress
-→ This will delete all subtask data
-→ Parent task #5 will be updated
+â†’ Warning: Subtask #5.1 is in-progress
+â†’ This will delete all subtask data
+â†’ Parent task #5 will be updated
 Confirm deletion? (y/n)
 
 /project:tm/remove-subtask 5.1 convert
-→ Converting subtask #5.1 to standalone task #89
-→ Preserved: All task data and history
-→ Updated: 2 dependency references
-→ New task #89 is now independent
+â†’ Converting subtask #5.1 to standalone task #89
+â†’ Preserved: All task data and history
+â†’ Updated: 2 dependency references
+â†’ New task #89 is now independent
 ```
 
 ## Post-Removal
@@ -82,3 +90,5 @@ Confirm deletion? (y/n)
 - Recalculate estimates
 - Show updated hierarchy
 - Suggest next actions
+
+

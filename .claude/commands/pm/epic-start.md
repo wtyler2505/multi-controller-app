@@ -1,139 +1,125 @@
 ---
-allowed-tools: Bash, Read, Write, LS, Task
----
+model: claude-sonnet-4-20250514
+category: project-management
+priority: high
+tags: ["project-management", "github"]
+description: Command for epic-start operations
+allowed-tools: Bash, Read, Write, LS, Task, mcp__taskmaster-ai__get_tasks, mcp__desktop-commander__read_file
+argument-hint: <epic_name> | --branch-only | --max-agents=<number>
 
-# Epic Start
+# Enhanced Context-Aware Agent Integration
+enhanced-integration:
+  enabled: true
+  agent-selection-criteria:
+    domain-expertise: ["epic-initiation", "branch-management", "execution-coordination"]
+    complexity-factors: ["git-operations", "multi-agent-setup", "dependency-coordination"]
+    specialized-tools: ["epic-management", "git-operations", "execution-coordination"]
+  preferred-agents:
+    primary: "task-orchestrator"
+    secondary: "general-purpose"
+    fallback: ["task-executor"]
+  tool-requirements:
+    mcp-servers: ["taskmaster-ai", "desktop-commander", "cipher-memory"]
+    specialized-functions: ["epic-initiation", "execution-coordination"]
 
-Launch parallel agents to work on epic tasks in a shared branch.
+# Universal Cipher Memory Integration (MANDATORY FOR ALL COMMANDS)
+cipher-memory-integration:
+  enabled: true
+  priority: "high"
+  
+  # Pre-execution Memory Operations
+  pre-execution-memory:
+    context-search:
+      - query-pattern: "epic-initiation + branch-management + execution-coordination"
+      - tools: ["mcp__cipher-memory__search_nodes", "mcp__cipher-memory__open_nodes"]
+      - context-retrieval: "initiation-patterns + branch-knowledge + coordination-strategies"
+    
+    knowledge-preparation:
+      - domain: "epic-initiation"
+      - pattern-search: "initiation-strategies + branch-patterns + coordination-techniques"
+      - tools: ["mcp__cipher-memory__read_graph"]
+  
+  # Execution Memory Operations
+  execution-memory:
+    progress-tracking:
+      - tool: "mcp__cipher-memory__add_observations"
+      - capture-points: ["branch-setup", "execution-initiation", "coordination-setup"]
+      - entity-updates: "real-time-progress"
+    
+    decision-logging:
+      - tool: "mcp__cipher-memory__create_entities"
+      - log-decisions: "initiation-strategies + coordination-approaches + branch-decisions"
+      - pattern-recognition: "epic-initiation-patterns"
+  
+  # Post-execution Memory Operations
+  post-execution-memory:
+    result-storage:
+      - tools: ["mcp__cipher-memory__create_entities"]
+      - store-patterns: ["initiation-results", "coordination-insights", "branch-techniques"]
+      - knowledge-extraction: "initiation-methodologies + coordination-patterns"
+    
+    relationship-creation:
+      - tools: ["mcp__cipher-memory__create_relations"]
+      - link-concepts: ["initiation-relationships", "coordination-dependencies", "branch-connections"]
+      - cross-reference: "related-initiation-processes"
+    
+    knowledge-refinement:
+      - tools: ["mcp__cipher-memory__add_observations"]
+      - enrich-existing: "initiation-knowledge + coordination-patterns"
+      - continuous-learning: "epic-initiation-optimization"
 
-## Usage
-```
-/pm:epic-start <epic_name>
-```
+# Centralized Logging Integration
+logging-integration:
+  enabled: true
+  log-file: ".claude/command-execution.jsonl"
+  
+  # Comprehensive Execution Logging
+  log-level: "comprehensive"
+  
+  capture-points:
+    - command-initiation
+    - agent-selection-process
+    - memory-operations
+    - branch-setup
+    - execution-initiation
+    - coordination-setup
+    - git-operations
+    - error-handling
+    - completion-status
+  
+  # Structured Log Format
+  log-structure:
+    timestamp: "ISO-8601"
+    command: "pm-epic-start"
+    execution-id: "UUID"
+    agent-assignments: "selected-agents-with-reasoning"
+    memory-operations: "cipher-memory-transactions"
+    performance-metrics: "execution-time + memory-usage + success-rate"
+    outcome-summary: "initiation-results + coordination-insights"
 
-## Quick Check
+# Cross-Command Learning Integration
+cross-command-learning:
+  enabled: true
+  share-insights: ["initiation-patterns", "coordination-techniques", "branch-strategies"]
+  learn-from: ["epic-start-worktree", "epic-status", "execution-coordination"]
+  contribute-to: "epic-initiation-knowledge-base"
 
-1. **Verify epic exists:**
-   ```bash
-   test -f .claude/epics/$ARGUMENTS/epic.md || echo "❌ Epic not found. Run: /pm:prd-parse $ARGUMENTS"
-   ```
-
-2. **Check GitHub sync:**
-   Look for `github:` field in epic frontmatter.
-   If missing: "❌ Epic not synced. Run: /pm:epic-sync $ARGUMENTS first"
-
-3. **Check for branch:**
-   ```bash
-   git branch -a | grep "epic/$ARGUMENTS"
-   ```
-
-4. **Check for uncommitted changes:**
-   ```bash
-   git status --porcelain
-   ```
-   If output is not empty: "❌ You have uncommitted changes. Please commit or stash them before starting an epic"
-
-## Instructions
-
-### 1. Create or Enter Branch
-
-Follow `/rules/branch-operations.md`:
-
-```bash
-# Check for uncommitted changes
-if [ -n "$(git status --porcelain)" ]; then
-  echo "❌ You have uncommitted changes. Please commit or stash them before starting an epic."
-  exit 1
-fi
-
-# If branch doesn't exist, create it
-if ! git branch -a | grep -q "epic/$ARGUMENTS"; then
-  git checkout main
-  git pull origin main
-  git checkout -b epic/$ARGUMENTS
-  git push -u origin epic/$ARGUMENTS
-  echo "✅ Created branch: epic/$ARGUMENTS"
-else
-  git checkout epic/$ARGUMENTS
-  git pull origin epic/$ARGUMENTS
-  echo "✅ Using existing branch: epic/$ARGUMENTS"
-fi
-```
-
-### 2. Identify Ready Issues
-
-Read all task files in `.claude/epics/$ARGUMENTS/`:
-- Parse frontmatter for `status`, `depends_on`, `parallel` fields
-- Check GitHub issue status if needed
-- Build dependency graph
-
-Categorize issues:
-- **Ready**: No unmet dependencies, not started
-- **Blocked**: Has unmet dependencies
-- **In Progress**: Already being worked on
-- **Complete**: Finished
-
-### 3. Analyze Ready Issues
-
-For each ready issue without analysis:
-```bash
-# Check for analysis
-if ! test -f .claude/epics/$ARGUMENTS/{issue}-analysis.md; then
-  echo "Analyzing issue #{issue}..."
-  # Run analysis (inline or via Task tool)
-fi
-```
-
-### 4. Launch Parallel Agents
-
-For each ready issue with analysis:
-
-```markdown
-## Starting Issue #{issue}: {title}
-
-Reading analysis...
-Found {count} parallel streams:
-  - Stream A: {description} (Agent-{id})
-  - Stream B: {description} (Agent-{id})
-
-Launching agents in branch: epic/$ARGUMENTS
-```
-
-Use Task tool to launch each stream:
-```yaml
-Task:
-  description: "Issue #{issue} Stream {X}"
-  subagent_type: "{agent_type}"
-  prompt: |
-    Working in branch: epic/$ARGUMENTS
-    Issue: #{issue} - {title}
-    Stream: {stream_name}
-
-    Your scope:
-    - Files: {file_patterns}
-    - Work: {stream_description}
-
-    Read full requirements from:
-    - .claude/epics/$ARGUMENTS/{task_file}
-    - .claude/epics/$ARGUMENTS/{issue}-analysis.md
-
-    Follow coordination rules in /rules/agent-coordination.md
-
-    Commit frequently with message format:
-    "Issue #{issue}: {specific change}"
-
-    Update progress in:
-    .claude/epics/$ARGUMENTS/updates/{issue}/stream-{X}.md
-```
-
-### 5. Track Active Agents
-
-Create/update `.claude/epics/$ARGUMENTS/execution-status.md`:
-
-```markdown
----
-started: {datetime}
-branch: epic/$ARGUMENTS
+# Workflow Integration
+workflow-integration:
+  pre-execution:
+    - validate-epic-readiness
+    - prepare-memory-context
+    - select-optimal-agents
+  
+  execution:
+    - parallel-initiation-setup
+    - continuous-memory-updates
+    - real-time-coordination-monitoring
+  
+  post-execution:
+    - comprehensive-result-storage
+    - cross-reference-generation
+    - initiation-pattern-extraction
 ---
 
 # Execution Status
@@ -182,20 +168,20 @@ As agents complete streams:
 ## Output Format
 
 ```
-🚀 Epic Execution Started: $ARGUMENTS
+ðŸš€ Epic Execution Started: $ARGUMENTS
 
 Branch: epic/$ARGUMENTS
 
 Launching {total} agents across {issue_count} issues:
 
 Issue #1234: Database Schema
-  ├─ Stream A: Schema creation (Agent-1) ✓ Started
-  └─ Stream B: Migrations (Agent-2) ✓ Started
+  â”œâ”€ Stream A: Schema creation (Agent-1) âœ“ Started
+  â””â”€ Stream B: Migrations (Agent-2) âœ“ Started
 
 Issue #1235: API Endpoints
-  ├─ Stream A: User endpoints (Agent-3) ✓ Started
-  ├─ Stream B: Post endpoints (Agent-4) ✓ Started
-  └─ Stream C: Tests (Agent-5) ⏸ Waiting for A & B
+  â”œâ”€ Stream A: User endpoints (Agent-3) âœ“ Started
+  â”œâ”€ Stream B: Post endpoints (Agent-4) âœ“ Started
+  â””â”€ Stream C: Tests (Agent-5) â¸ Waiting for A & B
 
 Blocked Issues (2):
   - #1236: UI Components (depends on #1234)
@@ -208,7 +194,7 @@ Monitor with: /pm:epic-status $ARGUMENTS
 
 If agent launch fails:
 ```
-❌ Failed to start Agent-{id}
+âŒ Failed to start Agent-{id}
   Issue: #{issue}
   Stream: {stream}
   Error: {reason}
@@ -218,7 +204,7 @@ Continue with other agents? (yes/no)
 
 If uncommitted changes are found:
 ```
-❌ You have uncommitted changes. Please commit or stash them before starting an epic.
+âŒ You have uncommitted changes. Please commit or stash them before starting an epic.
 
 To commit changes:
   git add .
@@ -231,7 +217,7 @@ To stash changes:
 
 If branch creation fails:
 ```
-❌ Cannot create branch
+âŒ Cannot create branch
   {git error message}
 
 Try: git branch -d epic/$ARGUMENTS
@@ -245,3 +231,6 @@ Or: Check existing branches with: git branch -a
 - Agents work in the SAME branch (not separate branches)
 - Maximum parallel agents should be reasonable (e.g., 5-10)
 - Monitor system resources if launching many agents
+
+
+

@@ -1,4 +1,9 @@
 ---
+model: claude-sonnet-4-20250514
+category: project-management
+priority: medium
+tags: ["project-management", "github"]
+description: Issue Edit
 allowed-tools: Bash, Read, Write, LS
 ---
 
@@ -62,11 +67,11 @@ gh issue edit $ARGUMENTS --remove-label "{removed_labels}"
 ### 5. Output
 
 ```
-✅ Updated issue #$ARGUMENTS
+âœ… Updated issue #$ARGUMENTS
   Changes:
     {list_of_changes_made}
   
-Synced to GitHub: ✅
+Synced to GitHub: âœ…
 ```
 
 ## Important Notes
@@ -74,3 +79,5 @@ Synced to GitHub: ✅
 Always update local first, then GitHub.
 Preserve frontmatter fields not being edited.
 Follow `/rules/frontmatter-operations.md`.
+
+

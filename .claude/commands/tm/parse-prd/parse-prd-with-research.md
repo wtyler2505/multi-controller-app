@@ -1,3 +1,11 @@
+---
+model: claude-sonnet-4-20250514
+category: taskmaster-core
+priority: medium
+tags: ["taskmaster-core", "github"]
+description: Command for parse-prd-with-research operations
+---
+
 Parse PRD with enhanced research mode for better task generation.
 
 Arguments: $ARGUMENTS (PRD file path)
@@ -46,3 +54,5 @@ Research mode typically:
 - Complex requirements
 - Regulatory compliance needed
 - Best practices crucial
+
+

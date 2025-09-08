@@ -1,3 +1,11 @@
+---
+model: claude-sonnet-4-20250514
+category: task-management
+priority: medium
+tags: ["task-management", "tasks"]
+description: Command for update-task operations
+---
+
 Update tasks with intelligent field detection and bulk operations.
 
 Arguments: $ARGUMENTS
@@ -9,11 +17,11 @@ Parse arguments to determine update intent and execute smartly.
 ### 1. **Natural Language Processing**
 
 Understand update requests like:
-- "mark 23 as done" → Update status to done
-- "increase priority of 45" → Set priority to high
-- "add dependency on 12 to task 34" → Add dependency
-- "tasks 20-25 need review" → Bulk status update
-- "all API tasks high priority" → Pattern-based update
+- "mark 23 as done" â†’ Update status to done
+- "increase priority of 45" â†’ Set priority to high
+- "add dependency on 12 to task 34" â†’ Add dependency
+- "tasks 20-25 need review" â†’ Bulk status update
+- "all API tasks high priority" â†’ Pattern-based update
 
 ### 2. **Smart Field Detection**
 
@@ -46,9 +54,9 @@ Before updating, check:
 Show preview:
 ```
 Update Preview:
-─────────────────
+â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 Tasks to update: #23, #24, #25
-Change: status → in-progress
+Change: status â†’ in-progress
 Impact: Will unblock tasks #30, #31
 Warning: Task #24 has unmet dependencies
 ```
@@ -56,10 +64,10 @@ Warning: Task #24 has unmet dependencies
 ### 5. **Smart Suggestions**
 
 Based on update:
-- Completing task? → Show newly unblocked tasks
-- Changing priority? → Show impact on sprint
-- Adding dependency? → Check for conflicts
-- Bulk update? → Show summary of changes
+- Completing task? â†’ Show newly unblocked tasks
+- Changing priority? â†’ Show impact on sprint
+- Adding dependency? â†’ Check for conflicts
+- Bulk update? â†’ Show summary of changes
 
 ### 6. **Workflow Integration**
 
@@ -70,3 +78,5 @@ After updates:
 - Log changes with context
 
 Result: Flexible, intelligent task updates with safety checks.
+
+

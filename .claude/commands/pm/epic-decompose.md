@@ -1,97 +1,125 @@
 ---
+model: claude-sonnet-4-20250514
+category: project-management
+priority: high
+tags: ["project-management", "github"]
+description: Epic Decompose
 allowed-tools: Bash, Read, Write, LS, Task
----
+argument-hint: <epic_name> | --parallel | --sequential | --auto
 
-# Epic Decompose
+# Enhanced Context-Aware Agent Integration
+enhanced-integration:
+  enabled: true
+  agent-selection-criteria:
+    domain-expertise: ["epic-decomposition", "task-breakdown", "parallel-planning"]
+    complexity-factors: ["task-analysis", "dependency-mapping", "work-distribution"]
+    specialized-tools: ["epic-management", "task-creation", "dependency-analysis"]
+  preferred-agents:
+    primary: "task-orchestrator"
+    secondary: "general-purpose"
+    fallback: ["task-executor"]
+  tool-requirements:
+    mcp-servers: ["taskmaster-ai", "desktop-commander", "cipher-memory"]
+    specialized-functions: ["epic-decomposition", "task-breakdown"]
 
-Break epic into concrete, actionable tasks.
+# Universal Cipher Memory Integration (MANDATORY FOR ALL COMMANDS)
+cipher-memory-integration:
+  enabled: true
+  priority: "high"
+  
+  # Pre-execution Memory Operations
+  pre-execution-memory:
+    context-search:
+      - query-pattern: "epic-decomposition + task-breakdown + parallel-planning"
+      - tools: ["mcp__cipher-memory__search_nodes", "mcp__cipher-memory__open_nodes"]
+      - context-retrieval: "decomposition-patterns + breakdown-knowledge"
+    
+    knowledge-preparation:
+      - domain: "epic-decomposition"
+      - pattern-search: "decomposition-strategies + breakdown-patterns + planning-techniques"
+      - tools: ["mcp__cipher-memory__read_graph"]
+  
+  # Execution Memory Operations
+  execution-memory:
+    progress-tracking:
+      - tool: "mcp__cipher-memory__add_observations"
+      - capture-points: ["task-analysis", "breakdown-execution", "dependency-mapping"]
+      - entity-updates: "real-time-progress"
+    
+    decision-logging:
+      - tool: "mcp__cipher-memory__create_entities"
+      - log-decisions: "decomposition-strategies + breakdown-approaches + planning-decisions"
+      - pattern-recognition: "epic-decomposition-patterns"
+  
+  # Post-execution Memory Operations
+  post-execution-memory:
+    result-storage:
+      - tools: ["mcp__cipher-memory__create_entities"]
+      - store-patterns: ["decomposition-results", "breakdown-insights", "planning-techniques"]
+      - knowledge-extraction: "decomposition-methodologies + breakdown-patterns"
+    
+    relationship-creation:
+      - tools: ["mcp__cipher-memory__create_relations"]
+      - link-concepts: ["decomposition-relationships", "breakdown-dependencies", "planning-connections"]
+      - cross-reference: "related-decomposition-processes"
+    
+    knowledge-refinement:
+      - tools: ["mcp__cipher-memory__add_observations"]
+      - enrich-existing: "decomposition-knowledge + breakdown-patterns"
+      - continuous-learning: "epic-decomposition-optimization"
 
-## Usage
-```
-/pm:epic-decompose <feature_name>
-```
+# Centralized Logging Integration
+logging-integration:
+  enabled: true
+  log-file: ".claude/command-execution.jsonl"
+  
+  # Comprehensive Execution Logging
+  log-level: "comprehensive"
+  
+  capture-points:
+    - command-initiation
+    - agent-selection-process
+    - memory-operations
+    - task-analysis
+    - breakdown-execution
+    - dependency-mapping
+    - parallel-planning
+    - error-handling
+    - completion-status
+  
+  # Structured Log Format
+  log-structure:
+    timestamp: "ISO-8601"
+    command: "pm-epic-decompose"
+    execution-id: "UUID"
+    agent-assignments: "selected-agents-with-reasoning"
+    memory-operations: "cipher-memory-transactions"
+    performance-metrics: "execution-time + memory-usage + success-rate"
+    outcome-summary: "decomposition-results + breakdown-insights"
 
-## Required Rules
+# Cross-Command Learning Integration
+cross-command-learning:
+  enabled: true
+  share-insights: ["decomposition-patterns", "breakdown-techniques", "planning-strategies"]
+  learn-from: ["epic-start", "task-creation", "dependency-analysis"]
+  contribute-to: "epic-decomposition-knowledge-base"
 
-**IMPORTANT:** Before executing this command, read and follow:
-- `.claude/rules/datetime.md` - For getting real current date/time
-
-## Preflight Checklist
-
-Before proceeding, complete these validation steps.
-Do not bother the user with preflight checks progress ("I'm not going to ..."). Just do them and move on.
-
-1. **Verify epic exists:**
-   - Check if `.claude/epics/$ARGUMENTS/epic.md` exists
-   - If not found, tell user: "❌ Epic not found: $ARGUMENTS. First create it with: /pm:prd-parse $ARGUMENTS"
-   - Stop execution if epic doesn't exist
-
-2. **Check for existing tasks:**
-   - Check if any numbered task files (001.md, 002.md, etc.) already exist in `.claude/epics/$ARGUMENTS/`
-   - If tasks exist, list them and ask: "⚠️ Found {count} existing tasks. Delete and recreate all tasks? (yes/no)"
-   - Only proceed with explicit 'yes' confirmation
-   - If user says no, suggest: "View existing tasks with: /pm:epic-show $ARGUMENTS"
-
-3. **Validate epic frontmatter:**
-   - Verify epic has valid frontmatter with: name, status, created, prd
-   - If invalid, tell user: "❌ Invalid epic frontmatter. Please check: .claude/epics/$ARGUMENTS/epic.md"
-
-4. **Check epic status:**
-   - If epic status is already "completed", warn user: "⚠️ Epic is marked as completed. Are you sure you want to decompose it again?"
-
-## Instructions
-
-You are decomposing an epic into specific, actionable tasks for: **$ARGUMENTS**
-
-### 1. Read the Epic
-- Load the epic from `.claude/epics/$ARGUMENTS/epic.md`
-- Understand the technical approach and requirements
-- Review the task breakdown preview
-
-### 2. Analyze for Parallel Creation
-
-Determine if tasks can be created in parallel:
-- If tasks are mostly independent: Create in parallel using Task agents
-- If tasks have complex dependencies: Create sequentially
-- For best results: Group independent tasks for parallel creation
-
-### 3. Parallel Task Creation (When Possible)
-
-If tasks can be created in parallel, spawn sub-agents:
-
-```yaml
-Task:
-  description: "Create task files batch {X}"
-  subagent_type: "general-purpose"
-  prompt: |
-    Create task files for epic: $ARGUMENTS
-
-    Tasks to create:
-    - {list of 3-4 tasks for this batch}
-
-    For each task:
-    1. Create file: .claude/epics/$ARGUMENTS/{number}.md
-    2. Use exact format with frontmatter and all sections
-    3. Follow task breakdown from epic
-    4. Set parallel/depends_on fields appropriately
-    5. Number sequentially (001.md, 002.md, etc.)
-
-    Return: List of files created
-```
-
-### 4. Task File Format with Frontmatter
-For each task, create a file with this exact structure:
-
-```markdown
----
-name: [Task Title]
-status: open
-created: [Current ISO date/time]
-updated: [Current ISO date/time]
-github: [Will be updated when synced to GitHub]
-depends_on: []  # List of task numbers this depends on, e.g., [001, 002]
-parallel: true  # Can this run in parallel with other tasks?
-conflicts_with: []  # Tasks that modify same files, e.g., [003, 004]
+# Workflow Integration
+workflow-integration:
+  pre-execution:
+    - validate-epic-access
+    - prepare-memory-context
+    - select-optimal-agents
+  
+  execution:
+    - parallel-decomposition-analysis
+    - continuous-memory-updates
+    - real-time-breakdown-monitoring
+  
+  post-execution:
+    - comprehensive-result-storage
+    - cross-reference-generation
+    - decomposition-pattern-extraction
 ---
 
 # Task: [Task Title]
@@ -182,8 +210,8 @@ Spawning 3 agents for parallel task creation:
 
 When creating tasks with dependencies:
 - Ensure referenced dependencies exist (e.g., if Task 003 depends on Task 002, verify 002 was created)
-- Check for circular dependencies (Task A → Task B → Task A)
-- If dependency issues found, warn but continue: "⚠️ Task dependency warning: {details}"
+- Check for circular dependencies (Task A â†’ Task B â†’ Task A)
+- If dependency issues found, warn but continue: "âš ï¸ Task dependency warning: {details}"
 
 ### 9. Update Epic with Task Summary
 After creating all tasks, update the epic file by adding this section:
@@ -213,7 +241,7 @@ Before finalizing tasks, verify:
 ### 10. Post-Decomposition
 
 After successfully creating tasks:
-1. Confirm: "✅ Created {count} tasks for epic: $ARGUMENTS"
+1. Confirm: "âœ… Created {count} tasks for epic: $ARGUMENTS"
 2. Show summary:
    - Total tasks created
    - Parallel vs sequential breakdown
@@ -228,3 +256,6 @@ If any step fails:
 - Never leave the epic in an inconsistent state
 
 Aim for tasks that can be completed in 1-3 days each. Break down larger tasks into smaller, manageable pieces for the "$ARGUMENTS" epic.
+
+
+

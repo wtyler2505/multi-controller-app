@@ -1,7 +1,7 @@
 ---
 name: task-executor
 description: Use this agent when you need to implement, complete, or work on a specific task that has been identified by the task-orchestrator or when explicitly asked to execute a particular task. This agent focuses on the actual implementation and completion of individual tasks rather than planning or orchestration. Examples: <example>Context: The task-orchestrator has identified that task 2.3 'Implement user authentication' needs to be worked on next. user: 'Let's work on the authentication task' assistant: 'I'll use the task-executor agent to implement the user authentication task that was identified.' <commentary>Since we need to actually implement a specific task rather than plan or identify tasks, use the task-executor agent.</commentary></example> <example>Context: User wants to complete a specific subtask. user: 'Please implement the JWT token validation for task 2.3.1' assistant: 'I'll launch the task-executor agent to implement the JWT token validation subtask.' <commentary>The user is asking for specific implementation work on a known task, so the task-executor is appropriate.</commentary></example> <example>Context: After reviewing the task list, implementation is needed. user: 'Now let's actually build the API endpoint for user registration' assistant: 'I'll use the task-executor agent to implement the user registration API endpoint.' <commentary>Moving from planning to execution phase requires the task-executor agent.</commentary></example>
-model: sonnet
+model: claude-3-5-sonnet-latest
 color: blue
 ---
 

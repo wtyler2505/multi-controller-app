@@ -1,3 +1,11 @@
+---
+model: claude-sonnet-4-20250514
+category: task-management
+priority: medium
+tags: ["task-management", "tasks"]
+description: Command for remove-dependency operations
+---
+
 Remove a dependency between tasks.
 
 Arguments: $ARGUMENTS
@@ -14,7 +22,7 @@ Parse natural language or IDs:
 - "remove dependency between 5 and 3"
 - "5 no longer needs 3"
 - "unblock 5 from 3"
-- "5 3" → remove dependency of 5 on 3
+- "5 3" â†’ remove dependency of 5 on 3
 
 ## Execution
 
@@ -56,7 +64,9 @@ After removing:
 
 ```
 /project:tm/remove-dependency 5 from 3
-→ Removed: Task #5 no longer depends on #3
-→ Task #5 is now UNBLOCKED and ready to start
-→ Warning: Consider if #5 still needs #2 completed first
+â†’ Removed: Task #5 no longer depends on #3
+â†’ Task #5 is now UNBLOCKED and ready to start
+â†’ Warning: Consider if #5 still needs #2 completed first
 ```
+
+

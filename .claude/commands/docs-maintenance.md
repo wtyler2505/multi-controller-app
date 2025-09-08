@@ -1,8 +1,125 @@
 ---
+model: claude-sonnet-4-20250514
+category: documentation
+priority: high
+tags: ["documentation", "docs"]
+description: Documentation Maintenance & Quality Assurance
 allowed-tools: Read, Write, Edit, Bash, Grep
 argument-hint: [maintenance-type] | --audit | --update | --validate | --optimize | --comprehensive
-description: Use PROACTIVELY to implement comprehensive documentation maintenance systems with quality assurance, validation, and automated updates
-model: sonnet
+
+# Enhanced Context-Aware Agent Integration
+enhanced-integration:
+  enabled: true
+  agent-selection-criteria:
+    domain-expertise: ["documentation-maintenance", "quality-assurance", "content-optimization"]
+    complexity-factors: ["documentation-auditing", "content-validation", "maintenance-automation"]
+    specialized-tools: ["documentation-analysis", "quality-checking", "content-optimization"]
+  preferred-agents:
+    primary: "general-purpose"
+    secondary: "content-creator"
+    fallback: ["task-orchestrator"]
+  tool-requirements:
+    mcp-servers: ["desktop-commander", "FileScopeMCP", "cipher-memory"]
+    specialized-functions: ["documentation-maintenance", "quality-assurance"]
+
+# Universal Cipher Memory Integration (MANDATORY FOR ALL COMMANDS)
+cipher-memory-integration:
+  enabled: true
+  priority: "high"
+  
+  # Pre-execution Memory Operations
+  pre-execution-memory:
+    context-search:
+      - query-pattern: "documentation-maintenance + quality-assurance + content-optimization"
+      - tools: ["mcp__cipher-memory__search_nodes", "mcp__cipher-memory__open_nodes"]
+      - context-retrieval: "documentation-patterns + quality-assurance-knowledge"
+    
+    knowledge-preparation:
+      - domain: "documentation-maintenance"
+      - pattern-search: "maintenance-strategies + quality-patterns + content-optimization"
+      - tools: ["mcp__cipher-memory__read_graph"]
+  
+  # Execution Memory Operations
+  execution-memory:
+    progress-tracking:
+      - tool: "mcp__cipher-memory__add_observations"
+      - capture-points: ["maintenance-analysis", "quality-assessment", "optimization-implementation"]
+      - entity-updates: "real-time-progress"
+    
+    decision-logging:
+      - tool: "mcp__cipher-memory__create_entities"
+      - log-decisions: "maintenance-strategies + quality-approaches + optimization-techniques"
+      - pattern-recognition: "documentation-maintenance-patterns"
+  
+  # Post-execution Memory Operations
+  post-execution-memory:
+    result-storage:
+      - tools: ["mcp__cipher-memory__create_entities"]
+      - store-patterns: ["maintenance-results", "quality-insights", "optimization-techniques"]
+      - knowledge-extraction: "documentation-methodologies + quality-patterns"
+    
+    relationship-creation:
+      - tools: ["mcp__cipher-memory__create_relations"]
+      - link-concepts: ["maintenance-relationships", "quality-dependencies", "optimization-connections"]
+      - cross-reference: "related-documentation-processes"
+    
+    knowledge-refinement:
+      - tools: ["mcp__cipher-memory__add_observations"]
+      - enrich-existing: "documentation-knowledge + maintenance-patterns"
+      - continuous-learning: "maintenance-process-optimization"
+
+# Centralized Logging Integration
+logging-integration:
+  enabled: true
+  log-file: ".claude/command-execution.jsonl"
+  
+  # Comprehensive Execution Logging
+  log-level: "comprehensive"
+  
+  capture-points:
+    - command-initiation
+    - agent-selection-process
+    - memory-operations
+    - maintenance-analysis
+    - quality-assessment
+    - content-optimization
+    - validation-execution
+    - error-handling
+    - completion-status
+  
+  # Structured Log Format
+  log-structure:
+    timestamp: "ISO-8601"
+    command: "docs-maintenance"
+    execution-id: "UUID"
+    agent-assignments: "selected-agents-with-reasoning"
+    memory-operations: "cipher-memory-transactions"
+    performance-metrics: "execution-time + memory-usage + success-rate"
+    outcome-summary: "maintenance-results + quality-insights"
+
+# Cross-Command Learning Integration
+cross-command-learning:
+  enabled: true
+  share-insights: ["documentation-patterns", "maintenance-techniques", "quality-assurance-methods"]
+  learn-from: ["interactive-documentation", "update-docs", "create-onboarding-guide"]
+  contribute-to: "documentation-knowledge-base"
+
+# Workflow Integration
+workflow-integration:
+  pre-execution:
+    - validate-documentation-structure
+    - prepare-memory-context
+    - select-optimal-agents
+  
+  execution:
+    - parallel-maintenance-analysis
+    - continuous-memory-updates
+    - real-time-quality-assessment
+  
+  post-execution:
+    - comprehensive-result-storage
+    - cross-reference-generation
+    - maintenance-pattern-extraction
 ---
 
 # Documentation Maintenance & Quality Assurance
@@ -117,3 +234,4 @@ Create systematic documentation maintenance framework with automated quality ass
 ## Integration Guidelines
 
 Implement with existing documentation platforms and development workflows. Ensure scalability for large documentation sets and team collaboration while maintaining quality standards and accessibility compliance.
+

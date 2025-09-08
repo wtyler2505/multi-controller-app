@@ -1,74 +1,125 @@
 ---
-allowed-tools: Bash, Read, Write, LS
----
+model: claude-sonnet-4-20250514
+category: project-management
+priority: high
+tags: ["project-management", "github", "analysis"]
+description: Command for issue-analyze operations
+allowed-tools: Bash, Read, Write, LS, mcp__taskmaster-ai__get_task, mcp__desktop-commander__read_file
+argument-hint: <issue_number> | --streams=<number> | --detailed
 
-# Issue Analyze
+# Enhanced Context-Aware Agent Integration
+enhanced-integration:
+  enabled: true
+  agent-selection-criteria:
+    domain-expertise: ["issue-analysis", "parallel-decomposition", "workflow-optimization"]
+    complexity-factors: ["work-stream-analysis", "dependency-mapping", "parallelization-strategy"]
+    specialized-tools: ["issue-analysis", "workflow-optimization", "parallel-planning"]
+  preferred-agents:
+    primary: "task-orchestrator"
+    secondary: "general-purpose"
+    fallback: ["task-executor"]
+  tool-requirements:
+    mcp-servers: ["taskmaster-ai", "desktop-commander", "cipher-memory"]
+    specialized-functions: ["issue-analysis", "parallel-decomposition"]
 
-Analyze an issue to identify parallel work streams for maximum efficiency.
+# Universal Cipher Memory Integration (MANDATORY FOR ALL COMMANDS)
+cipher-memory-integration:
+  enabled: true
+  priority: "high"
+  
+  # Pre-execution Memory Operations
+  pre-execution-memory:
+    context-search:
+      - query-pattern: "issue-analysis + parallel-decomposition + workflow-optimization"
+      - tools: ["mcp__cipher-memory__search_nodes", "mcp__cipher-memory__open_nodes"]
+      - context-retrieval: "analysis-patterns + decomposition-knowledge + optimization-strategies"
+    
+    knowledge-preparation:
+      - domain: "issue-analysis"
+      - pattern-search: "analysis-strategies + decomposition-patterns + optimization-techniques"
+      - tools: ["mcp__cipher-memory__read_graph"]
+  
+  # Execution Memory Operations
+  execution-memory:
+    progress-tracking:
+      - tool: "mcp__cipher-memory__add_observations"
+      - capture-points: ["issue-decomposition", "stream-analysis", "optimization-planning"]
+      - entity-updates: "real-time-progress"
+    
+    decision-logging:
+      - tool: "mcp__cipher-memory__create_entities"
+      - log-decisions: "analysis-strategies + decomposition-approaches + optimization-decisions"
+      - pattern-recognition: "issue-analysis-patterns"
+  
+  # Post-execution Memory Operations
+  post-execution-memory:
+    result-storage:
+      - tools: ["mcp__cipher-memory__create_entities"]
+      - store-patterns: ["analysis-results", "decomposition-insights", "optimization-techniques"]
+      - knowledge-extraction: "analysis-methodologies + decomposition-patterns"
+    
+    relationship-creation:
+      - tools: ["mcp__cipher-memory__create_relations"]
+      - link-concepts: ["analysis-relationships", "decomposition-dependencies", "optimization-connections"]
+      - cross-reference: "related-analysis-processes"
+    
+    knowledge-refinement:
+      - tools: ["mcp__cipher-memory__add_observations"]
+      - enrich-existing: "analysis-knowledge + decomposition-patterns"
+      - continuous-learning: "issue-analysis-optimization"
 
-## Usage
-```
-/pm:issue-analyze <issue_number>
-```
+# Centralized Logging Integration
+logging-integration:
+  enabled: true
+  log-file: ".claude/command-execution.jsonl"
+  
+  # Comprehensive Execution Logging
+  log-level: "comprehensive"
+  
+  capture-points:
+    - command-initiation
+    - agent-selection-process
+    - memory-operations
+    - issue-decomposition
+    - stream-analysis
+    - optimization-planning
+    - parallelization-strategy
+    - error-handling
+    - completion-status
+  
+  # Structured Log Format
+  log-structure:
+    timestamp: "ISO-8601"
+    command: "pm-issue-analyze"
+    execution-id: "UUID"
+    agent-assignments: "selected-agents-with-reasoning"
+    memory-operations: "cipher-memory-transactions"
+    performance-metrics: "execution-time + memory-usage + success-rate"
+    outcome-summary: "analysis-results + decomposition-insights"
 
-## Quick Check
+# Cross-Command Learning Integration
+cross-command-learning:
+  enabled: true
+  share-insights: ["analysis-patterns", "decomposition-techniques", "optimization-strategies"]
+  learn-from: ["issue-start", "parallel-execution", "workflow-optimization"]
+  contribute-to: "issue-analysis-knowledge-base"
 
-1. **Find local task file:**
-   - First check if `.claude/epics/*/$ARGUMENTS.md` exists (new naming convention)
-   - If not found, search for file containing `github:.*issues/$ARGUMENTS` in frontmatter (old naming)
-   - If not found: "❌ No local task for issue #$ARGUMENTS. Run: /pm:import first"
-
-2. **Check for existing analysis:**
-   ```bash
-   test -f .claude/epics/*/$ARGUMENTS-analysis.md && echo "⚠️ Analysis already exists. Overwrite? (yes/no)"
-   ```
-
-## Instructions
-
-### 1. Read Issue Context
-
-Get issue details from GitHub:
-```bash
-gh issue view $ARGUMENTS --json title,body,labels
-```
-
-Read local task file to understand:
-- Technical requirements
-- Acceptance criteria
-- Dependencies
-- Effort estimate
-
-### 2. Identify Parallel Work Streams
-
-Analyze the issue to identify independent work that can run in parallel:
-
-**Common Patterns:**
-- **Database Layer**: Schema, migrations, models
-- **Service Layer**: Business logic, data access
-- **API Layer**: Endpoints, validation, middleware
-- **UI Layer**: Components, pages, styles
-- **Test Layer**: Unit tests, integration tests
-- **Documentation**: API docs, README updates
-
-**Key Questions:**
-- What files will be created/modified?
-- Which changes can happen independently?
-- What are the dependencies between changes?
-- Where might conflicts occur?
-
-### 3. Create Analysis File
-
-Get current datetime: `date -u +"%Y-%m-%dT%H:%M:%SZ"`
-
-Create `.claude/epics/{epic_name}/$ARGUMENTS-analysis.md`:
-
-```markdown
----
-issue: $ARGUMENTS
-title: {issue_title}
-analyzed: {current_datetime}
-estimated_hours: {total_hours}
-parallelization_factor: {1.0-5.0}
+# Workflow Integration
+workflow-integration:
+  pre-execution:
+    - validate-issue-access
+    - prepare-memory-context
+    - select-optimal-agents
+  
+  execution:
+    - parallel-analysis-operations
+    - continuous-memory-updates
+    - real-time-decomposition-monitoring
+  
+  post-execution:
+    - comprehensive-result-storage
+    - cross-reference-generation
+    - analysis-pattern-extraction
 ---
 
 # Parallel Work Analysis: Issue #$ARGUMENTS
@@ -159,7 +210,7 @@ Ensure:
 ### 5. Output
 
 ```
-✅ Analysis complete for issue #$ARGUMENTS
+âœ… Analysis complete for issue #$ARGUMENTS
 
 Identified {count} parallel work streams:
   Stream A: {name} ({hours}h)
@@ -183,3 +234,5 @@ Next: Start work with /pm:issue-start $ARGUMENTS
 - Consider agent expertise when assigning streams
 - Account for coordination overhead in estimates
 - Prefer clear separation over maximum parallelization
+
+

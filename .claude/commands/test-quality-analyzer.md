@@ -1,8 +1,125 @@
 ---
+model: claude-sonnet-4-20250514
+category: testing-quality
+priority: high
+tags: ["testing-quality", "testing", "analysis"]
+description: Test Quality Analyzer
 allowed-tools: Read, Write, Edit, Bash
 argument-hint: [analysis-type] | --coverage-quality | --test-effectiveness | --maintainability | --performance-analysis
-description: Analyze test suite quality with comprehensive metrics and improvement recommendations
-model: sonnet
+
+# Enhanced Context-Aware Agent Integration
+enhanced-integration:
+  enabled: true
+  agent-selection-criteria:
+    domain-expertise: ["test-quality-analysis", "coverage-assessment", "maintainability-evaluation"]
+    complexity-factors: ["quality-metrics", "effectiveness-analysis", "performance-assessment"]
+    specialized-tools: ["quality-analysis", "coverage-evaluation", "maintainability-assessment"]
+  preferred-agents:
+    primary: "mock-test-orchestrator"
+    secondary: "general-purpose"
+    fallback: ["task-orchestrator"]
+  tool-requirements:
+    mcp-servers: ["FileScopeMCP", "desktop-commander", "cipher-memory"]
+    specialized-functions: ["quality-analysis", "coverage-assessment"]
+
+# Universal Cipher Memory Integration (MANDATORY FOR ALL COMMANDS)
+cipher-memory-integration:
+  enabled: true
+  priority: "high"
+  
+  # Pre-execution Memory Operations
+  pre-execution-memory:
+    context-search:
+      - query-pattern: "test-quality-analysis + coverage-assessment + maintainability-evaluation"
+      - tools: ["mcp__cipher-memory__search_nodes", "mcp__cipher-memory__open_nodes"]
+      - context-retrieval: "quality-patterns + analysis-knowledge"
+    
+    knowledge-preparation:
+      - domain: "test-quality-analysis"
+      - pattern-search: "quality-strategies + analysis-patterns + assessment-techniques"
+      - tools: ["mcp__cipher-memory__read_graph"]
+  
+  # Execution Memory Operations
+  execution-memory:
+    progress-tracking:
+      - tool: "mcp__cipher-memory__add_observations"
+      - capture-points: ["quality-analysis", "coverage-assessment", "maintainability-evaluation"]
+      - entity-updates: "real-time-progress"
+    
+    decision-logging:
+      - tool: "mcp__cipher-memory__create_entities"
+      - log-decisions: "quality-strategies + analysis-approaches + assessment-decisions"
+      - pattern-recognition: "test-quality-patterns"
+  
+  # Post-execution Memory Operations
+  post-execution-memory:
+    result-storage:
+      - tools: ["mcp__cipher-memory__create_entities"]
+      - store-patterns: ["quality-analysis-results", "coverage-insights", "maintainability-techniques"]
+      - knowledge-extraction: "quality-methodologies + analysis-patterns"
+    
+    relationship-creation:
+      - tools: ["mcp__cipher-memory__create_relations"]
+      - link-concepts: ["quality-relationships", "analysis-dependencies", "assessment-connections"]
+      - cross-reference: "related-quality-processes"
+    
+    knowledge-refinement:
+      - tools: ["mcp__cipher-memory__add_observations"]
+      - enrich-existing: "quality-knowledge + analysis-patterns"
+      - continuous-learning: "test-quality-optimization"
+
+# Centralized Logging Integration
+logging-integration:
+  enabled: true
+  log-file: ".claude/command-execution.jsonl"
+  
+  # Comprehensive Execution Logging
+  log-level: "comprehensive"
+  
+  capture-points:
+    - command-initiation
+    - agent-selection-process
+    - memory-operations
+    - quality-analysis
+    - coverage-assessment
+    - maintainability-evaluation
+    - performance-analysis
+    - error-handling
+    - completion-status
+  
+  # Structured Log Format
+  log-structure:
+    timestamp: "ISO-8601"
+    command: "test-quality-analyzer"
+    execution-id: "UUID"
+    agent-assignments: "selected-agents-with-reasoning"
+    memory-operations: "cipher-memory-transactions"
+    performance-metrics: "execution-time + memory-usage + success-rate"
+    outcome-summary: "quality-analysis-results + coverage-insights"
+
+# Cross-Command Learning Integration
+cross-command-learning:
+  enabled: true
+  share-insights: ["quality-patterns", "analysis-techniques", "assessment-methodologies"]
+  learn-from: ["test-coverage", "generate-tests", "setup-comprehensive-testing"]
+  contribute-to: "testing-quality-knowledge-base"
+
+# Workflow Integration
+workflow-integration:
+  pre-execution:
+    - validate-quality-requirements
+    - prepare-memory-context
+    - select-optimal-agents
+  
+  execution:
+    - parallel-quality-analysis
+    - continuous-memory-updates
+    - real-time-assessment-tracking
+  
+  post-execution:
+    - comprehensive-result-storage
+    - cross-reference-generation
+    - quality-pattern-extraction
 ---
 
 # Test Quality Analyzer
@@ -35,3 +152,4 @@ Execute comprehensive test quality analysis with improvement recommendations and
 **Quality Insights**: Test ROI analysis, quality correlation analysis, maintenance cost assessment, effectiveness benchmarking.
 
 **Output**: Comprehensive quality analysis with detailed metrics, improvement recommendations, optimization strategies, and quality tracking framework.
+

@@ -1,3 +1,11 @@
+---
+model: claude-sonnet-4-20250514
+category: task-management
+priority: medium
+tags: ["task-management", "analysis"]
+description: Command for to-review operations
+---
+
 Set a task's status to review.
 
 Arguments: $ARGUMENTS (task ID)
@@ -38,3 +46,5 @@ When setting to review:
    - Track review duration
    - Suggest reviewers based on expertise
    - Prepare rollback plan if needed
+
+

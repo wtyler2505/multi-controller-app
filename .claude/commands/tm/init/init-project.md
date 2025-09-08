@@ -1,3 +1,11 @@
+---
+model: claude-sonnet-4-20250514
+category: development-setup
+priority: medium
+tags: ["development-setup", "setup"]
+description: Command for init-project operations
+---
+
 Initialize a new Task Master project.
 
 Arguments: $ARGUMENTS
@@ -25,10 +33,10 @@ Parse arguments to determine initialization preferences.
 ## Configuration Options
 
 Based on arguments:
-- `quick` / `-y` → Skip confirmations
-- `<file.md>` → Use as PRD after init
-- `--name=<name>` → Set project name
-- `--description=<desc>` → Set description
+- `quick` / `-y` â†’ Skip confirmations
+- `<file.md>` â†’ Use as PRD after init
+- `--name=<name>` â†’ Set project name
+- `--description=<desc>` â†’ Set description
 
 ## Post-Initialization
 
@@ -46,5 +54,7 @@ After successful init:
 If PRD file provided:
 ```
 /project:tm/init my-prd.md
-→ Automatically runs parse-prd after init
+â†’ Automatically runs parse-prd after init
 ```
+
+

@@ -1,4 +1,9 @@
 ---
+model: claude-sonnet-4-20250514
+category: project-management
+priority: medium
+tags: ["project-management", "github"]
+description: Issue Reopen
 allowed-tools: Bash, Read, Write, LS
 ---
 
@@ -16,7 +21,7 @@ Reopen a closed issue.
 ### 1. Find Local Task File
 
 Search for task file with `github:.*issues/$ARGUMENTS` in frontmatter.
-If not found: "❌ No local task for issue #$ARGUMENTS"
+If not found: "âŒ No local task for issue #$ARGUMENTS"
 
 ### 2. Update Local Status
 
@@ -39,7 +44,7 @@ If progress file exists:
 
 ```bash
 # Reopen with comment
-echo "🔄 Reopening issue
+echo "ðŸ”„ Reopening issue
 
 Reason: $ARGUMENTS
 
@@ -57,7 +62,7 @@ Recalculate epic progress with this task now open again.
 ### 6. Output
 
 ```
-🔄 Reopened issue #$ARGUMENTS
+ðŸ”„ Reopened issue #$ARGUMENTS
   Reason: {reason_if_provided}
   Epic progress: {updated_progress}%
   
@@ -68,3 +73,5 @@ Start work with: /pm:issue-start $ARGUMENTS
 
 Preserve work history in progress files.
 Don't delete previous progress, just reset status.
+
+

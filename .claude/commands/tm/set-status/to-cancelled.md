@@ -1,3 +1,11 @@
+---
+model: claude-sonnet-4-20250514
+category: task-management
+priority: medium
+tags: ["task-management"]
+description: Command for to-cancelled operations
+---
+
 Cancel a task permanently.
 
 Arguments: $ARGUMENTS (task ID)
@@ -53,3 +61,5 @@ When cancelling:
 - Tag with cancellation reason
 - Link to replacement if any
 - Maintain audit trail
+
+

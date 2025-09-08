@@ -1,3 +1,11 @@
+---
+model: claude-sonnet-4-20250514
+category: task-management
+priority: medium
+tags: ["task-management"]
+description: Command for command-pipeline operations
+---
+
 Execute a pipeline of commands based on a specification.
 
 Arguments: $ARGUMENTS
@@ -7,62 +15,62 @@ Arguments: $ARGUMENTS
 Parse pipeline specification from arguments. Supported formats:
 
 ### Simple Pipeline
-`init → expand-all → sprint-plan`
+`init â†’ expand-all â†’ sprint-plan`
 
 ### Conditional Pipeline  
-`status → if:pending>10 → sprint-plan → else → next`
+`status â†’ if:pending>10 â†’ sprint-plan â†’ else â†’ next`
 
 ### Iterative Pipeline
-`for:pending-tasks → expand → complexity-check`
+`for:pending-tasks â†’ expand â†’ complexity-check`
 
 ### Smart Pipeline Patterns
 
 **1. Project Setup Pipeline**
 ```
-init [prd] → 
-expand-all → 
-complexity-report → 
-sprint-plan → 
+init [prd] â†’ 
+expand-all â†’ 
+complexity-report â†’ 
+sprint-plan â†’ 
 show first-sprint
 ```
 
 **2. Daily Work Pipeline**
 ```
-standup →
-if:in-progress → continue →
-else → next → start
+standup â†’
+if:in-progress â†’ continue â†’
+else â†’ next â†’ start
 ```
 
 **3. Task Completion Pipeline**
 ```
-complete [id] →
-git-commit →
-if:blocked-tasks-freed → show-freed →
+complete [id] â†’
+git-commit â†’
+if:blocked-tasks-freed â†’ show-freed â†’
 next
 ```
 
 **4. Quality Check Pipeline**
 ```
-list in-progress →
-for:each → check-idle-time →
-if:idle>1day → prompt-update
+list in-progress â†’
+for:each â†’ check-idle-time â†’
+if:idle>1day â†’ prompt-update
 ```
 
 ### Pipeline Features
 
 **Variables**
-- Store results: `status → $count=pending-count`
+- Store results: `status â†’ $count=pending-count`
 - Use in conditions: `if:$count>10`
 - Pass between commands: `expand $high-priority-tasks`
 
 **Error Handling**
-- On failure: `try:complete → catch:show-blockers`
+- On failure: `try:complete â†’ catch:show-blockers`
 - Skip on error: `optional:test-run`
 - Retry logic: `retry:3:commit`
 
 **Parallel Execution**
 - Parallel branches: `[analyze | test | lint]`
-- Join results: `parallel → join:report`
+- Join results: `parallel â†’ join:report`
 
 ### Execution Flow
 
@@ -74,4 +82,6 @@ if:idle>1day → prompt-update
 6. Show summary
 
 This enables complex workflows like:
-`parse-prd → expand-all → filter:complex>70 → assign:senior → sprint-plan:weighted`
+`parse-prd â†’ expand-all â†’ filter:complex>70 â†’ assign:senior â†’ sprint-plan:weighted`
+
+
