@@ -19,7 +19,7 @@ export class TelemetryCollector extends EventEmitter implements ITelemetryCollec
   private parsers: Map<string, ITelemetryParser> = new Map();
   private transports: Map<string, ITransport> = new Map();
   private isRunning: boolean = false;
-  private samplingTimer: NodeJS.Timeout | null = null;
+  private samplingTimer: ReturnType<typeof setInterval> | null = null;
   private errorCounts: Map<string, number> = new Map();
 
   constructor(config: Partial<ITelemetryConfig> = {}) {
