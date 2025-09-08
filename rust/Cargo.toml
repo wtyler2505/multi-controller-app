@@ -3,6 +3,7 @@ members = [
     "core",
     "transports/serial",
     "drivers/arduino",
+    "tests",
 ]
 resolver = "2"
 
@@ -26,6 +27,11 @@ tracing = "0.1"
 tracing-subscriber = "0.3"
 # Testing
 mockall = "0.13"
+
+# Example dependencies
+multi-controller-core = { path = "core" }
+multi-controller-serial = { path = "transports/serial" }
+multi-controller-arduino = { path = "drivers/arduino" }
 
 [profile.release]
 # Optimize for performance and size

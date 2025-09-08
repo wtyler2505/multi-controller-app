@@ -8,7 +8,7 @@ use multi_controller_core::{
     MultiControllerError, async_trait
 };
 use std::time::Instant;
-use tracing::{debug, error, info};
+use tracing::{debug, warn, error, info};
 
 /// Serial-specific configuration options
 #[derive(Debug, Clone)]
@@ -129,7 +129,7 @@ impl Transport for SerialTransport {
         Ok(bytes_written)
     }
     
-    async fn receive(&mut self, _buffer: &mut [u8]) -> Result<usize> {
+    async fn receive(&mut self, buffer: &mut [u8]) -> Result<usize> {
         if !self.is_connected() {
             return Err(MultiControllerError::Connection(
                 "Serial port not connected".to_string()
