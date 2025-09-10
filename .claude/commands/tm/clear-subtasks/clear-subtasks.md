@@ -1,3 +1,11 @@
+---
+model: claude-sonnet-4-20250514
+category: task-management
+priority: medium
+tags: ["task-management", "tasks"]
+description: Command for clear-subtasks operations
+---
+
 Clear all subtasks from a specific task.
 
 Arguments: $ARGUMENTS (task ID)
@@ -32,7 +40,7 @@ task-master clear-subtasks --id=<task-id>
 
 ```
 Clear Subtasks Confirmation
-━━━━━━━━━━━━━━━━━━━━━━━━━
+â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 Parent Task: #5 "Implement user authentication"
 Subtasks to remove: 4
 - #5.1 "Setup auth framework" (done)
@@ -40,7 +48,7 @@ Subtasks to remove: 4
 - #5.3 "Add validation" (pending)
 - #5.4 "Write tests" (pending)
 
-⚠️  This will permanently delete all subtask data
+âš ï¸  This will permanently delete all subtask data
 Continue? (y/n)
 ```
 
@@ -78,9 +86,11 @@ Suggest alternatives:
 
 ```
 /project:tm/clear-subtasks 5
-→ Found 4 subtasks to remove
-→ Warning: Subtask #5.2 is in-progress
-→ Cleared all subtasks from task #5
-→ Updated parent task estimates
-→ Suggestion: Consider re-expanding with better breakdown
+â†’ Found 4 subtasks to remove
+â†’ Warning: Subtask #5.2 is in-progress
+â†’ Cleared all subtasks from task #5
+â†’ Updated parent task estimates
+â†’ Suggestion: Consider re-expanding with better breakdown
 ```
+
+

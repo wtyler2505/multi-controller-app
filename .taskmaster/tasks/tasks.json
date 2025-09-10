@@ -2,579 +2,1183 @@
   "master": {
     "tasks": [
       {
-        "id": 1,
-        "title": "Verify Development Environment",
-        "description": "Ensure all required SDKs and toolchains (.NET 8 SDK, Rust toolchain, Node 18+) are installed and configured for Windows 11 development.",
-        "details": "Check for .NET 8 SDK (Native AOT support), Rust stable toolchain, and Node.js 18+ using PowerShell scripts. Validate installation paths and environment variables. Document any missing prerequisites.",
-        "testStrategy": "Run version checks for each toolchain; attempt to build and run a 'Hello World' for each environment to confirm setup.",
+        "id": 28,
+        "title": "Design and Implement Connection Handshake Protocol",
+        "description": "Create a handshake protocol for device identification, capability negotiation, and protocol versioning with robust timeout and error handling. This task is owned by the handshake-protocol-engineer agent, a protocol design expert specializing in state machines, timeout handling, JSON messaging, and version negotiation.",
+        "status": "in-progress",
+        "dependencies": [],
+        "priority": "high",
+        "details": "Define handshake message format using JSON for extensibility. Implement IDENTIFY command and response parsing. Store device capabilities in DeviceInfo structure. Enforce a 5-second handshake timeout and validate firmware compatibility before session establishment. Support protocol versioning for backward compatibility. Provide user feedback on handshake failures. Ensure all handshake logic is async and non-blocking. Agent specializes in obsessive focus on 5-second timeouts, backward compatibility, and firmware validation. Agent location: .claude/agents/handshake-protocol-engineer.md",
+        "testStrategy": "Unit test handshake parsing and timeout logic. Integration test with devices of varying firmware versions. Simulate handshake failures and verify user feedback.",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Define Handshake Message Schema",
+            "description": "Design the JSON schema for all handshake messages, ensuring extensibility for future protocol versions and capability fields.",
+            "dependencies": [],
+            "details": "Specify required and optional fields for IDENTIFY, CAPABILITIES, VERSION, and ERROR messages. Document schema evolution strategy for backward compatibility. Include test cases for schema validation, missing/extra fields, and malformed JSON.",
+            "status": "done",
+            "testStrategy": ""
+          },
+          {
+            "id": 2,
+            "title": "Design Handshake State Machine",
+            "description": "Model the handshake process as a state machine, defining all states, transitions, and error paths.",
+            "dependencies": [
+              "28.1"
+            ],
+            "details": "Enumerate handshake states (e.g., INIT, IDENTIFY_SENT, CAPABILITIES_NEGOTIATION, VERSION_CHECK, ESTABLISHED, FAILED). Specify transitions for normal and error flows. Include test cases for valid and invalid state transitions, unexpected messages, and premature disconnects.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 3,
+            "title": "Implement IDENTIFY Command Logic",
+            "description": "Develop logic to send, receive, and parse the IDENTIFY command and response, extracting device identity and storing in DeviceInfo.",
+            "dependencies": [
+              "28.2"
+            ],
+            "details": "Handle parsing of IDENTIFY responses, including edge cases such as missing fields or duplicate device IDs. Validate DeviceInfo structure population. Test with devices providing incomplete or malformed identity data.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 4,
+            "title": "Implement Capability Negotiation",
+            "description": "Negotiate device capabilities based on exchanged messages and update DeviceInfo accordingly.",
+            "dependencies": [
+              "28.3"
+            ],
+            "details": "Support negotiation of optional and required capabilities. Handle mismatched or unsupported capabilities gracefully. Test with devices advertising unknown, deprecated, or conflicting capabilities.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 5,
+            "title": "Enforce 5-Second Handshake Timeout",
+            "description": "Implement robust timeout logic to abort handshake if not completed within 5 seconds, ensuring all operations are async and non-blocking.",
+            "dependencies": [
+              "28.4"
+            ],
+            "details": "Trigger error handling and user feedback on timeout. Test with slow, unresponsive, or partially responsive devices. Simulate network delays and verify correct timeout enforcement.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 6,
+            "title": "Validate Firmware and Protocol Version Compatibility",
+            "description": "Check device firmware and protocol version for compatibility before session establishment, supporting backward compatibility.",
+            "dependencies": [
+              "28.5"
+            ],
+            "details": "Implement version negotiation logic. Reject incompatible firmware or protocol versions with clear error reporting. Test with devices running older, newer, and unsupported versions.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 7,
+            "title": "Implement Async Error Handling and User Feedback",
+            "description": "Provide robust async error handling and clear user feedback for all handshake failures, including timeouts, schema errors, and version mismatches.",
+            "dependencies": [
+              "28.6"
+            ],
+            "details": "Ensure all error paths are non-blocking and propagate errors to the user interface or logs. Test with simulated handshake failures, malformed messages, and abrupt disconnects. Verify user feedback is actionable and specific.",
+            "status": "pending",
+            "testStrategy": ""
+          }
+        ]
+      },
+      {
+        "id": 29,
+        "title": "Develop Manual Control Widgets and State Management",
+        "description": "Implement interactive manual control widgets (sliders, toggles, numeric inputs, dropdowns, emergency stop) with real-time updates and value validation.",
+        "details": "Use egui widgets (slider, button, text input) for UI. Implement ControlWidget trait for extensibility. Store control states in ManualControlState structure. Ensure value validation and clamping. Emergency stop button should be visually prominent and trigger immediate device command. Integrate widgets with app state and device session for real-time updates. Optimize for responsiveness and minimal UI lag. Owned by ui-controls-architect agent - egui immediate mode GUI expert focused on sliders, toggles, emergency stop, ControlWidget trait. Agent at .claude/agents/ui-controls-architect.md",
+        "testStrategy": "UI unit tests for widget behavior and validation. Manual and automated tests for real-time updates and emergency stop. Performance profiling for UI responsiveness.",
+        "priority": "high",
+        "dependencies": [
+          28
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Design and Implement UI Components for Manual Controls",
+            "description": "Create interactive UI widgets for manual controls, including sliders, toggles, numeric inputs, dropdowns, and a visually prominent emergency stop button using egui. Ensure each widget is placed and laid out appropriately for usability and responsiveness.",
+            "dependencies": [],
+            "details": "Utilize egui's immediate mode API to add widgets to the UI, leveraging horizontal and vertical layouts for organization. Ensure the emergency stop button stands out visually and is easily accessible.",
+            "status": "done",
+            "testStrategy": ""
+          },
+          {
+            "id": 2,
+            "title": "Develop ControlWidget Trait for Widget Abstraction",
+            "description": "Define and implement the ControlWidget trait to enable extensibility and uniform handling of different manual control widgets.",
+            "dependencies": [
+              "29.1"
+            ],
+            "details": "Ensure the trait supports common widget behaviors, state updates, and integration with egui's widget system. Document trait methods for future extensibility.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 3,
+            "title": "Implement ManualControlState Structure for State Management",
+            "description": "Create and manage the ManualControlState structure to store and synchronize the states of all manual control widgets.",
+            "dependencies": [
+              "29.2"
+            ],
+            "details": "Ensure the structure supports real-time updates, state persistence, and efficient access for UI rendering and device command logic.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 4,
+            "title": "Integrate Value Validation and Clamping Logic",
+            "description": "Implement robust value validation and clamping for all manual control inputs to prevent invalid or unsafe values.",
+            "dependencies": [
+              "29.3"
+            ],
+            "details": "Ensure validation logic is isolated for testability and reliability. Clamp values to safe ranges before updating state or sending device commands.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 5,
+            "title": "Implement Emergency Stop Logic and Device Command Trigger",
+            "description": "Develop the emergency stop button's logic to immediately trigger a device command and update the app state for safety-critical response.",
+            "dependencies": [
+              "29.4"
+            ],
+            "details": "Ensure the emergency stop action bypasses normal validation and state update flows for immediate effect. Test for responsiveness and reliability.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 6,
+            "title": "Integrate Real-Time Device Communication and Profile UI Performance",
+            "description": "Connect manual control widgets and state management to the device session for real-time updates, and profile UI responsiveness to minimize lag.",
+            "dependencies": [
+              "29.5"
+            ],
+            "details": "Optimize state synchronization and device command dispatch for minimal latency. Profile and address UI performance bottlenecks, especially under rapid user interaction.",
+            "status": "pending",
+            "testStrategy": ""
+          }
+        ]
+      },
+      {
+        "id": 30,
+        "title": "Implement Control Command Processing and Transmission",
+        "description": "Convert widget inputs to device-specific commands, queue and transmit commands with acknowledgment, retry, and logging.",
+        "details": "Create Command enum for all supported command types. Implement command serialization to wire format. Use async/await for non-blocking transmission via established device session. Implement command queue with priority handling and batch transmission. Add acknowledgment and retry logic with user notification on failure. Maintain command history in a circular buffer for debugging and replay. Log all commands with timestamps. Owned by command-processor agent - Command queue and async transmission expert focused on priority queuing, retry logic, acknowledgments. Agent at .claude/agents/command-processor.md",
+        "testStrategy": "Unit test command serialization, queuing, and retry logic. Integration test with hardware for command acknowledgment and error handling. Validate command logging and replay.",
+        "priority": "high",
+        "dependencies": [
+          29
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Define Command Enum and Command Interface",
+            "description": "Enumerate all supported command types and define a Command interface or abstract class to standardize command structure and execution.",
+            "dependencies": [],
+            "details": "Create a comprehensive Command enum listing all device-specific command types. Define a Command interface or abstract class with required methods (e.g., execute, serialize) to ensure consistency across all command implementations.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 2,
+            "title": "Implement Command Serialization Logic",
+            "description": "Develop logic to serialize Command objects into the device-specific wire format for transmission.",
+            "dependencies": [
+              "30.1"
+            ],
+            "details": "Implement serialization methods for each command type, ensuring correct mapping to the device protocol. Include unit tests to validate serialization accuracy and handle edge cases.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 3,
+            "title": "Develop Asynchronous Command Transmission",
+            "description": "Implement non-blocking, async/await-based transmission of serialized commands over the established device session.",
+            "dependencies": [
+              "30.2"
+            ],
+            "details": "Use async/await patterns to send commands without blocking the main thread. Ensure integration with the device session and handle transmission errors gracefully.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 4,
+            "title": "Implement Priority Command Queue and Batch Handling",
+            "description": "Create a command queue supporting priority levels and batch transmission of commands.",
+            "dependencies": [
+              "30.3"
+            ],
+            "details": "Design a queue that orders commands by priority and supports batch sending for efficiency. Ensure thread safety and provide mechanisms for queue inspection and management.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 5,
+            "title": "Add Acknowledgment and Retry Logic",
+            "description": "Implement logic to handle device acknowledgments, retry failed transmissions, and escalate on repeated failures.",
+            "dependencies": [
+              "30.4"
+            ],
+            "details": "Track command acknowledgments, implement configurable retry policies, and escalate or notify on persistent failures. Ensure retries do not block the queue or cause deadlocks.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 6,
+            "title": "Integrate User Notification on Command Failure",
+            "description": "Notify users when command transmission fails after retries, providing actionable feedback.",
+            "dependencies": [
+              "30.5"
+            ],
+            "details": "Design user notification mechanisms (e.g., UI alerts, logs) to inform users of command failures, including error details and suggested actions.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 7,
+            "title": "Implement Command History and Logging",
+            "description": "Maintain a circular buffer for command history and log all command activity with timestamps for debugging and replay.",
+            "dependencies": [
+              "30.6"
+            ],
+            "details": "Store recent commands in a circular buffer, including metadata such as timestamps, status, and results. Implement persistent logging for audit and replay purposes.",
+            "status": "pending",
+            "testStrategy": ""
+          }
+        ]
+      },
+      {
+        "id": 31,
+        "title": "Implement Real-time Telemetry Data Collection and Buffering",
+        "description": "Parse and buffer incoming telemetry data from devices, supporting multiple formats and configurable sampling rates.",
+        "details": "Create TelemetryParser supporting CSV, JSON, and binary formats. Use ring buffers (capacity 2000+) for data storage. Implement data validation, error correction, and overflow handling. Support configurable sampling rates (10Hz to 1kHz). Store telemetry as time-series data. Implement data decimation for efficient visualization. Ensure thread safety and minimal latency using tokio channels or similar async primitives. Owned by telemetry-collector agent - Lock-free data structures and ring buffer expert focused on multi-format parsing, 2000+ sample buffers, 10Hz-1kHz sampling. Agent at .claude/agents/telemetry-collector.md",
+        "testStrategy": "Unit test data parsing and validation for all formats. Stress test buffer overflow and high sampling rates. Integration test with real devices for data integrity.",
+        "priority": "medium",
+        "dependencies": [
+          30
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Implement Multi-Format Telemetry Parser",
+            "description": "Develop a TelemetryParser capable of parsing incoming telemetry data in CSV, JSON, and binary formats, ensuring extensibility for future formats.",
+            "dependencies": [],
+            "details": "Define schemas for each supported format. Implement format detection and parsing logic. Ensure robust error handling for malformed data. Provide unit tests for each format.",
+            "status": "done",
+            "testStrategy": ""
+          },
+          {
+            "id": 2,
+            "title": "Design and Implement Thread-Safe Ring Buffer",
+            "description": "Create a lock-free, thread-safe ring buffer with a minimum capacity of 2000 samples for buffering parsed telemetry data.",
+            "dependencies": [
+              "31.1"
+            ],
+            "details": "Use lock-free data structures and async primitives (e.g., tokio channels) to ensure minimal latency and safe concurrent access. Validate buffer overflow handling and performance under high-frequency sampling.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 3,
+            "title": "Develop Data Validation and Error Correction Module",
+            "description": "Implement mechanisms to validate incoming telemetry data and apply error correction where possible before buffering.",
+            "dependencies": [
+              "31.1"
+            ],
+            "details": "Define validation rules for each data format. Integrate error correction algorithms for common data issues. Log and report validation failures for monitoring.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 4,
+            "title": "Implement Configurable Sampling Rate Control",
+            "description": "Enable dynamic configuration of telemetry data sampling rates, supporting rates from 10Hz to 1kHz.",
+            "dependencies": [
+              "31.1",
+              "31.2"
+            ],
+            "details": "Provide interfaces for runtime sampling rate adjustment. Ensure correct synchronization between data collection, parsing, and buffering at different rates.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 5,
+            "title": "Implement Data Decimation for Visualization",
+            "description": "Develop efficient data decimation algorithms to downsample buffered telemetry data for visualization without losing key trends.",
+            "dependencies": [
+              "31.2",
+              "31.4"
+            ],
+            "details": "Support configurable decimation strategies (e.g., averaging, min/max, subsampling). Ensure decimated data preserves time-series integrity for visualization tools.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 6,
+            "title": "Integrate Telemetry Buffer with Real-Time Processing Pipeline",
+            "description": "Connect the thread-safe ring buffer and decimation module to the real-time processing pipeline for downstream analytics and visualization.",
+            "dependencies": [
+              "31.2",
+              "31.5"
+            ],
+            "details": "Ensure seamless data flow from buffer to processing modules using async primitives. Validate end-to-end latency and data integrity. Provide integration tests with simulated device input.",
+            "status": "pending",
+            "testStrategy": ""
+          }
+        ]
+      },
+      {
+        "id": 32,
+        "title": "Wire Up Telemetry Data Visualization with Charts",
+        "description": "Display real-time telemetry data using line charts and digital indicators, supporting multiple series, chart controls, and data export.",
+        "details": "Use egui_plot v0.29 for chart rendering. Implement ChartManager for chart lifecycle and controls (zoom, pan, pause). Decimate data to 300 points per chart for performance. Support multiple data series and digital state indicators with timestamps. Add export functionality (CSV, JSON). Maintain 30 FPS update rate (33ms interval) for smooth visualization. Optimize rendering for minimal CPU usage. Owned by visualization-engineer agent - egui_plot v0.29 specialist focused on real-time charts, decimation to 300 points, 30 FPS rendering. Agent at .claude/agents/visualization-engineer.md",
+        "testStrategy": "UI tests for chart rendering, controls, and export. Performance profiling for FPS and CPU usage. Integration test with live telemetry data.",
+        "priority": "medium",
+        "dependencies": [
+          31
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Integrate egui_plot v0.29 for Chart Rendering",
+            "description": "Set up and configure egui_plot v0.29 to render real-time line charts and digital indicators, supporting multiple data series and timestamps.",
+            "dependencies": [],
+            "details": "Implement chart rendering using egui_plot's Plot and Line components. Ensure support for multiple lines and digital state indicators with timestamp annotations.",
+            "status": "pending",
+            "testStrategy": "Verify chart rendering with sample telemetry data. UI tests for multiple series and indicator display."
+          },
+          {
+            "id": 2,
+            "title": "Develop ChartManager for Lifecycle and Controls",
+            "description": "Create ChartManager to manage chart instances, lifecycle, and user controls including zoom, pan, and pause functionality.",
+            "dependencies": [
+              "32.1"
+            ],
+            "details": "Implement ChartManager to handle chart creation, destruction, and control events. Integrate egui_plot's interactive features for zooming and panning.",
+            "status": "pending",
+            "testStrategy": "UI tests for chart controls. Validate correct chart lifecycle management and control responsiveness."
+          },
+          {
+            "id": 3,
+            "title": "Implement Data Decimation and Performance Optimization",
+            "description": "Decimate incoming telemetry data to a maximum of 300 points per chart and optimize rendering to maintain 30 FPS with minimal CPU usage.",
+            "dependencies": [
+              "32.2"
+            ],
+            "details": "Apply data decimation algorithms before rendering. Profile and optimize chart updates to ensure smooth visualization at 33ms intervals.",
+            "status": "pending",
+            "testStrategy": "Performance profiling for FPS and CPU usage. Stress tests with high-frequency data streams."
+          },
+          {
+            "id": 4,
+            "title": "Support Multiple Data Series and Digital State Indicators",
+            "description": "Enable visualization of multiple telemetry series and digital state indicators, each with accurate timestamp alignment.",
+            "dependencies": [
+              "32.3"
+            ],
+            "details": "Extend chart rendering logic to handle multiple series and overlay digital indicators. Ensure correct timestamp mapping for all data points.",
+            "status": "pending",
+            "testStrategy": "UI tests for multi-series display and indicator accuracy. Integration tests with live telemetry data."
+          },
+          {
+            "id": 5,
+            "title": "Implement Data Export Functionality (CSV, JSON)",
+            "description": "Add export options to allow users to save chart data and digital indicators in CSV and JSON formats.",
+            "dependencies": [
+              "32.4"
+            ],
+            "details": "Provide export controls in the UI. Serialize chart data and indicators to CSV and JSON, ensuring correct formatting and timestamp inclusion.",
+            "status": "pending",
+            "testStrategy": "Functional tests for export features. Validate exported files for data integrity and format compliance."
+          }
+        ]
+      },
+      {
+        "id": 33,
+        "title": "Integrate Logging System for Device I/O and Events",
+        "description": "Capture and structure all device I/O, user actions, and system events with filtering, export, and log rotation.",
+        "details": "Use existing LoggingSystem with device_io buffer. Implement LogLevel filtering (Debug, Info, Warning, Error). Structure log entries with metadata (timestamps, source, parsing status). Support log export (JSON, CSV, plain text). Implement rolling log buffers and log rotation by size/time. Use tracing crate for structured logging and custom appenders. Enable remote log transmission for diagnostics. Owned by logging-integrator agent - tracing crate expert focused on structured logging, log capture, filtering, export, rotation. Agent at .claude/agents/logging-integrator.md",
+        "testStrategy": "Unit test log capture, filtering, and export. Simulate high-frequency events for buffer and rotation logic. Integration test for remote log transmission.",
+        "priority": "medium",
+        "dependencies": [
+          30
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Integrate Log Capture for Device I/O, User Actions, and System Events",
+            "description": "Implement mechanisms to capture all relevant device I/O, user actions, and system events using the existing LoggingSystem and device_io buffer.",
+            "dependencies": [],
+            "details": "Ensure all device interactions, user activities, and system-level events are logged in real time. Leverage the device_io buffer for efficient data collection and ensure compatibility with the current LoggingSystem.",
+            "status": "pending",
+            "testStrategy": "Unit test log capture for each event type. Simulate device I/O and user actions to verify comprehensive event logging."
+          },
+          {
+            "id": 2,
+            "title": "Implement LogLevel Filtering and Structured Log Entry Metadata",
+            "description": "Add LogLevel filtering (Debug, Info, Warning, Error) and structure log entries with metadata such as timestamps, source, and parsing status.",
+            "dependencies": [
+              "33.1"
+            ],
+            "details": "Enable dynamic filtering of logs based on severity. Ensure each log entry includes standardized metadata fields for traceability and analysis.",
+            "status": "pending",
+            "testStrategy": "Unit test filtering logic for each LogLevel. Validate metadata presence and correctness in log entries."
+          },
+          {
+            "id": 3,
+            "title": "Support Log Export in Multiple Formats",
+            "description": "Implement export functionality for logs in JSON, CSV, and plain text formats.",
+            "dependencies": [
+              "33.2"
+            ],
+            "details": "Provide interfaces to export filtered and structured logs in user-selectable formats, ensuring data integrity and compatibility with external tools.",
+            "status": "pending",
+            "testStrategy": "Unit test export for each format. Verify exported files match expected structure and content."
+          },
+          {
+            "id": 4,
+            "title": "Implement Rolling Log Buffers and Log Rotation",
+            "description": "Add rolling log buffers and log rotation mechanisms based on size and time constraints.",
+            "dependencies": [
+              "33.2"
+            ],
+            "details": "Ensure logs are efficiently managed in memory and on disk, automatically rotating or purging old logs to prevent resource exhaustion.",
+            "status": "pending",
+            "testStrategy": "Simulate high-frequency logging to test buffer limits and rotation triggers. Verify no data loss and correct log retention."
+          },
+          {
+            "id": 5,
+            "title": "Enable Structured Logging, Custom Appenders, and Remote Log Transmission",
+            "description": "Integrate the tracing crate for structured logging, implement custom appenders, and enable remote log transmission for diagnostics.",
+            "dependencies": [
+              "33.3",
+              "33.4"
+            ],
+            "details": "Adopt structured logging practices using the tracing crate, support extensible log destinations via custom appenders, and implement secure remote log transmission for diagnostic purposes.",
+            "status": "pending",
+            "testStrategy": "Integration test structured logging and custom appenders. Simulate remote log transmission and verify reliability and security."
+          }
+        ]
+      },
+      {
+        "id": 34,
+        "title": "Implement Scripting System with Rhai Engine",
+        "description": "Enable script loading, editing, validation, and execution with device API access, sandboxing, and performance monitoring.",
+        "details": "Use Rhai scripting engine (latest stable) for script execution. Implement ScriptManager for script lifecycle (load, edit, validate, execute). Support script import/export and metadata parsing (TOML format). Expose device control API to scripts in a sandboxed environment. Implement script scheduling, concurrent execution, debugging, and error handling. Enforce script timeout and resource limits for security. Owned by scripting-architect agent - Rhai engine integration expert focused on ScriptManager, sandboxing, device API, concurrent execution. Agent at .claude/agents/scripting-architect.md",
+        "testStrategy": "Unit test script loading, validation, and execution. Integration test with device API access. Security audit for sandboxing and resource limits.",
+        "priority": "medium",
+        "dependencies": [
+          30
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "ScriptManager Lifecycle Management",
+            "description": "Design and implement the ScriptManager to handle script loading, editing, validation, and execution, ensuring proper lifecycle management.",
+            "dependencies": [],
+            "details": "Include methods for loading scripts from disk, editing scripts in memory, validating syntax and semantics, and executing scripts. Ensure integration points for future features such as scheduling and debugging.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 2,
+            "title": "Rhai Engine Integration",
+            "description": "Integrate the latest stable Rhai scripting engine for script execution within the ScriptManager.",
+            "dependencies": [
+              "34.1"
+            ],
+            "details": "Set up Rhai engine initialization, configure script directories, and register Rust functions and types for script access. Ensure compatibility with device API and sandboxing requirements.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 3,
+            "title": "Device API Sandboxing",
+            "description": "Expose device control API to scripts in a secure, sandboxed environment to prevent unauthorized access and ensure safety.",
+            "dependencies": [
+              "34.2"
+            ],
+            "details": "Register only safe device API functions with the Rhai engine, restrict script capabilities, and enforce sandbox boundaries. Audit exposed APIs for security and compliance.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 4,
+            "title": "Script Scheduling and Concurrency",
+            "description": "Implement script scheduling and support for concurrent execution, allowing multiple scripts to run in parallel with proper isolation.",
+            "dependencies": [
+              "34.1",
+              "34.2",
+              "34.3"
+            ],
+            "details": "Design a scheduler for timed and event-driven script execution. Ensure thread safety and resource isolation using Rust concurrency primitives. Handle script lifecycle events in a concurrent context.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 5,
+            "title": "Timeout and Resource Limits Enforcement",
+            "description": "Enforce script execution timeouts and resource usage limits to maintain system stability and security.",
+            "dependencies": [
+              "34.4"
+            ],
+            "details": "Implement mechanisms to monitor and restrict script CPU time, memory usage, and other resources. Terminate or suspend scripts exceeding limits and log violations for auditing.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 6,
+            "title": "Debugging and Error Handling",
+            "description": "Provide debugging tools and robust error handling for script execution, including detailed error reporting and logging.",
+            "dependencies": [
+              "34.2",
+              "34.4",
+              "34.5"
+            ],
+            "details": "Integrate debugging hooks, stack traces, and breakpoints. Capture and log runtime errors, validation failures, and resource violations. Expose error information to users and developers.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 7,
+            "title": "Script Import/Export and Metadata Management",
+            "description": "Support script import/export functionality and metadata parsing using TOML format for script organization and portability.",
+            "dependencies": [
+              "34.1"
+            ],
+            "details": "Implement import/export routines for scripts and associated metadata. Parse and validate TOML metadata files, ensuring compatibility with ScriptManager and Rhai engine requirements.",
+            "status": "pending",
+            "testStrategy": ""
+          }
+        ]
+      },
+      {
+        "id": 35,
+        "title": "Develop Profile Management System for Device Configurations",
+        "description": "Implement profile save/load, import/export, auto-apply, and versioning for device configurations.",
+        "details": "Create ProfileManager for CRUD operations. Store profiles in TOML format using serde for serialization. Support multiple named profiles, import/export, and hot-reload via notify crate. Implement profile versioning and migration logic. Match devices to profiles by identifier and auto-apply on connection. Handle profile conflicts and log application events. Owned by profile-manager agent - TOML serialization and hot-reload expert focused on ProfileManager, versioning, auto-apply, conflict resolution. Agent at .claude/agents/profile-manager.md",
+        "testStrategy": "Unit test profile CRUD, import/export, and migration. Integration test auto-apply and conflict handling with real devices.",
+        "priority": "medium",
+        "dependencies": [
+          30
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Implement Profile CRUD Operations and Storage",
+            "description": "Develop the ProfileManager to support creation, reading, updating, and deletion (CRUD) of multiple named device configuration profiles, storing them in TOML format using serde for serialization.",
+            "dependencies": [],
+            "details": "Ensure the ProfileManager can manage multiple profiles, each with unique identifiers, and persist them efficiently in TOML files. Integrate serde for serialization and deserialization.",
+            "status": "pending",
+            "testStrategy": "Unit test all CRUD operations for correctness and data integrity, including edge cases for profile naming and storage."
+          },
+          {
+            "id": 2,
+            "title": "Enable Profile Import, Export, and Hot-Reload",
+            "description": "Add functionality to import and export profiles, and implement hot-reload support using the notify crate to detect changes in profile files.",
+            "dependencies": [
+              "35.1"
+            ],
+            "details": "Allow users to import/export profiles in TOML format. Use the notify crate to watch profile directories and automatically reload profiles on file changes.",
+            "status": "pending",
+            "testStrategy": "Unit test import/export with valid and invalid files. Integration test hot-reload by modifying files externally and verifying in-app updates."
+          },
+          {
+            "id": 3,
+            "title": "Implement Profile Versioning and Migration Logic",
+            "description": "Introduce versioning for profiles and develop migration logic to handle upgrades or changes in profile schema over time.",
+            "dependencies": [
+              "35.1"
+            ],
+            "details": "Add a version field to each profile. Implement migration routines to update older profiles to the latest schema, ensuring backward compatibility.",
+            "status": "pending",
+            "testStrategy": "Unit test migration logic with profiles from previous versions. Verify correct handling of missing or deprecated fields."
+          },
+          {
+            "id": 4,
+            "title": "Develop Device Matching and Auto-Apply Mechanism",
+            "description": "Create logic to match connected devices to profiles by identifier and automatically apply the appropriate configuration upon device connection.",
+            "dependencies": [
+              "35.1",
+              "35.2",
+              "35.3"
+            ],
+            "details": "Implement device identification and matching algorithms. Ensure the system can auto-apply the correct profile when a device is detected, supporting multiple simultaneous devices.",
+            "status": "pending",
+            "testStrategy": "Integration test with simulated and real devices to verify correct profile matching and auto-application."
+          },
+          {
+            "id": 5,
+            "title": "Handle Profile Conflicts and Log Application Events",
+            "description": "Implement conflict detection and resolution strategies for profile application, and log all profile application events for auditing and troubleshooting.",
+            "dependencies": [
+              "35.4"
+            ],
+            "details": "Detect and resolve conflicts when multiple profiles could apply to a device. Log all profile application attempts, successes, failures, and conflict resolutions.",
+            "status": "pending",
+            "testStrategy": "Integration test conflict scenarios and verify logs for completeness and accuracy."
+          }
+        ]
+      },
+      {
+        "id": 36,
+        "title": "Optimize Performance: CPU Monitoring, Memory, and UI Responsiveness",
+        "description": "Fix CPU monitoring on Windows, optimize memory and CPU usage, and ensure UI responsiveness during all operations.",
+        "details": "Investigate sysinfo crate for Windows CPU monitoring; implement custom logic if needed for accurate multi-core reporting. Use rolling average for stable CPU readings. Optimize memory usage with pooling and lazy loading. Ensure idle CPU <2%, memory <150MB, and startup <2s. Implement async UI updates, loading spinners, and operation cancellation. Profile and optimize event loops and rendering for 60 FPS. Add CPU usage trend visualization. Owned by performance-optimizer agent - System optimization expert with 5 sub-specializations focused on CPU monitoring, memory optimization, startup time (<2s), idle CPU (<2%), RAM (<150MB). Agent at .claude/agents/performance-optimizer.md",
+        "testStrategy": "Performance profiling on all platforms. Automated tests for CPU/memory usage and startup time. UI tests for responsiveness and cancellation. Soak tests for memory leaks.",
+        "priority": "medium",
+        "dependencies": [
+          32,
+          33,
+          34,
+          35
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Fix and Enhance Windows CPU Monitoring",
+            "description": "Investigate and resolve issues with CPU monitoring on Windows using the sysinfo crate. Implement custom logic for accurate multi-core reporting if sysinfo is insufficient, and ensure rolling average computation for stable readings.",
+            "dependencies": [],
+            "details": "Evaluate sysinfo's capabilities for Windows CPU monitoring, including per-core and global usage. If sysinfo does not provide accurate multi-core data, design and implement custom polling and aggregation logic. Integrate a rolling average mechanism to smooth CPU usage fluctuations.",
+            "status": "pending",
+            "testStrategy": "Compare reported CPU usage against Windows Task Manager and validate multi-core accuracy. Test rolling average stability under load and idle conditions."
+          },
+          {
+            "id": 2,
+            "title": "Optimize Memory Usage with Pooling and Lazy Loading",
+            "description": "Reduce memory footprint by implementing object pooling and lazy loading strategies throughout the application, targeting idle memory usage below 150MB.",
+            "dependencies": [],
+            "details": "Identify high-memory components and refactor them to use pooling for reusable objects and lazy loading for deferred resource allocation. Monitor memory usage during typical and edge-case operations.",
+            "status": "pending",
+            "testStrategy": "Profile memory usage with tools like Windows Performance Monitor. Run soak tests to detect leaks and validate that idle memory remains below 150MB."
+          },
+          {
+            "id": 3,
+            "title": "Ensure Fast Startup and Low Idle Resource Usage",
+            "description": "Optimize application initialization to achieve startup times under 2 seconds and idle CPU usage below 2%.",
+            "dependencies": [],
+            "details": "Analyze startup sequence for bottlenecks and parallelize or defer non-critical initialization. Profile idle loops and background tasks to minimize CPU consumption when inactive.",
+            "status": "pending",
+            "testStrategy": "Automate measurement of startup time and idle CPU usage across multiple hardware profiles. Validate against defined thresholds."
+          },
+          {
+            "id": 4,
+            "title": "Implement Responsive UI with Async Updates and Cancellation",
+            "description": "Ensure UI remains responsive during all operations by using asynchronous updates, loading spinners, and operation cancellation mechanisms.",
+            "dependencies": [],
+            "details": "Refactor UI event handling and data fetching to use async patterns. Add loading indicators for long-running tasks and provide users with the ability to cancel operations. Profile event loops and rendering to maintain 60 FPS.",
+            "status": "pending",
+            "testStrategy": "Conduct UI responsiveness tests under heavy load. Validate spinner visibility and cancellation functionality. Use frame profiling tools to confirm 60 FPS rendering."
+          },
+          {
+            "id": 5,
+            "title": "Add CPU Usage Trend Visualization",
+            "description": "Develop and integrate a real-time visualization of CPU usage trends within the UI, leveraging rolling average data.",
+            "dependencies": [],
+            "details": "Design and implement a chart or graph component that displays CPU usage over time, updating at regular intervals. Ensure efficient rendering and minimal resource overhead.",
+            "status": "pending",
+            "testStrategy": "Verify trend accuracy against raw CPU data. Test chart rendering performance and responsiveness under varying system loads."
+          }
+        ]
+      },
+      {
+        "id": 37,
+        "title": "Establish Monorepo and CI/CD Pipeline",
+        "description": "Set up a monorepo structure for all four tracks with robust CI/CD using GitHub Actions and Docker for environment consistency.",
+        "details": "Use Nx (v18+) or Turborepo for monorepo management. Configure GitHub Actions for automated linting, testing, and deployment. Use Docker Compose for local dev/test environments. Integrate Dependabot for dependency updates. Document setup in README.",
+        "testStrategy": "Validate CI/CD by pushing sample commits and verifying all jobs (lint, test, build, deploy) run successfully. Confirm local dev environment matches production via Docker.",
         "priority": "high",
         "dependencies": [],
-        "status": "pending",
+        "status": "in-progress",
         "subtasks": [
           {
             "id": 1,
-            "title": "Check .NET 8 SDK Installation and Native AOT Support",
-            "description": "Verify that the .NET 8 SDK is installed and configured, including support for Native AOT on Windows 11.",
+            "title": "Initialize Monorepo Structure with Nx/Turborepo",
+            "description": "Set up the foundational monorepo structure using Nx (v18+) or Turborepo, configure workspace settings, and establish project organization for all four tracks.",
             "dependencies": [],
-            "details": "Use PowerShell scripts to check for the presence of the .NET 8 SDK and confirm Native AOT capabilities. Validate installation path and ensure relevant environment variables (e.g., PATH) are set.",
+            "details": "Install and configure Nx or Turborepo. Create workspace configuration files. Set up project structure for Track 1 (Hardware), Track 2 (AI Agents), Track 3 (Integration), and Track 4 (Coordination). Configure shared libraries and utilities. Establish naming conventions and folder structure standards.",
             "status": "pending",
-            "testStrategy": "Run 'dotnet --list-sdks' and attempt to build and run a Native AOT 'Hello World' application."
+            "testStrategy": ""
           },
           {
             "id": 2,
-            "title": "Verify Rust Stable Toolchain Installation",
-            "description": "Ensure the Rust stable toolchain is installed and properly configured for Windows 11 development.",
-            "dependencies": [],
-            "details": "Check for Rust installation using 'rustup' and confirm the stable MSVC toolchain is present. Validate that '%USERPROFILE%\\.cargo\\bin' is in the PATH environment variable. Confirm installation by running 'cargo --version' and 'rustc --version'.",
+            "title": "Configure GitHub Actions Workflow Foundation",
+            "description": "Create the core GitHub Actions workflow files for automated CI/CD pipeline with basic job structure and triggers.",
+            "dependencies": [
+              "37.1"
+            ],
+            "details": "Set up workflow triggers for push, pull request, and scheduled events. Create reusable workflow templates. Configure environment variables and secrets management. Establish branch protection rules. Set up workflow permissions and security settings.",
             "status": "pending",
-            "testStrategy": "Run version checks and build a Rust 'Hello World' project to verify toolchain functionality.[1][3][4]"
+            "testStrategy": ""
           },
           {
             "id": 3,
-            "title": "Validate Node.js 18+ Installation",
-            "description": "Confirm that Node.js version 18 or higher is installed and available for use.",
-            "dependencies": [],
-            "details": "Use PowerShell to check Node.js version and validate installation path. Ensure Node.js is accessible from the command line and included in the PATH environment variable.",
+            "title": "Implement Build Optimization and Test Parallelization",
+            "description": "Configure advanced CI/CD features including build caching, test parallelization, and performance optimization strategies.",
+            "dependencies": [
+              "37.2"
+            ],
+            "details": "Implement build caching strategies using GitHub Actions cache. Configure test parallelization across multiple runners. Set up incremental builds and affected project detection. Optimize Docker layer caching. Configure matrix builds for different environments and Node.js versions.",
             "status": "pending",
-            "testStrategy": "Run 'node --version' and execute a simple Node.js script to confirm operational status."
+            "testStrategy": ""
           },
           {
             "id": 4,
-            "title": "Check and Document Environment Variables and Installation Paths",
-            "description": "Validate that all required environment variables and installation paths for .NET, Rust, and Node.js are correctly set.",
-            "dependencies": [],
-            "details": "Use PowerShell scripts to inspect PATH and other relevant environment variables. Document any misconfigurations or missing entries for each toolchain.",
+            "title": "Establish Quality Gates and Docker Environment",
+            "description": "Set up automated quality gates including linting, testing, security scanning, and Docker Compose for consistent development environments.",
+            "dependencies": [
+              "37.3"
+            ],
+            "details": "Configure ESLint, Prettier, and TypeScript checking. Set up automated testing with coverage reporting. Implement security scanning with CodeQL. Create Docker Compose files for local development and testing. Configure Dependabot for automated dependency updates. Set up deployment gates and approval processes.",
             "status": "pending",
-            "testStrategy": "Automate environment variable checks and verify that all SDK/toolchain executables are accessible from any command prompt."
+            "testStrategy": ""
           },
           {
             "id": 5,
-            "title": "Report and Document Missing Prerequisites",
-            "description": "Identify and document any missing SDKs, toolchains, or configuration issues required for Windows 11 development.",
-            "dependencies": [],
-            "details": "Aggregate results from previous checks. Create a report listing missing prerequisites, misconfigurations, and recommended remediation steps.",
+            "title": "Document Setup and Validate CI/CD Pipeline",
+            "description": "Create comprehensive documentation and validate the entire CI/CD pipeline through end-to-end testing.",
+            "dependencies": [
+              "37.4"
+            ],
+            "details": "Write detailed README with setup instructions. Document CI/CD pipeline architecture and workflows. Create troubleshooting guides. Validate pipeline by pushing test commits across all tracks. Verify all jobs (lint, test, build, deploy) execute successfully. Confirm local Docker environment matches production. Test Dependabot integration and automated updates.",
             "status": "pending",
-            "testStrategy": "Review the generated report for completeness and accuracy; ensure all missing or misconfigured components are clearly documented."
+            "testStrategy": ""
           }
         ]
       },
       {
-        "id": 2,
-        "title": "Scaffold Project Repository",
-        "description": "Create initial repository structure with required directories and configuration files.",
-        "details": "Set up folders: /app, /drivers, /transports, /docs, /tests. Add .gitignore, README, and initial config files (.mcp.json, .claude/settings.json). Use PowerShell scripts for automation. Ensure compatibility with Windows filesystem conventions.",
-        "testStrategy": "Verify directory structure and presence of all config files. Run repository initialization script and check for errors.",
+        "id": 38,
+        "title": "Implement Device Discovery Engine (Track 1, Phase 1.1)",
+        "description": "Develop automated serial port scanning, device fingerprinting, and dynamic capability mapping for Arduino Uno, ESP32, and custom serial devices.",
+        "details": "Use Node.js (v20+) with serialport (v12+) for cross-platform serial communication. Implement protocol handshake logic for device identification. Store device fingerprints and capabilities in a local SQLite (v3.45+) DB. Use TypeScript for type safety. Modularize for extensibility.",
+        "testStrategy": "Unit test with MockTransport for all device types. Integration test with physical devices. Validate detection accuracy and capability mapping for at least 3 device types.",
         "priority": "high",
-        "dependencies": [1],
+        "dependencies": [
+          37
+        ],
         "status": "pending",
         "subtasks": [
           {
             "id": 1,
-            "title": "Define Repository Directory Structure",
-            "description": "Specify and document the required top-level directories: /app, /drivers, /transports, /docs, /tests, ensuring alignment with project requirements and Windows filesystem conventions.",
+            "title": "Implement Serial Port Scanning Logic",
+            "description": "Develop a cross-platform module in Node.js (TypeScript) to automatically scan and enumerate available serial ports, detecting potential device connections.",
             "dependencies": [],
-            "details": "List all necessary directories and subdirectories, referencing Windows naming and path rules. Prepare a directory map for automation.",
+            "details": "Use the serialport (v12+) library to list all available serial ports. Ensure the scanning logic is asynchronous and robust against transient port changes. Prepare for integration with subsequent identification steps.",
             "status": "pending",
-            "testStrategy": "Review the directory map for completeness and compatibility with Windows filesystem constraints."
+            "testStrategy": ""
           },
           {
             "id": 2,
-            "title": "Prepare Initial Configuration and Documentation Files",
-            "description": "Draft and template the essential files: .gitignore, README, .mcp.json, and .claude/settings.json, ensuring correct formatting and initial content.",
-            "dependencies": ["2.1"],
-            "details": "Create sample content for each file, including basic ignore rules, project overview, and minimal valid JSON for config files.",
+            "title": "Develop Protocol Handshake for Device Identification",
+            "description": "Implement protocol handshake logic to communicate with connected devices and determine their type (Arduino Uno, ESP32, or custom serial device).",
+            "dependencies": [
+              "38.1"
+            ],
+            "details": "For each detected port, initiate a handshake sequence using device-specific protocols. Parse responses to reliably identify device type and readiness. Ensure extensibility for future device protocols.",
             "status": "pending",
-            "testStrategy": "Validate file syntax and confirm presence of required sections in each file."
+            "testStrategy": ""
           },
           {
             "id": 3,
-            "title": "Develop PowerShell Automation Script",
-            "description": "Write a PowerShell script to automate creation of the directory structure and placement of configuration files, ensuring idempotency and error handling.",
-            "dependencies": ["2.1", "2.2"],
-            "details": "Script should create all directories, copy or generate config files, and handle reruns without duplication or errors.",
+            "title": "Implement Device Fingerprinting Logic",
+            "description": "Extract and generate unique fingerprints for each identified device, capturing distinguishing characteristics for reliable recognition.",
+            "dependencies": [
+              "38.2"
+            ],
+            "details": "Collect device metadata (e.g., serial number, firmware version, vendor/product IDs) during handshake. Normalize and store fingerprints in a consistent format for later lookup and deduplication.",
             "status": "pending",
-            "testStrategy": "Run the script on a clean environment and verify correct structure and file placement; rerun to confirm idempotency."
+            "testStrategy": ""
           },
           {
             "id": 4,
-            "title": "Integrate Windows Filesystem Compatibility Checks",
-            "description": "Ensure all directory and file names, paths, and script logic comply with Windows filesystem conventions and limitations.",
-            "dependencies": ["2.3"],
-            "details": "Review naming, reserved characters, path lengths, and permissions. Update script and documentation as needed.",
+            "title": "Map Device Capabilities and Integrate with SQLite DB",
+            "description": "Dynamically determine device capabilities and persist both fingerprints and capabilities in a local SQLite (v3.45+) database.",
+            "dependencies": [
+              "38.3"
+            ],
+            "details": "Query each device for supported features (e.g., available sensors, commands). Design and implement a schema in SQLite to store fingerprints and capability mappings. Ensure atomic updates and efficient queries.",
             "status": "pending",
-            "testStrategy": "Test repository initialization on Windows 11; check for errors related to naming, paths, or permissions."
+            "testStrategy": ""
           },
           {
             "id": 5,
-            "title": "Verify Repository Initialization and Structure",
-            "description": "Execute the automation script and manually inspect the resulting repository to confirm all directories and files are present and correctly configured.",
-            "dependencies": ["2.4"],
-            "details": "Compare the generated structure against the specification. Document any discrepancies and update scripts or templates as needed.",
+            "title": "Modularize for Extensibility to New Device Types",
+            "description": "Refactor and modularize the discovery engine to support easy addition of new device types and protocols.",
+            "dependencies": [
+              "38.4"
+            ],
+            "details": "Abstract device-specific logic into separate modules or classes. Define clear interfaces for scanning, handshake, fingerprinting, and capability mapping. Document extension points and provide a template for new device integrations.",
             "status": "pending",
-            "testStrategy": "Run the full initialization process, review output, and cross-check with the directory map and file checklist."
+            "testStrategy": ""
           }
         ]
       },
       {
-        "id": 3,
-        "title": "Prototype UI with Serial Echo (C# Native AOT and Rust)",
-        "description": "Develop minimal UIs in both C# (.NET 8 Native AOT) and Rust to test serial communication and measure resource usage.",
-        "details": "Implement a single-window UI in both C# (WinUI 3, Native AOT) and Rust (egui or native Win32 bindings). Integrate basic serial port echo functionality using System.IO.Ports (C#) and serialport-rs (Rust). Measure RAM, CPU, and cold-start times using Windows Performance Monitor.",
-        "testStrategy": "Run both prototypes on Windows 11. Measure startup time, idle CPU, and RAM usage. Validate serial echo functionality with a loopback device.",
+        "id": 39,
+        "title": "Develop Real-Time Device Status Monitoring (Track 1, Req 1.4)",
+        "description": "Create a real-time device health and status monitoring subsystem with alerting for failures or disconnects.",
+        "details": "Leverage RxJS (v7+) for reactive streams. Implement periodic health checks and event-driven status updates. Integrate with logging system. Provide REST API endpoints for status queries. Use WebSockets for real-time UI updates.",
+        "testStrategy": "Simulate device failures and verify alerts/logs. Test real-time updates in UI and via API. Ensure <100ms latency for status propagation.",
         "priority": "high",
-        "dependencies": [1],
+        "dependencies": [
+          38
+        ],
         "status": "pending",
-        "subtasks": [
-          {
-            "id": 1,
-            "title": "Set Up Minimal C# WinUI 3 Project with Native AOT",
-            "description": "Create a single-window C# application using WinUI 3 and configure it for .NET 8 Native AOT compilation.",
-            "dependencies": [],
-            "details": "Initialize a new WinUI 3 project, add <PublishAot>true</PublishAot> to the project file, and ensure the app builds and runs as a native executable on Windows 11.",
-            "status": "pending",
-            "testStrategy": "Build and publish the app using Native AOT; verify the executable launches and displays the UI window."
-          },
-          {
-            "id": 2,
-            "title": "Set Up Minimal Rust UI Project",
-            "description": "Create a single-window Rust application using egui or native Win32 bindings.",
-            "dependencies": [],
-            "details": "Initialize a new Rust project, select and integrate a minimal UI framework (egui or Win32), and ensure the app builds and runs on Windows 11.",
-            "status": "pending",
-            "testStrategy": "Build and run the Rust app; verify the UI window appears and responds to basic user input."
-          },
-          {
-            "id": 3,
-            "title": "Implement Serial Port Echo Functionality in Both UIs",
-            "description": "Integrate basic serial port echo logic using System.IO.Ports in C# and serialport-rs in Rust.",
-            "dependencies": ["3.1", "3.2"],
-            "details": "Add code to both UIs to open a serial port, read incoming data, and immediately write it back (echo) to the sender.",
-            "status": "pending",
-            "testStrategy": "Connect a loopback device; send data through the UI and verify echoed data is received."
-          },
-          {
-            "id": 4,
-            "title": "Measure Resource Usage and Startup Performance",
-            "description": "Profile RAM, CPU, and cold-start times for both prototypes using Windows Performance Monitor.",
-            "dependencies": ["3.3"],
-            "details": "Use Windows Performance Monitor to record memory usage, CPU utilization, and startup time for each app under identical conditions.",
-            "status": "pending",
-            "testStrategy": "Document measurements for each metric; repeat tests to ensure consistency."
-          },
-          {
-            "id": 5,
-            "title": "Document Implementation and Benchmark Results",
-            "description": "Summarize implementation steps, challenges, and resource usage results for both C# and Rust prototypes.",
-            "dependencies": ["3.4"],
-            "details": "Prepare a report detailing setup, serial echo validation, and all measured performance metrics for both implementations.",
-            "status": "pending",
-            "testStrategy": "Review documentation for completeness and clarity; ensure all results and steps are reproducible."
-          }
-        ]
+        "subtasks": []
       },
       {
-        "id": 4,
-        "title": "Compare Prototypes and Decide Language/Framework",
-        "description": "Analyze performance and developer experience of C# and Rust prototypes to select the optimal stack.",
-        "details": "Document RAM, CPU, and startup benchmarks. Evaluate UI responsiveness, AOT compatibility, and driver/plugin extensibility. Record trade-offs in docs/decisions/decision-log.md. Prefer .NET 8 Native AOT if performance budgets are met; otherwise, select Rust.",
-        "testStrategy": "Review benchmark data and developer feedback. Confirm decision is documented and justified in the decision log.",
+        "id": 40,
+        "title": "Build Multi-Device Coordination Engine (Track 1, Phase 1.2)",
+        "description": "Enable simultaneous control, conflict resolution, bandwidth allocation, and cross-device state management for 5+ devices.",
+        "details": "Implement a coordination scheduler using a priority queue (bullmq v4+). Use mutexes for resource locking. Design a state sync protocol using protobuf for efficiency. Integrate with device status subsystem. Support automated failover and redundancy via agent-based logic.",
+        "testStrategy": "Simulate concurrent commands to 5+ devices. Test conflict scenarios and failover. Measure coordination latency and reliability.",
         "priority": "high",
-        "dependencies": [3],
+        "dependencies": [
+          39
+        ],
         "status": "pending",
-        "subtasks": [
-          {
-            "id": 1,
-            "title": "Gather and Document Benchmark Data",
-            "description": "Collect RAM, CPU, and startup time benchmarks for both C# (.NET 8 Native AOT) and Rust prototypes on identical hardware.",
-            "dependencies": [],
-            "details": "Run standardized tests for each prototype, record results in a structured format, and ensure reproducibility. Document findings in docs/decisions/decision-log.md.",
-            "status": "pending",
-            "testStrategy": "Verify benchmark scripts produce consistent results across multiple runs. Confirm all data is logged and traceable."
-          },
-          {
-            "id": 2,
-            "title": "Evaluate UI Responsiveness and Developer Experience",
-            "description": "Assess UI responsiveness and developer workflow for both stacks, including build times, debugging, and tooling.",
-            "dependencies": [],
-            "details": "Perform hands-on testing of UI latency and responsiveness. Gather developer feedback on IDE support, error diagnostics, and productivity. Summarize pros/cons in the decision log.",
-            "status": "pending",
-            "testStrategy": "Use automated UI tests and developer surveys to quantify responsiveness and workflow satisfaction."
-          },
-          {
-            "id": 3,
-            "title": "Assess AOT Compatibility and Extensibility",
-            "description": "Analyze Ahead-of-Time (AOT) compilation support and plugin/driver extensibility for both C# and Rust prototypes.",
-            "dependencies": [],
-            "details": "Test Native AOT deployment for C# and compare with Rust's compilation model. Evaluate plugin loading mechanisms, manifest parsing, and extensibility features.",
-            "status": "pending",
-            "testStrategy": "Deploy sample plugins/drivers in both environments and verify hot-plug, manifest parsing, and extensibility requirements."
-          },
-          {
-            "id": 4,
-            "title": "Compare Trade-offs and Document Decision Rationale",
-            "description": "Synthesize benchmark, UI, AOT, and extensibility findings to compare trade-offs between C# and Rust.",
-            "dependencies": ["4.1", "4.2", "4.3"],
-            "details": "Summarize strengths, weaknesses, and risks for each stack. Record all trade-offs and rationale in docs/decisions/decision-log.md.",
-            "status": "pending",
-            "testStrategy": "Review documentation for completeness and clarity. Ensure all major criteria and findings are addressed."
-          },
-          {
-            "id": 5,
-            "title": "Select Optimal Language/Framework and Finalize Documentation",
-            "description": "Make a final decision on the language/framework based on performance budgets and documented trade-offs.",
-            "dependencies": ["4.4"],
-            "details": "If .NET 8 Native AOT meets performance budgets, select C#; otherwise, select Rust. Update the decision log with justification and notify stakeholders.",
-            "status": "pending",
-            "testStrategy": "Confirm the decision is clearly documented, justified, and communicated to the team."
-          }
-        ]
+        "subtasks": []
       },
       {
-        "id": 5,
-        "title": "Implement Device Abstraction Layer",
-        "description": "Design and implement core interfaces (IDeviceDriver, IDeviceSession) for driver plugins and device management.",
-        "details": "Define interfaces in chosen language (C# or Rust) for device drivers and sessions. Support plugin loading from /drivers/<name> with manifest parsing (TOML/JSON). Ensure hot-plug detection, rate-limiting, and safety hooks (global stop). Use reflection (C#) or dynamic loading (Rust) for extensibility.",
-        "testStrategy": "Write unit tests for interface compliance, plugin loading, and manifest parsing. Simulate hot-plug events and verify safety actions.",
-        "priority": "high",
-        "dependencies": [4],
-        "status": "pending",
-        "subtasks": [
-          {
-            "id": 1,
-            "title": "Define Core Device Interfaces",
-            "description": "Design the IDeviceDriver and IDeviceSession interfaces in the chosen language (C# or Rust), specifying required methods and properties for device abstraction and management.",
-            "dependencies": [],
-            "details": "Establish clear, concise interfaces that encapsulate device driver and session responsibilities, ensuring extensibility and maintainability. Follow best practices for abstraction layer API design, focusing on simplicity and documentation.",
-            "status": "pending",
-            "testStrategy": "Write unit tests to verify interface compliance and correct method/property signatures."
-          },
-          {
-            "id": 2,
-            "title": "Implement Plugin Loading and Manifest Parsing",
-            "description": "Develop the mechanism to load driver plugins from the /drivers/<name> directory, including parsing plugin manifests in TOML or JSON format.",
-            "dependencies": ["5.1"],
-            "details": "Utilize reflection (C#) or dynamic loading (Rust) to discover and instantiate plugins at runtime. Implement robust manifest parsing to extract metadata and configuration for each plugin.",
-            "status": "pending",
-            "testStrategy": "Create tests for plugin discovery, manifest parsing accuracy, and error handling for malformed manifests."
-          },
-          {
-            "id": 3,
-            "title": "Integrate Hot-Plug Detection and Rate-Limiting",
-            "description": "Add support for detecting device hot-plug events and implement rate-limiting to prevent resource exhaustion or rapid cycling.",
-            "dependencies": ["5.2"],
-            "details": "Monitor device connection/disconnection events and trigger appropriate driver/session lifecycle actions. Implement configurable rate-limiting to manage event frequency and system stability.",
-            "status": "pending",
-            "testStrategy": "Simulate hot-plug scenarios and verify correct detection, handling, and rate-limiting behavior."
-          },
-          {
-            "id": 4,
-            "title": "Implement Safety Hooks and Global Stop Mechanism",
-            "description": "Design and implement safety hooks, including a global stop function to ensure safe shutdown or interruption of all device operations.",
-            "dependencies": ["5.3"],
-            "details": "Provide a centralized mechanism to halt all device activity in response to critical errors or user commands, ensuring system safety and integrity.",
-            "status": "pending",
-            "testStrategy": "Test global stop under various operational states and verify all devices cease activity safely and promptly."
-          },
-          {
-            "id": 5,
-            "title": "Validate Extensibility and Interface Compliance",
-            "description": "Ensure the abstraction layer supports extensibility via reflection or dynamic loading, and that all plugins conform to the defined interfaces.",
-            "dependencies": ["5.4"],
-            "details": "Perform integration tests with multiple sample plugins, verifying correct loading, interface adherence, and runtime extensibility in both C# and Rust environments.",
-            "status": "pending",
-            "testStrategy": "Automate tests for plugin loading, interface compliance, and extensibility across supported platforms."
-          }
-        ]
-      },
-      {
-        "id": 6,
-        "title": "Develop Transport Layer (Serial, TCP/UDP, SSH)",
-        "description": "Implement transport modules for serial, TCP/UDP (with mDNS/manual), and SSH (for Raspberry Pi), including reconnect/backoff logic.",
-        "details": "Use System.IO.Ports (C#) or serialport-rs (Rust) for serial; System.Net.Sockets (C#) or tokio (Rust) for TCP/UDP; SSH.NET (C#) or thrussh (Rust) for SSH. Implement exponential backoff for reconnects. Integrate transport selection via manifest. Ensure all transports meet latency budgets.",
-        "testStrategy": "Automated tests for device discovery, connection, and reconnection. Measure write→ack and network latency. Fuzz serial framing for robustness.",
-        "priority": "high",
-        "dependencies": [5],
-        "status": "pending",
-        "subtasks": [
-          {
-            "id": 1,
-            "title": "Implement Serial Transport Module",
-            "description": "Develop the serial communication transport using System.IO.Ports (C#) or serialport-rs (Rust), supporting configuration (baud rate, parity, stop bits, flow control) and robust data handling.",
-            "dependencies": [],
-            "details": "Ensure correct initialization, connection management, and error handling for serial ports. Support asynchronous read/write and buffer management. Integrate event-driven or async patterns for data reception.",
-            "status": "pending",
-            "testStrategy": "Automated tests for serial port enumeration, connection, data transmission, and error recovery. Fuzz serial framing for robustness."
-          },
-          {
-            "id": 2,
-            "title": "Implement TCP/UDP Transport Module with mDNS and Manual Discovery",
-            "description": "Develop TCP/UDP transport using System.Net.Sockets (C#) or tokio (Rust), supporting both mDNS-based and manual device discovery.",
-            "dependencies": [],
-            "details": "Implement connection setup, data transmission, and reception for both TCP and UDP. Integrate mDNS for automatic device discovery and fallback to manual IP/port entry. Ensure compatibility with network latency requirements.",
-            "status": "pending",
-            "testStrategy": "Automated tests for device discovery, connection, data transfer, and reconnection. Measure write→ack and network latency."
-          },
-          {
-            "id": 3,
-            "title": "Implement SSH Transport Module for Raspberry Pi",
-            "description": "Develop SSH transport using SSH.NET (C#) or thrussh (Rust) to enable secure communication with Raspberry Pi devices.",
-            "dependencies": [],
-            "details": "Support authentication, session management, and secure data tunneling. Handle connection setup, command execution, and data streaming over SSH.",
-            "status": "pending",
-            "testStrategy": "Automated tests for SSH authentication, session establishment, command execution, and data transfer. Validate reconnection and error handling."
-          },
-          {
-            "id": 4,
-            "title": "Integrate Exponential Backoff and Reconnect Logic",
-            "description": "Implement exponential backoff and reconnection strategies for all transport modules to ensure robust recovery from connection failures.",
-            "dependencies": ["6.1", "6.2", "6.3"],
-            "details": "Design a unified reconnection framework with configurable backoff parameters. Ensure all transports can recover gracefully from transient errors and meet latency budgets.",
-            "status": "pending",
-            "testStrategy": "Simulate connection failures and verify correct backoff, retry, and recovery behavior across all transports."
-          },
-          {
-            "id": 5,
-            "title": "Implement Transport Selection and Manifest Integration",
-            "description": "Develop logic to select and configure the appropriate transport based on a manifest, ensuring seamless integration and adherence to latency requirements.",
-            "dependencies": ["6.1", "6.2", "6.3", "6.4"],
-            "details": "Parse manifest files to determine transport configuration. Dynamically instantiate and manage transport modules as specified. Validate that selected transports meet performance and latency constraints.",
-            "status": "pending",
-            "testStrategy": "Automated tests for manifest parsing, transport selection, and end-to-end connectivity. Measure and verify latency budgets for each transport."
-          }
-        ]
-      },
-      {
-        "id": 7,
-        "title": "Build Single-Window UI and Manual Controls",
-        "description": "Develop the main application window with sidebar navigation and tabs for Manual, Scripts, Telemetry, Logs, and Profiles.",
-        "details": "Use WinUI 3 (C#) or egui/native Win32 (Rust) for UI. Implement device sidebar, tabbed navigation, and manual control widgets (sliders, buttons, toggles). Ensure accessibility and native Windows 11 look/feel. Integrate with device abstraction and transport layers.",
-        "testStrategy": "UI automation tests for navigation, control widgets, and device state display. Validate accessibility and responsiveness on Windows 11.",
-        "priority": "high",
-        "dependencies": [6],
-        "status": "pending",
-        "subtasks": [
-          {
-            "id": 1,
-            "title": "Design Main Window Layout and Navigation",
-            "description": "Create the main application window structure with a sidebar for device navigation and tabbed interface for Manual, Scripts, Telemetry, Logs, and Profiles.",
-            "dependencies": [],
-            "details": "Define the window layout using WinUI 3 (C#) or egui/native Win32 (Rust), ensuring the sidebar and tabbed navigation are visually consistent with Windows 11 design guidelines.",
-            "status": "pending",
-            "testStrategy": "Verify window layout, sidebar, and tab navigation through UI automation tests for correct rendering and navigation flow."
-          },
-          {
-            "id": 2,
-            "title": "Implement Manual Control Widgets",
-            "description": "Develop interactive manual control widgets such as sliders, buttons, and toggles within the Manual tab.",
-            "dependencies": ["7.1"],
-            "details": "Use native controls provided by WinUI 3 or egui to ensure responsiveness and accessibility. Controls must support real-time updates and reflect device state.",
-            "status": "pending",
-            "testStrategy": "Automate tests for widget interaction, state changes, and accessibility compliance."
-          },
-          {
-            "id": 3,
-            "title": "Integrate Device Sidebar with Abstraction Layer",
-            "description": "Connect the device sidebar to the device abstraction and transport layers to display available devices and their statuses.",
-            "dependencies": ["7.1"],
-            "details": "Implement dynamic device listing and status updates by subscribing to device abstraction events. Ensure sidebar updates in real time as devices connect or disconnect.",
-            "status": "pending",
-            "testStrategy": "Simulate device connections/disconnections and verify sidebar updates and status indicators."
-          },
-          {
-            "id": 4,
-            "title": "Ensure Accessibility and Windows 11 Native Look",
-            "description": "Apply accessibility best practices and native Windows 11 styling to all UI components.",
-            "dependencies": ["7.1", "7.2"],
-            "details": "Use platform accessibility APIs (e.g., UI Automation, Narrator support) and follow Windows 11 design language for colors, spacing, and controls. Validate keyboard navigation and screen reader compatibility.",
-            "status": "pending",
-            "testStrategy": "Run accessibility audits and manual tests with assistive technologies on Windows 11."
-          },
-          {
-            "id": 5,
-            "title": "Integrate Tab Content with Device and Transport Layers",
-            "description": "Wire up each tab (Manual, Scripts, Telemetry, Logs, Profiles) to interact with the device abstraction and transport layers for real-time data and control.",
-            "dependencies": ["7.2", "7.3"],
-            "details": "Implement data bindings and event handlers so each tab displays and updates relevant device information, logs, and telemetry in real time.",
-            "status": "pending",
-            "testStrategy": "Automate end-to-end tests for tab interactions, data updates, and error handling with simulated device events."
-          }
-        ]
-      },
-      {
-        "id": 8,
-        "title": "Integrate Scripting Runtime and API",
-        "description": "Embed a sandboxed scripting engine (JavaScript, Lua, or Python) with APIs for device control and telemetry.",
-        "details": "Select scripting engine based on performance and AOT compatibility (e.g., ClearScript for JS, MoonSharp for Lua, Python.NET for Python). Expose APIs: devices.list(), dev.call(endpoint, args). Restrict file/network access for sandboxing. Document API usage and error handling.",
-        "testStrategy": "Unit and integration tests for script execution, API calls, and sandbox enforcement. Run sample scripts to validate device control and telemetry access.",
+        "id": 41,
+        "title": "Integrate Autonomous Device Configuration (Track 1, Phase 1.3)",
+        "description": "Automate device parameter optimization, firmware compatibility checks, protocol selection, and self-healing configuration recovery.",
+        "details": "Implement device-specific config profiles. Use semver (v7+) for firmware version checks. Build a protocol selection module with benchmarking. Add self-healing logic to restore configs after failures. Store config history in DB.",
+        "testStrategy": "Test with devices of varying firmware. Simulate config corruption and verify recovery. Benchmark protocol selection for optimal performance.",
         "priority": "medium",
-        "dependencies": [7],
+        "dependencies": [
+          40
+        ],
         "status": "pending",
-        "subtasks": [
-          {
-            "id": 1,
-            "title": "Evaluate and Select Scripting Engine",
-            "description": "Assess candidate scripting engines (JavaScript, Lua, Python) for performance, AOT compatibility, and sandboxing capabilities. Choose the most suitable engine for embedding.",
-            "dependencies": [],
-            "details": "Compare engines such as ClearScript (JS), MoonSharp (Lua), and Python.NET (Python) with respect to execution speed, memory usage, ease of embedding, and ability to restrict file/network access. Document the selection rationale.",
-            "status": "pending",
-            "testStrategy": "Benchmark candidate engines with representative scripts. Validate AOT compatibility and confirm that sandboxing features can be enforced."
-          },
-          {
-            "id": 2,
-            "title": "Embed and Configure Sandboxed Scripting Runtime",
-            "description": "Integrate the selected scripting engine into the host application and configure it to enforce sandboxing, restricting file and network access.",
-            "dependencies": ["8.1"],
-            "details": "Embed the engine, set up execution contexts, and apply sandboxing policies to prevent unauthorized file system and network operations. Ensure the runtime is isolated from the host environment.",
-            "status": "pending",
-            "testStrategy": "Attempt to execute scripts that try to access restricted resources and verify that such actions are blocked. Run security-focused unit tests."
-          },
-          {
-            "id": 3,
-            "title": "Expose Device Control and Telemetry APIs to Scripts",
-            "description": "Implement and register APIs (devices.list(), dev.call(endpoint, args)) within the scripting environment for device control and telemetry access.",
-            "dependencies": ["8.2"],
-            "details": "Design API bindings that allow scripts to enumerate devices and invoke device endpoints securely. Ensure APIs are accessible only within the sandboxed context.",
-            "status": "pending",
-            "testStrategy": "Write and execute scripts that use the exposed APIs. Validate correct device enumeration and endpoint invocation. Confirm that APIs are not accessible outside the sandbox."
-          },
-          {
-            "id": 4,
-            "title": "Implement Error Handling and API Usage Documentation",
-            "description": "Define error handling strategies for API calls and document API usage, expected inputs/outputs, and error cases for script developers.",
-            "dependencies": ["8.3"],
-            "details": "Standardize error responses for API failures. Create comprehensive documentation covering API signatures, usage examples, and error scenarios.",
-            "status": "pending",
-            "testStrategy": "Review documentation for completeness and clarity. Test error handling by triggering API failures in scripts and verifying documented behavior."
-          },
-          {
-            "id": 5,
-            "title": "Develop and Execute Integration and Security Tests",
-            "description": "Create unit and integration tests for script execution, API calls, and sandbox enforcement. Validate the system with sample scripts and security scenarios.",
-            "dependencies": ["8.4"],
-            "details": "Design test cases covering normal and edge-case script usage, API interactions, and attempts to bypass sandbox restrictions. Include both automated and manual test scripts.",
-            "status": "pending",
-            "testStrategy": "Run all tests and sample scripts, ensuring correct API behavior, robust error handling, and strict sandbox enforcement. Review test results for coverage and security gaps."
-          }
-        ]
+        "subtasks": []
       },
       {
-        "id": 9,
-        "title": "Implement Telemetry, Profiles, and Logging",
-        "description": "Add real-time telemetry charts, profile save/load, and rolling logs for device I/O and events.",
-        "details": "Use fixed-size ring buffers (min 2k samples) for telemetry; render charts at ~30 FPS using WinUI 3 or Rust charting libs. Implement profile management with JSON/TOML hot-reload. Add rolling log buffers and one-click export. Ensure RAM usage stays within budget.",
-        "testStrategy": "Automated tests for telemetry rendering, profile load/save, and log export. Soak tests for RAM drift and performance over 8-hour runs.",
-        "priority": "medium",
-        "dependencies": [8],
-        "status": "pending",
-        "subtasks": [
-          {
-            "id": 1,
-            "title": "Implement Fixed-Size Telemetry Ring Buffers",
-            "description": "Design and implement fixed-size ring buffers (minimum 2,000 samples) for capturing real-time telemetry data from device I/O and events.",
-            "dependencies": [],
-            "details": "Ensure efficient memory usage and thread-safe access for concurrent data producers and consumers. The buffer should support fast overwrite of oldest data and expose APIs for chart rendering and export.",
-            "status": "pending",
-            "testStrategy": "Unit test buffer wraparound, concurrent access, and sample retrieval. Soak test for memory leaks and performance over extended periods."
-          },
-          {
-            "id": 2,
-            "title": "Render Real-Time Telemetry Charts",
-            "description": "Integrate a charting library (WinUI 3 compatible, e.g., LiveCharts2, Telerik, or Syncfusion) to render telemetry data at approximately 30 FPS.",
-            "dependencies": ["9.1"],
-            "details": "Bind chart data sources to the ring buffer. Implement efficient UI updates and ensure smooth rendering with minimal CPU/GPU overhead. Support multiple chart types as needed for device telemetry.",
-            "status": "pending",
-            "testStrategy": "Automated UI tests for chart responsiveness and correctness. Performance profiling to verify frame rate and resource usage."
-          },
-          {
-            "id": 3,
-            "title": "Develop Profile Management with Hot-Reload",
-            "description": "Implement profile save/load functionality using JSON or TOML, supporting hot-reload of configuration changes at runtime.",
-            "dependencies": [],
-            "details": "Profiles should capture user and device settings. Monitor profile files for changes and apply updates without restarting the application. Ensure robust error handling for malformed profiles.",
-            "status": "pending",
-            "testStrategy": "Unit and integration tests for save/load, hot-reload, and error scenarios. Validate correct application of profile changes in real time."
-          },
-          {
-            "id": 4,
-            "title": "Implement Rolling Log Buffers and Export",
-            "description": "Create rolling log buffers for device I/O and event logs, with support for one-click export to file.",
-            "dependencies": [],
-            "details": "Use a fixed-size buffer to limit RAM usage. Provide APIs for appending, querying, and exporting logs. Ensure exported logs are complete and formatted for analysis.",
-            "status": "pending",
-            "testStrategy": "Unit tests for log rotation, export correctness, and buffer overflow handling. Manual verification of exported log files."
-          },
-          {
-            "id": 5,
-            "title": "Enforce RAM Usage Budget and Monitor Performance",
-            "description": "Integrate monitoring and safeguards to ensure total RAM usage for telemetry, profiles, and logs remains within defined limits.",
-            "dependencies": ["9.1", "9.2", "9.3", "9.4"],
-            "details": "Implement runtime checks and alerts for memory usage. Optimize data structures and buffer sizes as needed. Document RAM budget assumptions and provide configuration options.",
-            "status": "pending",
-            "testStrategy": "Automated soak tests for memory drift and performance over 8-hour runs. Validate alerts and adaptive behavior under stress."
-          }
-        ]
-      },
-      {
-        "id": 10,
-        "title": "Automated Testing and Final Acceptance",
-        "description": "Develop and run unit, loopback, soak, and acceptance tests to verify all functional and non-functional requirements.",
-        "details": "Use xUnit/NUnit (C#) or cargo test (Rust) for unit tests. Simulate device connections and control flows. Run soak tests for 8+ hours to monitor RAM drift and stability. Validate safety actions and performance budgets. Document results and acceptance criteria.",
-        "testStrategy": "Run full test suite; review logs and performance metrics. Confirm all success metrics and safety requirements are met before release.",
+        "id": 42,
+        "title": "Develop Natural Language Processing Module (Track 2, Phase 2.1)",
+        "description": "Implement user request parsing, intent recognition, ambiguity resolution, and context-aware interpretation for task automation.",
+        "details": "Use OpenAI GPT-4 API (2025-06 model) for NLU. Fine-tune with domain-specific prompts. Implement fallback to spaCy (v3.7+) for local parsing. Build dialog manager for clarification. Maintain session context in Redis (v7+).",
+        "testStrategy": "Test with 50+ user request scenarios. Validate intent accuracy, ambiguity handling, and context retention.",
         "priority": "high",
-        "dependencies": [9],
-        "status": "pending",
+        "dependencies": [
+          37
+        ],
+        "status": "in-progress",
         "subtasks": [
           {
             "id": 1,
-            "title": "Develop and Execute Unit Tests",
-            "description": "Create and run unit tests for all core modules using xUnit/NUnit (C#) or cargo test (Rust) to verify functional correctness at the code level.",
+            "title": "Implement Natural Language Parsing Engine",
+            "description": "Develop the core parsing engine that processes raw user input and extracts structured information using OpenAI GPT-4 API with spaCy fallback.",
             "dependencies": [],
-            "details": "Set up test projects, implement test cases for individual functions and classes, and ensure all critical logic paths are covered. Use assertions to validate expected outcomes.",
+            "details": "Integrate OpenAI GPT-4 API (2025-06 model) for primary NLU processing. Implement spaCy (v3.7+) as fallback parser for local processing. Create input preprocessing pipeline for text normalization. Build structured output extraction from API responses. Handle API rate limits and error scenarios with graceful fallback.",
             "status": "pending",
-            "testStrategy": "Run automated unit test suite; review code coverage and ensure all tests pass without errors."
+            "testStrategy": ""
           },
           {
             "id": 2,
-            "title": "Implement and Run Loopback Tests",
-            "description": "Simulate device connections and control flows to verify communication integrity and protocol handling between software components.",
-            "dependencies": ["10.1"],
-            "details": "Configure test harnesses to emulate device endpoints and control flows. Validate correct data transmission, reception, and error handling under loopback conditions.",
+            "title": "Build Intent Recognition System",
+            "description": "Create intent classification system that identifies user goals and maps them to actionable commands with confidence scoring.",
+            "dependencies": [
+              "42.1"
+            ],
+            "details": "Design intent taxonomy for task automation domain. Fine-tune GPT-4 with domain-specific prompts for intent classification. Implement confidence scoring and threshold-based filtering. Create intent mapping to system actions. Build training data collection and validation pipeline.",
             "status": "pending",
-            "testStrategy": "Automate loopback scenarios; monitor logs for protocol errors and confirm all control flows execute as expected."
+            "testStrategy": ""
           },
           {
             "id": 3,
-            "title": "Conduct Soak Tests for Stability",
-            "description": "Run extended soak tests (8+ hours) to monitor RAM drift, resource leaks, and overall system stability under sustained load.",
-            "dependencies": ["10.2"],
-            "details": "Automate long-duration test runs with simulated device activity and control flows. Track memory usage, CPU load, and system responsiveness throughout the test period.",
+            "title": "Develop Context Management System",
+            "description": "Implement session-based context tracking and management using Redis for maintaining conversation state and user preferences.",
+            "dependencies": [
+              "42.1"
+            ],
+            "details": "Set up Redis (v7+) for session context storage. Design context data structures for user sessions, conversation history, and preferences. Implement context retrieval and update mechanisms. Build context expiration and cleanup policies. Create context-aware query enhancement for better intent recognition.",
             "status": "pending",
-            "testStrategy": "Analyze resource metrics and logs for anomalies; confirm no memory leaks or stability issues over the soak duration."
+            "testStrategy": ""
           },
           {
             "id": 4,
-            "title": "Validate Safety Actions and Performance Budgets",
-            "description": "Verify that all safety-critical actions and performance requirements are met under test conditions, including emergency controls and latency budgets.",
-            "dependencies": ["10.3"],
-            "details": "Test safety mechanisms (e.g., emergency stop, fail-safe triggers) and measure system performance against defined budgets. Simulate edge cases and failure scenarios.",
+            "title": "Create Ambiguity Resolution and Dialog Manager",
+            "description": "Build dialog management system that handles ambiguous requests through clarification dialogs and user interaction.",
+            "dependencies": [
+              "42.2",
+              "42.3"
+            ],
+            "details": "Implement ambiguity detection algorithms for unclear user requests. Design clarification dialog templates and flows. Build interactive dialog state machine for multi-turn conversations. Create response generation for clarification questions. Implement user feedback integration for disambiguation.",
             "status": "pending",
-            "testStrategy": "Automate safety and performance tests; review metrics and logs to confirm compliance with acceptance criteria."
+            "testStrategy": ""
           },
           {
             "id": 5,
-            "title": "Document Test Results and Acceptance Criteria",
-            "description": "Compile and organize all test results, logs, and metrics. Clearly document acceptance criteria and final verification status for project release.",
-            "dependencies": ["10.4"],
-            "details": "Aggregate test outputs, summarize findings, and record pass/fail status for each requirement. Prepare documentation for stakeholder review and final acceptance.",
+            "title": "Develop NLP Integration API and Testing Framework",
+            "description": "Create unified API interface for NLP module integration and comprehensive testing framework with 50+ user scenarios.",
+            "dependencies": [
+              "42.2",
+              "42.3",
+              "42.4"
+            ],
+            "details": "Design REST API endpoints for NLP module access. Implement request/response schemas and validation. Create comprehensive test suite with 50+ user request scenarios. Build automated testing for intent accuracy and context retention. Implement performance monitoring and logging for API usage.",
             "status": "pending",
-            "testStrategy": "Ensure all documentation is complete, accurate, and accessible; confirm that acceptance criteria are explicitly met and traceable to test evidence."
+            "testStrategy": ""
           }
         ]
+      },
+      {
+        "id": 43,
+        "title": "Create Task Decomposition Engine (Track 2, Phase 2.1)",
+        "description": "Automatically break down complex user tasks into agent-specific subtasks with dependency and resource analysis.",
+        "details": "Design a task graph structure using Directed Acyclic Graphs (DAGs). Use dagre (v0.8+) for visualization. Implement dependency resolution and resource estimation logic. Integrate with agent registry for capability lookup.",
+        "testStrategy": "Feed 10+ complex tasks and verify correct subtask breakdown, sequencing, and resource allocation.",
+        "priority": "high",
+        "dependencies": [
+          42
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 44,
+        "title": "Implement Agent Coordination Framework (Track 2, Phase 2.2)",
+        "description": "Enable dynamic agent team assembly, real-time task monitoring, error recovery, and learning capture for task execution.",
+        "details": "Use event-driven architecture with Kafka (v3.7+) for agent communication. Implement agent selection logic based on task requirements. Add progress reporting and error handling modules. Store execution logs for learning analysis.",
+        "testStrategy": "Simulate multi-agent task execution. Inject errors and verify recovery. Confirm learning data is captured for future optimization.",
+        "priority": "high",
+        "dependencies": [
+          43
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 45,
+        "title": "Integrate User Interface for Task Automation (Track 2, Phase 2.3)",
+        "description": "Develop a user-facing UI for natural language task input, progress tracking, and feedback collection.",
+        "details": "Use React (v19+) with Material UI (v6+) for frontend. Integrate with backend via REST and WebSocket APIs. Implement real-time progress updates and error feedback. Add user satisfaction survey after task completion.",
+        "testStrategy": "Conduct usability tests with 10+ users. Validate real-time updates and feedback mechanisms. Collect and analyze user satisfaction data.",
+        "priority": "medium",
+        "dependencies": [
+          44
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 46,
+        "title": "Expand Task Library and Optimize Performance (Track 2, Phase 2.4)",
+        "description": "Add 10+ complex multi-step task scenarios and optimize task execution performance.",
+        "details": "Curate and encode new task templates. Profile and optimize task breakdown and execution code. Implement caching for frequent task patterns. Monitor performance with Prometheus (v2.50+).",
+        "testStrategy": "Benchmark execution time for all tasks. Validate <5s breakdown and <2min execution for standard tasks.",
+        "priority": "medium",
+        "dependencies": [
+          45
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 47,
+        "title": "Develop Experimentation Framework for Emergent Behaviors (Track 3, Phase 3.1)",
+        "description": "Build a controlled environment for systematic agent collaboration experiments and emergent behavior observation.",
+        "details": "Use Kubernetes (v1.30+) for isolated experiment sandboxes. Implement experiment orchestration with Argo Workflows (v3.5+). Add logging and rollback mechanisms. Visualize agent interactions with D3.js (v8+).",
+        "testStrategy": "Run 5+ experiment scenarios. Validate sandboxing, rollback, and data capture. Review visualizations for clarity.",
+        "priority": "high",
+        "dependencies": [
+          37
+        ],
+        "status": "in-progress",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Design Experiment Templates and Configuration Schema",
+            "description": "Create standardized experiment templates and configuration schemas for defining agent collaboration scenarios, parameters, and success criteria.",
+            "dependencies": [],
+            "details": "Define JSON/YAML schemas for experiment configurations including agent types, interaction patterns, environment constraints, and success metrics. Create template library for common emergent behavior scenarios (swarm coordination, resource allocation, consensus building). Implement validation logic for experiment parameters and constraints.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 2,
+            "title": "Set Up Kubernetes-Based Isolated Experiment Sandboxes",
+            "description": "Configure Kubernetes namespaces and resource isolation for running controlled agent collaboration experiments.",
+            "dependencies": [
+              "47.1"
+            ],
+            "details": "Create Kubernetes namespace templates with resource quotas and network policies. Implement pod security contexts and resource limits for agent containers. Configure service mesh for controlled inter-agent communication. Set up persistent volumes for experiment data storage and implement cleanup policies for sandbox lifecycle management.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 3,
+            "title": "Implement Argo Workflows Experiment Orchestration",
+            "description": "Build workflow templates using Argo Workflows for automated experiment execution, monitoring, and rollback capabilities.",
+            "dependencies": [
+              "47.2"
+            ],
+            "details": "Create Argo WorkflowTemplate definitions for experiment lifecycle management. Implement workflow steps for sandbox provisioning, agent deployment, experiment execution, and cleanup. Add conditional logic for experiment success/failure handling and automatic rollback mechanisms. Configure workflow parameters and artifact collection.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 4,
+            "title": "Build Comprehensive Telemetry Collection System",
+            "description": "Implement logging, metrics collection, and event tracking for capturing agent interactions and emergent behaviors during experiments.",
+            "dependencies": [
+              "47.3"
+            ],
+            "details": "Deploy Prometheus for metrics collection and Grafana for monitoring dashboards. Implement structured logging with Fluentd for agent communication logs. Create custom metrics for interaction patterns, decision trees, and behavioral emergence indicators. Set up distributed tracing with Jaeger for cross-agent communication analysis.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 5,
+            "title": "Create D3.js Interactive Behavior Analysis Dashboard",
+            "description": "Develop web-based visualization dashboard using D3.js for real-time and post-experiment analysis of agent interactions and emergent behaviors.",
+            "dependencies": [
+              "47.4"
+            ],
+            "details": "Build interactive network graphs showing agent communication patterns using D3.js force-directed layouts. Implement timeline visualizations for behavior emergence tracking. Create heatmaps for interaction intensity and decision correlation matrices. Add filtering and drill-down capabilities for detailed behavior analysis. Integrate with telemetry APIs for real-time data updates.",
+            "status": "pending",
+            "testStrategy": ""
+          }
+        ]
+      },
+      {
+        "id": 48,
+        "title": "Implement Behavior Analysis Engine (Track 3, Phase 3.2)",
+        "description": "Monitor, analyze, and identify novel agent collaboration patterns and their effectiveness.",
+        "details": "Stream experiment data to Apache Spark (v4.0+) for statistical analysis. Use clustering algorithms to detect novel patterns. Integrate with performance monitoring for impact assessment. Document findings in Confluence.",
+        "testStrategy": "Analyze data from 10+ experiments. Validate detection of at least 5 emergent behaviors. Review documentation for completeness.",
+        "priority": "medium",
+        "dependencies": [
+          47
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 49,
+        "title": "Integrate Innovation Pathways for Emergent Behaviors (Track 3, Phase 3.4)",
+        "description": "Evaluate, validate, and integrate beneficial emergent behaviors into the main system architecture.",
+        "details": "Establish evaluation criteria for practical application. Use feature flags (LaunchDarkly v4+) for controlled rollout. Update system documentation and training materials. Integrate with Pattern Evolution system for continuous learning.",
+        "testStrategy": "Pilot at least 2 emergent behaviors in production. Monitor impact and rollback if issues arise. Validate documentation updates.",
+        "priority": "medium",
+        "dependencies": [
+          48
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 50,
+        "title": "Establish Cross-Track Integration Framework (Track 4, Phase 4.1)",
+        "description": "Implement unified coordination protocols, conflict resolution, and shared resource management across all tracks.",
+        "details": "Define gRPC (v1.62+) interfaces for cross-track communication. Implement agent sharing protocol with priority-based allocation. Use Redis for shared state. Document integration contracts and data schemas.",
+        "testStrategy": "Simulate cross-track agent/resource conflicts. Validate resolution and data sharing. Review documentation for accuracy.",
+        "priority": "high",
+        "dependencies": [
+          41,
+          44,
+          49
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 51,
+        "title": "Develop Comprehensive Quality Assurance System (Track 4, Req 4.5-4.8)",
+        "description": "Build a testing framework for all tracks, including performance, security, and excellence standard validation.",
+        "details": "Use Jest (v30+) for unit/integration tests. Integrate with OWASP ZAP (v3.0+) for security scanning. Implement performance benchmarks with k6 (v0.48+). Automate excellence validation with custom rule sets.",
+        "testStrategy": "Achieve >90% test coverage. Run security and performance tests on all modules. Validate excellence rules on sample outputs.",
+        "priority": "high",
+        "dependencies": [
+          50
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 52,
+        "title": "Implement System Monitoring & Optimization (Track 4, Req 4.9-4.12)",
+        "description": "Deploy real-time system health monitoring, performance optimization, and predictive maintenance.",
+        "details": "Use Prometheus and Grafana (v10+) for monitoring and alerting. Implement automated optimization scripts. Integrate predictive maintenance using ML models (scikit-learn v1.5+).",
+        "testStrategy": "Simulate system failures and verify alerts. Monitor resource utilization and optimization actions. Validate predictive maintenance predictions.",
+        "priority": "medium",
+        "dependencies": [
+          51
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 53,
+        "title": "Establish Cross-Track Coordination and Scheduling",
+        "description": "Implement weekly cross-track planning, progress review, and integration testing automation.",
+        "details": "Automate meeting scheduling with Google Calendar API. Build Slack bot for reminders and status updates. Integrate with CI/CD for automated integration test triggers on Fridays.",
+        "testStrategy": "Verify automated scheduling and reminders. Confirm integration tests run as scheduled. Collect feedback from team on coordination effectiveness.",
+        "priority": "medium",
+        "dependencies": [
+          50
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 54,
+        "title": "Implement Shared Data and Testing Infrastructure",
+        "description": "Create common data sharing interfaces and shared testing environments for all tracks.",
+        "details": "Design REST/gRPC APIs for data exchange. Use Docker Compose for shared test environments. Standardize test data formats (JSON Schema v2020-12). Document usage guidelines.",
+        "testStrategy": "Test data exchange between tracks. Validate shared test environment setup. Review documentation for clarity.",
+        "priority": "medium",
+        "dependencies": [
+          53
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 55,
+        "title": "Develop Unified Documentation and Knowledge Capture System",
+        "description": "Establish documentation standards and a centralized knowledge base for all tracks and agents.",
+        "details": "Use Docusaurus (v3+) for documentation site. Define templates for agent, API, and system docs. Integrate with Confluence for knowledge capture. Automate doc generation from code comments (Typedoc v0.25+).",
+        "testStrategy": "Review documentation for completeness and consistency. Validate automated doc generation. Survey team for knowledge base usability.",
+        "priority": "medium",
+        "dependencies": [
+          54
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 56,
+        "title": "Conduct System-Wide Validation and Excellence Verification",
+        "description": "Perform final validation against all success metrics, excellence standards, and performance benchmarks.",
+        "details": "Develop validation scripts for all metrics. Run comprehensive end-to-end tests. Benchmark system performance. Prepare final validation report and handoff documentation.",
+        "testStrategy": "Achieve 100% pass rate on validation scripts. Meet or exceed all defined success metrics. Review handoff docs with stakeholders.",
+        "priority": "high",
+        "dependencies": [
+          52,
+          55
+        ],
+        "status": "pending",
+        "subtasks": []
       }
     ],
     "metadata": {
       "created": "2025-08-23T18:31:02.168Z",
-      "updated": "2025-08-23T18:31:02.169Z",
+      "updated": "2025-09-10T03:33:37.557Z",
       "description": "Tasks for master context"
     }
   }

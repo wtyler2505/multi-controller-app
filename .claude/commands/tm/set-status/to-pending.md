@@ -1,3 +1,11 @@
+---
+model: claude-sonnet-4-20250514
+category: task-management
+priority: medium
+tags: ["task-management"]
+description: Command for to-pending operations
+---
+
 Set a task's status to pending.
 
 Arguments: $ARGUMENTS (task ID)
@@ -30,3 +38,5 @@ After setting to pending:
 - Notify about freed resources
 - Suggest priority reassessment
 - Log the status change with context
+
+

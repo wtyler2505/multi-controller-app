@@ -1,3 +1,11 @@
+---
+model: claude-sonnet-4-20250514
+category: development-setup
+priority: medium
+tags: ["development-setup", "setup"]
+description: Command for init-project-quick operations
+---
+
 Quick initialization with auto-confirmation.
 
 Arguments: $ARGUMENTS
@@ -44,3 +52,5 @@ After quick init:
    ```
 
 Perfect for rapid project setup!
+
+

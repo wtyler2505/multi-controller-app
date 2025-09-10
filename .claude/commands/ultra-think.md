@@ -1,6 +1,128 @@
+---
+model: claude-sonnet-4-20250514
+category: utilities-tools
+priority: high
+tags: ["utilities-tools", "deep-analysis"]
+description: Deep Analysis and Problem Solving Mode
+
+# Enhanced Context-Aware Agent Integration
+enhanced-integration:
+  enabled: true
+  agent-selection-criteria:
+    domain-expertise: ["deep-analysis", "problem-solving", "strategic-reasoning"]
+    complexity-factors: ["analysis-depth", "reasoning-complexity", "solution-scope"]
+    specialized-tools: ["reasoning-frameworks", "analysis-tools", "cognitive-systems"]
+  preferred-agents:
+    primary: "general-purpose"
+    secondary: "strategic-analyst"
+    fallback: ["task-orchestrator"]
+  tool-requirements:
+    mcp-servers: ["clear-thought", "cipher-memory", "perplexity-ask"]
+    specialized-functions: ["deep-analysis", "strategic-reasoning"]
+
+# Universal Cipher Memory Integration (MANDATORY FOR ALL COMMANDS)
+cipher-memory-integration:
+  enabled: true
+  priority: "high"
+  
+  # Pre-execution Memory Operations
+  pre-execution-memory:
+    context-search:
+      - query-pattern: "deep-analysis + problem-solving + strategic-reasoning"
+      - tools: ["mcp__cipher-memory__search_nodes", "mcp__cipher-memory__open_nodes"]
+      - context-retrieval: "analysis-patterns + reasoning-knowledge"
+    
+    knowledge-preparation:
+      - domain: "deep-analysis"
+      - pattern-search: "analysis-strategies + reasoning-patterns + problem-solving-frameworks"
+      - tools: ["mcp__cipher-memory__read_graph"]
+  
+  # Execution Memory Operations
+  execution-memory:
+    progress-tracking:
+      - tool: "mcp__cipher-memory__add_observations"
+      - capture-points: ["analysis-execution", "reasoning-process", "solution-development"]
+      - entity-updates: "real-time-progress"
+    
+    decision-logging:
+      - tool: "mcp__cipher-memory__create_entities"
+      - log-decisions: "analysis-strategies + reasoning-approaches + solution-decisions"
+      - pattern-recognition: "deep-analysis-patterns"
+  
+  # Post-execution Memory Operations
+  post-execution-memory:
+    result-storage:
+      - tools: ["mcp__cipher-memory__create_entities"]
+      - store-patterns: ["analysis-results", "reasoning-insights", "solution-techniques"]
+      - knowledge-extraction: "analysis-methodologies + reasoning-patterns"
+    
+    relationship-creation:
+      - tools: ["mcp__cipher-memory__create_relations"]
+      - link-concepts: ["analysis-relationships", "reasoning-dependencies", "solution-connections"]
+      - cross-reference: "related-analysis-processes"
+    
+    knowledge-refinement:
+      - tools: ["mcp__cipher-memory__add_observations"]
+      - enrich-existing: "analysis-knowledge + reasoning-patterns"
+      - continuous-learning: "deep-analysis-optimization"
+
+# Centralized Logging Integration
+logging-integration:
+  enabled: true
+  log-file: ".claude/command-execution.jsonl"
+  
+  # Comprehensive Execution Logging
+  log-level: "comprehensive"
+  
+  capture-points:
+    - command-initiation
+    - agent-selection-process
+    - memory-operations
+    - analysis-execution
+    - reasoning-process
+    - solution-development
+    - strategic-evaluation
+    - error-handling
+    - completion-status
+  
+  # Structured Log Format
+  log-structure:
+    timestamp: "ISO-8601"
+    command: "ultra-think"
+    execution-id: "UUID"
+    agent-assignments: "selected-agents-with-reasoning"
+    memory-operations: "cipher-memory-transactions"
+    performance-metrics: "execution-time + memory-usage + success-rate"
+    outcome-summary: "analysis-results + reasoning-insights"
+
+# Cross-Command Learning Integration
+cross-command-learning:
+  enabled: true
+  share-insights: ["analysis-patterns", "reasoning-techniques", "solution-methodologies"]
+  learn-from: ["decision-tree-explorer", "architecture-scenario-explorer", "system-dynamics-modeler"]
+  contribute-to: "deep-analysis-knowledge-base"
+
+# Workflow Integration
+workflow-integration:
+  pre-execution:
+    - validate-analysis-requirements
+    - prepare-memory-context
+    - select-optimal-agents
+  
+  execution:
+    - parallel-analysis-execution
+    - continuous-memory-updates
+    - real-time-reasoning-optimization
+  
+  post-execution:
+    - comprehensive-result-storage
+    - cross-reference-generation
+    - analysis-pattern-extraction
+---
+
 # Deep Analysis and Problem Solving Mode
 
-Deep analysis and problem solving mode
+Comprehensive deep analysis and problem solving mode with advanced reasoning frameworks and strategic optimization
 
 ## Instructions
 
@@ -151,3 +273,5 @@ Deep analysis and problem solving mode
 - Acknowledgment of uncertainties
 - Actionable recommendations
 - Novel insights or perspectives
+
+

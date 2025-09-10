@@ -1,3 +1,28 @@
+---
+model: claude-sonnet-4-20250514
+category: task-management
+priority: medium
+tags: ["task-management", "tasks"]
+description: Command for show-task operations
+
+# Agent and Tool Integration
+assigned-agent: task-executor
+required-tools:
+  - "mcp__taskmaster-ai__get_task"
+  - "mcp__FileScopeMCP__find_important_files"
+  - "mcp__cipher-memory__search_nodes"
+tool-chain: task-coordination
+auto-deploy: true
+
+# Workflow Configuration
+pre-execution:
+  validate-tools: true
+  load-context: true
+post-execution:
+  store-results: false
+  update-tasks: false
+---
+
 Show detailed task information with rich context and insights.
 
 Arguments: $ARGUMENTS
@@ -9,12 +34,12 @@ Parse arguments to determine what to show and how.
 ### 1. **Smart Task Selection**
 
 Based on $ARGUMENTS:
-- Number → Show specific task with full context
-- "current" → Show active in-progress task(s)
-- "next" → Show recommended next task
-- "blocked" → Show all blocked tasks with reasons
-- "critical" → Show critical path tasks
-- Multiple IDs → Comparative view
+- Number â†’ Show specific task with full context
+- "current" â†’ Show active in-progress task(s)
+- "next" â†’ Show recommended next task
+- "blocked" â†’ Show all blocked tasks with reasons
+- "critical" â†’ Show critical path tasks
+- Multiple IDs â†’ Comparative view
 
 ### 2. **Contextual Information**
 
@@ -41,15 +66,15 @@ For each task, intelligently include:
 ### 3. **Visual Enhancements**
 
 ```
-📋 Task #45: Implement User Authentication
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Status: 🟡 in-progress (2 hours)
-Priority: 🔴 High | Complexity: 73/100
+ðŸ“‹ Task #45: Implement User Authentication
+â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+Status: ðŸŸ¡ in-progress (2 hours)
+Priority: ðŸ”´ High | Complexity: 73/100
 
-Dependencies: ✅ #41, ✅ #42, ⏳ #43 (blocked)
+Dependencies: âœ… #41, âœ… #42, â³ #43 (blocked)
 Blocks: #46, #47, #52
 
-Progress: ████████░░ 80% complete
+Progress: â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–‘â–‘ 80% complete
 
 Recent Activity:
 - 2h ago: Status changed to in-progress
@@ -68,10 +93,10 @@ Based on task analysis:
 ### 5. **Action Suggestions**
 
 Context-aware next steps:
-- If blocked → Show how to unblock
-- If complex → Suggest expansion
-- If in-progress → Show completion checklist
-- If done → Show dependent tasks ready to start
+- If blocked â†’ Show how to unblock
+- If complex â†’ Suggest expansion
+- If in-progress â†’ Show completion checklist
+- If done â†’ Show dependent tasks ready to start
 
 ### 6. **Multi-Task View**
 
@@ -80,3 +105,5 @@ When showing multiple tasks:
 - Optimal completion order
 - Parallel work opportunities
 - Combined complexity analysis
+
+

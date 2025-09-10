@@ -1,0 +1,38 @@
+#!/bin/sh
+# Pre-commit hook for Cipher memory integration
+# Enforces memory operations and extracts code patterns before commit
+
+# First check memory compliance
+if command -v powershell.exe >/dev/null 2>&1; then
+    powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/memory-enforcement.ps1 check pre-commit
+    if [ $? -ne 0 ]; then
+        echo "[ERROR] Commit blocked - perform memory operations first!"
+        exit 1
+    fi
+fi
+
+# Get staged files
+STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM)
+
+# Check if we have Rust files
+RUST_FILES=$(echo "$STAGED_FILES" | grep '\.rs$')
+
+if [ ! -z "$RUST_FILES" ]; then
+    echo "Extracting code patterns from staged files..."
+    
+    for FILE in $RUST_FILES; do
+        # Extract patterns (simplified - would use actual pattern detection in production)
+        PATTERNS=$(git diff --cached "$FILE" | grep '^+' | grep -E '(impl|trait|async|fn|struct|enum)')
+        
+        if [ ! -z "$PATTERNS" ]; then
+            # Call memory hook to store patterns
+            powershell.exe -File ./scripts/memory-hooks.ps1 -Event "code-pattern" -Context "$FILE::New patterns detected" -Importance "CONTEXTUAL"
+        fi
+    done
+fi
+
+# Store commit context in memory
+COMMIT_MSG=$(cat .git/COMMIT_EDITMSG 2>/dev/null || echo "Commit in progress")
+powershell.exe -File ./scripts/memory-hooks.ps1 -Event "manual" -Context "pre-commit::$COMMIT_MSG" -Importance "TEMPORARY"
+
+exit 0

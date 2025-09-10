@@ -2,433 +2,210 @@
 
 ## Overview
 
-The project includes 16 specialized Claude Code agents designed to handle specific domains and tasks. These agents can be invoked via the Task tool to provide expert assistance in their respective areas.
+The Multi-Controller App includes 16 specialized Claude Code agents to assist with various development tasks. Each agent has specific expertise and tool access optimized for their domain.
 
-## Agent Directory
+## MANDATORY: Verification Requirements for All Agents
 
-All agents are located in `.claude/agents/` and follow a consistent structure with domain expertise, practical examples, and best practices.
+### Anti-Bullshit Measures
 
-## Available Agents
+All agents MUST follow the Verification-First Development principles from CLAUDE.md:
 
-### 1. Agent Expert
+1. **Never claim implementation without proof** - Use grep/diff to verify changes
+2. **Follow Task Management Protocol** - Check TaskMaster before starting work
+3. **Enforce File Management Rules** - Never create files unless explicitly requested
+4. **Validate Performance Budgets** - Always check against limits
+5. **Use Code References Format** - Always use file:line format
 
-**File**: `agent-expert.md`  
-**Purpose**: Creates and designs specialized Claude Code agents  
-**Expertise**:
+### Agent Self-Verification Protocol
 
-- Agent architecture and design patterns
-- Prompt engineering for specialized domains
-- Domain expertise modeling
-- Agent interaction patterns
-- Best practices for agent development
+Before any agent claims task completion:
+- Run verification commands to prove changes exist
+- Count lines to confirm additions/modifications
+- Test any code or commands provided
+- Show evidence of implementation
 
-**Use Cases**:
+Agents that violate these rules must:
+1. Admit the failure explicitly
+2. Show exact verification commands
+3. Implement immediately or explain why not
 
-- Creating new specialized agents
-- Improving existing agent prompts
-- Designing multi-agent workflows
-- Agent capability assessment
+## Core Development Agents
 
-### 2. Docs Scribe
+### 1. Task Orchestrator
+**Purpose**: Coordinate and manage Task Master task execution
+**Use When**: Starting work sessions, analyzing task queue, identifying parallel work
+**Key Tools**: Task Master MCP tools, dependency analysis
 
-**File**: `docs-scribe.md`  
-**Purpose**: Maintains project documentation in sync with codebase  
-**Expertise**:
+### 2. Task Executor
+**Purpose**: Implement and complete specific tasks
+**Use When**: Actually implementing features, fixing bugs, writing code
+**Key Tools**: Full development toolset
 
-- CLAUDE.md maintenance
-- Decision log updates
-- PRD synchronization
-- Architecture documentation
-- README generation
+### 3. Task Checker
+**Purpose**: Verify task implementation quality
+**Use When**: Tasks marked as 'review' status
+**Key Tools**: Testing, code analysis, quality checks
 
-**Use Cases**:
+## Hardware & Transport Agents
 
-- Updating documentation after code changes
-- Creating comprehensive project guides
-- Maintaining decision history
-- Generating API documentation
+### 4. Driver Engineer
+**Purpose**: Create and maintain hardware device drivers
+**Use When**: Implementing drivers for Arduino, ESP32, RioRand, Raspberry Pi
+**Expertise**: IDeviceDriver interface, protocol implementation, hardware abstraction
 
-### 3. Driver Engineer
+### 5. Transport Engineer
+**Purpose**: Implement transport layer protocols
+**Use When**: Working on Serial, TCP, UDP, SSH communication
+**Expertise**: Async I/O, reconnection logic, latency enforcement
 
-**File**: `driver-engineer.md`  
-**Purpose**: Creates and maintains device driver plugins  
-**Expertise**:
+### 6. Safety Guardian
+**Purpose**: Implement safety-critical systems
+**Use When**: Emergency stops, rate limiting, hardware safeguards
+**Expertise**: Fail-safe patterns, invariant verification
 
-- Arduino/ESP32/RioRand driver development
-- Serial/TCP/UDP protocol implementation
-- Driver manifest creation
-- Hardware abstraction layers
-- Plugin architecture
+## UI & Performance Agents
 
-**Use Cases**:
+### 7. UI Telemetry Analyst
+**Purpose**: Optimize telemetry visualization and real-time data
+**Use When**: High-frequency data handling, chart performance, UI responsiveness
+**Expertise**: Decimation algorithms, ring buffers, chart optimization
 
-- Implementing new device drivers
-- Debugging hardware communication
-- Creating driver manifests
-- Protocol optimization
+### 8. Performance Profiler
+**Purpose**: Optimize application performance
+**Use When**: Startup optimization, memory profiling, Native AOT configuration
+**Expertise**: Performance measurement, profiling tools, optimization techniques
 
-### 4. MCP Toolsmith
+## Testing & Quality Agents
 
-**File**: `mcp-toolsmith.md`  
-**Purpose**: Manages MCP server configurations and integrations  
-**Expertise**:
-
-- MCP server installation and configuration
-- Tool verification and testing
-- Config file management
-- Per-server CLAUDE.md imports
-- MCP debugging
-
-**Use Cases**:
-
-- Adding new MCP servers
-- Fixing MCP configuration issues
-- Optimizing MCP workflows
-- Troubleshooting connections
-
-### 5. Memory Steward
-
-**File**: `memory-steward.md`  
-**Purpose**: Curates long-lived facts and conventions  
-**Expertise**:
-
-- Knowledge graph management
-- Fact curation and organization
-- Convention tracking
-- PII/secret avoidance
-- Memory optimization
-
-**Use Cases**:
-
-- Storing project conventions
-- Managing long-term knowledge
-- Cleaning sensitive data
-- Organizing project facts
-
-### 6. Packaging Release
-
-**File**: `packaging-release.md`  
-**Purpose**: Handles application packaging and release  
-**Expertise**:
-
-- Single-file/AOT packaging
-- Code signing
-- Artifact verification
-- Release notes generation
-- Distribution preparation
-
-**Use Cases**:
-
-- Creating release builds
-- Signing executables
-- Generating changelogs
-- Packaging for distribution
-
-### 7. Performance Profiler
-
-**File**: `performance-profiler.md`  
-**Purpose**: Maintains performance budgets and optimization  
-**Expertise**:
-
-- Performance budget enforcement
-- AOT build settings
-- Memory profiling
-- CPU usage analysis
-- Startup time optimization
-
-**Use Cases**:
-
-- Profiling application performance
-- Optimizing resource usage
-- Meeting performance budgets
-- AOT configuration
-
-### 8. Research Librarian
-
-**File**: `research-librarian.md`  
-**Purpose**: Evidence gathering and competitive analysis  
-**Expertise**:
-
-- Technology research
-- Community insights gathering
-- Documentation triangulation
-- Competitive scanning
-- Best practices discovery
-
-**Use Cases**:
-
-- Researching technology choices
-- Gathering community feedback
-- Comparing solutions
-- Finding best practices
-
-### 9. Safety Guardian
-
-**File**: `safety-guardian.md`  
-**Purpose**: Ensures safety invariants and control paths  
-**Expertise**:
-
-- Safety invariant definition
-- Control path testing
-- Emergency stop mechanisms
-- Rate limiting implementation
-- Hardware protection
-
-**Use Cases**:
-
-- Implementing safety features
-- Testing emergency controls
-- Validating safety invariants
-- Control path verification
+### 9. Test Runner
+**Purpose**: Implement comprehensive testing strategies
+**Use When**: Creating unit tests, integration tests, HIL testing
+**Expertise**: Test patterns, soak testing, flaky test analysis
 
 ### 10. Security Hygiene
+**Purpose**: Manage security and credentials
+**Use When**: Credential scanning, security audits, gitignore configuration
+**Expertise**: Security patterns, credential detection, vulnerability scanning
 
-**File**: `security-hygiene.md`  
-**Purpose**: Manages secrets and security best practices  
-**Expertise**:
+## Research & Documentation Agents
 
-- Secrets scrubbing
-- Token handling
-- Tool allowlist management
-- Security audit
-- Vulnerability scanning
+### 11. Research Librarian
+**Purpose**: Conduct comprehensive research
+**Use When**: Evaluating libraries, gathering community insights, competitive analysis
+**Tools**: Perplexity Ask, Context7, evidence triangulation
 
-**Use Cases**:
+### 12. Docs Scribe
+**Purpose**: Maintain project documentation
+**Use When**: Updating CLAUDE.md, decision logs, README files
+**Expertise**: Documentation automation, cross-file consistency
 
-- Removing secrets from code
-- Managing API keys
-- Security auditing
-- Access control setup
+## Infrastructure Agents
 
-### 11. Task Checker
+### 13. MCP Toolsmith
+**Purpose**: Configure and troubleshoot MCP servers
+**Use When**: Setting up MCP integrations, debugging connections
+**Expertise**: MCP protocol, server configuration, tool verification
 
-**File**: `task-checker.md`  
-**Purpose**: Verifies task implementation quality  
-**Expertise**:
+### 14. Memory Steward
+**Purpose**: Manage long-term project memory
+**Use When**: Storing conventions, architectural decisions, performance baselines
+**Tools**: Memory MCP, knowledge graph curation
 
-- Implementation verification
-- Requirement validation
-- Test execution
-- Best practices checking
-- Quality assurance
+### 15. Packaging Release
+**Purpose**: Prepare production releases
+**Use When**: Creating distributions, AOT compilation, code signing
+**Expertise**: Build automation, artifact verification, deployment
 
-**Use Cases**:
+### 16. Agent Expert
+**Purpose**: Create and improve other agents
+**Use When**: Developing new agents, auditing existing agents
+**Expertise**: Agent architecture, prompt engineering, quality assurance
 
-- Reviewing completed tasks
-- Validating implementations
-- Running verification tests
-- Quality checks
+## Agent Usage Patterns
 
-### 12. Task Executor
-
-**File**: `task-executor.md`  
-**Purpose**: Implements and completes specific tasks  
-**Expertise**:
-
-- Task implementation
-- Code generation
-- Problem solving
-- Integration work
-- Feature development
-
-**Use Cases**:
-
-- Implementing identified tasks
-- Completing subtasks
-- Feature development
-- Bug fixing
-
-### 13. Task Orchestrator
-
-**File**: `task-orchestrator.md`  
-**Purpose**: Coordinates complex task execution  
-**Expertise**:
-
-- Task dependency analysis
-- Parallel execution planning
-- Resource allocation
-- Workflow orchestration
-- Progress monitoring
-
-**Use Cases**:
-
-- Managing complex features
-- Coordinating parallel work
-- Dependency resolution
-- Workflow optimization
-
-### 14. Test Runner
-
-**File**: `test-runner.md`  
-**Purpose**: Executes comprehensive test suites  
-**Expertise**:
-
-- Unit test execution
-- Loopback testing
-- Hardware-in-loop testing
-- Soak test management
-- Test report generation
-
-**Use Cases**:
-
-- Running test suites
-- Generating test reports
-- Flaky test triage
-- Performance testing
-
-### 15. Transport Engineer
-
-**File**: `transport-engineer.md`  
-**Purpose**: Implements communication transports  
-**Expertise**:
-
-- Serial/TCP/UDP/SSH protocols
-- Reconnection strategies
-- Backoff algorithms
-- Latency optimization
-- Connection pooling
-
-**Use Cases**:
-
-- Implementing transports
-- Optimizing communication
-- Debugging connections
-- Protocol development
-
-### 16. UI Telemetry Analyst
-
-**File**: `ui-telemetry-analyst.md`  
-**Purpose**: Optimizes telemetry and visualization  
-**Expertise**:
-
-- Telemetry decimation
-- Buffer optimization
-- Chart rendering
-- Data visualization
-- Performance monitoring
-
-**Use Cases**:
-
-- Implementing telemetry
-- Optimizing charts
-- Data decimation
-- UI performance
-
-## Agent Invocation
-
-### Using the Task Tool
-
-```javascript
-// Basic invocation
-Task({
-  subagent_type: 'driver-engineer',
-  description: 'Implement Arduino driver',
-  prompt: 'Create a driver for Arduino Uno with serial echo functionality',
-});
-
-// With detailed context
-Task({
-  subagent_type: 'performance-profiler',
-  description: 'Profile memory usage',
-  prompt:
-    'Analyze current memory usage and suggest optimizations to stay under 150MB budget',
-});
+### Automatic Agent Selection
+Claude Code automatically selects appropriate agents based on task context:
+```
+User: "Implement serial reconnection"
+→ Transport Engineer agent activated
 ```
 
-### Agent Selection Guidelines
+### Manual Agent Invocation
+Explicitly request specific agents:
+```
+User: "Use the safety-guardian agent to implement emergency stop"
+```
 
-1. **Choose by Domain**: Select agents based on their specialized domain
-2. **Consider Dependencies**: Some agents work well in sequence
-3. **Parallel Execution**: Launch multiple agents for independent tasks
-4. **Result Integration**: Agents return detailed reports for integration
+### Multi-Agent Workflows
+Complex tasks may involve multiple agents:
+1. Task Orchestrator → identifies work
+2. Driver Engineer → implements driver
+3. Test Runner → creates tests
+4. Task Checker → verifies implementation
 
-## Common Agent Workflows
+## Agent Tool Access
 
-### Feature Implementation Workflow
+### Universal Tools
+All agents have access to:
+- Read, Write, Edit files
+- Bash commands
+- Grep, Glob, LS
+- TodoWrite
 
-1. **task-orchestrator**: Analyze and plan the feature
-2. **task-executor**: Implement individual components
-3. **test-runner**: Execute tests
-4. **task-checker**: Verify implementation
-5. **docs-scribe**: Update documentation
+### Specialized Tool Access
+Agents have additional tools based on their domain:
+- **Transport Engineer**: Serial testing tools
+- **UI Telemetry Analyst**: Chart profiling tools
+- **Security Hygiene**: Credential scanners
+- **Research Librarian**: Perplexity Ask, Context7
 
-### Performance Optimization Workflow
+## Best Practices
 
-1. **performance-profiler**: Profile current performance
-2. **ui-telemetry-analyst**: Analyze telemetry overhead
-3. **transport-engineer**: Optimize communication
-4. **packaging-release**: Create optimized build
+### 1. Let Agents Specialize
+Use agents for their intended purpose rather than general tasks
 
-### Security Review Workflow
+### 2. Chain Agents for Complex Work
+Break complex tasks into agent-appropriate subtasks
 
-1. **security-hygiene**: Scan for secrets
-2. **safety-guardian**: Verify safety invariants
-3. **test-runner**: Execute security tests
-4. **docs-scribe**: Document security measures
+### 3. Trust Agent Expertise
+Agents have domain-specific knowledge and patterns
 
-## Agent Best Practices
+### 4. Provide Context
+Give agents relevant task IDs, file paths, and requirements
 
-### 1. Clear Task Definition
+## Agent Configuration
 
-- Provide specific, actionable tasks
-- Include relevant context and constraints
-- Specify expected outputs
+### Location
+Agent definitions: `.claude/agents/`
 
-### 2. Sequential vs Parallel
+### Structure
+Each agent file includes:
+- Name and purpose
+- When to use
+- Example scenarios
+- Tool requirements
+- Domain expertise
 
-- Use sequential for dependent tasks
-- Launch parallel agents for independent work
-- Coordinate results with task-orchestrator
+### Customization
+Agents can be modified for project-specific needs:
+1. Edit agent definition file
+2. Adjust tool access
+3. Add domain knowledge
+4. Update examples
 
-### 3. Result Integration
+## Troubleshooting Agents
 
-- Agents provide detailed reports
-- Extract actionable items from reports
-- Update task status based on results
+### Agent Not Activating
+- Check task description for trigger keywords
+- Manually specify agent in request
+- Verify agent file exists
 
-### 4. Error Handling
+### Agent Errors
+- Check tool permissions in settings.json
+- Verify required MCP servers running
+- Review agent output for issues
 
-- Agents report blockers and issues
-- Provide fallback strategies
-- Document unresolved problems
-
-## Agent Capabilities Matrix
-
-| Agent                | Code Gen | Analysis | Testing | Docs | Config |
-| -------------------- | -------- | -------- | ------- | ---- | ------ |
-| agent-expert         | ✓        | ✓        | -       | ✓    | -      |
-| docs-scribe          | -        | ✓        | -       | ✓    | -      |
-| driver-engineer      | ✓        | ✓        | ✓       | ✓    | ✓      |
-| mcp-toolsmith        | ✓        | ✓        | ✓       | -    | ✓      |
-| memory-steward       | -        | ✓        | -       | ✓    | -      |
-| packaging-release    | ✓        | ✓        | ✓       | ✓    | ✓      |
-| performance-profiler | ✓        | ✓        | ✓       | ✓    | ✓      |
-| research-librarian   | -        | ✓        | -       | ✓    | -      |
-| safety-guardian      | ✓        | ✓        | ✓       | ✓    | -      |
-| security-hygiene     | -        | ✓        | ✓       | ✓    | ✓      |
-| task-checker         | -        | ✓        | ✓       | -    | -      |
-| task-executor        | ✓        | ✓        | ✓       | -    | -      |
-| task-orchestrator    | -        | ✓        | -       | -    | -      |
-| test-runner          | ✓        | ✓        | ✓       | ✓    | -      |
-| transport-engineer   | ✓        | ✓        | ✓       | ✓    | ✓      |
-| ui-telemetry-analyst | ✓        | ✓        | ✓       | ✓    | ✓      |
-
-## Integration with Task Master
-
-Agents work seamlessly with Task Master:
-
-- **task-orchestrator** analyzes task dependencies
-- **task-executor** implements identified tasks
-- **task-checker** verifies completed work
-- Results update task status automatically
-
-## Custom Agent Development
-
-To create new agents:
-
-1. Use **agent-expert** to design the agent
-2. Follow the template structure in existing agents
-3. Define clear expertise boundaries
-4. Include practical examples
-5. Test with various prompts
-6. Document in this reference
+### Performance Issues
+- Limit concurrent agent invocations
+- Use appropriate agents for task size
+- Monitor token usage

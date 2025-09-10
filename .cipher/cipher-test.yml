@@ -1,0 +1,69 @@
+# Cipher Test Configuration - Single Server
+# MCP Aggregator Hub for Multi-Controller App
+
+# LLM Configuration - Required even in MCP mode for agent behavior
+# Claude Code provides the actual LLM, but this configures agent parameters
+llm:
+  provider: anthropic
+  model: claude-3-5-sonnet-20241022
+  apiKey: $ANTHROPIC_API_KEY
+  maxIterations: 50
+
+# System Prompt
+systemPrompt:
+  enabled: true
+  content: |
+    You are testing the Multi-Controller App Cipher aggregator.
+    Testing connection to MCP servers.
+
+# MCP Servers to Test - Single Server First
+mcpServers:
+  # Task Master AI - Task management and planning
+  task-master-ai:
+    type: stdio
+    command: node
+    args: ["./node_modules/task-master-ai/mcp-server/server.js"]
+    env:
+      ANTHROPIC_API_KEY: $ANTHROPIC_API_KEY
+      PERPLEXITY_API_KEY: $PERPLEXITY_API_KEY
+      OPENAI_API_KEY: $OPENAI_API_KEY
+      GOOGLE_API_KEY: $GOOGLE_API_KEY
+    timeout: 15000
+
+# Embedding Configuration (for memory vectorization)
+embedding:
+  type: openai
+  model: text-embedding-3-small
+  apiKey: $OPENAI_API_KEY
+  
+# Memory Configuration
+memory:
+  enabled: true
+  vectorStore: local  # Using local in-memory as configured in .env
+  maxMemoryMB: 512
+  persistencePath: ./.cipher/memory/
+  
+# Agent Configuration for MCP mode
+agent:
+  name: "Multi-Controller Cipher Test Agent"
+  description: "Testing Cipher MCP aggregation"
+  maxIterations: 50
+  timeout: 300000  # 5 minutes
+  
+# Pruning strategies
+pruning:
+  enabled: true
+  maxAge: 30d  # Delete memories older than 30 days
+  minImportance: 3  # Keep memories with importance >= 3
+  maxCount: 10000  # Maximum number of memories
+  
+# Knowledge graph settings
+knowledgeGraph:
+  enabled: true
+  maxNodes: 5000
+  relationshipThreshold: 0.7  # Similarity threshold for relationships
+
+# Logging
+logging:
+  level: "debug"  # debug, info, warn, error
+  file: "./.cipher/logs/cipher-test.log"

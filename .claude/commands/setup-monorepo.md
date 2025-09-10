@@ -1,3 +1,125 @@
+---
+model: claude-sonnet-4-20250514
+category: development-setup
+priority: high
+tags: ["development-setup", "setup"]
+description: Setup Monorepo
+
+# Enhanced Context-Aware Agent Integration
+enhanced-integration:
+  enabled: true
+  agent-selection-criteria:
+    domain-expertise: ["monorepo-architecture", "build-systems", "workspace-management"]
+    complexity-factors: ["multi-package-coordination", "build-orchestration", "dependency-management"]
+    specialized-tools: ["monorepo-configuration", "build-optimization", "workspace-setup"]
+  preferred-agents:
+    primary: "general-purpose"
+    secondary: "cargo-build-engineer"
+    fallback: ["task-orchestrator"]
+  tool-requirements:
+    mcp-servers: ["desktop-commander", "context7", "cipher-memory"]
+    specialized-functions: ["monorepo-setup", "build-configuration"]
+
+# Universal Cipher Memory Integration (MANDATORY FOR ALL COMMANDS)
+cipher-memory-integration:
+  enabled: true
+  priority: "high"
+  
+  # Pre-execution Memory Operations
+  pre-execution-memory:
+    context-search:
+      - query-pattern: "monorepo-architecture + build-systems + workspace-management"
+      - tools: ["mcp__cipher-memory__search_nodes", "mcp__cipher-memory__open_nodes"]
+      - context-retrieval: "monorepo-patterns + build-system-knowledge"
+    
+    knowledge-preparation:
+      - domain: "monorepo-setup"
+      - pattern-search: "monorepo-strategies + build-patterns + workspace-configurations"
+      - tools: ["mcp__cipher-memory__read_graph"]
+  
+  # Execution Memory Operations
+  execution-memory:
+    progress-tracking:
+      - tool: "mcp__cipher-memory__add_observations"
+      - capture-points: ["monorepo-analysis", "setup-configuration", "build-optimization"]
+      - entity-updates: "real-time-progress"
+    
+    decision-logging:
+      - tool: "mcp__cipher-memory__create_entities"
+      - log-decisions: "monorepo-strategies + build-approaches + workspace-decisions"
+      - pattern-recognition: "monorepo-setup-patterns"
+  
+  # Post-execution Memory Operations
+  post-execution-memory:
+    result-storage:
+      - tools: ["mcp__cipher-memory__create_entities"]
+      - store-patterns: ["monorepo-configurations", "build-insights", "workspace-techniques"]
+      - knowledge-extraction: "monorepo-methodologies + build-patterns"
+    
+    relationship-creation:
+      - tools: ["mcp__cipher-memory__create_relations"]
+      - link-concepts: ["monorepo-relationships", "build-dependencies", "workspace-connections"]
+      - cross-reference: "related-setup-processes"
+    
+    knowledge-refinement:
+      - tools: ["mcp__cipher-memory__add_observations"]
+      - enrich-existing: "monorepo-knowledge + build-patterns"
+      - continuous-learning: "monorepo-setup-optimization"
+
+# Centralized Logging Integration
+logging-integration:
+  enabled: true
+  log-file: ".claude/command-execution.jsonl"
+  
+  # Comprehensive Execution Logging
+  log-level: "comprehensive"
+  
+  capture-points:
+    - command-initiation
+    - agent-selection-process
+    - memory-operations
+    - monorepo-analysis
+    - setup-configuration
+    - build-optimization
+    - workspace-validation
+    - error-handling
+    - completion-status
+  
+  # Structured Log Format
+  log-structure:
+    timestamp: "ISO-8601"
+    command: "setup-monorepo"
+    execution-id: "UUID"
+    agent-assignments: "selected-agents-with-reasoning"
+    memory-operations: "cipher-memory-transactions"
+    performance-metrics: "execution-time + memory-usage + success-rate"
+    outcome-summary: "monorepo-setup-results + build-insights"
+
+# Cross-Command Learning Integration
+cross-command-learning:
+  enabled: true
+  share-insights: ["monorepo-patterns", "build-techniques", "workspace-management-methods"]
+  learn-from: ["setup-development-environment", "setup-comprehensive-testing", "setup-linting"]
+  contribute-to: "development-setup-knowledge-base"
+
+# Workflow Integration
+workflow-integration:
+  pre-execution:
+    - validate-project-structure
+    - prepare-memory-context
+    - select-optimal-agents
+  
+  execution:
+    - parallel-monorepo-setup
+    - continuous-memory-updates
+    - real-time-build-optimization
+  
+  post-execution:
+    - comprehensive-result-storage
+    - cross-reference-generation
+    - setup-pattern-extraction
+---
+
 # Setup Monorepo
 
 Configure monorepo project structure
@@ -78,3 +200,5 @@ Configure monorepo project structure
     - Test development workflow and hot reloading
     - Verify CI/CD integration and affected package detection
     - Create example packages to demonstrate workspace functionality
+
+

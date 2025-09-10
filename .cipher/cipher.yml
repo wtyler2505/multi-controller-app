@@ -1,0 +1,160 @@
+# Cipher Memory Framework Configuration
+# MCP Aggregator Hub for Multi-Controller App
+
+# LLM Configuration - Required even in MCP mode for agent behavior
+# Claude Code provides the actual LLM, but this configures agent parameters
+llm:
+  provider: anthropic
+  model: claude-3-5-sonnet-20241022
+  apiKey: $ANTHROPIC_API_KEY
+  maxIterations: 50
+
+# Assistant Prompt - MCP-compatible (no system role)
+assistantPrompt:
+  enabled: true
+  role: "assistant"
+  content: |
+    I am the Multi-Controller App development assistant with persistent memory and comprehensive tooling.
+    I help manage hardware device connections (Arduino, ESP32, ESP8266, RioRand, Raspberry Pi)
+    and maintain project context across sessions using dual-layer memory and knowledge graphs.
+    
+    Current project context:
+    - Technology stack: Rust + egui (selected over C# Native AOT)
+    - Performance budgets: <2s startup, ≤2% idle CPU, ≤150MB RAM
+    - 19 main tasks, 100+ subtasks, currently ~17% complete
+    
+    Available MCP Tools via Cipher Aggregation (9 servers):
+    - Task Master AI: Task management, planning, complexity analysis, and project orchestration
+    - Desktop Commander: File operations, terminal control, process management, and system automation  
+    - FileScopeMCP: Code analysis, dependency mapping, codebase insights, and architecture visualization
+    - Clear Thought: Structured reasoning and decision-making framework
+    - Context7: Official documentation lookup, API references, and version-accurate technical guidance
+    - Perplexity Ask: Web research, real-time information, community knowledge, and trend analysis
+    - Memory: Long-term memory storage, retrieval, and semantic search (separate from Cipher's built-in)
+    - Time Server: Time utilities, scheduling, timestamp management, and timezone operations
+    - ByteRover MCP: Additional ByteRover tools and capabilities via HTTP
+    
+    I use these tools strategically to provide comprehensive development assistance with 
+    persistent context and intelligent task orchestration.
+
+# MCP Servers to Aggregate - Complete Hub Configuration
+# Using exact paths from working .mcp.json configuration
+mcpServers:
+  # Task Master AI - Task management and planning
+  taskmaster-ai:
+    type: stdio
+    command: node
+    args: ["C:\\Users\\wtyle\\node_modules\\task-master-ai\\mcp-server\\server.js"]
+    env:
+      ANTHROPIC_API_KEY: $ANTHROPIC_API_KEY
+      PERPLEXITY_API_KEY: $PERPLEXITY_API_KEY
+      OPENAI_API_KEY: $OPENAI_API_KEY
+    timeout: 15000
+    
+  # Desktop Commander - File operations and terminal control  
+  desktop-commander:
+    type: stdio
+    command: node
+    args: ["C:\\Users\\wtyle\\node_modules\\@wonderwhy-er\\desktop-commander\\dist\\index.js"]
+    timeout: 45000
+    
+  # FileScopeMCP - Code analysis and dependency mapping
+  FileScopeMCP:
+    type: stdio
+    command: node
+    args: ["C:\\Users\\wtyle\\FileScopeMCP\\dist\\mcp-server.js", "--base-dir=C:\\Users\\wtyle\\maybe"]
+    timeout: 60000
+    
+  # Clear Thought - Structured reasoning tools
+  clear-thought:
+    type: stdio
+    command: node
+    args: ["C:\\Users\\wtyle\\node_modules\\@waldzellai\\clear-thought\\dist\\index.js"]
+    timeout: 45000
+    
+  # Context7 - Official documentation lookup
+  context7:
+    type: stdio
+    command: node
+    args: ["C:\\Users\\wtyle\\node_modules\\@upstash\\context7-mcp\\dist\\index.js"]
+    timeout: 60000
+    
+  # Perplexity Ask - Web research and real-time information
+  perplexity-ask:
+    type: stdio
+    command: node
+    args: ["C:\\Users\\wtyle\\node_modules\\server-perplexity-ask\\dist\\index.js"]
+    env:
+      PERPLEXITY_API_KEY: $PERPLEXITY_API_KEY
+    timeout: 60000
+
+  # Memory - Long-term memory storage (different from Cipher's built-in)
+  memory:
+    type: stdio
+    command: node
+    args: ["C:\\Users\\wtyle\\node_modules\\@modelcontextprotocol\\server-memory\\dist\\index.js"]
+    timeout: 60000
+
+  # Time Server - Time utilities and scheduling
+  time-server:
+    type: stdio
+    command: node
+    args: ["C:\\Users\\wtyle\\RoverMissionControl\\kite-mcp-server-time\\dist\\index.js"]
+    timeout: 15000
+  
+  # ByteRover MCP - Additional ByteRover tools via HTTP
+  byterover-mcp:
+    type: streamable-http
+    url: https://mcp.byterover.dev/v2/mcp
+    timeout: 45000
+
+# Embedding Configuration (for memory vectorization)
+embedding:
+  type: ollama
+  model: nomic-embed-text
+  baseUrl: http://localhost:11434
+  dimensions: 768
+  
+# Memory Configuration
+memory:
+  enabled: true
+  vectorStore: sqlite  # Changed from 'local' to 'sqlite' for persistence
+  maxMemoryMB: 512
+  persistencePath: ./.cipher/memory/
+  databasePath: ./.cipher/memory/cipher.db  # SQLite database file
+  
+# Agent Configuration for MCP mode
+agent:
+  name: "Multi-Controller Cipher Agent"
+  description: "Memory framework for Multi-Controller App development"
+  maxIterations: 50
+  timeout: 300000  # 5 minutes
+  
+# Operation timeouts for Cipher's internal tools
+operations:
+  defaultTimeout: 60000  # 60 seconds for all operations
+  timeouts:
+    extract_and_operate_memory: 60000  # 60s for complex extraction
+    store_reasoning_memory: 60000      # 60s for storing traces
+    extract_reasoning_steps: 45000     # 45s for parsing
+    evaluate_reasoning: 30000          # 30s for evaluation
+    memory_search: 15000               # 15s for search
+    search_reasoning_patterns: 15000   # 15s for pattern search
+  
+# Pruning strategies
+pruning:
+  enabled: true
+  maxAge: 30d  # Delete memories older than 30 days
+  minImportance: 3  # Keep memories with importance >= 3
+  maxCount: 10000  # Maximum number of memories
+  
+# Knowledge graph settings
+knowledgeGraph:
+  enabled: true
+  maxNodes: 5000
+  relationshipThreshold: 0.7  # Similarity threshold for relationships
+
+# Logging
+logging:
+  level: "info"  # debug, info, warn, error
+  file: "./.cipher/logs/cipher.log"

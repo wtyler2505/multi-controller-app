@@ -1,3 +1,11 @@
+---
+model: claude-sonnet-4-20250514
+category: task-management
+priority: medium
+tags: ["task-management"]
+description: Command for fix-dependencies operations
+---
+
 Automatically fix dependency issues found during validation.
 
 ## Automatic Dependency Repair
@@ -58,16 +66,16 @@ task-master fix-dependencies
 
 ```
 Dependency Auto-Fix Report
-━━━━━━━━━━━━━━━━━━━━━━━━
+â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 Fixed Automatically:
-✅ Removed 2 references to deleted tasks
-✅ Resolved 1 self-dependency
-✅ Cleaned 3 redundant dependencies
+âœ… Removed 2 references to deleted tasks
+âœ… Resolved 1 self-dependency
+âœ… Cleaned 3 redundant dependencies
 
 Manual Review Needed:
-⚠️ Complex circular dependency: #12 → #15 → #18 → #12
+âš ï¸ Complex circular dependency: #12 â†’ #15 â†’ #18 â†’ #12
   Suggestion: Make #15 not depend on #12
-⚠️ Task #45 has 8 dependencies
+âš ï¸ Task #45 has 8 dependencies
   Suggestion: Break into subtasks
 
 Run '/project:tm/validate-dependencies' to verify fixes
@@ -79,3 +87,5 @@ Run '/project:tm/validate-dependencies' to verify fixes
 - Rollback capability
 - Change logging
 - No data loss
+
+

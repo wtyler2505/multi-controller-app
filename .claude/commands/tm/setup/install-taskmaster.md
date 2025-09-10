@@ -1,3 +1,11 @@
+---
+model: claude-sonnet-4-20250514
+category: development-setup
+priority: medium
+tags: ["development-setup", "setup", "tasks", "taskmaster"]
+description: Try with sudo (macOS/Linux)
+---
+
 Check if Task Master is installed and install it if needed.
 
 This command helps you get Task Master set up globally on your system.
@@ -101,10 +109,10 @@ nvm use 18
 
 Once installed, you should see:
 ```
-✅ Task Master v0.16.2 (or higher) installed
-✅ Command 'task-master' available globally
-✅ AI provider configured
-✅ Ready to use slash commands!
+âœ… Task Master v0.16.2 (or higher) installed
+âœ… Command 'task-master' available globally
+âœ… AI provider configured
+âœ… Ready to use slash commands!
 
 Try: /project:task-master:init your-prd.md
 ```
@@ -115,3 +123,5 @@ After installation:
 1. Run `/project:utils:check-health` to verify setup
 2. Configure AI providers with `/project:task-master:models`
 3. Start using Task Master commands!
+
+

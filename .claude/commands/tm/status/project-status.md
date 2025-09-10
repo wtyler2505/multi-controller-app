@@ -1,3 +1,11 @@
+---
+model: claude-sonnet-4-20250514
+category: taskmaster-core
+priority: medium
+tags: ["taskmaster-core"]
+description: Command for project-status operations
+---
+
 Enhanced status command with comprehensive project insights.
 
 Arguments: $ARGUMENTS
@@ -6,20 +14,20 @@ Arguments: $ARGUMENTS
 
 ### 1. **Executive Summary**
 Quick dashboard view:
-- 🏃 Active work (in-progress tasks)
-- 📊 Progress metrics (% complete, velocity)
-- 🚧 Blockers and risks
-- ⏱️ Time analysis (estimated vs actual)
-- 🎯 Sprint/milestone progress
+- ðŸƒ Active work (in-progress tasks)
+- ðŸ“Š Progress metrics (% complete, velocity)
+- ðŸš§ Blockers and risks
+- â±ï¸ Time analysis (estimated vs actual)
+- ðŸŽ¯ Sprint/milestone progress
 
 ### 2. **Contextual Analysis**
 
 Based on $ARGUMENTS, focus on:
-- "sprint" → Current sprint progress and burndown
-- "blocked" → Dependency chains and resolution paths
-- "team" → Task distribution and workload
-- "timeline" → Schedule adherence and projections
-- "risk" → High complexity or overdue items
+- "sprint" â†’ Current sprint progress and burndown
+- "blocked" â†’ Dependency chains and resolution paths
+- "team" â†’ Task distribution and workload
+- "timeline" â†’ Schedule adherence and projections
+- "risk" â†’ High complexity or overdue items
 
 ### 3. **Smart Insights**
 
@@ -37,14 +45,14 @@ Based on $ARGUMENTS, focus on:
 
 Dynamic visualization based on data:
 ```
-Sprint Progress: ████████░░ 80% (16/20 tasks)
-Velocity Trend: ↗️ +15% this week
-Blocked Tasks:  🔴 3 critical path items
+Sprint Progress: â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–‘â–‘ 80% (16/20 tasks)
+Velocity Trend: â†—ï¸ +15% this week
+Blocked Tasks:  ðŸ”´ 3 critical path items
 
 Priority Distribution:
-High:   ████████ 8 tasks (2 blocked)
-Medium: ████░░░░ 4 tasks
-Low:    ██░░░░░░ 2 tasks
+High:   â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ 8 tasks (2 blocked)
+Medium: â–ˆâ–ˆâ–ˆâ–ˆâ–‘â–‘â–‘â–‘ 4 tasks
+Low:    â–ˆâ–ˆâ–‘â–‘â–‘â–‘â–‘â–‘ 2 tasks
 ```
 
 ### 5. **Actionable Recommendations**
@@ -62,3 +70,5 @@ Compare to previous periods:
 - Pattern recognition
 - Improvement areas
 - Success patterns to repeat
+
+

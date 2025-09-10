@@ -109,6 +109,15 @@ tmp/
 .memory/.cache/
 .time-server/.cache/
 
+# Cipher Framework
+.cipher/memory/
+.cipher/logs/
+.cipher/*.log
+.cipher/.cache/
+# Keep config and prompts
+!.cipher/config/
+!.cipher/prompts/
+
 # Security
 *.key
 *.pem
@@ -196,3 +205,21 @@ pnpm-lock.yaml
 
 # Accidental files
 nul
+
+# START Ruler Generated Files
+/.aider.conf.yml
+/.clinerules
+/.cursor/mcp.json
+/.cursorrules
+/.github/copilot-instructions.md
+/.mcp.json
+/.vscode/mcp.json
+/.windsurf/mcp_config.json
+/.windsurfrules
+/AGENTS.md
+# END Ruler Generated Files
+
+
+# Added by cargo
+
+/target

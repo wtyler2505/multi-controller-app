@@ -1,3 +1,11 @@
+---
+model: claude-sonnet-4-20250514
+category: task-management
+priority: medium
+tags: ["task-management"]
+description: Command for to-in-progress operations
+---
+
 Start working on a task by setting its status to in-progress.
 
 Arguments: $ARGUMENTS (task ID)
@@ -34,3 +42,5 @@ After setting to in-progress:
 - Related files from similar tasks
 - Potential blockers to watch for
 - Recommended first steps
+
+

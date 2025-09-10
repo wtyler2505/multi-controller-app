@@ -1,0 +1,125 @@
+# Multi-Controller App - Centralized AI Agent Instructions
+
+## Project Overview
+**Project**: Multi-Controller App - Universal hardware controller interface
+**Stack**: Rust with egui (selected after thorough evaluation)
+**Status**: 17.93% complete (26 tasks total)
+**GitHub**: https://github.com/wtyler2505/multi-controller-app
+**License**: MIT
+
+## User Preferences (CRITICAL - READ FIRST)
+- **Communication**: Direct, no fluff, no over-explanation
+- **GitHub**: wtyler2505 (wtyler2505@outlook.com)
+- **File Creation**: NEVER without explicit path request
+- **Style**: Be concise - minimal output, maximum efficiency
+- **Verification**: Always show proof with grep, never just claim
+
+## Performance Budgets (MANDATORY)
+- **Startup**: <2s 
+- **RAM**: ≤150MB (≤220MB with charts)
+- **Serial latency**: ≤50ms 
+- **Network latency**: ≤100ms
+- **Context usage**: <20% main thread (parallel mode)
+- **Build**: Must compile without errors
+- **Tests**: Must pass 100%
+
+## File Management Rules (ABSOLUTE)
+- **NEVER** create files unless explicitly requested with full path
+- **ALWAYS** prefer editing existing files
+- **ALWAYS** ask permission before creating new files
+- Documentation/README files require explicit user request
+
+## Development Standards
+
+### Code References Format
+Always use `file_path:line_number` format:
+- Example: `transports/serial/src/index.ts:32`
+- Update line numbers after edits
+- Include in error messages and commits
+
+### PowerShell Scripts (Windows Primary)
+- **NO Unicode/emojis** - Use ASCII only: [OK], [ERROR], [WARNING]
+- **NO reserved parameters**: Verbose, Debug, ErrorAction, etc.
+- Use alternatives: `-ShowDetails` instead of `-Verbose`
+- Template: `scripts/templates/powershell-script-template.ps1`
+
+### Git Workflow
+- Primary branch: main
+- Development branch: development
+- Commit format: `type(scope): description (task X.Y)`
+- Create PR for completed tasks with task reference
+
+## Core Interfaces
+```csharp
+interface IDeviceDriver {
+    string Name { get; }
+    string[] SupportedTransports { get; }
+    Task<bool> ProbeAsync(ITransport transport);
+    Task<IDeviceSession> OpenAsync(ITransport transport);
+}
+
+interface IDeviceSession {
+    Task<object> InvokeAsync(string endpoint, object[] args);
+    Task<IDisposable> SubscribeAsync(string stream, Action<byte[]> handler);
+    Task CloseAsync();
+}
+```
+
+## Safety Requirements
+- **Emergency Stop**: Immediate neutralization of outputs
+- **Rate Limiting**: Enforce bounds on PWM/actuation
+- **Hot-plug Recovery**: Graceful disconnect handling
+- **Timeout Enforcement**: 50ms serial, 100ms network
+
+## Task Management Protocol
+All agents must use Task Master for workflow:
+- Check next task: `task-master next`
+- View details: `task-master show <id>`
+- Update progress during work
+- Set status when complete
+- Reference format in commits: `(task X.Y)`
+
+## MCP Server Configuration
+This project uses 9 MCP servers aggregated through Cipher:
+1. **Cipher** - Memory and aggregation (primary)
+2. **Task Master** - Task management
+3. **Desktop Commander** - File operations
+4. **FileScope** - Code analysis
+5. **Clear Thought** - Reasoning tools
+6. **Context7** - Documentation
+7. **Perplexity** - Research
+8. **Memory** - Long-term storage
+9. **Time Server** - Utilities
+
+## Verification Protocol
+For all changes, prove:
+1. **Implementation**: Show the change worked
+2. **Memory**: Show what was stored to Cipher
+3. **Task**: Show TaskMaster update if applicable
+
+Never claim completion without proof.
+
+## Architecture Structure
+```
+/apps/          # UI and core application
+/drivers/       # Device driver plugins
+/transports/    # Serial/TCP/UDP/SSH
+/scripts/       # Automation and utilities
+/tests/         # Test suites
+/profiles/      # Configuration profiles
+/docs/          # Architecture decisions
+/.taskmaster/   # Task management
+/.cipher/       # Memory framework
+/.ruler/        # Centralized instructions (this directory)
+```
+
+## Decision Logging
+Append 3-line entries to `docs/decisions/decision-log.md`:
+- Context → Change → Impact
+
+## Quality Gates (NON-NEGOTIABLE)
+- Build errors: MUST compile
+- Test failures: MUST pass 100%
+- Performance: MUST meet ALL budgets
+- Documentation: MUST be complete
+- No partial implementations accepted

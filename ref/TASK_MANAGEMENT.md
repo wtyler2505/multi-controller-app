@@ -1,214 +1,377 @@
-# Task Management Reference
+# Task Management Guide
+
+## Task Management Protocol (MANDATORY)
+
+### Pre-Work Verification
+
+**ALWAYS execute this sequence before ANY implementation work:**
+
+1. **Check Current Sprint Status**
+   ```bash
+   mcp__taskmaster-ai__next_task     # Identify next available task
+   mcp__taskmaster-ai__get_task      # Get detailed requirements
+   mcp__taskmaster-ai__complexity_report  # Review complexity analysis if exists
+   ```
+
+2. **Validate Dependencies**
+   - Check if dependent tasks are complete: `mcp__taskmaster-ai__validate_dependencies`
+   - Review blocking issues or deferred items
+   - Confirm no conflicting work in progress
+
+3. **Task Lifecycle Management**
+   - **Starting**: `mcp__taskmaster-ai__set_task_status --id=<id> --status=in-progress`
+   - **During**: Log ALL decisions/changes: `mcp__taskmaster-ai__update_subtask --id=<id> --prompt="<details>"`
+   - **Completing**: 
+     - Run all tests and linting
+     - Verify performance budgets
+     - `mcp__taskmaster-ai__set_task_status --id=<id> --status=review`
+     - After review: `mcp__taskmaster-ai__set_task_status --id=<id> --status=done`
+
+4. **Progress Documentation**
+   - Log implementation approach before starting
+   - Document any deviations from original plan
+   - Record performance measurements
+   - Note any technical debt incurred
+   - Update with lessons learned
+
+### Task ID Reference Format
+- Always reference tasks in commits: `feat(component): description (task X.Y)`
+- Include task ID in code comments for complex implementations
+- Cross-reference related tasks in documentation
 
 ## Overview
 
-This project uses **Task Master AI** for comprehensive task management, providing AI-powered task generation, tracking, and workflow orchestration.
-
-## Current Task Status
-
-- **Total Tasks**: 10 main tasks
-- **Total Subtasks**: 50 subtasks
-- **Completion**: 0% (0/10 tasks, 0/50 subtasks)
-- **Current Phase**: Milestone 1 - Project Setup & Prototyping
+The Multi-Controller App uses Task Master AI for comprehensive task management, enabling structured development workflow with AI assistance.
 
 ## Task Structure
 
 ### Task ID Format
-
-- Main tasks: `1`, `2`, `3`, ...
-- Subtasks: `1.1`, `1.2`, `2.1`, ...
-- Sub-subtasks: `1.1.1`, `1.1.2`, ...
+- **Main tasks**: 1, 2, 3, etc.
+- **Subtasks**: 1.1, 1.2, 2.1, etc.
+- **Sub-subtasks**: 1.1.1, 1.1.2, etc.
 
 ### Task Status Values
-
 - `pending` - Ready to work on
 - `in-progress` - Currently being worked on
+- `review` - Implementation complete, needs review
 - `done` - Completed and verified
-- `review` - Awaiting review
-- `blocked` - Waiting on dependencies
 - `deferred` - Postponed
 - `cancelled` - No longer needed
+- `blocked` - Waiting on external factors
 
-## Milestone Breakdown
+### Task Fields
+```json
+{
+  "id": "1.2",
+  "title": "Implement serial transport layer",
+  "description": "Create async serial communication with reconnection",
+  "status": "pending",
+  "priority": "high",
+  "dependencies": ["1.1"],
+  "details": "Implementation requirements...",
+  "testStrategy": "Unit tests for protocol, integration tests for hardware",
+  "subtasks": []
+}
+```
 
-### Milestone 1: Project Setup & Prototyping
+## Essential Commands
 
-**Tasks 1-4** | **Status**: Pending
+### Daily Workflow
+```bash
+# View all tasks
+task-master list
+mcp__taskmaster-ai__get_tasks
 
-1. **Verify Development Environment**
-   - Check .NET 8 SDK, Rust toolchain, Node.js 18+
-   - 5 subtasks | Complexity: 4
+# Get next available task
+task-master next
+mcp__taskmaster-ai__next_task
 
-2. **Scaffold Project Repository**
-   - Create directory structure and config files
-   - 5 subtasks | Complexity: 5 | Depends on: Task 1
+# View specific task details
+task-master show 1.2
+mcp__taskmaster-ai__get_task --id=1.2
 
-3. **Prototype UI with Serial Echo**
-   - Build C# and Rust prototypes for comparison
-   - 5 subtasks | Complexity: 7 | Depends on: Task 1
+# Update task status
+task-master set-status --id=1.2 --status=in-progress
+mcp__taskmaster-ai__set_task_status --id=1.2 --status=done
+```
 
-4. **Compare Prototypes and Decide Stack**
-   - Analyze performance and select technology
-   - 5 subtasks | Complexity: 6 | Depends on: Task 3
+### Task Creation & Modification
+```bash
+# Add new task with AI assistance
+task-master add-task --prompt="Create WebSocket transport" --research
+mcp__taskmaster-ai__add_task
 
-### Milestone 2: Core Infrastructure
+# Expand task into subtasks
+task-master expand --id=2 --research
+mcp__taskmaster-ai__expand_task --id=2
 
-**Tasks 5-6** | **Status**: Pending
+# Update task details
+task-master update-task --id=1.2 --prompt="Add timeout handling"
+mcp__taskmaster-ai__update_task
 
-5. **Implement Device Abstraction Layer**
-   - IDeviceDriver and IDeviceSession interfaces
-   - 5 subtasks | Complexity: 8 | Depends on: Task 4
+# Add implementation notes to subtask
+task-master update-subtask --id=1.2.1 --prompt="Used tokio for async"
+mcp__taskmaster-ai__update_subtask
+```
 
-6. **Develop Transport Layer**
-   - Serial, TCP/UDP, SSH implementations
-   - 5 subtasks | Complexity: 8 | Depends on: Task 5
+### Analysis & Planning
+```bash
+# Analyze task complexity
+task-master analyze-complexity --research
+mcp__taskmaster-ai__analyze_project_complexity
 
-### Milestone 3: UI & Scripting
+# View complexity report
+task-master complexity-report
+mcp__taskmaster-ai__complexity_report
 
-**Tasks 7-8** | **Status**: Pending
+# Expand all eligible tasks
+task-master expand --all --research
+mcp__taskmaster-ai__expand_all
+```
 
-7. **Build Single-Window UI**
-   - Main window with tabs and controls
-   - 5 subtasks | Complexity: 7 | Depends on: Task 6
+### Dependencies
+```bash
+# Add task dependency
+task-master add-dependency --id=3 --depends-on=2
+mcp__taskmaster-ai__add_dependency
 
-8. **Integrate Scripting Runtime**
-   - Embed JS/Lua/Python with sandboxed API
-   - 5 subtasks | Complexity: 7 | Depends on: Task 7
+# Validate dependencies
+task-master validate-dependencies
+mcp__taskmaster-ai__validate_dependencies
 
-### Milestone 4: Features & Testing
+# Fix dependency issues
+task-master fix-dependencies
+mcp__taskmaster-ai__fix_dependencies
+```
 
-**Tasks 9-10** | **Status**: Pending
+## Development Workflow Integration
 
-9. **Implement Telemetry, Profiles, Logging**
-   - Real-time charts, config management, logs
-   - 5 subtasks | Complexity: 6 | Depends on: Task 8
+### 1. Session Start
+```bash
+# Get current task
+task-master next
 
-10. **Automated Testing and Acceptance**
-    - Unit, loopback, soak, and acceptance tests
-    - 5 subtasks | Complexity: 6 | Depends on: Task 9
+# Review task details
+task-master show <id>
 
-## Task Management Commands
+# Mark as in-progress
+task-master set-status --id=<id> --status=in-progress
+```
 
-### CLI Commands
+### 2. During Development
+```bash
+# Log implementation decisions
+task-master update-subtask --id=<id> --prompt="Chose approach X because..."
+
+# Track blockers
+task-master update-task --id=<id> --prompt="Blocked by missing dependency Y"
+```
+
+### 3. Task Completion
+```bash
+# Run tests
+npm test
+
+# Mark for review
+task-master set-status --id=<id> --status=review
+
+# After review, mark done
+task-master set-status --id=<id> --status=done
+
+# Get next task
+task-master next
+```
+
+## Task-Driven Git Workflow
+
+The project features deep integration between Task Master and git operations, automating the entire workflow from task selection to pull request creation.
+
+### Automated Task-to-Git Pipeline
+
+#### 1. Starting a Task
+```bash
+# Get next available task
+task-master next                    # Shows task 11: Fix memory leak
+
+# Create and switch to task branch automatically
+npm run task:start 11               # Creates feature/task-11-fix-memory-leak
+# OR
+npm run task:branch 11              # Same as above
+```
+
+#### 2. During Development
+```bash
+# Make your changes
+code src/transport/serial.ts
+
+# Stage changes
+git add .
+
+# Use smart commit (recommended)
+npm run task:commit                 # Interactive commit with task context
+# Automatically:
+# - Analyzes changed files to suggest commit type
+# - Fetches task 11 details from Task Master
+# - Adds task reference to commit message
+# - Enforces conventional commit format
+
+# Example generated commit:
+# fix(transport): resolve memory leak in serial buffer (task 11)
+```
+
+#### 3. Creating Pull Request
+```bash
+# Create PR with task context
+npm run task:pr                     # Creates PR for current branch
+# OR specify task
+npm run task:pr 11
+
+# Automatically includes:
+# - Task title in PR title
+# - Task details in PR description
+# - Implementation checklist
+# - Performance impact assessment
+# - Task reference for tracking
+```
+
+### Manual Git Integration (Fallback)
+
+When automation is unavailable, maintain task references manually:
+
+#### Commit Messages
+```bash
+git commit -m "feat(transport): implement serial reconnection (task 2.1)"
+```
+
+#### Pull Requests
+```bash
+gh pr create --title "Task 2.1: Serial reconnection logic" \
+  --body "Implements automatic reconnection for serial transport as specified in task 2.1"
+```
+
+#### Branch Naming
+```bash
+git checkout -b feature/task-2.1-serial-reconnection
+```
+
+### Synchronization Monitoring
+
+Track your local repository status against GitHub:
 
 ```bash
-# View tasks
-task-master list                    # Show all tasks
-task-master next                    # Get next available task
-task-master show <id>              # View task details
+# Basic status check
+npm run sync:status
 
-# Update tasks
-task-master set-status --id=<id> --status=done
-task-master update-task --id=<id> --prompt="changes"
-task-master update-subtask --id=<id> --prompt="notes"
+# Detailed view with files
+npm run sync:status-detailed
 
-# Task operations
-task-master expand --id=<id> --research
-task-master add-dependency --id=<id> --depends-on=<id>
-task-master move --from=<id> --to=<id>
+# Live monitoring
+npm run sync:watch
+
+# Auto-fix safe issues
+npm run sync:auto
 ```
 
-### MCP Tools
+The sync dashboard shows:
+- Local vs remote branch status
+- Uncommitted changes
+- Unpushed commits
+- Stash status
+- Actionable recommendations
 
-```javascript
-// Get tasks
-mcp__taskmaster - ai__get_tasks;
-mcp__taskmaster - ai__next_task;
-mcp__taskmaster - ai__get_task;
+## Configuration
 
-// Update status
-mcp__taskmaster - ai__set_task_status;
+### Task Files Location
+- **Main database**: `.taskmaster/tasks/tasks.json`
+- **Individual tasks**: `.taskmaster/tasks/task_XXX.txt`
+- **Configuration**: `.taskmaster/config.json`
+- **PRD**: `.taskmaster/docs/prd.txt`
 
-// Manage tasks
-mcp__taskmaster - ai__expand_task;
-mcp__taskmaster - ai__update_task;
-mcp__taskmaster - ai__add_dependency;
+### Model Configuration
+```bash
+# Interactive setup
+task-master models --setup
+
+# Set specific models
+task-master models --set-main claude-3-5-sonnet-20241022
+task-master models --set-research perplexity-llama-3.1-sonar-large-128k-online
 ```
-
-## Task Files
-
-### Primary Files
-
-- `.taskmaster/tasks/tasks.json` - Main task database
-- `.taskmaster/tasks/task_*.txt` - Individual task files
-- `.taskmaster/reports/task-complexity-report.json` - Complexity analysis
-- `.taskmaster/config.json` - AI model configuration
-
-### Never Manually Edit
-
-- `tasks.json` - Use commands only
-- `config.json` - Use `task-master models`
-- Task markdown files - Auto-generated
-
-## Development Workflow
-
-### Starting a Task
-
-1. Get next task: `mcp__taskmaster-ai__next_task`
-2. Review details: `mcp__taskmaster-ai__get_task`
-3. Set in-progress: `mcp__taskmaster-ai__set_task_status`
-4. Implement solution
-5. Update with notes: `mcp__taskmaster-ai__update_subtask`
-6. Mark complete: `mcp__taskmaster-ai__set_task_status`
-
-### Task Expansion
-
-1. Analyze complexity: `mcp__taskmaster-ai__analyze_project_complexity`
-2. Expand eligible tasks: `mcp__taskmaster-ai__expand_task`
-3. Review subtasks: `mcp__taskmaster-ai__get_task`
-4. Adjust if needed: `mcp__taskmaster-ai__update_task`
-
-### Dependency Management
-
-1. Check dependencies: `mcp__taskmaster-ai__validate_dependencies`
-2. Add new dependencies: `mcp__taskmaster-ai__add_dependency`
-3. Fix issues: `mcp__taskmaster-ai__fix_dependencies`
 
 ## Best Practices
 
-1. **Always track progress**: Update task status immediately
-2. **Document as you go**: Use update_subtask for implementation notes
-3. **Respect dependencies**: Don't start blocked tasks
-4. **Use AI assistance**: Add `--research` for complex tasks
-5. **Keep tasks atomic**: One clear outcome per task
-6. **Regular status checks**: Run `next_task` frequently
+### 1. Task Granularity
+- Main tasks: Major features or components
+- Subtasks: Implementation steps
+- Sub-subtasks: Specific code changes
 
-## Task Prioritization
+### 2. Status Management
+- Update status immediately when starting/completing
+- Use `review` status before marking `done`
+- Add notes when deferring or cancelling
 
-### High Priority
+### 3. Documentation
+- Log decisions in task details
+- Document blockers and solutions
+- Reference external resources
 
-- Environment setup (Task 1)
-- Repository scaffolding (Task 2)
-- Prototype development (Task 3)
-- Technology decision (Task 4)
+### 4. Parallel Development
+Use git worktrees for parallel task work:
+```bash
+git worktree add ../task-2.1 feature/task-2.1
+git worktree add ../task-3.1 feature/task-3.1
+```
 
-### Medium Priority
+## Troubleshooting
 
-- Scripting integration (Task 8)
-- Telemetry and profiles (Task 9)
+### Task File Sync Issues
+```bash
+# Regenerate task files
+task-master generate
+mcp__taskmaster-ai__generate
+```
 
-### Completion Criteria
+### Dependency Conflicts
+```bash
+# Check for circular dependencies
+task-master validate-dependencies
 
-- All subtasks marked done
-- Tests passing
-- Documentation updated
-- Performance budgets met
+# Auto-fix issues
+task-master fix-dependencies
+```
 
-## Integration with Claude Code
+### Model Failures
+```bash
+# Check API keys
+cat .env | grep API_KEY
 
-### Slash Commands
+# Test with different model
+task-master models --set-fallback gpt-4o-mini
+```
 
-Located in `.claude/commands/tm/`:
+## Advanced Features
 
-- `/tm next` - Get next task
-- `/tm show <id>` - Show task details
-- `/tm done <id>` - Mark task complete
-- `/tm status` - Project status overview
+### Batch Operations
+```bash
+# Update multiple tasks from ID onwards
+task-master update --from=5 --prompt="Change to use new API"
 
-### Auto-Context
+# Clear all subtasks
+task-master clear-subtasks --all
 
-Task Master configuration is automatically loaded via:
+# Move task to different position
+task-master move --from=5 --to=3
+```
 
-- `CLAUDE.md` imports
-- `.taskmaster/CLAUDE.md` guide
-- MCP server connection
+### Research Mode
+Add `--research` flag for AI-enhanced operations:
+```bash
+task-master add-task --prompt="WebSocket implementation" --research
+task-master expand --id=2 --research
+task-master analyze-complexity --research
+```
+
+### Custom Workflows
+Create Claude Code slash commands in `.claude/commands/`:
+- `/tm/next` - Get and show next task
+- `/tm/complete` - Complete current task
+- `/tm/status` - Show project status

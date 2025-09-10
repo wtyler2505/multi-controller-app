@@ -1,3 +1,11 @@
+---
+model: claude-sonnet-4-20250514
+category: task-management
+priority: medium
+tags: ["task-management"]
+description: Command for complexity-report operations
+---
+
 Display the task complexity analysis report.
 
 Arguments: $ARGUMENTS
@@ -24,7 +32,7 @@ Custom: Specify with --file parameter
 ### 1. **Executive Summary**
 ```
 Complexity Analysis Summary
-━━━━━━━━━━━━━━━━━━━━━━━━
+â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 Analysis Date: 2024-01-15
 Tasks Analyzed: 32
 High Complexity: 5 (16%)
@@ -49,7 +57,7 @@ For each complex task:
 Visual representation:
 ```
 Risk vs Complexity Matrix
-━━━━━━━━━━━━━━━━━━━━━━━
+â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 High Risk  | #5(9) #12(8) | #23(6)
 Med Risk   | #34(7)       | #45(5) #67(5)
 Low Risk   | #78(8)       | [15 tasks]
@@ -106,12 +114,14 @@ Use report for:
 
 ```
 /project:tm/complexity-report
-→ Opens latest analysis
+â†’ Opens latest analysis
 
 /project:tm/complexity-report --file=archived/2024-01-01.md
-→ View historical analysis
+â†’ View historical analysis
 
 After viewing:
 /project:tm/expand 5
-→ Expand high-complexity task
+â†’ Expand high-complexity task
 ```
+
+

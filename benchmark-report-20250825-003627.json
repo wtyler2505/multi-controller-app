@@ -1,0 +1,108 @@
+﻿{
+    "budgets":  {
+                    "IdleCpuPercent":  2,
+                    "BaseMemoryMB":  150,
+                    "MaxMemoryWithChartsMB":  220,
+                    "StartupTimeMs":  2000
+                },
+    "performance_gate":  {
+                             "failures":  [
+
+                                          ],
+                             "passed":  true
+                         },
+    "results":  {
+                    "startup":  {
+                                    "timeMs":  832,
+                                    "budgetMs":  2000,
+                                    "passed":  true
+                                },
+                    "memory":  {
+                                   "passed":  true,
+                                   "averageMB":  77.8,
+                                   "minimumMB":  60.12,
+                                   "samples":  [
+                                                   60.12,
+                                                   78.34,
+                                                   78.35,
+                                                   78.36,
+                                                   78.36,
+                                                   78.38,
+                                                   78.38,
+                                                   78.39,
+                                                   78.39,
+                                                   78.39,
+                                                   78.39,
+                                                   78.39,
+                                                   78.39,
+                                                   78.4,
+                                                   78.4,
+                                                   78.39,
+                                                   78.35,
+                                                   78.45,
+                                                   78.45,
+                                                   78.45,
+                                                   78.45,
+                                                   78.46,
+                                                   78.46,
+                                                   78.46,
+                                                   78.46,
+                                                   78.46,
+                                                   78.46,
+                                                   78.46,
+                                                   78.46,
+                                                   78.47
+                                               ],
+                                   "budgetMB":  150,
+                                   "maximumMB":  78.47
+                               },
+                    "cpu":  {
+                                "maximumPercent":  0,
+                                "budgetPercent":  2,
+                                "samples":  [
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                                0,
+                                                0
+                                            ],
+                                "averagePercent":  0,
+                                "passed":  true
+                            }
+                },
+    "metadata":  {
+                     "timestamp":  "2025-08-25T00:36:34.213Z",
+                     "sampleCount":  30,
+                     "powershellVersion":  "5.1.19041.6216",
+                     "monitorDuration":  30,
+                     "osVersion":  "Microsoft Windows NT 10.0.19045.0",
+                     "totalBenchmarkTime":  32.7,
+                     "executablePath":  "C:\\Users\\wtyle\\multi-controller-csharp\\prototypes\\csharp-winui\\bin\\Release\\net8.0-windows10.0.19041.0\\win-x64\\publish\\MultiControllerPrototype.exe",
+                     "benchmarkType":  "csharp-prototype"
+                 }
+}

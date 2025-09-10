@@ -1,3 +1,124 @@
+---
+model: claude-sonnet-4-20250514
+category: utilities-tools
+priority: medium
+tags: ["utilities-tools"]
+description: Clean Branches Command
+
+# Enhanced Context-Aware Agent Integration
+enhanced-integration:
+  enabled: true
+  agent-selection-criteria:
+    domain-expertise: ["version-control", "git-operations", "branch-management"]
+    complexity-factors: ["repository-analysis", "branch-safety", "cleanup-automation"]
+    specialized-tools: ["git-operations", "repository-analysis", "automation-scripting"]
+  preferred-agents:
+    primary: "general-purpose"
+    secondary: "automation-specialist"
+    fallback: ["task-orchestrator"]
+  tool-requirements:
+    mcp-servers: ["desktop-commander", "cipher-memory"]
+    specialized-functions: ["git-operations", "branch-analysis"]
+
+# Universal Cipher Memory Integration (MANDATORY FOR ALL COMMANDS)
+cipher-memory-integration:
+  enabled: true
+  priority: "medium"
+  
+  # Pre-execution Memory Operations
+  pre-execution-memory:
+    context-search:
+      - query-pattern: "git-branch-management + repository-cleanup + version-control-patterns"
+      - tools: ["mcp__cipher-memory__search_nodes", "mcp__cipher-memory__open_nodes"]
+      - context-retrieval: "branch-management-patterns + git-workflow-knowledge"
+    
+    knowledge-preparation:
+      - domain: "version-control"
+      - pattern-search: "branch-cleanup + git-operations + repository-maintenance"
+      - tools: ["mcp__cipher-memory__read_graph"]
+  
+  # Execution Memory Operations
+  execution-memory:
+    progress-tracking:
+      - tool: "mcp__cipher-memory__add_observations"
+      - capture-points: ["branch-analysis", "cleanup-operations", "safety-checks"]
+      - entity-updates: "real-time-progress"
+    
+    decision-logging:
+      - tool: "mcp__cipher-memory__create_entities"
+      - log-decisions: "cleanup-strategies + safety-measures + automation-approaches"
+      - pattern-recognition: "branch-management-patterns"
+  
+  # Post-execution Memory Operations
+  post-execution-memory:
+    result-storage:
+      - tools: ["mcp__cipher-memory__create_entities"]
+      - store-patterns: ["branch-cleanup-results", "git-operation-insights", "repository-maintenance-techniques"]
+      - knowledge-extraction: "version-control-patterns + cleanup-methodologies"
+    
+    relationship-creation:
+      - tools: ["mcp__cipher-memory__create_relations"]
+      - link-concepts: ["git-workflows", "branch-strategies", "repository-maintenance"]
+      - cross-reference: "related-version-control-operations"
+    
+    knowledge-refinement:
+      - tools: ["mcp__cipher-memory__add_observations"]
+      - enrich-existing: "git-knowledge + branch-management-patterns"
+      - continuous-learning: "repository-maintenance-optimization"
+
+# Centralized Logging Integration
+logging-integration:
+  enabled: true
+  log-file: ".claude/command-execution.jsonl"
+  
+  # Comprehensive Execution Logging
+  log-level: "comprehensive"
+  
+  capture-points:
+    - command-initiation
+    - agent-selection-process
+    - memory-operations
+    - branch-analysis
+    - cleanup-operations
+    - safety-validations
+    - error-handling
+    - completion-status
+  
+  # Structured Log Format
+  log-structure:
+    timestamp: "ISO-8601"
+    command: "clean-branches"
+    execution-id: "UUID"
+    agent-assignments: "selected-agents-with-reasoning"
+    memory-operations: "cipher-memory-transactions"
+    performance-metrics: "execution-time + memory-usage + success-rate"
+    outcome-summary: "branch-cleanup-results + repository-improvements"
+
+# Cross-Command Learning Integration
+cross-command-learning:
+  enabled: true
+  share-insights: ["git-patterns", "branch-management-techniques", "repository-maintenance"]
+  learn-from: ["project-health-check", "setup-development-environment"]
+  contribute-to: "version-control-knowledge-base"
+
+# Workflow Integration
+workflow-integration:
+  pre-execution:
+    - validate-repository-access
+    - prepare-memory-context
+    - select-optimal-agents
+  
+  execution:
+    - parallel-branch-analysis
+    - continuous-memory-updates
+    - real-time-safety-validation
+  
+  post-execution:
+    - comprehensive-result-storage
+    - cross-reference-generation
+    - git-workflow-pattern-extraction
+---
+
 # Clean Branches Command
 
 Clean up merged and stale git branches
@@ -241,3 +362,5 @@ Remember to:
 - Test cleanup scripts in a safe environment first
 - Document all cleanup procedures and policies
 - Set up regular cleanup schedules to prevent accumulation
+
+

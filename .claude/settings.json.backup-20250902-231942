@@ -1,0 +1,148 @@
+{
+  "env": {
+    "USE_BUILTIN_RIPGREP": "1",
+    "CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR": "1",
+    "CLAUDE_CODE_DISABLE_TERMINAL_TITLE": "0",
+    "CLAUDE_CODE_ENABLE_TELEMETRY": "1"
+  },
+  "permissions": {
+    "allow": [
+      "Bash(git status)",
+      "Bash(git diff:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(git pull:*)",
+      "Bash(git log:*)",
+      "Bash(npm run lint)",
+      "Bash(npm run test:*)",
+      "Bash(npm run build)",
+      "Bash(npm start)",
+      "Bash(npm:*)",
+      "Bash(yarn:*)",
+      "Bash(node:*)",
+      "Bash(git:*)",
+      "Bash(docker:*)",
+      "Bash(python:*)",
+      "Bash(pip:*)",
+      "Bash(bun:*)",
+      "Bash(cipher:*)",
+      "Bash(npx @byterover/cipher:*)",
+      "Bash(npx:*)",
+      "Read(**/*.json)",
+      "Read(**/*.js)",
+      "Read(**/*.ts)",
+      "Read(**/*.py)",
+      "Read(C:\\Users\\wtyle\\AppData\\Roaming\\npm\\node_modules/**)",
+      "Read(C:\\Users\\wtyle\\AppData\\Roaming\\npm\\node_modules\\@byterover\\cipher/**)",
+      "Edit(**/*.js)",
+      "Edit(**/*.ts)",
+      "Edit(**/*.py)",
+      "Edit(**/*.json)",
+      "Write(**/*.js)",
+      "Write(**/*.ts)",
+      "Write(**/*.py)",
+      "Bash(timeout:*)",
+      "Bash(pkill:*)",
+      "Bash(taskkill:*)",
+      "mcp__cipher-aggregator__ask_cipher",
+      "Bash(grep:*)",
+      "Bash(where node)",
+      "Bash(powershell:*)",
+      "Bash(/mcp)",
+      "Bash(claude --list-tools)",
+      "Bash(dir C:Userswtylemulti-controller-app.cipher)",
+      "Bash(claude mcp:*)",
+      "Bash(mcp:*)",
+      "Bash(__NEW_LINE__ echo \"2. Desktop Commander:\")",
+      "Bash(__NEW_LINE__ echo \"3. FileScopeMCP:\")",
+      "Bash(__NEW_LINE__ echo \"7. Memory:\")",
+      "Bash(__NEW_LINE__ echo \"8. Time Server:\")",
+      "mcp__cipher-aggregator__cipher_memory_search",
+      "mcp__cipher-aggregator__cipher_extract_and_operate_memory",
+      "Bash(ollama:*)",
+      "WebFetch(domain:ollama.ai)",
+      "WebFetch(domain:ollama.com)",
+      "Bash(curl:*)",
+      "Bash(dir:*)",
+      "Bash(start OllamaSetup.exe)",
+      "Bash(where:*)",
+      "Bash(echo:*)",
+      "mcp__cipher-aggregator__get_tasks",
+      "mcp__cipher-aggregator__read_file",
+      "mcp__cipher-aggregator__decisionframework",
+      "mcp__cipher-aggregator__sequentialthinking",
+      "mcp__cipher-aggregator__mentalmodel",
+      "mcp__cipher-aggregator__list_directory",
+      "mcp__cipher-aggregator__update_subtask",
+      "mcp__cipher-aggregator__perplexity_ask",
+      "WebFetch(domain:docs.byterover.dev)",
+      "mcp__cipher-aggregator__create_entities",
+      "mcp__cipher-aggregator__create_relations",
+      "mcp__cipher-aggregator__search_nodes",
+      "mcp__cipher-aggregator__read_graph",
+      "WebFetch(domain:github.com)",
+      "mcp__cipher-aggregator__edit_block",
+      "mcp__cipher-aggregator__open_nodes",
+      "Bash(sqlite3:*)",
+      "mcp__cipher-aggregator__get_config",
+      "mcp__cipher-aggregator__next_task",
+      "WebSearch",
+      "mcp__cipher-aggregator__create_directory",
+      "mcp__cipher-aggregator__write_file",
+      "mcp__cipher-aggregator__start_process"
+    ],
+    "deny": [
+      "Read(./.env*)",
+      "Read(./secrets/**)",
+      "Bash(rm -rf:*)",
+      "Bash(sudo:*)"
+    ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -Command \"$input = $input; $json = $input | ConvertFrom-Json; $model = $json.model.display_name; $dir = Split-Path $json.workspace.current_dir -Leaf; $ver = $json.version; $nodeVer = node --version 2>$null; if (-not $nodeVer) { $nodeVer = 'N/A' }; Write-Host \\\"[$model] 📁 $dir | Node $nodeVer | Claude $ver\\\"\""
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -Command \"$logPath = Join-Path $env:USERPROFILE '.claude\\changes.log'; if (!(Test-Path (Split-Path $logPath))) { New-Item -ItemType Directory -Path (Split-Path $logPath) -Force | Out-Null }; Add-Content -Path $logPath -Value \\\"[$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')] File modified: $env:CLAUDE_TOOL_FILE_PATH\\\"\""
+          }
+        ]
+      },
+      {
+        "matcher": "Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -Command \"$logPath = Join-Path $env:USERPROFILE '.claude\\changes.log'; if (!(Test-Path (Split-Path $logPath))) { New-Item -ItemType Directory -Path (Split-Path $logPath) -Force | Out-Null }; Add-Content -Path $logPath -Value \\\"[$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')] File created: $env:CLAUDE_TOOL_FILE_PATH\\\"\""
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -Command \"$logPath = Join-Path $env:USERPROFILE '.claude\\command-log.txt'; if (!(Test-Path (Split-Path $logPath))) { New-Item -ItemType Directory -Path (Split-Path $logPath) -Force | Out-Null }; Add-Content -Path $logPath -Value \\\"[$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')] Tool: $env:CLAUDE_TOOL_NAME | File: $env:CLAUDE_TOOL_FILE_PATH\\\"\""
+          }
+        ]
+      },
+      {
+        "matcher": "Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -Command \"if ($env:CLAUDE_TOOL_FILE_PATH -and (Test-Path $env:CLAUDE_TOOL_FILE_PATH)) { $backupDir = '.backups'; if (!(Test-Path $backupDir)) { New-Item -ItemType Directory -Path $backupDir -Force | Out-Null }; $timestamp = Get-Date -Format 'yyyyMMdd_HHmmss'; $fileName = Split-Path $env:CLAUDE_TOOL_FILE_PATH -Leaf; Copy-Item -Path $env:CLAUDE_TOOL_FILE_PATH -Destination \\\"$backupDir\\$fileName.$timestamp.bak\\\" }\""
+          }
+        ]
+      }
+    ]
+  }
+}

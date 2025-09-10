@@ -1,3 +1,11 @@
+---
+model: claude-sonnet-4-20250514
+category: task-management
+priority: medium
+tags: ["task-management", "tasks"]
+description: Command for expand-all-tasks operations
+---
+
 Expand all pending tasks that need subtasks.
 
 ## Bulk Task Expansion
@@ -49,3 +57,5 @@ After bulk expansion:
 - New subtask count
 - Updated complexity metrics
 - Suggested task order
+
+

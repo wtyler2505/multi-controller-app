@@ -1,0 +1,180 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Cipher: Start Task Memory",
+            "type": "shell",
+            "command": "powershell",
+            "args": [
+                "-File",
+                "./scripts/memory-hooks.ps1",
+                "-Event",
+                "task-start",
+                "-Context",
+                "\"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "Cipher: Store Code Pattern",
+            "type": "shell",
+            "command": "powershell",
+            "args": [
+                "-File",
+                "./scripts/memory-hooks.ps1",
+                "-Event",
+                "code-pattern",
+                "-Context",
+                "\"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "Cipher: Store Test Solution",
+            "type": "shell",
+            "command": "powershell",
+            "args": [
+                "-File",
+                "./scripts/memory-hooks.ps1",
+                "-Event",
+                "test-pass",
+                "-Context",
+                "\"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "Cipher: Complete Task",
+            "type": "shell",
+            "command": "powershell",
+            "args": [
+                "-File",
+                "./scripts/memory-hooks.ps1",
+                "-Event",
+                "task-complete",
+                "-Context",
+                "\"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "Research: Check Current Task",
+            "type": "shell",
+            "command": "powershell",
+            "args": [
+                "-ExecutionPolicy", "Bypass",
+                "-File",
+                "${workspaceFolder}/scripts/pre-task-research.ps1",
+                "-TaskId",
+                "${input:taskId}"
+            ],
+            "problemMatcher": [],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": true
+            }
+        },
+        {
+            "label": "Research: Auto-Check Branch Task",
+            "type": "shell",
+            "command": "powershell",
+            "args": [
+                "-ExecutionPolicy", "Bypass",
+                "-Command",
+                "$branch = git rev-parse --abbrev-ref HEAD 2>$null; $taskId = $branch -replace '.*task[- ]?([0-9]+).*', '$1'; if ($taskId -match '^[0-9]+$') { & '${workspaceFolder}/scripts/pre-task-research.ps1' -TaskId $taskId } else { Write-Host '[INFO] No task ID in branch name' -ForegroundColor Yellow }"
+            ],
+            "problemMatcher": [],
+            "presentation": {
+                "echo": false,
+                "reveal": "silent",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": false
+            },
+            "runOptions": {
+                "runOn": "folderOpen"
+            }
+        },
+        {
+            "label": "Research: Validate Before Implementation",
+            "type": "shell",
+            "command": "powershell",
+            "args": [
+                "-ExecutionPolicy", "Bypass",
+                "-Command",
+                "Write-Host '=' * 50 -ForegroundColor Blue; Write-Host 'PRE-IMPLEMENTATION RESEARCH CHECK' -ForegroundColor Blue; Write-Host '=' * 50 -ForegroundColor Blue; $branch = git rev-parse --abbrev-ref HEAD 2>$null; $taskId = $branch -replace '.*task[- ]?([0-9]+).*', '$1'; if ($taskId -match '^[0-9]+$') { & '${workspaceFolder}/scripts/pre-task-research.ps1' -TaskId $taskId -FailIfMissing } else { $taskId = Read-Host 'Enter task ID'; & '${workspaceFolder}/scripts/pre-task-research.ps1' -TaskId $taskId -FailIfMissing }"
+            ],
+            "problemMatcher": [],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "new",
+                "showReuseMessage": false,
+                "clear": true
+            }
+        },
+        {
+            "label": "Build: Rust with Research Check",
+            "dependsOn": ["Research: Auto-Check Branch Task"],
+            "type": "shell",
+            "command": "cargo",
+            "args": ["build"],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": "$rustc",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "Test: Run with Research Check",
+            "dependsOn": ["Research: Auto-Check Branch Task"],
+            "type": "shell",
+            "command": "cargo",
+            "args": ["test"],
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "problemMatcher": "$rustc",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            }
+        }
+    ],
+    "inputs": [
+        {
+            "id": "taskId",
+            "type": "promptString",
+            "description": "Enter task ID (e.g., 4.2)"
+        },
+        {
+            "id": "patternDescription",
+            "type": "promptString",
+            "description": "Pattern::Description (e.g., AsyncTransport::Tokio async transport pattern)"
+        },
+        {
+            "id": "testSolution",
+            "type": "promptString",
+            "description": "TestName::Solution (e.g., SerialTimeout::Added buffer management)"
+        },
+        {
+            "id": "taskSummary",
+            "type": "promptString",
+            "description": "TaskId::Summary (e.g., 4.2::Implemented serial transport)"
+        }
+    ]
+}

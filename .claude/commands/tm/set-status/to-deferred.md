@@ -1,3 +1,11 @@
+---
+model: claude-sonnet-4-20250514
+category: task-management
+priority: medium
+tags: ["task-management"]
+description: Command for to-deferred operations
+---
+
 Defer a task for later consideration.
 
 Arguments: $ARGUMENTS (task ID)
@@ -45,3 +53,5 @@ When deferring:
 - Alert when criteria met
 - Prevent scope creep
 - Regular review cycles
+
+

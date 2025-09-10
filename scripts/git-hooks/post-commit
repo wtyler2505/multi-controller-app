@@ -1,0 +1,25 @@
+#!/bin/sh
+# Post-commit hook for Cipher memory integration
+# Links memories to commit hash
+
+COMMIT_HASH=$(git rev-parse HEAD)
+COMMIT_MSG=$(git log -1 --pretty=%B)
+COMMIT_AUTHOR=$(git log -1 --pretty=%ae)
+
+# Extract task ID from commit message if present
+TASK_ID=$(echo "$COMMIT_MSG" | grep -oE 'task [0-9]+(\.[0-9]+)?' | head -1 | cut -d' ' -f2)
+
+# Store commit information in memory
+echo "Storing commit information in Cipher memory..."
+
+if [ ! -z "$TASK_ID" ]; then
+    # Link to task if found
+    powershell.exe -File ./scripts/memory-hooks.ps1 -Event "task-complete" -Context "$TASK_ID::$COMMIT_MSG" -Importance "IMPORTANT"
+else
+    # Store as general development memory
+    powershell.exe -File ./scripts/memory-hooks.ps1 -Event "code-pattern" -Context "commit-$COMMIT_HASH::$COMMIT_MSG" -Importance "CONTEXTUAL"
+fi
+
+echo "Commit $COMMIT_HASH linked to Cipher memory"
+
+exit 0

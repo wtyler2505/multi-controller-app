@@ -1,3 +1,11 @@
+---
+model: claude-sonnet-4-20250514
+category: task-management
+priority: medium
+tags: ["task-management", "tasks"]
+description: Command for clear-all-subtasks operations
+---
+
 Clear all subtasks from all tasks globally.
 
 ## Global Subtask Clearing
@@ -15,7 +23,7 @@ task-master clear-subtasks --all
 1. **Project-Wide Summary**
    ```
    Global Subtask Summary
-   ━━━━━━━━━━━━━━━━━━━━
+   â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
    Total parent tasks: 12
    Total subtasks: 47
    - Completed: 15
@@ -34,8 +42,8 @@ task-master clear-subtasks --all
 ## Double Confirmation
 
 ```
-⚠️  DESTRUCTIVE OPERATION WARNING ⚠️
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+âš ï¸  DESTRUCTIVE OPERATION WARNING âš ï¸
+â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 This will remove ALL 47 subtasks from your project
 Including 8 in-progress and 15 completed subtasks
 
@@ -80,7 +88,7 @@ Before clearing all:
 
 ```
 Global Subtask Clear Complete
-━━━━━━━━━━━━━━━━━━━━━━━━━━━
+â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 Removed: 47 subtasks from 12 tasks
 Backup saved: .taskmaster/backup/subtasks-20240115.json
 Parent tasks updated: 12
@@ -91,3 +99,5 @@ Next steps:
 - Re-expand complex tasks as needed
 - Check project timeline
 ```
+
+

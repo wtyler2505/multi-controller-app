@@ -1,0 +1,384 @@
+# Multi-Controller App Core Functionality Implementation PRD
+
+## Executive Summary
+The Multi-Controller App currently has a complete UI shell but lacks core functionality. This PRD defines the implementation of essential features to transform the UI into a fully functional hardware control application capable of connecting to, controlling, and monitoring Arduino and other microcontroller devices.
+
+## Product Vision
+Create a robust, real-time hardware control application that provides seamless device connectivity, intuitive manual control interfaces, comprehensive data visualization, and flexible scripting capabilities while maintaining excellent performance and reliability.
+
+## Core Requirements
+
+### 1. Device Connection and Communication
+
+#### 1.1 Arduino Connection Logic
+Implement complete device connection workflow for Arduino devices over serial communication.
+
+**Requirements:**
+- Detect available COM ports and display in device sidebar
+- Implement serial transport connection using existing transport abstraction
+- Create device session management for connected devices
+- Handle connection lifecycle (connect, disconnect, reconnect)
+- Implement proper error handling for connection failures
+- Support multiple simultaneous device connections
+- Store connection state in app state management
+
+**Technical Details:**
+- Use serialport-rs crate for serial communication
+- Implement Transport trait for SerialTransport
+- Create ArduinoDriver implementing DeviceDriver trait
+- Manage device sessions with unique session IDs
+- Implement cleanup_resources() before disconnect to prevent memory leaks
+
+#### 1.2 Connection Handshake Protocol
+Design and implement a robust handshake protocol for device identification and capability negotiation.
+
+**Requirements:**
+- Define handshake message format (identification request/response)
+- Implement timeout handling for handshake (5 second timeout)
+- Verify device type and firmware version during handshake
+- Exchange capability information (supported commands, data rates)
+- Handle handshake failures gracefully with user feedback
+- Support protocol versioning for backward compatibility
+
+**Technical Details:**
+- Use JSON or simple text protocol for handshake messages
+- Implement "IDENTIFY" command and parse response
+- Store device capabilities in DeviceInfo structure
+- Validate firmware compatibility before establishing session
+
+### 2. Manual Control Interface
+
+#### 2.1 Control Widget Implementation
+Create interactive widgets for manual device control in the Manual tab.
+
+**Requirements:**
+- Implement slider widgets for analog control (PWM outputs)
+- Create toggle buttons for digital outputs
+- Add numeric input fields for precise value entry
+- Implement dropdown menus for mode selection
+- Create emergency stop button with visual prominence
+- Support real-time value updates without lag
+- Display current values and limits for each control
+
+**Technical Details:**
+- Use egui slider, button, and text input widgets
+- Implement value validation and clamping
+- Create ControlWidget trait for extensibility
+- Store control states in ManualControlState structure
+- Send control commands via established device session
+
+#### 2.2 Control Command Processing
+Implement command generation and transmission for control inputs.
+
+**Requirements:**
+- Convert widget inputs to device-specific commands
+- Queue commands for transmission with priority handling
+- Implement command acknowledgment and retry logic
+- Handle command failures with user notification
+- Support batch command transmission for efficiency
+- Log all commands for debugging and replay
+
+**Technical Details:**
+- Create Command enum with various command types
+- Implement command serialization to wire format
+- Use async/await for non-blocking command transmission
+- Maintain command history in circular buffer
+
+### 3. Telemetry and Data Visualization
+
+#### 3.1 Real-time Data Collection
+Implement telemetry data collection from connected devices.
+
+**Requirements:**
+- Parse incoming data streams from devices
+- Handle multiple data formats (CSV, JSON, binary)
+- Implement data validation and error correction
+- Support configurable sampling rates (10Hz to 1kHz)
+- Buffer data for visualization with ring buffers
+- Handle data overflow gracefully
+
+**Technical Details:**
+- Create TelemetryParser for data extraction
+- Use ring buffers with 2000+ sample capacity
+- Implement data decimation for display efficiency
+- Store telemetry in time-series format
+
+#### 3.2 Data Visualization
+Wire up telemetry data to chart displays in Telemetry tab.
+
+**Requirements:**
+- Display real-time line charts for analog values
+- Show digital state indicators with timestamps
+- Implement chart controls (zoom, pan, pause)
+- Support multiple data series per chart
+- Add data export functionality (CSV, JSON)
+- Maintain 30 FPS update rate for smooth visualization
+
+**Technical Details:**
+- Use egui_plot v0.29 for chart rendering
+- Implement data decimation to limit points to 300
+- Create ChartManager for chart lifecycle
+- Use 33ms update interval for consistent FPS
+
+### 4. Logging System Integration
+
+#### 4.1 Device I/O Logging
+Connect logging system to capture all device communication.
+
+**Requirements:**
+- Log all sent commands with timestamps
+- Capture received data with parsing status
+- Record connection events (connect, disconnect, errors)
+- Implement log filtering by severity and source
+- Support log export in multiple formats
+- Maintain rolling log buffers to limit memory usage
+
+**Technical Details:**
+- Use existing LoggingSystem with device_io buffer
+- Implement LogLevel filtering (Debug, Info, Warning, Error)
+- Create structured log entries with metadata
+- Export logs as JSON, CSV, or plain text
+
+#### 4.2 Event and Error Logging
+Implement comprehensive event tracking and error reporting.
+
+**Requirements:**
+- Log user actions for audit trail
+- Capture system events and state changes
+- Record error details with stack traces
+- Implement log rotation based on size/time
+- Support remote log transmission for diagnostics
+
+**Technical Details:**
+- Use tracing crate for structured logging
+- Implement custom log appenders
+- Create error categorization system
+
+### 5. Scripting System
+
+#### 5.1 Script Loading and Management
+Implement script loading functionality in Scripts tab.
+
+**Requirements:**
+- Load example scripts from scripts directory
+- Display script list with descriptions
+- Implement script editor with syntax highlighting
+- Support script import/export functionality
+- Validate scripts before execution
+- Manage script dependencies and libraries
+
+**Technical Details:**
+- Use Rhai scripting engine for execution
+- Create ScriptManager for lifecycle management
+- Implement script metadata parsing
+- Store scripts in TOML format with metadata
+
+#### 5.2 Script Execution Engine
+Enable script execution with device access.
+
+**Requirements:**
+- Execute scripts with access to device API
+- Implement script scheduling and automation
+- Support concurrent script execution
+- Provide script debugging capabilities
+- Handle script errors gracefully
+- Implement script performance monitoring
+
+**Technical Details:**
+- Create safe script sandbox environment
+- Expose device control API to scripts
+- Implement script timeout and resource limits
+
+### 6. Profile Management
+
+#### 6.1 Profile Save/Load System
+Implement profile persistence for device configurations.
+
+**Requirements:**
+- Save current device settings to profile
+- Load profiles to restore configurations
+- Support multiple named profiles
+- Implement profile import/export
+- Validate profiles before loading
+- Support profile versioning and migration
+
+**Technical Details:**
+- Store profiles in TOML format
+- Create ProfileManager for CRUD operations
+- Implement hot-reload via notify crate
+- Use serde for serialization
+
+#### 6.2 Profile Auto-Apply
+Enable automatic profile application on device connection.
+
+**Requirements:**
+- Match devices to profiles by identifier
+- Apply profile settings on connection
+- Handle profile conflicts gracefully
+- Support default profiles for device types
+- Log profile application events
+
+### 7. Performance Optimization
+
+#### 7.1 CPU Monitoring Fix
+Fix incorrect CPU usage reporting on Windows.
+
+**Requirements:**
+- Investigate sysinfo crate Windows implementation
+- Implement accurate CPU usage calculation
+- Handle multi-core CPU reporting correctly
+- Update performance display with accurate data
+- Add CPU usage trend visualization
+
+**Technical Details:**
+- Research Windows-specific CPU monitoring APIs
+- Implement custom CPU monitoring if needed
+- Use rolling average for stable readings
+
+#### 7.2 Memory and Performance Optimization
+Optimize application performance and resource usage.
+
+**Requirements:**
+- Maintain memory usage under 150MB
+- Keep idle CPU usage under 2%
+- Ensure startup time under 2 seconds
+- Optimize rendering for consistent 60 FPS
+- Implement performance profiling tools
+
+**Technical Details:**
+- Use memory pooling for frequently allocated objects
+- Implement lazy loading for heavy resources
+- Optimize event processing loops
+
+### 8. UI Enhancements
+
+#### 8.1 Connection Status Indicators
+Add visual feedback for device connection status.
+
+**Requirements:**
+- Display connection state icons (connected, disconnected, error)
+- Show real-time connection quality metrics
+- Implement connection progress indicators
+- Add tooltips with detailed status information
+- Use color coding for quick status recognition
+- Animate status changes for visibility
+
+**Technical Details:**
+- Create StatusIndicator widget component
+- Use green/yellow/red color scheme
+- Implement pulse animation for active connections
+
+#### 8.2 Responsive UI Updates
+Ensure UI remains responsive during operations.
+
+**Requirements:**
+- Implement async UI updates for long operations
+- Add loading spinners for pending operations
+- Prevent UI freezing during data processing
+- Implement operation cancellation mechanisms
+- Show progress bars for batch operations
+
+### 9. Testing and Validation
+
+#### 9.1 End-to-End Communication Testing
+Implement comprehensive testing for Arduino communication.
+
+**Requirements:**
+- Create test suite for connection lifecycle
+- Test command transmission and acknowledgment
+- Validate data parsing and error handling
+- Test reconnection and recovery scenarios
+- Benchmark communication latency
+- Stress test with multiple devices
+
+**Technical Details:**
+- Use MockTransport for unit tests
+- Create integration tests with real hardware
+- Implement loopback tests for protocol validation
+- Target 80% test coverage minimum
+
+#### 9.2 Reliability Testing
+Ensure system reliability under various conditions.
+
+**Requirements:**
+- Implement 8+ hour soak tests
+- Test failure recovery mechanisms
+- Validate memory leak prevention
+- Test concurrent operation handling
+- Verify data integrity under load
+
+## Success Metrics
+
+- **Connection Reliability**: 99.9% successful connections
+- **Command Latency**: <50ms for serial commands
+- **Data Throughput**: Handle 1000 samples/second per device
+- **Memory Usage**: Stay under 150MB during normal operation
+- **CPU Usage**: <2% when idle, <15% during active operation
+- **Startup Time**: <2 seconds to fully operational
+- **UI Responsiveness**: Maintain 60 FPS during all operations
+
+## Implementation Priority
+
+1. **Critical Path** (Week 1):
+   - Device connection logic
+   - Connection handshake protocol
+   - Basic manual control widgets
+   - Connection status indicators
+
+2. **Core Features** (Week 2):
+   - Telemetry data collection and visualization
+   - Logging system integration
+   - Script loading and execution
+   - Profile save/load functionality
+
+3. **Optimization and Polish** (Week 3):
+   - CPU monitoring fix
+   - Performance optimization
+   - End-to-end testing
+   - UI responsiveness improvements
+
+## Technical Constraints
+
+- Must maintain compatibility with existing codebase architecture
+- Serial communication limited to 50ms latency budget
+- Memory usage must not exceed 150MB
+- All async operations must properly handle cancellation
+- Must support Windows, macOS, and Linux platforms
+
+## Dependencies
+
+- Existing Transport trait implementation
+- DeviceDriver and DeviceManager infrastructure
+- egui framework for UI components
+- serialport-rs for serial communication
+- Rhai scripting engine
+- egui_plot v0.29 for charts
+- serde for serialization
+- tokio for async runtime
+
+## Risk Mitigation
+
+- **Risk**: Serial communication instability
+  - **Mitigation**: Implement robust retry logic and connection monitoring
+
+- **Risk**: Performance degradation with multiple devices
+  - **Mitigation**: Use async/await properly, implement connection pooling
+
+- **Risk**: Memory leaks in long-running sessions
+  - **Mitigation**: Implement proper cleanup_resources(), use RAII patterns
+
+- **Risk**: Script execution security vulnerabilities
+  - **Mitigation**: Sandbox script execution, limit API access
+
+## Acceptance Criteria
+
+Each feature must meet the following criteria before being considered complete:
+
+1. Functionality works as specified in requirements
+2. Unit tests pass with >80% coverage
+3. Integration tests pass with real hardware
+4. No memory leaks detected in 8-hour soak test
+5. Performance metrics meet specified targets
+6. User documentation is complete
+7. Error handling is comprehensive
+8. Code passes cargo clippy with no warnings

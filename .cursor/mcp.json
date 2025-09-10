@@ -2,7 +2,11 @@
   "mcpServers": {
     "task-master-ai": {
       "command": "npx",
-      "args": ["-y", "--package=task-master-ai", "task-master-ai"],
+      "args": [
+        "-y",
+        "--package=task-master-ai",
+        "task-master-ai"
+      ],
       "env": {
         "ANTHROPIC_API_KEY": "YOUR_ANTHROPIC_API_KEY_HERE",
         "PERPLEXITY_API_KEY": "YOUR_PERPLEXITY_API_KEY_HERE",
@@ -14,6 +18,93 @@
         "AZURE_OPENAI_API_KEY": "YOUR_AZURE_KEY_HERE",
         "OLLAMA_API_KEY": "YOUR_OLLAMA_API_KEY_HERE"
       }
+    },
+    "cipher-aggregator": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@byterover/cipher"
+      ],
+      "env": {
+        "OLLAMA_BASE_URL": "http://localhost:11434",
+        "EMBEDDING_MODEL": "nomic-embed-text"
+      },
+      "type": "stdio"
+    },
+    "taskmaster-ai": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "task-master-ai"
+      ],
+      "env": {
+        "ANTHROPIC_API_KEY": "${ANTHROPIC_API_KEY}",
+        "PERPLEXITY_API_KEY": "${PERPLEXITY_API_KEY}",
+        "OPENAI_API_KEY": "${OPENAI_API_KEY}"
+      },
+      "type": "stdio"
+    },
+    "desktop-commander": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@wonderwhy-er/desktop-commander"
+      ],
+      "type": "stdio"
+    },
+    "filescope": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@filescope/mcp"
+      ],
+      "type": "stdio"
+    },
+    "clear-thought": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "clear-thought-mcp"
+      ],
+      "type": "stdio"
+    },
+    "context7": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@upstash/mcp-context7"
+      ],
+      "env": {
+        "UPSTASH_API_KEY": "${UPSTASH_API_KEY}"
+      },
+      "type": "stdio"
+    },
+    "perplexity-ask": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "perplexity-mcp-server"
+      ],
+      "env": {
+        "PERPLEXITY_API_KEY": "${PERPLEXITY_API_KEY}"
+      },
+      "type": "stdio"
+    },
+    "memory": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "memory-mcp-server"
+      ],
+      "type": "stdio"
+    },
+    "time-server": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "time-mcp-server"
+      ],
+      "type": "stdio"
     }
   }
 }

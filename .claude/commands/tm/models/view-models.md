@@ -1,3 +1,11 @@
+---
+model: claude-sonnet-4-20250514
+category: development-setup
+priority: medium
+tags: ["development-setup"]
+description: Command for view-models operations
+---
+
 View current AI model configuration.
 
 ## Model Configuration Display
@@ -31,10 +39,10 @@ task-master models
 
 ```
 Task Master AI Model Configuration
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Main:     ✅ claude-3-5-sonnet (configured)
-Research: ✅ perplexity-sonar (configured)  
-Fallback: ⚠️  Not configured (optional)
+â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+Main:     âœ… claude-3-5-sonnet (configured)
+Research: âœ… perplexity-sonar (configured)  
+Fallback: âš ï¸  Not configured (optional)
 
 Available Models:
 - claude-3-5-sonnet
@@ -46,6 +54,8 @@ Available Models:
 ## Next Actions
 
 Based on configuration:
-- If missing API keys → Suggest setup
-- If no research model → Explain benefits
-- If all configured → Show usage tips
+- If missing API keys â†’ Suggest setup
+- If no research model â†’ Explain benefits
+- If all configured â†’ Show usage tips
+
+

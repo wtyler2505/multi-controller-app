@@ -1,24 +1,88 @@
-# C# Code Analysis Rules for Multi-Controller App
-# These rules are enforced by dotnet analyzers
+# C# specific EditorConfig settings
+# This file extends the root .editorconfig with C#-specific rules
 
-# Code Quality Analyzers
-dotnet_diagnostic.CA1062.severity = warning # Validate arguments of public methods
-dotnet_diagnostic.CA1303.severity = none    # Do not pass literals as localized parameters
-dotnet_diagnostic.CA1031.severity = warning # Do not catch general exception types
-dotnet_diagnostic.CA1820.severity = warning # Test for empty strings using string length
-dotnet_diagnostic.CA2007.severity = none    # Do not directly await a Task (desktop app)
+[*.{cs,csx}]
+# Indentation
+indent_size = 4
+indent_style = space
 
-# Code Style Rules
-dotnet_diagnostic.IDE0001.severity = warning # Simplify name
-dotnet_diagnostic.IDE0002.severity = warning # Simplify member access
-dotnet_diagnostic.IDE0003.severity = warning # Remove this or Me qualification
-dotnet_diagnostic.IDE0005.severity = warning # Remove unnecessary import
-dotnet_diagnostic.IDE0011.severity = warning # Add braces
-dotnet_diagnostic.IDE0040.severity = warning # Add accessibility modifiers
-dotnet_diagnostic.IDE0044.severity = warning # Add readonly modifier
-dotnet_diagnostic.IDE0060.severity = warning # Remove unused parameter
+# New line preferences
+csharp_new_line_before_open_brace = all
+csharp_new_line_before_else = true
+csharp_new_line_before_catch = true
+csharp_new_line_before_finally = true
+csharp_new_line_before_members_in_object_initializers = true
+csharp_new_line_before_members_in_anonymous_types = true
+csharp_new_line_between_query_expression_clauses = true
 
-# Naming Conventions
+# Indentation preferences
+csharp_indent_case_contents = true
+csharp_indent_switch_labels = true
+csharp_indent_labels = flush_left
+
+# Space preferences
+csharp_space_after_cast = false
+csharp_space_after_keywords_in_control_flow_statements = true
+csharp_space_between_method_call_parameter_list_parentheses = false
+csharp_space_between_method_declaration_parameter_list_parentheses = false
+csharp_space_between_parentheses = false
+csharp_space_before_colon_in_inheritance_clause = true
+csharp_space_after_colon_in_inheritance_clause = true
+csharp_space_around_binary_operators = before_and_after
+csharp_space_between_method_declaration_empty_parameter_list_parentheses = false
+csharp_space_between_method_call_name_and_opening_parenthesis = false
+csharp_space_between_method_call_empty_parameter_list_parentheses = false
+
+# Wrapping preferences
+csharp_preserve_single_line_statements = false
+csharp_preserve_single_line_blocks = true
+
+# Code style settings
+csharp_prefer_braces = true:warning
+csharp_prefer_simple_using_statement = true:suggestion
+csharp_prefer_simple_default_expression = true:suggestion
+csharp_style_namespace_declarations = file_scoped:warning
+csharp_style_expression_bodied_methods = false:none
+csharp_style_expression_bodied_constructors = false:none
+csharp_style_expression_bodied_operators = false:none
+csharp_style_expression_bodied_properties = true:none
+csharp_style_expression_bodied_indexers = true:none
+csharp_style_expression_bodied_accessors = true:none
+csharp_style_expression_bodied_lambdas = true:silent
+csharp_style_expression_bodied_local_functions = false:silent
+
+# Pattern matching preferences
+csharp_style_pattern_matching_over_is_with_cast_check = true:suggestion
+csharp_style_pattern_matching_over_as_with_null_check = true:suggestion
+csharp_style_inlined_variable_declaration = true:suggestion
+
+# Null-checking preferences
+csharp_style_throw_expression = true:suggestion
+csharp_style_conditional_delegate_call = true:suggestion
+csharp_style_coalesce_expression = true:suggestion
+csharp_style_null_propagation = true:suggestion
+
+# Modifier preferences
+csharp_prefer_static_local_function = true:suggestion
+csharp_preferred_modifier_order = public,private,protected,internal,static,extern,new,virtual,abstract,sealed,override,readonly,unsafe,volatile,async:suggestion
+
+# var preferences
+csharp_style_var_for_built_in_types = false:none
+csharp_style_var_when_type_is_apparent = true:suggestion
+csharp_style_var_elsewhere = false:none
+
+# Expression preferences
+csharp_prefer_simple_default_expression = true:suggestion
+csharp_style_deconstructed_variable_declaration = true:suggestion
+csharp_style_pattern_local_over_anonymous_function = true:suggestion
+csharp_style_prefer_index_operator = true:suggestion
+csharp_style_prefer_range_operator = true:suggestion
+csharp_style_implicit_object_creation_when_type_is_apparent = true:suggestion
+
+# 'using' directive preferences
+csharp_using_directive_placement = outside_namespace:warning
+
+# Naming conventions
 dotnet_naming_rule.interfaces_should_be_prefixed_with_i.severity = warning
 dotnet_naming_rule.interfaces_should_be_prefixed_with_i.symbols = interface
 dotnet_naming_rule.interfaces_should_be_prefixed_with_i.style = prefix_with_i
@@ -34,35 +98,23 @@ dotnet_naming_rule.non_field_members_should_be_pascal_case.style = pascal_case
 # Symbol specifications
 dotnet_naming_symbols.interface.applicable_kinds = interface
 dotnet_naming_symbols.interface.applicable_accessibilities = public, internal, private, protected, protected_internal, private_protected
+dotnet_naming_symbols.interface.required_modifiers = 
 
 dotnet_naming_symbols.types.applicable_kinds = class, struct, interface, enum
 dotnet_naming_symbols.types.applicable_accessibilities = public, internal, private, protected, protected_internal, private_protected
+dotnet_naming_symbols.types.required_modifiers = 
 
 dotnet_naming_symbols.non_field_members.applicable_kinds = property, event, method
 dotnet_naming_symbols.non_field_members.applicable_accessibilities = public, internal, private, protected, protected_internal, private_protected
+dotnet_naming_symbols.non_field_members.required_modifiers = 
 
 # Naming styles
+dotnet_naming_style.pascal_case.required_prefix = 
+dotnet_naming_style.pascal_case.required_suffix = 
+dotnet_naming_style.pascal_case.word_separator = 
 dotnet_naming_style.pascal_case.capitalization = pascal_case
 
 dotnet_naming_style.prefix_with_i.required_prefix = I
+dotnet_naming_style.prefix_with_i.required_suffix = 
+dotnet_naming_style.prefix_with_i.word_separator = 
 dotnet_naming_style.prefix_with_i.capitalization = pascal_case
-
-# Hardware/Device specific rules
-dotnet_diagnostic.CA1416.severity = none    # Validate platform compatibility (cross-platform)
-dotnet_diagnostic.CA1508.severity = warning # Avoid dead conditional code
-dotnet_diagnostic.CA1849.severity = warning # Call async methods when in an async method
-dotnet_diagnostic.CA2201.severity = error   # Do not raise reserved exception types
-dotnet_diagnostic.CA2215.severity = warning # Dispose methods should call base class dispose
-
-# Performance rules for resource-constrained app
-dotnet_diagnostic.CA1806.severity = warning # Do not ignore method results
-dotnet_diagnostic.CA1810.severity = warning # Initialize reference type static fields inline
-dotnet_diagnostic.CA1822.severity = warning # Mark members as static
-dotnet_diagnostic.CA1823.severity = warning # Avoid unused private fields
-dotnet_diagnostic.CA1825.severity = warning # Avoid zero-length array allocations
-
-# Security rules
-dotnet_diagnostic.CA2100.severity = error   # Review SQL queries for security vulnerabilities
-dotnet_diagnostic.CA3075.severity = error   # Insecure DTD processing
-dotnet_diagnostic.CA5359.severity = error   # Do not disable certificate validation
-dotnet_diagnostic.CA5360.severity = error   # Do not call dangerous methods in deserialization

@@ -1,3 +1,11 @@
+---
+model: claude-sonnet-4-20250514
+category: taskmaster-core
+priority: medium
+tags: ["taskmaster-core", "github"]
+description: Command for parse-prd operations
+---
+
 Parse a PRD document to generate tasks.
 
 Arguments: $ARGUMENTS (PRD file path)
@@ -36,9 +44,9 @@ task-master parse-prd --input=$ARGUMENTS
 ## Options
 
 Parse arguments for modifiers:
-- Number after filename → `--num-tasks`
-- `research` → Use research mode
-- `comprehensive` → Generate more tasks
+- Number after filename â†’ `--num-tasks`
+- `research` â†’ Use research mode
+- `comprehensive` â†’ Generate more tasks
 
 ## Post-Generation
 
@@ -47,3 +55,5 @@ After parsing:
 2. Show dependency graph
 3. Suggest task expansion for complex items
 4. Recommend sprint planning
+
+

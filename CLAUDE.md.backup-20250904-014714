@@ -1,0 +1,555 @@
+# Multi-Controller App - Claude Code Instructions
+
+## USER PREFERENCES (READ FIRST)
+- **Communication**: Direct, no fluff, no over-explanation
+- **GitHub**: wtyler2505 (wtyler2505@outlook.com)
+- **File Creation**: NEVER without explicit path request
+- **Style**: Be concise - "stop talking so i can run /compact"
+- **Verification**: Always show proof with grep, never just claim
+
+## Global Configuration
+- **Project**: Multi-Controller App (17.39% complete)
+- **Stack**: Rust with egui (selected after evaluation)
+- **Primary Branch**: main | **Dev Branch**: development
+
+## Performance Budgets (MANDATORY)
+- **Startup**: <2s | **RAM**: ≤150MB (≤220MB with charts)
+- **Serial latency**: ≤50ms | **Network**: ≤100ms
+- **Context usage**: <20% main thread (parallel mode)
+- **Validation patterns**: `apps/desktop/Program.cs:48-61`
+- **Serial timing**: `transports/serial/src/index.ts:37-40`
+
+## MCP/AGENT CRITICAL (MUST READ)
+⚠️ **Connection Issues**:
+- New/modified agents → Restart Claude Code immediately
+- MCP timeout errors → Run `/mcp` to reconnect
+- "Tool not found" → Check `/mcp` status first
+- After cipher.yml changes → Full CC restart required
+
+**Quick Fix**: `/mcp` reconnects all servers without restart
+
+## WINDOWS-SPECIFIC CONFIGURATION (CRITICAL - CHECK FIRST)
+### Hook Configuration (LESSON FROM 845 LINES OF DEBUGGING)
+- **CHECK ALL THREE FILES**: settings.json, settings.local.json, AND .claude/settings.local.json
+- **settings.local.json IS THE HIDDEN CULPRIT** - Always check project-local settings!
+- **NEVER USE**: Unix syntax $(date), ~/, bash conditionals [[]]
+- **Correct PowerShell**: Use double quotes for %USERPROFILE%
+- **Working Example**: `"echo Hook triggered >> %USERPROFILE%\\.claude\\hook-log.txt"`
+- **Single quotes break $env**: Use double quotes or %VAR% syntax
+- **Path separators**: Use \\\\ in JSON, not single \
+- **Git Bash conflicts**: Disable WSL integration if present
+- **Debug Command**: `dir C:\Users\%USERNAME%\.claude\*.json /s`
+
+## MCP Server Configuration
+Cipher aggregates 8 MCP servers (106 tools total):
+- `.taskmaster/CLAUDE.md` → Task management (authoritative)
+- `.desktop-commander/CLAUDE.md` → File/terminal operations  
+- `.filescope/CLAUDE.md` → Code graphing & analysis
+- `.clear-thought/CLAUDE.md` → Structured reasoning
+- `.context7/CLAUDE.md` → Official documentation
+- `.perplexity-ask/CLAUDE.md` → Research capabilities
+- `.memory/CLAUDE.md` → Long-term memory storage
+- `.time-server/CLAUDE.md` → Time/timezone utilities
+- `.claude/ccpm/CLAUDE.md` → Parallel execution
+
+Priority: TaskMaster > Context7 > FileScope > Desktop-Commander > Others
+
+## Cipher Integration Details
+- **Installation**: `npm install -g @byterover/cipher`
+- **Embeddings**: Ollama with nomic-embed-text model (NOT OpenAI)
+- **Memory**: 512MB limit, dual-layer (System 1 concepts, System 2 reasoning)
+- **Config**: `.cipher/cipher.yml` (restart Claude Code after changes)
+- **Executable**: `dist/src/app/index.cjs` (not dist/cli.js)
+- **Ollama Setup**: `ollama pull nomic-embed-text` for local embeddings
+
+## Memory Operations Protocol (WITH TRIGGERS)
+### Automatic Triggers:
+- **Task Start**: Run BEFORE any implementation begins
+- **Pattern Found**: Store AFTER successful implementation (3+ line pattern)
+- **Error Fixed**: Store IMMEDIATELY after resolution
+- **Task Complete**: Run AFTER all validation passes
+- **Before Similar Task**: Search BEFORE implementing similar features
+
+### Commands:
+- `npm run memory:task-start -- [id]` - Start of task
+- `npm run memory:store-pattern` - Reusable patterns
+- `npm run memory:store-error` - Error resolutions
+- `npm run memory:task-complete -- [id]` - Task completion
+- `npm run memory:search -- "[query]"` - Search before implementing
+
+## MANDATORY MEMORY CHECKPOINTS (NON-NEGOTIABLE)
+### Required Memory Operations:
+1. **Every Error Fix** → MUST run `cipher_extract_and_operate_memory` immediately
+2. **Every Pattern (3+ lines)** → MUST store with `cipher_store_reasoning_memory`
+3. **Every Task Start** → MUST search memory for similar work
+4. **Every 10 Tool Uses** → MUST create at least 1 memory entry
+5. **ON TIMEOUT** → Fallback to create_entities for knowledge graph
+
+### Enforcement:
+- Track memory operations per session: Current session: [0]
+- Report count every 20 interactions: "Memory ops: X, Patterns stored: Y"
+- VIOLATION if error fixed without storage
+- VIOLATION if reusable pattern found without storage
+- If Cipher times out 3x → Switch to manual .cipher/fallback.md
+
+## COGNITIVE AUTOPILOT (AUTOMATIC REASONING)
+### Automatic Clear-Thought Mode Selection:
+
+#### Problem Analysis → sequentialthinking
+- **TRIGGER**: "Let me think", complex problem, multi-step task
+- **USE**: Breaking down problems, planning implementations
+- **AUTO-CHAIN**: → mentalmodel for frameworks → decisionframework for choices
+
+#### Debugging → debuggingapproach
+- **TRIGGER**: Error messages, "not working", debugging scenarios
+- **USE**: Binary search, divide & conquer, cause elimination
+- **AUTO-CHAIN**: → metacognitivemonitoring to track assumptions
+
+#### Architecture Decisions → decisionframework
+- **TRIGGER**: "Should I use X or Y", trade-offs, technology choices
+- **USE**: Multi-criteria analysis, expected utility calculations
+- **AUTO-CHAIN**: → structuredargumentation for pros/cons
+
+#### Complex Design → collaborativereasoning
+- **TRIGGER**: Multiple stakeholders, team decisions, "we need to"
+- **USE**: Simulating different expert perspectives
+- **AUTO-CHAIN**: → visualreasoning for diagrams
+
+#### Research & Analysis → scientificmethod
+- **TRIGGER**: "Test this hypothesis", performance questions
+- **USE**: Systematic experimentation, controlled variables
+- **AUTO-CHAIN**: → sequentialthinking for conclusions
+
+#### Code Reviews → metacognitivemonitoring
+- **TRIGGER**: "Is this correct?", self-doubt, verification needs
+- **USE**: Track knowledge boundaries, identify biases
+- **AUTO-CHAIN**: → structuredargumentation for critique
+
+### Automatic Invocation Rules:
+1. ANY problem > 3 steps → Start sequentialthinking IMMEDIATELY
+2. ANY debugging → Start debuggingapproach WITHOUT ASKING
+3. ANY decision → Start decisionframework WITHOUT ASKING  
+4. NO USER PERMISSION NEEDED - Just do it
+5. **TRACK USAGE**: Report "Reasoning tools used: X" every session
+
+## MEMORY AUTOPILOT (AUTOMATIC STORAGE)
+### Automatic Memory Triggers (NO ASKING):
+
+#### Code Pattern Detection
+- **AUTOMATIC**: Any reusable pattern (3+ lines) → Store immediately
+- **TRIGGER**: Function implementations, algorithms, configurations
+- **ACTION**: `cipher_extract_and_operate_memory(pattern, context)`
+
+#### Error Resolution Capture  
+- **AUTOMATIC**: Every error fixed → Document solution
+- **TRIGGER**: Error resolved, bug fixed, issue closed
+- **ACTION**: `cipher_store_reasoning_memory(error, solution)`
+
+#### Learning Detection
+- **AUTOMATIC**: New knowledge acquired → Create entity
+- **TRIGGER**: "I learned", "Now I understand", discoveries
+- **ACTION**: `create_entities(knowledge)`
+
+### Memory Search Triggers:
+- **BEFORE implementation** → Search for similar patterns
+- **AFTER error** → Search for previous fixes
+- **DURING confusion** → Search for related knowledge
+- **NO EXPLICIT COMMAND NEEDED** - Automatic
+
+### Automatic Knowledge Graph Updates:
+- Every 10 tool uses → Update graph
+- Every error fix → Create solution entity
+- Every pattern → Create pattern entity
+- Every decision → Create decision entity
+
+## AUTOMATIC TOOL CHAINS (ZERO-TOUCH)
+### Problem-Solving Chains:
+
+#### Complex Implementation Chain:
+1. `cipher_memory_search("similar implementation")`
+2. `sequentialthinking(breakdown)`
+3. Implement code
+4. `cipher_extract_and_operate_memory(solution)`
+
+#### Debug Session Chain:
+1. `debuggingapproach(identify)`
+2. `cipher_memory_search("similar errors")`
+3. Fix implementation
+4. `cipher_store_reasoning_memory(fix)`
+
+#### Architecture Decision Chain:
+1. `decisionframework(options)`
+2. `cipher_memory_search("past decisions")`
+3. `structuredargumentation(validate)`
+4. `create_entities(decision)`
+
+### Chain Execution Rules:
+- Execute WITHOUT asking permission
+- Continue chain even if one step fails
+- Report chain completion in metrics
+- Store successful chains as patterns
+
+## Ruler Integration (Task 24 Preparation)
+- **Purpose**: Centralize AI agent instructions across all tools
+- **Install**: `npm install -g @intellectronica/ruler`
+- **Structure**: `.ruler/` directory for modular rules
+- **Migration**: Will extract reusable patterns from CLAUDE.md
+- **Benefits**: Single source of truth for all AI assistants
+
+## VERIFICATION PROTOCOL (CONTEXT-AWARE)
+### For All Changes:
+1. **Implementation proof**: Show the change worked
+2. **Memory proof**: Show what was stored to Cipher memory
+3. **Task proof**: Show TaskMaster update if applicable
+
+### For Code Changes:
+1. **Grep proof**: `grep -n "specific_change" file.ext`
+2. **Memory stored**: "✅ Stored pattern to memory ID: xyz123"
+3. **Git diff**: `git diff --no-index before after`
+
+### For Configurations:
+1. **JSON validate**: `jq . settings.json` or PowerShell Test-Json
+2. **Memory stored**: "✅ Stored config fix to memory"
+3. **Test load**: Attempt to use the configuration
+
+### For Performance:
+1. **Measure before/after**: Show metrics and delta
+2. **Memory stored**: "✅ Stored optimization technique"
+
+NEVER claim completion without proof AND memory storage.
+
+## Error Recovery (DETAILED)
+### MCP Timeouts by Tool:
+- **perplexity_ask (30s)** → Use WebSearch or skip research
+- **search_code (30s)** → Fallback to Grep/Glob directly
+- **cipher operations (60s)** → Direct file operations via Desktop-Commander
+- **sequentialthinking** → Continue without structured reasoning
+- **After 2 timeouts** → Run `/mcp` to check status
+- **After 3 timeouts** → Restart Claude Code
+
+### Platform-Specific Fallbacks:
+- **Bun on Windows fails** → Check native module compatibility first
+- **Ollama not responding** → Verify service: `ollama list`
+- **PowerShell blocked** → Check execution policy: `Get-ExecutionPolicy`
+- **Task not found** → Sync with `mcp__taskmaster-ai__get_tasks`
+
+### Memory Operation Failures:
+- **cipher timeout (30s)** → Fallback to `create_entities` for knowledge graph
+- **Store fails** → Save to `.cipher/manual-memory.md` locally
+- **Search fails** → Note "memory unavailable", continue
+- **3+ failures** → Alert user, switch to manual tracking
+- **Track failures** → Report after 3 consecutive failures
+
+### Clear-Thought Failures:
+- **sequentialthinking timeout** → Continue with direct implementation
+- **debuggingapproach fails** → Use manual debugging
+- **decisionframework timeout** → Simple pro/con list
+- **Any mode fails 2x** → Switch to simpler mode
+- **All modes fail** → Proceed with standard logic, note "reasoning unavailable"
+
+## PARALLEL EXECUTION (Mandatory for 3+ subtasks)
+1. Check: `mcp__taskmaster-ai__complexity_report`
+2. Create: `git worktree add ../mc-app-task-[id]`
+3. Launch: `task-orchestrator` → domain agents
+4. Monitor: <20% context in main thread
+5. Merge: After validation passes
+
+Targets: 3-5x speed | 75% fewer bugs | 80% context preserved
+
+## AGENT DOMAINS (Smart 80% Usage)
+### MANDATORY Agent Use:
+- Tasks with 3+ subtasks → task-orchestrator
+- Domain expertise needed → domain-specific agent
+- Parallel execution possible → multiple agents
+- Complex reasoning required → clear-thought agents
+
+### AGENT TRIGGER CHECKLIST (Check every task):
+□ Task has 3+ subtasks? → Launch task-orchestrator
+□ Hardware/driver work? → Launch driver-engineer  
+□ Transport/protocol? → Launch transport-engineer
+□ Testing needed? → Launch test-runner
+□ Security review? → Launch security-hygiene
+□ IF NO AGENT USED → Document why in response
+
+### SKIP Agents For:
+- Single file read/edit (use Read/Edit directly)
+- Simple grep/search (use Grep/Glob directly)
+- Status checks (use direct MCP tools)
+- User says "don't use agents"
+- Time-sensitive operations (<5s expected)
+
+### Agent List by Domain:
+- **Hardware**: driver-engineer, safety-guardian
+- **Transport**: transport-engineer, performance-profiler
+- **UI/Telemetry**: ui-telemetry-analyst
+- **Testing**: test-runner, task-checker
+- **Security**: security-hygiene
+- **Documentation**: docs-scribe, memory-steward
+- **Research**: research-librarian
+- **Coordination**: task-orchestrator, task-executor
+
+### Agent Failure Protocol:
+1. **Agent timeout** → Fallback to direct tools
+2. **Agent not found** → Check `.claude/agents/` and restart
+3. **Agent error** → Log issue, continue with manual approach
+
+## FILE MANAGEMENT RULES
+- **NEVER** create files unless explicitly requested with full path
+- **ALWAYS** prefer editing existing files
+- **ALWAYS** ask permission before creating new files
+- Documentation/README files require explicit user request
+
+### File Creation Decision Flow:
+1. **User explicit path?** → Create at exact path
+2. **Similar file exists?** → Prefer editing existing
+3. **New feature?** → Ask for location first
+4. **Documentation?** → ONLY if explicitly requested
+5. **Config file?** → Show content first, ask permission
+
+Examples:
+- "Create config.json" → Ask WHERE first
+- "Add to existing config" → Edit, don't create
+- "Write docs for X" → Ask IF they want docs first
+
+## Technology: Rust + egui
+- Native async/await with tokio
+- Zero-copy parsing for telemetry
+- Memory-safe driver implementations
+- Single-file AOT distribution
+- Cross-platform (Windows primary)
+
+## Bun Runtime (PERFORMANCE CRITICAL)
+**Always prefer Bun over Node.js/npm when possible:**
+
+### Core Commands
+```bash
+# Package management (10x faster than npm)
+bun install              # Instead of npm install
+bun add <package>        # Instead of npm install <package>
+bun remove <package>     # Instead of npm uninstall
+bun update              # Update all dependencies
+
+# Script execution (startup 4x faster)
+bun run <script>        # Instead of npm run
+bun test               # Native test runner (no Jest needed)
+bun build ./index.ts --outdir ./dist --target node
+
+# Direct TypeScript execution
+bun run index.ts       # No compilation step needed
+bun --hot index.ts     # Hot reload without nodemon
+```
+
+### Performance Features
+- **Native TypeScript**: Direct .ts execution without transpilation
+- **Built-in bundler**: Replace webpack/esbuild with `bun build`
+- **Native test runner**: 10x faster than Jest, built-in mocking
+- **SQLite built-in**: Use `bun:sqlite` instead of better-sqlite3
+- **WebSocket server**: Native WS support without ws package
+- **File I/O**: 2x faster with `Bun.file()` and `Bun.write()`
+
+### Bun-Specific APIs
+```javascript
+// Fast file operations
+const file = Bun.file("./data.json");
+const data = await file.json();
+
+// Native SQLite (for Cipher memory)
+import { Database } from "bun:sqlite";
+const db = new Database(".cipher/memory/cipher.db");
+
+// Built-in hashing (faster than crypto)
+const hash = Bun.hash(data);
+
+// Native server (replace Express)
+Bun.serve({
+  port: 3000,
+  fetch(req) { return new Response("Multi-Controller App"); }
+});
+```
+
+### Migration Patterns
+- `package-lock.json` → `bun.lockb` (binary lockfile, 100x smaller)
+- `node_modules` → Same but 2x faster install
+- `.env` loading → Built-in with `Bun.env`
+- `nodemon` → `bun --hot` for hot reload
+- `ts-node` → Just `bun` (native TS support)
+
+### When NOT to use Bun
+- Windows native modules (use Node.js fallback)
+- Specific Node.js APIs not yet supported
+- Legacy packages requiring Node.js internals
+
+### Bun vs Node.js Decision Matrix
+| Scenario | Use Bun | Use Node.js | Reason |
+|----------|---------|-------------|--------|
+| Windows native modules | ❌ | ✅ | Compatibility |
+| TypeScript execution | ✅ | ❌ | Native support |
+| Package installation | ✅ | ❌ | 10x faster |
+| Production build | ❌ | ✅ | Stability |
+| SQLite operations | ✅ | ❌ | Built-in |
+| Complex node_modules | ❌ | ✅ | Edge cases |
+
+## Task Management
+- Check next task: `mcp__taskmaster-ai__next_task`
+- View details: `mcp__taskmaster-ai__get_task --id=X`
+- Update progress: `mcp__taskmaster-ai__update_subtask`
+- Set status: `mcp__taskmaster-ai__set_task_status`
+- Reference format in commits: `type(scope): description (task X.Y)`
+
+## MANDATORY PRE-TASK PROTOCOL (STRICTLY ENFORCED)
+**⚠️ BLOCKING: No implementation allowed without completing ALL research steps**
+
+### Phase 1: Research & Analysis (REQUIRED - Track with ✓)
+Before ANY TaskMaster task/subtask implementation:
+```markdown
+□ Run `sequentialthinking` to break down the task systematically
+□ Search Context7 for docs: `get-library-docs` or check /ref folder
+□ Query best practices: `perplexity_ask` with specific questions  
+□ Review similar code: `Grep` for existing patterns
+□ Check memory: `cipher_memory_search` for past solutions
+```
+
+### Phase 2: Planning & Documentation (REQUIRED)
+```markdown
+□ Use `decisionframework` for technology/approach choices
+□ Create implementation checklist with `TodoWrite`
+□ Document approach: `cipher_extract_and_operate_memory`
+□ If complex: Use `collaborativereasoning` for perspectives
+```
+
+### Phase 3: Validation Gates (AUTOMATIC ENFORCEMENT)
+- **NO CODE** until Phase 1 & 2 complete (show checklist)
+- **NO BUILD** until plan documented in memory
+- **NO COMMIT** until tests pass and memory updated
+- **NO TASK CLOSE** without final memory storage
+
+### Enforcement Mechanisms:
+1. **PowerShell Hook**: `scripts/pre-task-research.ps1` blocks without research
+2. **Session Tracking**: Report "Research compliance: X/Y tasks" every 10 responses
+3. **Memory Requirements**: Minimum 3 operations per task (search, plan, store)
+4. **Clear-Thought Usage**: Minimum 1 reasoning tool per task
+
+### Fallback Protocol (If Tools Timeout):
+- Cipher timeout (30s) → Use `create_entities` instead
+- Clear-Thought timeout → Document reasoning manually
+- Context7 timeout → Use local /ref files
+- Perplexity timeout → Use WebSearch as backup
+
+### Compliance Metrics (Track & Report):
+```yaml
+Per Task:
+  - Research steps completed: [0/5]
+  - Memory operations: [0/3] 
+  - Reasoning tools used: [0/1]
+  - Time spent on research: Xm
+  
+Per Session:
+  - Tasks with research: X/Y (target: 100%)
+  - Average research depth: X steps
+  - Memory storage rate: X entries/task
+```
+
+## Git Workflow
+Use bun scripts (preferred over npm):
+- `bun run task:branch <id>` - Create task branch
+- `bun run task:commit` - Smart commit generation  
+- `bun run task:pr` - Create pull request
+- `bun run validate:all` - Pre-commit validation (3x faster)
+- `bun run sync:status` - Repository status
+
+## Development Standards
+
+### PowerShell Scripts
+- **NO Unicode/emojis** - Use ASCII only: [OK], [ERROR], [WARNING]
+- **NO reserved parameters**: Verbose, Debug, ErrorAction, etc.
+- Use alternatives: `-ShowDetails` instead of `-Verbose`
+- Template: `scripts/templates/powershell-script-template.ps1`
+
+### Code References
+Always use `file_path:line_number` format:
+- Example: `transports/serial/src/index.ts:32`
+- Update line numbers after edits
+- Include in error messages and commits
+
+### Architecture
+```
+/apps/          # UI and core application
+/drivers/       # Device driver plugins
+/transports/    # Serial/TCP/UDP/SSH
+/scripts/       # Automation and utilities
+/tests/         # Test suites
+/profiles/      # Configuration profiles
+/docs/          # Architecture decisions
+/.taskmaster/   # Task management
+/.cipher/       # Memory framework config
+```
+
+## Core Interfaces
+```csharp
+interface IDeviceDriver {
+    string Name { get; }
+    string[] SupportedTransports { get; }
+    Task<bool> ProbeAsync(ITransport transport);
+    Task<IDeviceSession> OpenAsync(ITransport transport);
+}
+
+interface IDeviceSession {
+    Task<object> InvokeAsync(string endpoint, object[] args);
+    Task<IDisposable> SubscribeAsync(string stream, Action<byte[]> handler);
+    Task CloseAsync();
+}
+```
+
+## Safety Requirements
+- **Emergency Stop**: Immediate neutralization of outputs
+- **Rate Limiting**: Enforce bounds on PWM/actuation
+- **Hot-plug Recovery**: Graceful disconnect handling
+- **Timeout Enforcement**: 50ms serial, 100ms network
+
+## Quality Gates (NON-NEGOTIABLE)
+- Build errors: MUST compile
+- Test failures: MUST pass 100%
+- Performance: MUST meet ALL budgets
+- Documentation: MUST be complete
+- No partial implementations accepted
+
+## Decision Log
+Append 3-line entries to `docs/decisions/decision-log.md`:
+- Context → Change → Impact
+
+## SESSION STATUS DASHBOARD (Update every 10 responses)
+```
+Memory Operations: 0
+Patterns Stored: 0  
+Reasoning Tools Used: 0
+Agents Launched: 0
+Tasks Completed: 0
+Performance Budget Status: ✓ All met
+```
+Display this when user asks "status" or every 20 interactions.
+
+## SESSION MEMORY METRICS
+Track and report:
+- Memory searches performed: 0
+- Patterns stored: 0
+- Errors documented: 0
+- Knowledge entries: 0
+- Reasoning tools used: 0
+- Agents launched: 0
+Report every 20 interactions or on request with "Memory ops this session: X"
+
+## Repository Information
+- **GitHub**: https://github.com/wtyler2505/multi-controller-app
+- **License**: MIT
+- **Progress**: 17.93% complete (26 tasks total)
+
+## Reference Documentation
+Key implementation details and guides:
+- `/ref/CLAUDE_OPTIMIZATION.md` - CLAUDE.md optimization journey (44k→7k chars)
+- `/ref/CIPHER_INTEGRATION.md` - Cipher MCP aggregator setup with Ollama
+- `/ref/MCP_SERVERS.md` - Detailed MCP server configurations
+- `/ref/AGENTS.md` - Complete agent reference (17 specialized agents)
+- `/ref/TASK_MANAGEMENT.md` - Task Master integration guide
+- `/ref/PROJECT_OVERVIEW.md` - Executive summary and status
+- `/ref/COGNITIVE_INTEGRATION.md` - Clear-Thought automatic mode selection
+- `/ref/MEMORY_AUTOMATION.md` - Cipher memory automatic triggers

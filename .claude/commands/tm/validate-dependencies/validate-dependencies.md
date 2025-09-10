@@ -1,3 +1,11 @@
+---
+model: claude-sonnet-4-20250514
+category: task-management
+priority: medium
+tags: ["task-management"]
+description: Command for validate-dependencies operations
+---
+
 Validate all task dependencies for issues.
 
 ## Dependency Validation
@@ -44,15 +52,15 @@ The validation provides:
 
 ```
 Dependency Validation Report
-━━━━━━━━━━━━━━━━━━━━━━━━━━
-✅ No circular dependencies found
-⚠️  2 warnings found:
+â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+âœ… No circular dependencies found
+âš ï¸  2 warnings found:
    - Task #23 has 7 dependencies (consider breaking down)
    - Task #45 blocks 5 other tasks (potential bottleneck)
-❌ 1 error found:
+âŒ 1 error found:
    - Task #67 depends on deleted task #66
 
-Critical Path: #1 → #5 → #23 → #45 → #50 (15 days)
+Critical Path: #1 â†’ #5 â†’ #23 â†’ #45 â†’ #50 (15 days)
 ```
 
 ## Actionable Output
@@ -69,3 +77,5 @@ After validation:
 - Run `/project:tm/fix-dependencies` to auto-fix
 - Manually adjust problematic dependencies
 - Rerun to verify fixes
+
+

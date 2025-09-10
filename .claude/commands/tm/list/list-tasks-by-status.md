@@ -1,3 +1,11 @@
+---
+model: claude-sonnet-4-20250514
+category: task-management
+priority: medium
+tags: ["task-management", "tasks"]
+description: Command for list-tasks-by-status operations
+---
+
 List tasks filtered by a specific status.
 
 Arguments: $ARGUMENTS
@@ -37,3 +45,5 @@ Based on the status filter:
 - **Review**: Indicate review duration
 - **Deferred**: Show reactivation criteria
 - **Cancelled**: Display impact analysis
+
+

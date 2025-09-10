@@ -1,3 +1,11 @@
+---
+model: claude-sonnet-4-20250514
+category: task-management
+priority: medium
+tags: ["task-management", "tasks"]
+description: Command for remove-task operations
+---
+
 Remove a task permanently from the project.
 
 Arguments: $ARGUMENTS (task ID)
@@ -12,7 +20,7 @@ Permanently removes a task while maintaining project integrity.
 
 - "remove task 5"
 - "delete 5"
-- "5" → remove task 5
+- "5" â†’ remove task 5
 - Can include "-y" for auto-confirm
 
 ## Execution
@@ -38,7 +46,7 @@ task-master remove-task --id=<id> [-y]
 3. **Impact Assessment**
    ```
    Task Removal Impact
-   ━━━━━━━━━━━━━━━━━━
+   â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
    Task: #5 "Implement authentication" (in-progress)
    Status: 60% complete (~8 hours work)
    
@@ -47,7 +55,7 @@ task-master remove-task --id=<id> [-y]
    - Has 4 subtasks (will be deleted)
    - Part of critical path
    
-   ⚠️  This action cannot be undone
+   âš ï¸  This action cannot be undone
    ```
 
 ## Smart Warnings
@@ -86,16 +94,16 @@ Suggest before deletion:
 
 ```
 /project:tm/remove-task 5
-→ Task #5 is in-progress with 8 hours logged
-→ 3 other tasks depend on this
-→ Suggestion: Mark as cancelled instead?
+â†’ Task #5 is in-progress with 8 hours logged
+â†’ 3 other tasks depend on this
+â†’ Suggestion: Mark as cancelled instead?
 Remove anyway? (y/n)
 
 /project:tm/remove-task 5 -y
-→ Removed: Task #5 and 4 subtasks
-→ Updated: 3 task dependencies
-→ Warning: Tasks #7, #8, #9 now have missing dependency
-→ Run /project:tm/fix-dependencies to resolve
+â†’ Removed: Task #5 and 4 subtasks
+â†’ Updated: 3 task dependencies
+â†’ Warning: Tasks #7, #8, #9 now have missing dependency
+â†’ Run /project:tm/fix-dependencies to resolve
 ```
 
 ## Safety Features
@@ -105,3 +113,5 @@ Remove anyway? (y/n)
 - Removal logging
 - Suggest alternatives
 - No cascade delete of dependents
+
+

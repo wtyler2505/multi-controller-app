@@ -1,3 +1,29 @@
+---
+model: claude-sonnet-4-20250514
+category: task-management
+priority: medium
+tags: ["task-management"]
+description: Command for to-done operations
+
+# Agent and Tool Integration
+assigned-agent: task-checker
+required-tools:
+  - "mcp__taskmaster-ai__set_task_status"
+  - "mcp__taskmaster-ai__get_task"
+  - "mcp__cipher-memory__create_entities"
+tool-chain: task-coordination
+auto-deploy: true
+
+# Workflow Configuration
+pre-execution:
+  validate-tools: true
+  load-context: true
+post-execution:
+  store-results: true
+  update-tasks: true
+  generate-report: true
+---
+
 Mark a task as completed.
 
 Arguments: $ARGUMENTS (task ID)
@@ -42,3 +68,5 @@ task-master set-status --id=$ARGUMENTS --status=done
 - Display unblocked work
 - Recognize achievement
 - Capture lessons learned
+
+
