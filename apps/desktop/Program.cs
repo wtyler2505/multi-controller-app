@@ -2,8 +2,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Dispatching;
 using System;
 using System.Diagnostics;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MultiControllerApp;
@@ -25,13 +27,14 @@ public class Program
             // Initialize WinRT
             WinRT.ComWrappersSupport.InitializeComWrappers();
             
-            // Start application
+            // Start application with optimized initialization
             Application.Start((p) =>
             {
                 var context = new DispatcherQueueSynchronizationContext(
                     DispatcherQueueController.CreateOnCurrentThread().DispatcherQueue);
                 SynchronizationContext.SetSynchronizationContext(context);
                 
+                // Create app instance with performance monitoring
                 _ = new App();
             });
         }
