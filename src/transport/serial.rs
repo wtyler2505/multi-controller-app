@@ -1,7 +1,7 @@
 use async_trait::async_trait;
 use std::sync::{Arc, atomic::{AtomicBool, Ordering}};
-use std::time::{Duration, Instant};
 use tokio::sync::Mutex;
+use std::time::{Duration, Instant};
 use tokio::task::{JoinHandle, spawn_blocking};
 use rand::Rng;
 use uuid::Uuid;
@@ -108,16 +108,16 @@ fn detect_device_type(info: &serialport::UsbPortInfo) -> String {
     }
 }
 
-/// Serial port transport implementation
+/// Serial port transport implementation using interior mutability pattern
+/// Enables true sharing via Arc<dyn Transport> by using &self methods with Arc/Mutex internals
 pub struct SerialTransport {
     base: TransportBase,
     port: Arc<Mutex<Option<SerialPortWrapper>>>, // Using Arc for shared access from monitor
-    reconnect_attempts: u32,
-    max_reconnect_attempts: u32,
-    base_reconnect_delay: Duration,
-    task_handles: Vec<JoinHandle<()>>,  // Track spawned tasks for cleanup
-    cleanup_flag: Arc<AtomicBool>,      // Signal for cooperative shutdown
-    connection_state: Arc<AtomicBool>,  // Track connection state for monitor
+    reconnect_attempts: Arc<Mutex<u32>>,         // Thread-safe mutable state
+    max_reconnect_attempts: u32,                 // Immutable configuration
+    base_reconnect_delay: Duration,              // Immutable configuration
+    task_handles: Arc<Mutex<Vec<JoinHandle<()>>>>, // Track spawned tasks for cleanup
+    cleanup_flag: Arc<AtomicBool>,               // Signal for cooperative shutdown
 }
 
 impl SerialTransport {
@@ -132,26 +132,22 @@ impl SerialTransport {
             return Err(TransportError::ConfigError("Invalid settings for serial transport".into()));
         }
         
-        let mut transport = SerialTransport {
+        let transport = SerialTransport {
             base: TransportBase::new(
                 format!("Serial:{}", config.address),
                 TransportType::Serial,
                 config.clone(),
             ),
             port: Arc::new(Mutex::new(None)),
-            reconnect_attempts: 0,
+            reconnect_attempts: Arc::new(Mutex::new(0)),
             max_reconnect_attempts: 10,
             base_reconnect_delay: Duration::from_millis(100),
-            task_handles: Vec::new(),
+            task_handles: Arc::new(Mutex::new(Vec::new())),
             cleanup_flag: Arc::new(AtomicBool::new(false)),
-            connection_state: Arc::new(AtomicBool::new(false)),
         };
         
-        // Start monitoring loop immediately if auto-reconnect is enabled
-        // This allows hot-plug detection even before first connection attempt
-        if config.auto_reconnect {
-            transport.start_connection_monitor();
-        }
+        // Note: Connection monitoring will be started in connect() method when needed
+        // This avoids needing &mut self in constructor
         
         Ok(transport)
     }
@@ -245,16 +241,17 @@ impl SerialTransport {
     }
     
     /// Start a background task to monitor connection and trigger reconnection
-    fn start_connection_monitor(&mut self) {
+    fn start_connection_monitor(&self) {
         let cleanup_flag = self.cleanup_flag.clone();
-        let connection_state = self.connection_state.clone();
+        let base_state = self.base.state.clone();
         let port = self.port.clone();
         let address = self.base.config.address.clone();
         let max_reconnect_attempts = self.max_reconnect_attempts;
         let base_reconnect_delay = self.base_reconnect_delay;
+        let task_handles = self.task_handles.clone();
+        let reconnect_attempts = self.reconnect_attempts.clone();
         
         let monitor_handle = tokio::spawn(async move {
-            let mut reconnect_attempts = 0u32;
             let mut check_interval = Duration::from_millis(1000); // Default check interval
             
             while !cleanup_flag.load(Ordering::Relaxed) {
@@ -267,7 +264,13 @@ impl SerialTransport {
                 };
                 
                 // Check our current connection state
-                let was_connected = connection_state.load(Ordering::Relaxed);
+                let was_connected = {
+                    if let Ok(state) = base_state.try_read() {
+                        matches!(*state, ConnectionState::Connected)
+                    } else {
+                        false
+                    }
+                };
                 let have_port = {
                     let port_guard = port.lock().await;
                     port_guard.is_some()
@@ -278,27 +281,17 @@ impl SerialTransport {
                     // Hot-plug detected! Device became available while disconnected
                     (false, false, true) => {
                         tracing::info!("Hot-plug detected! {} became available", address);
-                        // Immediately try to connect to the newly available device
-                        // Extract config from transport settings for reconnection
-                        let config = SerialSettings::default(); // TODO: Get from actual config
-                        match SerialPortWrapper::new(&address, &config).await {
-                            Ok(new_port) => {
-                                let mut port_guard = port.lock().await;
-                                *port_guard = Some(new_port);
-                                connection_state.store(true, Ordering::Relaxed);
-                                reconnect_attempts = 0;
-                                tracing::info!("Hot-plug connection successful!");
-                            }
-                            Err(e) => {
-                                tracing::warn!("Hot-plug connection failed: {}", e);
-                            }
-                        }
+                        // For now, just log the event - actual reconnection will happen
+                        // when the next transport operation is attempted
+                        // This avoids complex state synchronization in the monitor
                     }
                     
                     // Active disconnection detected!
                     (true, true, false) => {
                         tracing::warn!("Disconnection detected! {} no longer available", address);
-                        connection_state.store(false, Ordering::Relaxed);
+                        if let Ok(mut state) = base_state.try_write() {
+                            *state = ConnectionState::Disconnected;
+                        }
                         
                         // Clear the port since it's no longer valid
                         let mut port_guard = port.lock().await;
@@ -313,7 +306,9 @@ impl SerialTransport {
                             if !serial_port.check_health().await {
                                 // Port is unhealthy - mark as disconnected
                                 tracing::warn!("Health check failed! Port {} is no longer responsive", address);
-                                connection_state.store(false, Ordering::Relaxed);
+                                if let Ok(mut state) = base_state.try_write() {
+                                    *state = ConnectionState::Disconnected;
+                                }
                                 *port_guard = None; // Clear the unhealthy port
                             }
                         }
@@ -324,22 +319,42 @@ impl SerialTransport {
                 }
                 
                 // Check if we're disconnected and should try connecting/reconnecting
-                if !connection_state.load(Ordering::Relaxed) && port_available {
+                let is_disconnected = {
+                    if let Ok(state) = base_state.try_read() {
+                        matches!(*state, ConnectionState::Disconnected | ConnectionState::Error)
+                    } else {
+                        false
+                    }
+                };
+                
+                if is_disconnected && port_available {
                     // Port is available but we're not connected - try to connect
                     let port_guard = port.lock().await;
-                    if port_guard.is_none() && reconnect_attempts < max_reconnect_attempts {
+                    let current_attempts = {
+                        if let Ok(attempts) = reconnect_attempts.try_lock() {
+                            *attempts
+                        } else {
+                            max_reconnect_attempts // Conservative: assume max if locked
+                        }
+                    };
+                    
+                    if port_guard.is_none() && current_attempts < max_reconnect_attempts {
                         drop(port_guard); // Release lock before connection attempt
                         
-                        reconnect_attempts += 1;
+                        // Increment reconnection attempts
+                        if let Ok(mut attempts) = reconnect_attempts.try_lock() {
+                            *attempts += 1;
+                        }
+                        let current_attempt = current_attempts + 1;
                         
                         // Calculate exponential backoff delay
-                        let delay = base_reconnect_delay * 2u32.pow(reconnect_attempts - 1);
+                        let delay = base_reconnect_delay * 2u32.pow(current_attempt.saturating_sub(1));
                         let jitter = rand::thread_rng().gen_range(0..delay.as_millis() as u64 / 4);
                         let total_delay = delay + Duration::from_millis(jitter);
                         
                         tracing::info!(
                             "Monitor detected disconnection. Attempting reconnect {} of {} after {:?}",
-                            reconnect_attempts,
+                            current_attempt,
                             max_reconnect_attempts,
                             total_delay
                         );
@@ -352,12 +367,17 @@ impl SerialTransport {
                             Ok(new_port) => {
                                 let mut port_guard = port.lock().await;
                                 *port_guard = Some(new_port);
-                                connection_state.store(true, Ordering::Relaxed);
-                                reconnect_attempts = 0;
+                                if let Ok(mut state) = base_state.try_write() {
+                                    *state = ConnectionState::Connected;
+                                }
+                                // Reset reconnection attempts on success
+                                if let Ok(mut attempts) = reconnect_attempts.try_lock() {
+                                    *attempts = 0;
+                                }
                                 tracing::info!("Monitor successfully reconnected to serial port");
                             }
                             Err(e) => {
-                                tracing::warn!("Monitor reconnect attempt {} failed: {}", reconnect_attempts, e);
+                                tracing::warn!("Monitor reconnect attempt {} failed: {}", current_attempt, e);
                                 
                                 // Check if this is a permanent error
                                 match e {
@@ -373,11 +393,21 @@ impl SerialTransport {
                     }
                 } else {
                     // Reset attempts when connected
-                    reconnect_attempts = 0;
+                    if let Ok(mut attempts) = reconnect_attempts.try_lock() {
+                        *attempts = 0;
+                    }
                 }
                 
                 // Adjust check interval based on connection state
-                if connection_state.load(Ordering::Relaxed) {
+                let is_connected = {
+                    if let Ok(state) = base_state.try_read() {
+                        matches!(*state, ConnectionState::Connected)
+                    } else {
+                        false
+                    }
+                };
+                
+                if is_connected {
                     check_interval = Duration::from_millis(2000); // Check every 2s when connected
                 } else {
                     check_interval = Duration::from_millis(1000); // Check every 1s when disconnected
@@ -387,7 +417,10 @@ impl SerialTransport {
             tracing::info!("Connection monitor stopped");
         });
         
-        self.task_handles.push(monitor_handle);
+        // Store the task handle for cleanup
+        if let Ok(mut handles) = self.task_handles.try_lock() {
+            handles.push(monitor_handle);
+        }
         tracing::info!("Started connection monitor for serial transport");
     }
     
@@ -418,22 +451,35 @@ impl SerialTransport {
     }
     
     /// Attempt to reconnect with exponential backoff
-    pub async fn reconnect(&mut self) -> TransportResult<()> {
+    pub async fn reconnect(&self) -> TransportResult<()> {
         if self.is_connected() {
             return Ok(());
         }
         
-        while self.reconnect_attempts < self.max_reconnect_attempts {
-            self.reconnect_attempts += 1;
+        loop {
+            // Get current attempt count
+            let current_attempts = *self.reconnect_attempts.lock().await;
+            
+            if current_attempts >= self.max_reconnect_attempts {
+                break;
+            }
+            
+            // Increment attempt count
+            {
+                let mut attempts = self.reconnect_attempts.lock().await;
+                *attempts += 1;
+            }
+            
+            let current_attempt = current_attempts + 1;
             
             // Calculate delay with exponential backoff and jitter
-            let delay = self.base_reconnect_delay * 2u32.pow(self.reconnect_attempts - 1);
+            let delay = self.base_reconnect_delay * 2u32.pow(current_attempt.saturating_sub(1));
             let jitter = rand::thread_rng().gen_range(0..delay.as_millis() as u64 / 4);
             let total_delay = delay + Duration::from_millis(jitter);
             
             tracing::info!(
                 "Attempting reconnect {} of {} after {:?}",
-                self.reconnect_attempts,
+                current_attempt,
                 self.max_reconnect_attempts,
                 total_delay
             );
@@ -445,11 +491,13 @@ impl SerialTransport {
             match self.connect().await {
                 Ok(_) => {
                     tracing::info!("Successfully reconnected to serial port");
-                    self.reconnect_attempts = 0;
+                    // Reset attempt counter on success
+                    let mut attempts = self.reconnect_attempts.lock().await;
+                    *attempts = 0;
                     return Ok(());
                 }
                 Err(e) => {
-                    tracing::warn!("Reconnect attempt {} failed: {}", self.reconnect_attempts, e);
+                    tracing::warn!("Reconnect attempt {} failed: {}", current_attempt, e);
                     
                     // If this is a permanent error, don't retry
                     match e {
@@ -481,10 +529,15 @@ impl Transport for SerialTransport {
     }
     
     fn is_connected(&self) -> bool {
-        self.connection_state.load(Ordering::Relaxed)
+        // Use the base connection state from TransportBase
+        if let Ok(state) = self.base.state.try_read() {
+            matches!(*state, ConnectionState::Connected)
+        } else {
+            false  // Conservative default if contended
+        }
     }
     
-    async fn connect(&mut self) -> TransportResult<()> {
+    async fn connect(&self) -> TransportResult<()> {
         if self.is_connected() {
             return Err(TransportError::AlreadyConnected);
         }
@@ -507,17 +560,25 @@ impl Transport for SerialTransport {
             *port_guard = Some(serial_port);
         }
         
-        // Set connection state
-        self.connection_state.store(true, Ordering::Relaxed);
-        
         self.base.set_state(ConnectionState::Connected).await;
         self.base.update_stats(|stats| {
+            // Reset reconnection attempts on successful connection
             stats.reconnect_count = 0;
         }).await;
         
+        // Reset local reconnection attempts counter
+        {
+            let mut attempts = self.reconnect_attempts.lock().await;
+            *attempts = 0;
+        }
+        
         // Start connection monitoring if auto-reconnect is enabled
-        if self.base.config.auto_reconnect && self.task_handles.is_empty() {
-            self.start_connection_monitor();
+        if self.base.config.auto_reconnect {
+            let handles = self.task_handles.lock().await;
+            if handles.is_empty() {
+                drop(handles); // Release lock before calling method
+                self.start_connection_monitor();
+            }
         }
         
         tracing::info!("Connected to serial port: {} with session ID: {}", 
@@ -526,7 +587,7 @@ impl Transport for SerialTransport {
         Ok(())
     }
     
-    async fn disconnect(&mut self) -> TransportResult<()> {
+    async fn disconnect(&self) -> TransportResult<()> {
         if !self.is_connected() {
             return Ok(());
         }
@@ -538,7 +599,7 @@ impl Transport for SerialTransport {
         Ok(())
     }
     
-    async fn send(&mut self, data: &[u8]) -> TransportResult<()> {
+    async fn send(&self, data: &[u8]) -> TransportResult<()> {
         let start = Instant::now();
         
         // Attempt reconnection if not connected and auto-reconnect is enabled
@@ -596,7 +657,7 @@ impl Transport for SerialTransport {
                         let mut port_guard = self.port.lock().await;
                         *port_guard = None;
                     }
-                    self.connection_state.store(false, Ordering::Relaxed);
+                    // Connection state is now managed by base.state
                     self.base.set_state(ConnectionState::Disconnected).await;
                     
                     // Trigger automatic reconnection if enabled
@@ -617,7 +678,7 @@ impl Transport for SerialTransport {
         }
     }
     
-    async fn receive(&mut self, timeout: Duration) -> TransportResult<Vec<u8>> {
+    async fn receive(&self, timeout: Duration) -> TransportResult<Vec<u8>> {
         // Start monitoring this operation
         let guard = self.base.monitor.start_operation("serial_receive");
         let start = Instant::now();
@@ -684,7 +745,7 @@ impl Transport for SerialTransport {
         TransportStats::default()
     }
     
-    async fn reset(&mut self) -> TransportResult<()> {
+    async fn reset(&self) -> TransportResult<()> {
         let port_guard = self.port.lock().await;
         if let Some(ref port) = port_guard.as_ref() {
             port.flush().await?;
@@ -698,7 +759,7 @@ impl Transport for SerialTransport {
         &self.base.config
     }
     
-    async fn cleanup_resources(&mut self) -> TransportResult<()> {
+    async fn cleanup_resources(&self) -> TransportResult<()> {
         // Cancel any active reconnection attempts
         self.base.cancel_reconnection().await;
         
@@ -706,8 +767,11 @@ impl Transport for SerialTransport {
         self.cleanup_flag.store(true, Ordering::Relaxed);
         
         // Abort all spawned tasks
-        for handle in self.task_handles.drain(..) {
-            handle.abort();
+        {
+            let mut handles = self.task_handles.lock().await;
+            for handle in handles.drain(..) {
+                handle.abort();
+            }
         }
         
         // Drop the port connection
@@ -716,14 +780,14 @@ impl Transport for SerialTransport {
             *port_guard = None;
         }
         
-        // Clear connection state
-        self.connection_state.store(false, Ordering::Relaxed);
-        
         // Reset the cleanup flag for next connection
         self.cleanup_flag.store(false, Ordering::Relaxed);
         
         // Reset reconnect attempts counter
-        self.reconnect_attempts = 0;
+        {
+            let mut attempts = self.reconnect_attempts.lock().await;
+            *attempts = 0;
+        }
         
         // Update state
         self.base.set_state(ConnectionState::Disconnected).await;

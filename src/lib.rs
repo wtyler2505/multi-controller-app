@@ -4,6 +4,7 @@
 pub mod device;
 pub mod drivers;
 pub mod transport;
+pub mod protocols;
 // pub mod scripting; // Temporarily disabled due to lifetime issues
 pub mod telemetry;
 pub mod ui;

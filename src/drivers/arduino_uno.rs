@@ -11,6 +11,7 @@ use crate::device::{
     DeviceDriver, DeviceSession, DeviceResult, DeviceError,
     Transport, TransportType, DriverCapabilities
 };
+use crate::transport::TransportError;
 
 // Arduino USB Vendor IDs
 const ARDUINO_VID: u16 = 0x2341;  // Official Arduino
@@ -117,32 +118,44 @@ impl DeviceDriver for ArduinoUnoDriver {
             }
         }
         
-        // Send probe command to Arduino
-        // Using a simple text protocol for initial implementation
+        // Now we can use the transport directly with the new &self methods!
         debug!("Sending PROBE command to potential Arduino device");
         
-        // Note: Transport trait needs to expose send/receive methods
-        // For now, we'll return true if USB detection passed
-        // Full implementation would look like:
-        /*
-        transport.send(b"PROBE\r\n").await?;
+        // Send probe command to verify Arduino is present and responsive
+        let probe_command = format!("{}\n", CMD_PROBE);
+        transport.send(probe_command.as_bytes()).await.map_err(|e| {
+            warn!("Failed to send PROBE command: {}", e);
+            DeviceError::CommunicationError(format!("Probe send failed: {}", e))
+        })?;
         
-        // Wait for response with timeout
-        let response = transport.receive(Duration::from_millis(500)).await?;
+        // Wait for response with reasonable timeout
+        let response = transport.receive(Duration::from_secs(2)).await.map_err(|e| {
+            warn!("No response to PROBE command: {}", e);
+            DeviceError::CommunicationError(format!("Probe response failed: {}", e))
+        })?;
+        
         let response_str = String::from_utf8_lossy(&response);
+        debug!("Arduino probe response: {}", response_str);
         
-        if response_str.trim() == "ARDUINO_UNO_V1" {
-            info!("Arduino Uno detected and responding");
+        // Check if response indicates Arduino presence
+        let is_arduino_response = response_str.contains(RESP_OK) || 
+                                 response_str.contains("ARDUINO") ||
+                                 response_str.to_uppercase().contains("UNO");
+                                 
+        if is_arduino_response {
+            info!("Arduino Uno detected and responsive via probe command");
             return Ok(true);
         }
-        */
         
-        info!("Arduino device detected via USB VID/PID");
-        Ok(true)
+        warn!("Arduino device detected via USB VID/PID but probe command failed");
+        Ok(false) // Device present but not responsive
     }
     
     async fn open_async(&self, transport: Arc<dyn Transport>) -> DeviceResult<Box<dyn DeviceSession>> {
+        // Create session with transport
+        // Note: The session will face the same mutability constraints
         let session = ArduinoSession::new(transport);
+        info!("Opened Arduino Uno session: {}", session.session_id);
         Ok(Box::new(session))
     }
     
@@ -164,14 +177,14 @@ impl DeviceDriver for ArduinoUnoDriver {
 
 /// Arduino Uno session implementation
 /// 
-/// NOTE: Due to Transport trait design limitations, this currently simulates
-/// operations. The Transport trait needs &mut self but is passed as Arc<dyn Transport>
-/// which prevents mutation. Future work should address this architectural issue.
+/// Arduino Uno session implementation with full transport integration.
+/// Now works directly with Arc<dyn Transport> using interior mutability pattern.
 pub struct ArduinoSession {
     transport: Arc<dyn Transport>,
     session_id: String,
     pin_modes: Arc<Mutex<HashMap<u8, PinMode>>>,
     active: Arc<Mutex<bool>>,
+    command_counter: Arc<Mutex<u64>>,  // Track commands for debugging
 }
 
 #[derive(Debug, Clone)]
@@ -192,40 +205,52 @@ enum HallSensorMode {
 
 impl ArduinoSession {
     fn new(transport: Arc<dyn Transport>) -> Self {
+        let session_id = uuid::Uuid::new_v4().to_string();
+        debug!("Creating Arduino session with ID: {}", session_id);
         ArduinoSession {
             transport,
-            session_id: uuid::Uuid::new_v4().to_string(),
+            session_id,
             pin_modes: Arc::new(Mutex::new(HashMap::new())),
             active: Arc::new(Mutex::new(true)),
+            command_counter: Arc::new(Mutex::new(0)),
         }
     }
     
     /// Send a command and wait for response
     /// 
-    /// NOTE: Due to Transport trait limitations (Arc<dyn Transport> vs &mut self),
-    /// this currently simulates the response. Real implementation requires
-    /// architectural changes to the Transport trait.
+    /// Send command to Arduino and wait for response using the transport layer.
     async fn send_command(&self, command: &str) -> DeviceResult<String> {
-        debug!("Arduino command: {}", command);
+        // Increment command counter
+        let mut counter = self.command_counter.lock().await;
+        *counter += 1;
+        let cmd_num = *counter;
+        drop(counter);
         
-        // Simulate responses based on command type
-        // In real implementation, this would use transport.send() and receive()
-        // but that requires &mut self which we can't get from Arc<dyn Transport>
+        debug!("Arduino command #{}: {}", cmd_num, command);
         
-        let response = if command.starts_with(CMD_PROBE) {
-            RESP_ARDUINO_UNO.to_string()
-        } else if command.starts_with(CMD_DIGITAL_READ) {
-            "VALUE:1".to_string()
-        } else if command.starts_with(CMD_ANALOG_READ) {
-            "VALUE:512".to_string()
-        } else if command.starts_with(CMD_HALL_READ) {
-            "RPM:1250.5".to_string()
-        } else if command.starts_with("HALL_COUNT") {
-            "COUNT:12345".to_string()
-        } else {
-            RESP_OK.to_string()
-        };
+        // Check if session is still active
+        let active = self.active.lock().await;
+        if !*active {
+            return Err(DeviceError::NotConnected);
+        }
+        drop(active);
         
+        // Send command through transport (now possible with interior mutability!)
+        let command_with_newline = format!("{}\n", command);
+        self.transport.send(command_with_newline.as_bytes()).await.map_err(|e| {
+            warn!("Failed to send command '{}': {}", command, e);
+            DeviceError::CommunicationError(format!("Send failed: {}", e))
+        })?;
+        
+        // Wait for response with timeout
+        let response_bytes = self.transport.receive(Duration::from_secs(2)).await.map_err(|e| {
+            warn!("No response to command '{}': {}", command, e);
+            DeviceError::CommunicationError(format!("Receive failed: {}", e))
+        })?;
+        
+        let response = String::from_utf8_lossy(&response_bytes).trim().to_string();
+        
+        debug!("Arduino response #{}: {}", cmd_num, response);
         Ok(response)
     }
     

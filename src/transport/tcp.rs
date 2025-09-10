@@ -153,7 +153,7 @@ impl Transport for TcpTransport {
         self.stream.is_some()
     }
     
-    async fn connect(&mut self) -> TransportResult<()> {
+    async fn connect(&self) -> TransportResult<()> {
         if self.is_connected() {
             return Err(TransportError::AlreadyConnected);
         }
@@ -176,7 +176,7 @@ impl Transport for TcpTransport {
         }
     }
     
-    async fn disconnect(&mut self) -> TransportResult<()> {
+    async fn disconnect(&self) -> TransportResult<()> {
         if !self.is_connected() {
             return Ok(());
         }
@@ -189,7 +189,7 @@ impl Transport for TcpTransport {
         Ok(())
     }
     
-    async fn send(&mut self, data: &[u8]) -> TransportResult<()> {
+    async fn send(&self, data: &[u8]) -> TransportResult<()> {
         let start = Instant::now();
         
         // Check connection and reconnect if needed (before creating guard)
@@ -240,7 +240,7 @@ impl Transport for TcpTransport {
         }
     }
     
-    async fn receive(&mut self, timeout_duration: Duration) -> TransportResult<Vec<u8>> {
+    async fn receive(&self, timeout_duration: Duration) -> TransportResult<Vec<u8>> {
         let start = Instant::now();
         
         // Handle the case where stream exists
@@ -287,7 +287,7 @@ impl Transport for TcpTransport {
         TransportStats::default()
     }
     
-    async fn reset(&mut self) -> TransportResult<()> {
+    async fn reset(&self) -> TransportResult<()> {
         // TCP doesn't have a buffer to flush like serial
         // But we can try to clear any pending data
         if let Some(ref stream) = self.stream {
@@ -312,7 +312,7 @@ impl Transport for TcpTransport {
         &self.base.config
     }
     
-    async fn cleanup_resources(&mut self) -> TransportResult<()> {
+    async fn cleanup_resources(&self) -> TransportResult<()> {
         // Signal shutdown to any cooperative tasks
         self.cleanup_flag.store(true, Ordering::Relaxed);
         

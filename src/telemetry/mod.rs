@@ -8,11 +8,15 @@ pub mod ring_buffer;
 pub mod sample;
 pub mod channel;
 pub mod export;
+// pub mod parser;  // TODO: Task 29 - implement parser module
+// pub mod buffer;  // TODO: Task 29 - implement buffer module
 
 pub use ring_buffer::{RingBuffer, RingBufferStats};
 pub use sample::{TelemetrySample, SampleMetadata, SampleType, SampleValue, SampleStatistics};
 pub use channel::{TelemetryChannel, ChannelConfig, ChannelStats, ChannelExportData};
 pub use export::{ExportFormat, TelemetryExporter, TelemetryImporter};
+// pub use parser::*;  // TODO: Task 29 - implement parser module
+// pub use buffer::*;  // TODO: Task 29 - implement buffer module
 
 use std::sync::Arc;
 use std::collections::HashMap;

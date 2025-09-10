@@ -292,7 +292,17 @@
       "Bash(touch:*)",
       "Bash(mv:*)",
       "Bash(gh repo view:*)",
-      "Bash(gh secret:*)"
+      "Bash(gh secret:*)",
+      "Bash(gh pr create:*)",
+      "Bash(gh issue list:*)",
+      "Bash(gh pr list:*)",
+      "Bash(gh issue view:*)",
+      "mcp__byterover-mcp__byterover-retrieve-knowledge",
+      "Bash(del \"C:\\Users\\wtyle\\multi-controller-app\\src\\transport\\shared.rs\")",
+      "mcp__taskmaster-ai__remove_task",
+      "mcp__taskmaster-ai__expand_task",
+      "mcp__taskmaster-ai__validate_dependencies",
+      "mcp__desktop-commander__create_directory"
     ],
     "deny": [],
     "ask": [],

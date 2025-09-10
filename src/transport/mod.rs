@@ -27,6 +27,9 @@ pub use monitor::LatencyMonitor;
 
 /// Core transport trait for device communication
 /// Implements connection management, data transfer, and latency enforcement
+/// 
+/// Uses interior mutability pattern with &self methods to enable true sharing
+/// via Arc<dyn Transport> across multiple drivers and components.
 #[async_trait]
 pub trait Transport: Send + Sync {
     /// Get transport type
@@ -39,19 +42,19 @@ pub trait Transport: Send + Sync {
     fn is_connected(&self) -> bool;
     
     /// Connect to the transport
-    async fn connect(&mut self) -> TransportResult<()>;
+    async fn connect(&self) -> TransportResult<()>;
     
     /// Disconnect from the transport
-    async fn disconnect(&mut self) -> TransportResult<()>;
+    async fn disconnect(&self) -> TransportResult<()>;
     
     /// Send data with latency enforcement
-    async fn send(&mut self, data: &[u8]) -> TransportResult<()>;
+    async fn send(&self, data: &[u8]) -> TransportResult<()>;
     
     /// Receive data with timeout
-    async fn receive(&mut self, timeout: Duration) -> TransportResult<Vec<u8>>;
+    async fn receive(&self, timeout: Duration) -> TransportResult<Vec<u8>>;
     
     /// Send and receive in one operation (common pattern)
-    async fn transact(&mut self, data: &[u8], timeout: Duration) -> TransportResult<Vec<u8>> {
+    async fn transact(&self, data: &[u8], timeout: Duration) -> TransportResult<Vec<u8>> {
         self.send(data).await?;
         self.receive(timeout).await
     }
@@ -60,7 +63,7 @@ pub trait Transport: Send + Sync {
     fn stats(&self) -> TransportStats;
     
     /// Reset transport (clear buffers, reset state)
-    async fn reset(&mut self) -> TransportResult<()>;
+    async fn reset(&self) -> TransportResult<()>;
     
     /// Get configuration
     fn config(&self) -> &TransportConfig;
@@ -68,7 +71,7 @@ pub trait Transport: Send + Sync {
     /// Clean up all resources (tasks, channels, etc.) on disconnect
     /// This method should abort all spawned tasks, drop Arc references,
     /// and ensure no memory leaks occur during reconnect cycles
-    async fn cleanup_resources(&mut self) -> TransportResult<()>;
+    async fn cleanup_resources(&self) -> TransportResult<()>;
 }
 
 /// Transport statistics for monitoring
@@ -147,12 +150,13 @@ pub struct TransportCapabilities {
 }
 
 /// Base transport implementation with common functionality
+/// Uses interior mutability pattern to support sharing via Arc<dyn Transport>
 pub struct TransportBase {
-    pub name: String,
+    pub name: Arc<String>,
     pub transport_type: TransportType,
     pub state: Arc<RwLock<ConnectionState>>,
     pub stats: Arc<RwLock<TransportStats>>,
-    pub config: TransportConfig,
+    pub config: Arc<TransportConfig>,
     pub capabilities: TransportCapabilities,
     pub monitor: Arc<LatencyMonitor>,
     pub reconnection_task: Arc<Mutex<Option<JoinHandle<()>>>>,
@@ -204,11 +208,11 @@ impl TransportBase {
         ));
         
         TransportBase {
-            name,
+            name: Arc::new(name),
             transport_type,
             state: Arc::new(RwLock::new(ConnectionState::Disconnected)),
             stats: Arc::new(RwLock::new(TransportStats::default())),
-            config,
+            config: Arc::new(config),
             capabilities,
             monitor,
             reconnection_task: Arc::new(Mutex::new(None)),
