@@ -1,8 +1,8 @@
 use async_trait::async_trait;
 use std::sync::{Arc, atomic::{AtomicBool, Ordering}};
+use tokio::sync::Mutex;
 use std::time::{Duration, Instant};
 use std::path::PathBuf;
-use tokio::sync::Mutex;
 use tokio::task::JoinHandle;
 use crate::transport::{
     Transport, TransportBase, TransportConfig, TransportError, TransportResult, 
@@ -23,14 +23,14 @@ enum AuthMethod {
 /// SSH transport implementation for secure remote connections
 pub struct SshTransport {
     base: TransportBase,
-    session: Option<Arc<Mutex<MockSshSession>>>, // Using mock for now, will replace with real SSH
-    reconnect_attempts: u32,
-    max_reconnect_attempts: u32,
-    base_reconnect_delay: Duration,
-    task_handles: Vec<JoinHandle<()>>,  // Track spawned tasks for cleanup
-    cleanup_flag: Arc<AtomicBool>,      // Signal for cooperative shutdown
-    key_manager: SshKeyManager,         // SSH key discovery and management
-    resolved_key: Option<SshKeyInfo>,   // Resolved SSH key for authentication
+    session: Arc<Mutex<Option<MockSshSession>>>, // Thread-safe session management
+    reconnect_attempts: Arc<Mutex<u32>>,         // Thread-safe mutable state
+    max_reconnect_attempts: u32,                 // Immutable configuration
+    base_reconnect_delay: Duration,              // Immutable configuration
+    task_handles: Arc<Mutex<Vec<JoinHandle<()>>>>, // Track spawned tasks for cleanup
+    cleanup_flag: Arc<AtomicBool>,               // Signal for cooperative shutdown
+    key_manager: SshKeyManager,                  // SSH key discovery and management
+    resolved_key: Option<SshKeyInfo>,            // Resolved SSH key for authentication
 }
 
 impl SshTransport {
@@ -85,11 +85,11 @@ impl SshTransport {
                 TransportType::Ssh,
                 config,
             ),
-            session: None,
-            reconnect_attempts: 0,
+            session: Arc::new(Mutex::new(None)),
+            reconnect_attempts: Arc::new(Mutex::new(0)),
             max_reconnect_attempts: 5, // Fewer attempts for SSH due to longer timeouts
             base_reconnect_delay: Duration::from_secs(1), // Longer base delay for SSH
-            task_handles: Vec::new(),
+            task_handles: Arc::new(Mutex::new(Vec::new())),
             cleanup_flag: Arc::new(AtomicBool::new(false)),
             key_manager,
             resolved_key,
@@ -97,7 +97,7 @@ impl SshTransport {
     }
     
     /// Try to connect with exponential backoff using shared module
-    async fn connect_with_backoff(&mut self) -> TransportResult<()> {
+    async fn connect_with_backoff(&self) -> TransportResult<()> {
         let mut backoff = crate::transport::backoff::ExponentialBackoff::from_config(
             self.base.config.max_reconnect_attempts,
             self.base.config.reconnect_delay_ms,
@@ -106,7 +106,7 @@ impl SshTransport {
         while backoff.should_retry() {
             match self.try_connect().await {
                 Ok(()) => {
-                    self.reconnect_attempts = 0;
+                    *self.reconnect_attempts.lock().await = 0;
                     return Ok(());
                 }
                 Err(e) => {
@@ -139,7 +139,7 @@ impl SshTransport {
     }
     
     /// Attempt a single connection (extracted for reuse)
-    async fn try_connect(&mut self) -> TransportResult<()> {
+    async fn try_connect(&self) -> TransportResult<()> {
         // Extract SSH settings
         let settings = if let crate::transport::common::TransportSettings::Ssh(ref settings) = self.base.config.settings {
             settings.clone()
@@ -176,7 +176,7 @@ impl SshTransport {
             settings.port,
         )?;
         
-        self.session = Some(Arc::new(Mutex::new(mock_session)));
+        *self.session.lock().await = Some(mock_session);
         
         tracing::info!("Connected SSH session to {} using {}", 
             self.base.config.address,
@@ -207,7 +207,7 @@ impl SshTransport {
     }
     
     /// Test SSH connection by running a simple command
-    pub async fn test_connection(&mut self) -> TransportResult<bool> {
+    pub async fn test_connection(&self) -> TransportResult<bool> {
         if !self.is_connected() {
             return Ok(false);
         }
@@ -238,10 +238,10 @@ impl Transport for SshTransport {
     }
     
     fn is_connected(&self) -> bool {
-        self.session.is_some()
+        self.session.lock().await.is_some()
     }
     
-    async fn connect(&mut self) -> TransportResult<()> {
+    async fn connect(&self) -> TransportResult<()> {
         if self.is_connected() {
             return Err(TransportError::AlreadyConnected);
         }
@@ -253,7 +253,7 @@ impl Transport for SshTransport {
             Ok(()) => {
                 self.base.set_state(ConnectionState::Connected).await;
                 self.base.update_stats(|stats| {
-                    stats.reconnect_count += self.reconnect_attempts;
+                    stats.reconnect_count += *self.reconnect_attempts.lock().await;
                 }).await;
                 Ok(())
             }
@@ -264,7 +264,7 @@ impl Transport for SshTransport {
         }
     }
     
-    async fn disconnect(&mut self) -> TransportResult<()> {
+    async fn disconnect(&self) -> TransportResult<()> {
         if !self.is_connected() {
             return Ok(());
         }
@@ -276,11 +276,11 @@ impl Transport for SshTransport {
         Ok(())
     }
     
-    async fn send(&mut self, data: &[u8]) -> TransportResult<()> {
+    async fn send(&self, data: &[u8]) -> TransportResult<()> {
         let start = Instant::now();
         
         // Check connection and reconnect if needed (before creating guard)
-        if self.session.is_none() && self.base.config.auto_reconnect {
+        if !self.is_connected() && self.base.config.auto_reconnect {
             self.base.update_stats(|stats| {
                 stats.transactions_failed += 1;
                 stats.last_error = Some("Not connected".into());
@@ -291,11 +291,11 @@ impl Transport for SshTransport {
             return self.send(data).await;
         }
         
-        if let Some(ref session) = self.session {
-            let mut session = session.lock().await;
+        let mut session_guard = self.session.lock().await;
+        if let Some(ref mut session) = *session_guard {
             match session.execute(data) {
                 Ok(_) => {
-                    drop(session); // Explicitly drop the lock before async operations
+                    drop(session_guard); // Explicitly drop the lock before async operations
                     
                     self.base.update_stats(|stats| {
                         stats.bytes_sent += data.len() as u64;
@@ -309,7 +309,7 @@ impl Transport for SshTransport {
                 }
                 Err(e) => {
                     let err_str = e.to_string();
-                    drop(session); // Explicitly drop the lock before modifying self
+                    drop(session_guard); // Explicitly drop the lock before modifying self
                     
                     self.base.update_stats(|stats| {
                         stats.transactions_failed += 1;
@@ -317,7 +317,7 @@ impl Transport for SshTransport {
                     }).await;
                     
                     // Connection lost, clear session and trigger reconnection
-                    self.session = None;
+                    *self.session.lock().await = None;
                     self.base.set_state(ConnectionState::Disconnected).await;
                     
                     // Trigger automatic reconnection if enabled
@@ -337,21 +337,18 @@ impl Transport for SshTransport {
         }
     }
     
-    async fn receive(&mut self, timeout: Duration) -> TransportResult<Vec<u8>> {
+    async fn receive(&self, timeout: Duration) -> TransportResult<Vec<u8>> {
         let start = Instant::now();
         
-        if let Some(ref session) = self.session {
-            let mut session = session.lock().await;
+        let mut session_guard = self.session.lock().await;
+        if let Some(ref mut session) = *session_guard {
             
             // Set up timeout
             let deadline = Instant::now() + timeout;
             
             // Try to read data
-            let data = tokio::time::timeout_at(
-                deadline.into(),
-                session.read_output()
-            ).await
-                .map_err(|_| TransportError::Timeout(format!("SSH receive timeout after {:?}", timeout)))?;
+            let data = session.read_output();
+            drop(session_guard); // Release lock before async operations
             
             self.base.update_stats(|stats| {
                 stats.bytes_received += data.len() as u64;
@@ -374,9 +371,9 @@ impl Transport for SshTransport {
         TransportStats::default()
     }
     
-    async fn reset(&mut self) -> TransportResult<()> {
-        if let Some(ref session) = self.session {
-            let mut session = session.lock().await;
+    async fn reset(&self) -> TransportResult<()> {
+        let mut session_guard = self.session.lock().await;
+        if let Some(ref mut session) = *session_guard {
             session.reset()?;
             Ok(())
         } else {
@@ -388,7 +385,7 @@ impl Transport for SshTransport {
         &self.base.config
     }
     
-    async fn cleanup_resources(&mut self) -> TransportResult<()> {
+    async fn cleanup_resources(&self) -> TransportResult<()> {
         // Cancel any active reconnection attempts
         self.base.cancel_reconnection().await;
         
@@ -396,18 +393,21 @@ impl Transport for SshTransport {
         self.cleanup_flag.store(true, Ordering::Relaxed);
         
         // Abort all spawned tasks
-        for handle in self.task_handles.drain(..) {
-            handle.abort();
+        {
+            let mut handles = self.task_handles.lock().await;
+            for handle in handles.drain(..) {
+                handle.abort();
+            }
         }
         
         // Drop the SSH session
-        self.session = None;
+        *self.session.lock().await = None;
         
         // Reset the cleanup flag for next connection
         self.cleanup_flag.store(false, Ordering::Relaxed);
         
         // Reset reconnect attempts counter
-        self.reconnect_attempts = 0;
+        *self.reconnect_attempts.lock().await = 0;
         
         // Update state
         self.base.set_state(ConnectionState::Disconnected).await;
@@ -499,10 +499,7 @@ impl MockSshSession {
         Ok(())
     }
     
-    async fn read_output(&mut self) -> Vec<u8> {
-        // Simulate async read with some delay
-        tokio::time::sleep(Duration::from_millis(10)).await;
-        
+    fn read_output(&mut self) -> Vec<u8> {
         if !self.output_buffer.is_empty() {
             let output = self.output_buffer.clone();
             self.output_buffer.clear();

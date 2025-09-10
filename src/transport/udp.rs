@@ -224,7 +224,7 @@ impl Transport for UdpTransport {
         self.socket.is_some() && self.remote_addr.is_some()
     }
     
-    async fn connect(&mut self) -> TransportResult<()> {
+    async fn connect(&self) -> TransportResult<()> {
         if self.is_connected() {
             return Err(TransportError::AlreadyConnected);
         }
@@ -247,7 +247,7 @@ impl Transport for UdpTransport {
         }
     }
     
-    async fn disconnect(&mut self) -> TransportResult<()> {
+    async fn disconnect(&self) -> TransportResult<()> {
         if !self.is_connected() {
             return Ok(());
         }
@@ -269,7 +269,7 @@ impl Transport for UdpTransport {
         Ok(())
     }
     
-    async fn send(&mut self, data: &[u8]) -> TransportResult<()> {
+    async fn send(&self, data: &[u8]) -> TransportResult<()> {
         let start = Instant::now();
         
         // Check MTU limit
@@ -317,7 +317,7 @@ impl Transport for UdpTransport {
         }
     }
     
-    async fn receive(&mut self, timeout_duration: Duration) -> TransportResult<Vec<u8>> {
+    async fn receive(&self, timeout_duration: Duration) -> TransportResult<Vec<u8>> {
         let start = Instant::now();
         
         if let Some(socket) = &self.socket {
@@ -369,7 +369,7 @@ impl Transport for UdpTransport {
         TransportStats::default()
     }
     
-    async fn reset(&mut self) -> TransportResult<()> {
+    async fn reset(&self) -> TransportResult<()> {
         // For UDP, we can flush any pending data by reading without blocking
         if let Some(socket) = &self.socket {
             let mut discard = vec![0u8; 1024];
@@ -388,7 +388,7 @@ impl Transport for UdpTransport {
         &self.base.config
     }
     
-    async fn cleanup_resources(&mut self) -> TransportResult<()> {
+    async fn cleanup_resources(&self) -> TransportResult<()> {
         // Cancel any active reconnection attempts
         self.base.cancel_reconnection().await;
         

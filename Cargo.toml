@@ -40,6 +40,10 @@ path = "examples/arduino_control.rs"
 name = "telemetry_test"
 path = "examples/telemetry_test.rs"
 
+[[example]]
+name = "telemetry_parser_demo"
+path = "examples/telemetry_parser_demo.rs"
+
 [features]
 default = ["enterprise-monitoring"]
 hardware-tests = []  # Enable hardware validation tests that require real Arduino
@@ -108,9 +112,9 @@ nonzero_ext = "0.3"
 rhai = { version = "1.17", features = ["sync"] }
 
 # Utilities
-uuid = { version = "1.10", features = ["v4"] }
+uuid = { version = "1.10", features = ["v4", "serde"] }
 rand = "0.8"
-chrono = "0.4"
+chrono = { version = "0.4", features = ["serde"] }
 dirs = "5.0"
 
 # Thread-safe primitives
