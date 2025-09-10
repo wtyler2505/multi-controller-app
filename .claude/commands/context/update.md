@@ -1,118 +1,128 @@
 ---
+model: claude-sonnet-4-20250514
+category: context-management
+priority: high
+tags: ["context-management"]
+description: Update Context
 allowed-tools: Bash, Read, Write, LS
+argument-hint: [update-scope] | --incremental | --full | --targeted
+
+# Enhanced Context-Aware Agent Integration
+enhanced-integration:
+  enabled: true
+  agent-selection-criteria:
+    domain-expertise: ["context-updating", "change-detection", "incremental-sync"]
+    complexity-factors: ["change-analysis", "context-maintenance", "update-optimization"]
+    specialized-tools: ["context-management", "change-detection", "sync-operations"]
+  preferred-agents:
+    primary: "general-purpose"
+    secondary: "documentation-specialist"
+    fallback: ["task-orchestrator"]
+  tool-requirements:
+    mcp-servers: ["desktop-commander", "FileScopeMCP", "cipher-memory"]
+    specialized-functions: ["context-updating", "change-detection"]
+
+# Universal Cipher Memory Integration (MANDATORY FOR ALL COMMANDS)
+cipher-memory-integration:
+  enabled: true
+  priority: "high"
+  
+  # Pre-execution Memory Operations
+  pre-execution-memory:
+    context-search:
+      - query-pattern: "context-updating + change-detection + incremental-sync"
+      - tools: ["mcp__cipher-memory__search_nodes", "mcp__cipher-memory__open_nodes"]
+      - context-retrieval: "update-patterns + sync-knowledge"
+    
+    knowledge-preparation:
+      - domain: "context-updating"
+      - pattern-search: "update-strategies + sync-patterns + maintenance-techniques"
+      - tools: ["mcp__cipher-memory__read_graph"]
+  
+  # Execution Memory Operations
+  execution-memory:
+    progress-tracking:
+      - tool: "mcp__cipher-memory__add_observations"
+      - capture-points: ["change-analysis", "context-updating", "sync-execution"]
+      - entity-updates: "real-time-progress"
+    
+    decision-logging:
+      - tool: "mcp__cipher-memory__create_entities"
+      - log-decisions: "update-strategies + sync-approaches + maintenance-decisions"
+      - pattern-recognition: "context-updating-patterns"
+  
+  # Post-execution Memory Operations
+  post-execution-memory:
+    result-storage:
+      - tools: ["mcp__cipher-memory__create_entities"]
+      - store-patterns: ["update-results", "sync-insights", "maintenance-techniques"]
+      - knowledge-extraction: "updating-methodologies + sync-patterns"
+    
+    relationship-creation:
+      - tools: ["mcp__cipher-memory__create_relations"]
+      - link-concepts: ["update-relationships", "sync-dependencies", "maintenance-connections"]
+      - cross-reference: "related-updating-processes"
+    
+    knowledge-refinement:
+      - tools: ["mcp__cipher-memory__add_observations"]
+      - enrich-existing: "update-knowledge + sync-patterns"
+      - continuous-learning: "context-updating-optimization"
+
+# Centralized Logging Integration
+logging-integration:
+  enabled: true
+  log-file: ".claude/command-execution.jsonl"
+  
+  # Comprehensive Execution Logging
+  log-level: "comprehensive"
+  
+  capture-points:
+    - command-initiation
+    - agent-selection-process
+    - memory-operations
+    - change-analysis
+    - context-updating
+    - sync-execution
+    - validation-checks
+    - error-handling
+    - completion-status
+  
+  # Structured Log Format
+  log-structure:
+    timestamp: "ISO-8601"
+    command: "context-update"
+    execution-id: "UUID"
+    agent-assignments: "selected-agents-with-reasoning"
+    memory-operations: "cipher-memory-transactions"
+    performance-metrics: "execution-time + memory-usage + success-rate"
+    outcome-summary: "update-results + sync-insights"
+
+# Cross-Command Learning Integration
+cross-command-learning:
+  enabled: true
+  share-insights: ["update-patterns", "sync-techniques", "maintenance-strategies"]
+  learn-from: ["context-create", "context-prime", "project-analysis"]
+  contribute-to: "context-updating-knowledge-base"
+
+# Workflow Integration
+workflow-integration:
+  pre-execution:
+    - validate-context-access
+    - prepare-memory-context
+    - select-optimal-agents
+  
+  execution:
+    - parallel-update-operations
+    - continuous-memory-updates
+    - real-time-sync-monitoring
+  
+  post-execution:
+    - comprehensive-result-storage
+    - cross-reference-generation
+    - update-pattern-extraction
 ---
 
-# Update Context
-
-This command updates the project context documentation in `.claude/context/` to reflect the current state of the project. Run this at the end of each development session to keep context accurate.
-
-## Required Rules
-
-**IMPORTANT:** Before executing this command, read and follow:
-- `.claude/rules/datetime.md` - For getting real current date/time
-
-## Preflight Checklist
-
-Before proceeding, complete these validation steps.
-Do not bother the user with preflight checks progress ("I'm not going to ..."). Just do them and move on.
-
-### 1. Context Validation
-- Run: `ls -la .claude/context/ 2>/dev/null`
-- If directory doesn't exist or is empty:
-  - Tell user: "❌ No context to update. Please run /context:create first."
-  - Exit gracefully
-- Count existing files: `ls -1 .claude/context/*.md 2>/dev/null | wc -l`
-- Report: "📁 Found {count} context files to check for updates"
-
-### 2. Change Detection
-
-Gather information about what has changed:
-
-**Git Changes:**
-- Run: `git status --short` to see uncommitted changes
-- Run: `git log --oneline -10` to see recent commits
-- Run: `git diff --stat HEAD~5..HEAD 2>/dev/null` to see files changed recently
-
-**File Modifications:**
-- Check context file ages: `find .claude/context -name "*.md" -type f -exec ls -lt {} + | head -5`
-- Note which context files are oldest and may need updates
-
-**Dependency Changes:**
-- Node.js: `git diff HEAD~5..HEAD package.json 2>/dev/null`
-- Python: `git diff HEAD~5..HEAD requirements.txt 2>/dev/null`
-- Check if new dependencies were added or versions changed
-
-### 3. Get Current DateTime
-- Run: `date -u +"%Y-%m-%dT%H:%M:%SZ"`
-- Store for updating `last_updated` field in modified files
-
-## Instructions
-
-### 1. Systematic Change Analysis
-
-For each context file, determine if updates are needed:
-
-**Check each file systematically:**
-#### `progress.md` - **Always Update**
-  - Check: Recent commits, current branch, uncommitted changes
-  - Update: Latest completed work, current blockers, next steps
-  - Run: `git log --oneline -5` to get recent commit messages
-  - Include completion percentages if applicable
-
-#### `project-structure.md` - **Update if Changed**
-  - Check: `git diff --name-status HEAD~10..HEAD | grep -E '^A'` for new files
-  - Update: New directories, moved files, structural reorganization
-  - Only update if significant structural changes occurred
-
-#### `tech-context.md` - **Update if Dependencies Changed**
-  - Check: Package files for new dependencies or version changes
-  - Update: New libraries, upgraded versions, new dev tools
-  - Include security updates or breaking changes
-
-#### `system-patterns.md` - **Update if Architecture Changed**
-  - Check: New design patterns, architectural decisions
-  - Update: New patterns adopted, refactoring done
-  - Only update for significant architectural changes
-
-#### `product-context.md` - **Update if Requirements Changed**
-  - Check: New features implemented, user feedback incorporated
-  - Update: New user stories, changed requirements
-  - Include any pivot in product direction
-
-#### `project-brief.md` - **Rarely Update**
-  - Check: Only if fundamental project goals changed
-  - Update: Major scope changes, new objectives
-  - Usually remains stable
-
-#### `project-overview.md` - **Update for Major Milestones**
-  - Check: Major features completed, significant progress
-  - Update: Feature status, capability changes
-  - Update when reaching project milestones
-
-#### `project-vision.md` - **Rarely Update**
-  - Check: Strategic direction changes
-  - Update: Only for major vision shifts
-  - Usually remains stable
-
-#### `project-style-guide.md` - **Update if Conventions Changed**
-  - Check: New linting rules, style decisions
-  - Update: Convention changes, new patterns adopted
-  - Include examples of new patterns
-### 2. Smart Update Strategy
-
-**For each file that needs updating:**
-
-1. **Read existing file** to understand current content
-2. **Identify specific sections** that need updates
-3. **Preserve frontmatter** but update `last_updated` field:
-   ```yaml
-   ---
-   created: [preserve original]
-   last_updated: [Use REAL datetime from date command]
-   version: [increment if major update, e.g., 1.0 → 1.1]
-   author: Claude Code PM System
-   ---
-   ```
+```
 4. **Make targeted updates** - don't rewrite entire file
 5. **Add update notes** at the bottom if significant:
    ```markdown
@@ -139,10 +149,10 @@ After updating each file:
 ### 5. Error Handling
 
 **Common Issues:**
-- **File locked:** "❌ Cannot update {file} - may be open in editor"
-- **Permission denied:** "❌ Cannot write to {file} - check permissions"
-- **Corrupted file:** "⚠️ {file} appears corrupted - skipping update"
-- **Disk space:** "❌ Insufficient disk space for updates"
+- **File locked:** "âŒ Cannot update {file} - may be open in editor"
+- **Permission denied:** "âŒ Cannot write to {file} - check permissions"
+- **Corrupted file:** "âš ï¸ {file} appears corrupted - skipping update"
+- **Disk space:** "âŒ Insufficient disk space for updates"
 
 If update fails:
 - Report which files were successfully updated
@@ -154,30 +164,30 @@ If update fails:
 Provide detailed summary of updates:
 
 ```
-🔄 Context Update Complete
+ðŸ”„ Context Update Complete
 
-📊 Update Statistics:
+ðŸ“Š Update Statistics:
   - Files Scanned: {total_count}
   - Files Updated: {updated_count}
   - Files Skipped: {skipped_count} (no changes needed)
   - Errors: {error_count}
 
-📝 Updated Files:
-  ✅ progress.md - Updated recent commits, current status
-  ✅ tech-context.md - Added 3 new dependencies
-  ✅ project-structure.md - Noted new /utils directory
+ðŸ“ Updated Files:
+  âœ… progress.md - Updated recent commits, current status
+  âœ… tech-context.md - Added 3 new dependencies
+  âœ… project-structure.md - Noted new /utils directory
 
-⏭️ Skipped Files (no changes):
+â­ï¸ Skipped Files (no changes):
   - project-brief.md (last updated: 5 days ago)
   - project-vision.md (last updated: 2 weeks ago)
   - system-patterns.md (last updated: 3 days ago)
 
-⚠️ Issues:
+âš ï¸ Issues:
   {any warnings or errors}
 
-⏰ Last Update: {timestamp}
-🔄 Next: Run this command regularly to keep context current
-💡 Tip: Major changes? Consider running /context:create for full refresh
+â° Last Update: {timestamp}
+ðŸ”„ Next: Run this command regularly to keep context current
+ðŸ’¡ Tip: Major changes? Consider running /context:create for full refresh
 ```
 
 ### 7. Incremental Update Tracking
@@ -218,3 +228,6 @@ Use these commands to detect changes:
 - **Handle errors gracefully** - don't corrupt existing context
 
 $ARGUMENTS
+
+
+

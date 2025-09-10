@@ -1,60 +1,12 @@
 ---
+model: claude-sonnet-4-20250514
+category: bridge-integration
+priority: medium
+tags: ["bridge-integration", "testing"]
+description: Test Reference Update
 allowed-tools: Bash, Read, Write
 ---
 
-# Test Reference Update
-
-Test the task reference update logic used in epic-sync.
-
-## Usage
-```
-/pm:test-reference-update
-```
-
-## Instructions
-
-### 1. Create Test Files
-
-Create test task files with references:
-```bash
-mkdir -p /tmp/test-refs
-cd /tmp/test-refs
-
-# Create task 001
-cat > 001.md << 'EOF'
----
-name: Task One
-status: open
-depends_on: []
-parallel: true
-conflicts_with: [002, 003]
----
-# Task One
-This is task 001.
-EOF
-
-# Create task 002
-cat > 002.md << 'EOF'
----
-name: Task Two
-status: open
-depends_on: [001]
-parallel: false
-conflicts_with: [003]
----
-# Task Two
-This is task 002, depends on 001.
-EOF
-
-# Create task 003
-cat > 003.md << 'EOF'
----
-name: Task Three
-status: open
-depends_on: [001, 002]
-parallel: false
-conflicts_with: []
----
 # Task Three
 This is task 003, depends on 001 and 002.
 EOF
@@ -130,5 +82,7 @@ Expected output:
 cd -
 rm -rf /tmp/test-refs
 rm -f /tmp/task-mapping.txt /tmp/id-mapping.txt
-echo "✅ Test complete and cleaned up"
+echo "âœ… Test complete and cleaned up"
 ```
+
+

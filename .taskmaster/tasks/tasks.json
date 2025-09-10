@@ -65,9 +65,7 @@
         "details": "Set up folders: /app, /drivers, /transports, /docs, /tests. Add .gitignore, README, and initial config files (.mcp.json, .claude/settings.json). Use PowerShell scripts for automation. Ensure compatibility with Windows filesystem conventions.",
         "testStrategy": "Verify directory structure and presence of all config files. Run repository initialization script and check for errors.",
         "priority": "high",
-        "dependencies": [
-          1
-        ],
+        "dependencies": [1],
         "status": "done",
         "subtasks": [
           {
@@ -83,9 +81,7 @@
             "id": 2,
             "title": "Prepare Initial Configuration and Documentation Files",
             "description": "Draft and template the essential files: .gitignore, README, .mcp.json, and .claude/settings.json, ensuring correct formatting and initial content.",
-            "dependencies": [
-              "2.1"
-            ],
+            "dependencies": ["2.1"],
             "details": "Create sample content for each file, including basic ignore rules, project overview, and minimal valid JSON for config files.",
             "status": "done",
             "testStrategy": "Validate file syntax and confirm presence of required sections in each file."
@@ -94,10 +90,7 @@
             "id": 3,
             "title": "Develop PowerShell Automation Script",
             "description": "Write a PowerShell script to automate creation of the directory structure and placement of configuration files, ensuring idempotency and error handling.",
-            "dependencies": [
-              "2.1",
-              "2.2"
-            ],
+            "dependencies": ["2.1", "2.2"],
             "details": "Script should create all directories, copy or generate config files, and handle reruns without duplication or errors.",
             "status": "done",
             "testStrategy": "Run the script on a clean environment and verify correct structure and file placement; rerun to confirm idempotency."
@@ -106,9 +99,7 @@
             "id": 4,
             "title": "Integrate Windows Filesystem Compatibility Checks",
             "description": "Ensure all directory and file names, paths, and script logic comply with Windows filesystem conventions and limitations.",
-            "dependencies": [
-              "2.3"
-            ],
+            "dependencies": ["2.3"],
             "details": "Review naming, reserved characters, path lengths, and permissions. Update script and documentation as needed.",
             "status": "done",
             "testStrategy": "Test repository initialization on Windows 11; check for errors related to naming, paths, or permissions."
@@ -117,9 +108,7 @@
             "id": 5,
             "title": "Verify Repository Initialization and Structure",
             "description": "Execute the automation script and manually inspect the resulting repository to confirm all directories and files are present and correctly configured.",
-            "dependencies": [
-              "2.4"
-            ],
+            "dependencies": ["2.4"],
             "details": "Compare the generated structure against the specification. Document any discrepancies and update scripts or templates as needed.",
             "status": "done",
             "testStrategy": "Run the full initialization process, review output, and cross-check with the directory map and file checklist."
@@ -133,9 +122,7 @@
         "details": "Implement a single-window UI in both C# (WinUI 3, Native AOT) and Rust (egui or native Win32 bindings). Integrate basic serial port echo functionality using System.IO.Ports (C#) and serialport-rs (Rust). Measure RAM, CPU, and cold-start times using Windows Performance Monitor.",
         "testStrategy": "Run both prototypes on Windows 11. Measure startup time, idle CPU, and RAM usage. Validate serial echo functionality with a loopback device.",
         "priority": "high",
-        "dependencies": [
-          1
-        ],
+        "dependencies": [1],
         "status": "done",
         "subtasks": [
           {
@@ -160,10 +147,7 @@
             "id": 3,
             "title": "Implement Serial Port Echo Functionality in Both UIs",
             "description": "Integrate basic serial port echo logic using System.IO.Ports in C# and serialport-rs in Rust.",
-            "dependencies": [
-              "3.1",
-              "3.2"
-            ],
+            "dependencies": ["3.1", "3.2"],
             "details": "Add code to both UIs to open a serial port, read incoming data, and immediately write it back (echo) to the sender.\n<info added on 2025-08-25T05:45:36.099Z>\nPerformance benchmarks confirm both C# Native AOT and Rust UIs meet all resource and startup requirements. Rust outperforms C# with 3x faster startup (231ms vs. 699ms), 13% lower memory usage (68MB vs. 78MB), and a 14x smaller binary distribution (4MB vs. 62MB). Both implementations maintain negligible CPU usage at idle.\n</info added on 2025-08-25T05:45:36.099Z>",
             "status": "done",
             "testStrategy": "Connect a loopback device; send data through the UI and verify echoed data is received."
@@ -172,9 +156,7 @@
             "id": 4,
             "title": "Measure Resource Usage and Startup Performance",
             "description": "Profile RAM, CPU, and cold-start times for both prototypes using Windows Performance Monitor.",
-            "dependencies": [
-              "3.3"
-            ],
+            "dependencies": ["3.3"],
             "details": "Use Windows Performance Monitor to record memory usage, CPU utilization, and startup time for each app under identical conditions.",
             "status": "done",
             "testStrategy": "Document measurements for each metric; repeat tests to ensure consistency."
@@ -183,9 +165,7 @@
             "id": 5,
             "title": "Document Implementation and Benchmark Results",
             "description": "Summarize implementation steps, challenges, and resource usage results for both C# and Rust prototypes.",
-            "dependencies": [
-              "3.4"
-            ],
+            "dependencies": ["3.4"],
             "details": "Prepare a report detailing setup, serial echo validation, and all measured performance metrics for both implementations.",
             "status": "done",
             "testStrategy": "Review documentation for completeness and clarity; ensure all results and steps are reproducible."
@@ -199,9 +179,7 @@
         "details": "Document RAM, CPU, and startup benchmarks. Evaluate UI responsiveness, AOT compatibility, and driver/plugin extensibility. Record trade-offs in docs/decisions/decision-log.md. Prefer .NET 8 Native AOT if performance budgets are met; otherwise, select Rust.",
         "testStrategy": "Review benchmark data and developer feedback. Confirm decision is documented and justified in the decision log.",
         "priority": "high",
-        "dependencies": [
-          3
-        ],
+        "dependencies": [3],
         "status": "done",
         "subtasks": [
           {
@@ -235,11 +213,7 @@
             "id": 4,
             "title": "Compare Trade-offs and Document Decision Rationale",
             "description": "Synthesize benchmark, UI, AOT, and extensibility findings to compare trade-offs between C# and Rust.",
-            "dependencies": [
-              "4.1",
-              "4.2",
-              "4.3"
-            ],
+            "dependencies": ["4.1", "4.2", "4.3"],
             "details": "Summarize strengths, weaknesses, and risks for each stack. Record all trade-offs and rationale in docs/decisions/decision-log.md.",
             "status": "done",
             "testStrategy": "Review documentation for completeness and clarity. Ensure all major criteria and findings are addressed."
@@ -248,9 +222,7 @@
             "id": 5,
             "title": "Select Optimal Language/Framework and Finalize Documentation",
             "description": "Make a final decision on the language/framework based on performance budgets and documented trade-offs.",
-            "dependencies": [
-              "4.4"
-            ],
+            "dependencies": ["4.4"],
             "details": "If .NET 8 Native AOT meets performance budgets, select C#; otherwise, select Rust. Update the decision log with justification and notify stakeholders.",
             "status": "done",
             "testStrategy": "Confirm the decision is clearly documented, justified, and communicated to the team."
@@ -264,9 +236,7 @@
         "details": "Define interfaces in chosen language (C# or Rust) for device drivers and sessions. Support plugin loading from /drivers/<name> with manifest parsing (TOML/JSON). Ensure hot-plug detection, rate-limiting, and safety hooks (global stop). Use reflection (C#) or dynamic loading (Rust) for extensibility.",
         "testStrategy": "Write unit tests for interface compliance, plugin loading, and manifest parsing. Simulate hot-plug events and verify safety actions.",
         "priority": "high",
-        "dependencies": [
-          4
-        ],
+        "dependencies": [4],
         "status": "done",
         "subtasks": [
           {
@@ -282,9 +252,7 @@
             "id": 2,
             "title": "Implement Plugin Loading and Manifest Parsing",
             "description": "Develop the mechanism to load driver plugins from the /drivers/<name> directory, including parsing plugin manifests in TOML or JSON format.",
-            "dependencies": [
-              "5.1"
-            ],
+            "dependencies": ["5.1"],
             "details": "Utilize reflection (C#) or dynamic loading (Rust) to discover and instantiate plugins at runtime. Implement robust manifest parsing to extract metadata and configuration for each plugin.",
             "status": "done",
             "testStrategy": "Create tests for plugin discovery, manifest parsing accuracy, and error handling for malformed manifests."
@@ -293,9 +261,7 @@
             "id": 3,
             "title": "Integrate Hot-Plug Detection and Rate-Limiting",
             "description": "Add support for detecting device hot-plug events and implement rate-limiting to prevent resource exhaustion or rapid cycling.",
-            "dependencies": [
-              "5.2"
-            ],
+            "dependencies": ["5.2"],
             "details": "Monitor device connection/disconnection events and trigger appropriate driver/session lifecycle actions. Implement configurable rate-limiting to manage event frequency and system stability.",
             "status": "done",
             "testStrategy": "Simulate hot-plug scenarios and verify correct detection, handling, and rate-limiting behavior."
@@ -304,9 +270,7 @@
             "id": 4,
             "title": "Implement Safety Hooks and Global Stop Mechanism",
             "description": "Design and implement safety hooks, including a global stop function to ensure safe shutdown or interruption of all device operations.",
-            "dependencies": [
-              "5.3"
-            ],
+            "dependencies": ["5.3"],
             "details": "Provide a centralized mechanism to halt all device activity in response to critical errors or user commands, ensuring system safety and integrity.",
             "status": "done",
             "testStrategy": "Test global stop under various operational states and verify all devices cease activity safely and promptly."
@@ -315,9 +279,7 @@
             "id": 5,
             "title": "Validate Extensibility and Interface Compliance",
             "description": "Ensure the abstraction layer supports extensibility via reflection or dynamic loading, and that all plugins conform to the defined interfaces.",
-            "dependencies": [
-              "5.4"
-            ],
+            "dependencies": ["5.4"],
             "details": "Perform integration tests with multiple sample plugins, verifying correct loading, interface adherence, and runtime extensibility in both C# and Rust environments.",
             "status": "done",
             "testStrategy": "Automate tests for plugin loading, interface compliance, and extensibility across supported platforms."
@@ -331,9 +293,7 @@
         "details": "Use System.IO.Ports (C#) or serialport-rs (Rust) for serial; System.Net.Sockets (C#) or tokio (Rust) for TCP/UDP; SSH.NET (C#) or thrussh (Rust) for SSH. Implement exponential backoff for reconnects. Integrate transport selection via manifest. Ensure all transports meet latency budgets.",
         "testStrategy": "Automated tests for device discovery, connection, and reconnection. Measure write→ack and network latency. Fuzz serial framing for robustness.",
         "priority": "high",
-        "dependencies": [
-          5
-        ],
+        "dependencies": [5],
         "status": "done",
         "subtasks": [
           {
@@ -367,11 +327,7 @@
             "id": 4,
             "title": "Integrate Exponential Backoff and Reconnect Logic",
             "description": "Implement exponential backoff and reconnection strategies for all transport modules to ensure robust recovery from connection failures.",
-            "dependencies": [
-              "6.1",
-              "6.2",
-              "6.3"
-            ],
+            "dependencies": ["6.1", "6.2", "6.3"],
             "details": "Design a unified reconnection framework with configurable backoff parameters. Ensure all transports can recover gracefully from transient errors and meet latency budgets.",
             "status": "done",
             "testStrategy": "Simulate connection failures and verify correct backoff, retry, and recovery behavior across all transports."
@@ -380,12 +336,7 @@
             "id": 5,
             "title": "Implement Transport Selection and Manifest Integration",
             "description": "Develop logic to select and configure the appropriate transport based on a manifest, ensuring seamless integration and adherence to latency requirements.",
-            "dependencies": [
-              "6.1",
-              "6.2",
-              "6.3",
-              "6.4"
-            ],
+            "dependencies": ["6.1", "6.2", "6.3", "6.4"],
             "details": "Parse manifest files to determine transport configuration. Dynamically instantiate and manage transport modules as specified. Validate that selected transports meet performance and latency constraints.",
             "status": "done",
             "testStrategy": "Automated tests for manifest parsing, transport selection, and end-to-end connectivity. Measure and verify latency budgets for each transport."
@@ -399,9 +350,7 @@
         "details": "Use WinUI 3 (C#) or egui/native Win32 (Rust) for UI. Implement device sidebar, tabbed navigation, and manual control widgets (sliders, buttons, toggles). Ensure accessibility and native Windows 11 look/feel. Integrate with device abstraction and transport layers.",
         "testStrategy": "UI automation tests for navigation, control widgets, and device state display. Validate accessibility and responsiveness on Windows 11.",
         "priority": "high",
-        "dependencies": [
-          6
-        ],
+        "dependencies": [6],
         "status": "done",
         "subtasks": [
           {
@@ -417,9 +366,7 @@
             "id": 2,
             "title": "Implement Manual Control Widgets",
             "description": "Develop interactive manual control widgets such as sliders, buttons, and toggles within the Manual tab.",
-            "dependencies": [
-              "7.1"
-            ],
+            "dependencies": ["7.1"],
             "details": "Use native controls provided by WinUI 3 or egui to ensure responsiveness and accessibility. Controls must support real-time updates and reflect device state.",
             "status": "done",
             "testStrategy": "Automate tests for widget interaction, state changes, and accessibility compliance."
@@ -428,9 +375,7 @@
             "id": 3,
             "title": "Integrate Device Sidebar with Abstraction Layer",
             "description": "Connect the device sidebar to the device abstraction and transport layers to display available devices and their statuses.",
-            "dependencies": [
-              "7.1"
-            ],
+            "dependencies": ["7.1"],
             "details": "Implement dynamic device listing and status updates by subscribing to device abstraction events. Ensure sidebar updates in real time as devices connect or disconnect.",
             "status": "done",
             "testStrategy": "Simulate device connections/disconnections and verify sidebar updates and status indicators."
@@ -439,10 +384,7 @@
             "id": 4,
             "title": "Ensure Accessibility and Windows 11 Native Look",
             "description": "Apply accessibility best practices and native Windows 11 styling to all UI components.",
-            "dependencies": [
-              "7.1",
-              "7.2"
-            ],
+            "dependencies": ["7.1", "7.2"],
             "details": "Use platform accessibility APIs (e.g., UI Automation, Narrator support) and follow Windows 11 design language for colors, spacing, and controls. Validate keyboard navigation and screen reader compatibility.",
             "status": "done",
             "testStrategy": "Run accessibility audits and manual tests with assistive technologies on Windows 11."
@@ -451,10 +393,7 @@
             "id": 5,
             "title": "Integrate Tab Content with Device and Transport Layers",
             "description": "Wire up each tab (Manual, Scripts, Telemetry, Logs, Profiles) to interact with the device abstraction and transport layers for real-time data and control.",
-            "dependencies": [
-              "7.2",
-              "7.3"
-            ],
+            "dependencies": ["7.2", "7.3"],
             "details": "Implement data bindings and event handlers so each tab displays and updates relevant device information, logs, and telemetry in real time.",
             "status": "done",
             "testStrategy": "Automate end-to-end tests for tab interactions, data updates, and error handling with simulated device events."
@@ -466,9 +405,7 @@
         "title": "Integrate Scripting Runtime and API",
         "description": "Embed a sandboxed scripting engine (JavaScript, Lua, or Python) with APIs for device control and telemetry.",
         "status": "done",
-        "dependencies": [
-          7
-        ],
+        "dependencies": [7],
         "priority": "medium",
         "details": "Successfully implemented Rhai scripting engine with comprehensive security sandboxing. Created 7 module files in src/scripting/ with multi-layer security including resource limits, dangerous pattern detection, permission-based device access, and whitelisted commands. Implemented async-to-sync bridge using tokio::Handle and oneshot channels to resolve async incompatibility. Includes 4 example scripts and comprehensive SCRIPTING_GUIDE.md documentation.",
         "testStrategy": "Unit and integration tests for script execution, API calls, and sandbox enforcement. Run sample scripts to validate device control and telemetry access. Security tests validate sandbox restrictions and resource limits.",
@@ -487,9 +424,7 @@
             "title": "Embed and Configure Sandboxed Scripting Runtime",
             "description": "Integrated Rhai engine with multi-layer security sandboxing including resource limits, dangerous pattern detection, and permission-based access control.",
             "status": "done",
-            "dependencies": [
-              1
-            ],
+            "dependencies": [1],
             "details": "Implemented comprehensive sandboxing in sandbox.rs with operation limits, memory constraints, execution timeouts, dangerous pattern detection, and permission-based device access. Created secure execution contexts that prevent unauthorized operations.",
             "testStrategy": "Security tests validate that restricted operations are blocked and resource limits are enforced. Example scripts demonstrate sandbox security features."
           },
@@ -498,9 +433,7 @@
             "title": "Expose Device Control and Telemetry APIs to Scripts",
             "description": "Implemented device APIs (devices.list(), device.call()) with async-to-sync bridge to enable synchronous Rhai scripts to work with async device operations.",
             "status": "done",
-            "dependencies": [
-              2
-            ],
+            "dependencies": [2],
             "details": "Created api.rs with device enumeration and control APIs. Implemented async_bridge.rs using tokio::Handle and oneshot channels to convert async device operations to synchronous calls compatible with Rhai's execution model.",
             "testStrategy": "Example scripts demonstrate successful device enumeration and control. Integration tests validate API functionality and async-to-sync conversion."
           },
@@ -509,9 +442,7 @@
             "title": "Implement Error Handling and API Usage Documentation",
             "description": "Defined comprehensive error handling in errors.rs and created detailed SCRIPTING_GUIDE.md documentation covering API usage, security features, and best practices.",
             "status": "done",
-            "dependencies": [
-              3
-            ],
+            "dependencies": [3],
             "details": "Implemented structured error types for script execution, API failures, and security violations. Created comprehensive documentation covering API signatures, usage examples, security model, resource limits, and development best practices.",
             "testStrategy": "Documentation reviewed for completeness. Error handling validated through example scripts and unit tests that trigger various failure scenarios."
           },
@@ -520,9 +451,7 @@
             "title": "Develop and Execute Integration and Security Tests",
             "description": "Created comprehensive test suite in tests.rs covering script execution, API functionality, sandbox enforcement, and security scenarios with 4 example scripts.",
             "status": "done",
-            "dependencies": [
-              4
-            ],
+            "dependencies": [4],
             "details": "Implemented unit tests for all scripting components, integration tests for device API interactions, and security tests for sandbox enforcement. Created 4 example scripts demonstrating LED control, sensor reading, temperature control, and security features.",
             "testStrategy": "All tests pass, validating correct API behavior, robust error handling, and strict sandbox enforcement. Example scripts successfully demonstrate real-world usage scenarios."
           }
@@ -535,9 +464,7 @@
         "details": "Use fixed-size ring buffers (min 2k samples) for telemetry; render charts at ~30 FPS using WinUI 3 or Rust charting libs. Implement profile management with JSON/TOML hot-reload. Add rolling log buffers and one-click export. Ensure RAM usage stays within budget.",
         "testStrategy": "Automated tests for telemetry rendering, profile load/save, and log export. Soak tests for RAM drift and performance over 8-hour runs.",
         "priority": "medium",
-        "dependencies": [
-          8
-        ],
+        "dependencies": [8],
         "status": "done",
         "subtasks": [
           {
@@ -553,9 +480,7 @@
             "id": 2,
             "title": "Render Real-Time Telemetry Charts",
             "description": "Integrate a charting library (WinUI 3 compatible, e.g., LiveCharts2, Telerik, or Syncfusion) to render telemetry data at approximately 30 FPS.",
-            "dependencies": [
-              "9.1"
-            ],
+            "dependencies": ["9.1"],
             "details": "Bind chart data sources to the ring buffer. Implement efficient UI updates and ensure smooth rendering with minimal CPU/GPU overhead. Support multiple chart types as needed for device telemetry.\n<info added on 2025-09-05T21:32:43.220Z>\nSuccessfully completed Task 9.2: Render Real-Time Telemetry Charts.\n\nImplementation summary:\n- Added egui_plot v0.29 dependency to match existing egui version\n- Created comprehensive charts.rs module with TelemetryChart widget supporting multiple chart types (Line, Scatter, Area, StepLine)\n- Integrated telemetry system from Task 9.1 with the UI\n- Updated TelemetryPanel to use egui_plot for real-time rendering\n- Connected telemetry channels to chart widgets with 30 FPS update rate\n- Implemented data decimation (300 points max) for performance\n- Added channel statistics display (sample rate, buffer usage, dropped samples)\n- Created telemetry_test example for testing\n- Fixed various compilation issues related to field names and API changes\n- Build completed successfully with warnings only\n\nThe telemetry charting system now supports:\n- Real-time data visualization at 30 FPS\n- Multiple chart types with easy switching\n- Automatic Y-axis scaling or fixed ranges\n- Time window filtering\n- Tooltips and legends\n- Performance statistics\n- Multi-channel support with channel selector\n</info added on 2025-09-05T21:32:43.220Z>",
             "status": "done",
             "testStrategy": "Automated UI tests for chart responsiveness and correctness. Performance profiling to verify frame rate and resource usage."
@@ -582,12 +507,7 @@
             "id": 5,
             "title": "Enforce RAM Usage Budget and Monitor Performance",
             "description": "Integrate monitoring and safeguards to ensure total RAM usage for telemetry, profiles, and logs remains within defined limits.",
-            "dependencies": [
-              "9.1",
-              "9.2",
-              "9.3",
-              "9.4"
-            ],
+            "dependencies": ["9.1", "9.2", "9.3", "9.4"],
             "details": "Implement runtime checks and alerts for memory usage. Optimize data structures and buffer sizes as needed. Document RAM budget assumptions and provide configuration options.",
             "status": "done",
             "testStrategy": "Automated soak tests for memory drift and performance over 8-hour runs. Validate alerts and adaptive behavior under stress."
@@ -601,9 +521,7 @@
         "details": "Use xUnit/NUnit (C#) or cargo test (Rust) for unit tests. Simulate device connections and control flows. Run soak tests for 8+ hours to monitor RAM drift and stability. Validate safety actions and performance budgets. Document results and acceptance criteria.",
         "testStrategy": "Run full test suite; review logs and performance metrics. Confirm all success metrics and safety requirements are met before release.",
         "priority": "high",
-        "dependencies": [
-          9
-        ],
+        "dependencies": [9],
         "status": "done",
         "subtasks": [
           {
@@ -619,9 +537,7 @@
             "id": 2,
             "title": "Implement and Run Loopback Tests",
             "description": "Simulate device connections and control flows to verify communication integrity and protocol handling between software components.",
-            "dependencies": [
-              "10.1"
-            ],
+            "dependencies": ["10.1"],
             "details": "Configure test harnesses to emulate device endpoints and control flows. Validate correct data transmission, reception, and error handling under loopback conditions.\n<info added on 2025-09-06T21:38:46.584Z>\nLoopback tests completed successfully. TCP and UDP server-client tests passed, verifying bidirectional communication and protocol handling. Mock transport tests also validated reconnection logic and error handling.\n</info added on 2025-09-06T21:38:46.584Z>",
             "status": "done",
             "testStrategy": "Automate loopback scenarios; monitor logs for protocol errors and confirm all control flows execute as expected."
@@ -630,9 +546,7 @@
             "id": 3,
             "title": "Conduct Soak Tests for Stability",
             "description": "Run extended soak tests (8+ hours) to monitor RAM drift, resource leaks, and overall system stability under sustained load.",
-            "dependencies": [
-              "10.2"
-            ],
+            "dependencies": ["10.2"],
             "details": "Automate long-duration test runs with simulated device activity and control flows. Track memory usage, CPU load, and system responsiveness throughout the test period.\n<info added on 2025-09-06T21:44:11.094Z>\nSoak test deferred as non-critical for personal project. Core stability verified through unit tests and mock transport tests. No memory leaks detected in shorter test runs. This can be run later if needed for production deployment.\n</info added on 2025-09-06T21:44:11.094Z>",
             "status": "done",
             "testStrategy": "Analyze resource metrics and logs for anomalies; confirm no memory leaks or stability issues over the soak duration."
@@ -641,9 +555,7 @@
             "id": 4,
             "title": "Validate Safety Actions and Performance Budgets",
             "description": "Verify that all safety-critical actions and performance requirements are met under test conditions, including emergency controls and latency budgets.",
-            "dependencies": [
-              "10.3"
-            ],
+            "dependencies": ["10.3"],
             "details": "Test safety mechanisms (e.g., emergency stop, fail-safe triggers) and measure system performance against defined budgets. Simulate edge cases and failure scenarios.\n<info added on 2025-09-06T21:39:12.131Z>\nPerformance validation completed. All performance budgets are met: startup time < 2 seconds (validated through test_startup_validation), CPU usage ≤ 2% idle (enforced by BudgetEnforcer), memory usage ≤ 150MB (validated through ResourceBudget tests). Performance monitoring system is operational with real-time metrics collection.\n</info added on 2025-09-06T21:39:12.131Z>",
             "status": "done",
             "testStrategy": "Automate safety and performance tests; review metrics and logs to confirm compliance with acceptance criteria."
@@ -652,9 +564,7 @@
             "id": 5,
             "title": "Document Test Results and Acceptance Criteria",
             "description": "Compile and organize all test results, logs, and metrics. Clearly document acceptance criteria and final verification status for project release.",
-            "dependencies": [
-              "10.4"
-            ],
+            "dependencies": ["10.4"],
             "details": "Aggregate test outputs, summarize findings, and record pass/fail status for each requirement. Prepare documentation for stakeholder review and final acceptance.\n<info added on 2025-09-06T21:40:27.378Z>\nDocumentation completed. Created comprehensive test results document at docs/TEST_RESULTS_TASK_10.md. Document includes: executive summary, detailed test results for all subtasks, acceptance criteria verification, risk assessment, and recommendations. 103 of 110 non-hardware tests passed. Performance budgets validated. Soak test pending but not blocking.\n</info added on 2025-09-06T21:40:27.378Z>",
             "status": "done",
             "testStrategy": "Ensure all documentation is complete, accurate, and accessible; confirm that acceptance criteria are explicitly met and traceable to test evidence."
@@ -668,9 +578,7 @@
         "details": "Review the code in transports/serial/src/index.ts (lines 42-48), transports/tcp-udp/src/index.ts (lines 42-48), and transports/ssh/src/index.ts (lines 50-56) to identify all event listeners registered during connection setup. Implement a removeListeners() method in each transport class that unregisters all event listeners attached to sockets, streams, or other resources. Ensure removeListeners() is invoked before any disconnect or reconnect logic to prevent accumulation of orphaned listeners and associated memory leaks. Refactor connection lifecycle management to guarantee that listeners are always cleaned up, even in error or edge cases. Document the new method and update any relevant lifecycle diagrams or developer notes. Consider using automated tools or static analysis to verify that no listeners remain after disconnect. Ensure the implementation is consistent across all transport types.",
         "testStrategy": "1. Write unit tests for each transport to verify that after calling removeListeners(), no event listeners remain attached to sockets or streams. \n2. Use automated soak tests to repeatedly connect and disconnect each transport type, monitoring memory usage for signs of leaks. \n3. Employ memory profiling tools (such as Valgrind, LeakSanitizer, or platform-specific profilers) to confirm that memory usage remains stable over repeated reconnect cycles[1][3]. \n4. Manually inspect listener counts (where supported) before and after disconnect to ensure cleanup. \n5. Validate that normal operation and error handling paths both invoke removeListeners() reliably.",
         "status": "done",
-        "dependencies": [
-          6
-        ],
+        "dependencies": [6],
         "priority": "high",
         "subtasks": [
           {
@@ -686,9 +594,7 @@
             "id": 2,
             "title": "Design and Implement removeListeners() Method for Serial Transport",
             "description": "Create a removeListeners() method in the Serial transport class that unregisters all event listeners attached to sockets, streams, or other resources.",
-            "dependencies": [
-              "11.1"
-            ],
+            "dependencies": ["11.1"],
             "details": "Ensure the method covers all listeners identified in the code review. Validate that listeners are removed on both disconnect and reconnect paths.",
             "status": "done",
             "testStrategy": ""
@@ -697,9 +603,7 @@
             "id": 3,
             "title": "Design and Implement removeListeners() Method for TCP/UDP Transport",
             "description": "Develop a removeListeners() method for the TCP/UDP transport class to unregister all event listeners from relevant resources.",
-            "dependencies": [
-              "11.1"
-            ],
+            "dependencies": ["11.1"],
             "details": "Address all listeners found in the TCP/UDP code review. Confirm that cleanup occurs before disconnect and reconnect logic.",
             "status": "done",
             "testStrategy": ""
@@ -708,9 +612,7 @@
             "id": 4,
             "title": "Design and Implement removeListeners() Method for SSH Transport",
             "description": "Implement a removeListeners() method in the SSH transport class to remove all event listeners from sockets, streams, or other SSH-related resources.",
-            "dependencies": [
-              "11.1"
-            ],
+            "dependencies": ["11.1"],
             "details": "Ensure comprehensive cleanup based on the SSH code review. Test removal in all lifecycle scenarios.",
             "status": "done",
             "testStrategy": ""
@@ -719,11 +621,7 @@
             "id": 5,
             "title": "Refactor Connection Lifecycle Management for Consistent Listener Cleanup",
             "description": "Update connection lifecycle logic in all transport modules to guarantee removeListeners() is invoked before any disconnect or reconnect, including error and edge cases.",
-            "dependencies": [
-              "11.2",
-              "11.3",
-              "11.4"
-            ],
+            "dependencies": ["11.2", "11.3", "11.4"],
             "details": "Refactor code paths to ensure listener cleanup is robust and consistent. Use automated tools or static analysis to verify no listeners remain after disconnect.",
             "status": "done",
             "testStrategy": ""
@@ -732,9 +630,7 @@
             "id": 6,
             "title": "Document Changes and Update Lifecycle Diagrams",
             "description": "Document the new removeListeners() methods, update developer notes, and revise lifecycle diagrams to reflect the improved event listener management.",
-            "dependencies": [
-              "11.5"
-            ],
+            "dependencies": ["11.5"],
             "details": "Provide clear documentation for future maintainers. Include examples and diagrams showing listener registration and cleanup flow.",
             "status": "done",
             "testStrategy": ""
@@ -746,11 +642,7 @@
         "title": "Establish Comprehensive Automated Test Coverage (Unit, Integration, Loopback, Performance)",
         "description": "Develop and implement a robust automated test suite covering unit, integration, loopback, and performance tests for all critical modules, starting with transport and driver layers, to achieve at least 80% code coverage.",
         "status": "done",
-        "dependencies": [
-          2,
-          6,
-          11
-        ],
+        "dependencies": [2, 6, 11],
         "priority": "high",
         "details": "Successfully established comprehensive automated test coverage with 36 passing tests for transport layer. Created mock transport layer with configurable failure injection, implemented reconnection logic tests (10), error handling tests (13), and latency enforcement tests (12). All 30 transport tests are passing with ~75% coverage achieved. Fixed runtime blocking issue in MockTransport::stats(). Windows-specific coverage tools (cargo-tarpaulin) had compatibility issues, requiring manual analysis approach. Next phase focuses on device driver tests to reach the 80% coverage target. Continue with integration tests that validate interactions between transports, drivers, and other system components. For loopback tests, simulate data transmission and reception through each transport (serial, TCP/UDP, SSH), verifying correct framing, error recovery, and reconnection logic. Implement performance validation tests to measure latency, throughput, and resource usage under load, ensuring compliance with system requirements. Use coverage tools appropriate for the selected language, with manual analysis as fallback for Windows compatibility issues. Maintain a test coverage matrix to track coverage against requirements and regularly review uncovered code. Document all test cases, expected outcomes, and coverage metrics. Refactor and expand tests iteratively to maintain at least 80% coverage as the codebase evolves.",
         "testStrategy": "1. Run the full automated test suite (currently 36 tests) and generate code coverage reports using integrated tools or manual analysis for Windows compatibility. 2. Verify that overall coverage progresses from current ~75% to target 80% through device driver test implementation. 3. Manually review coverage reports to ensure all critical paths, error conditions, and edge cases in transport and driver modules are exercised. 4. Execute loopback tests for each transport, confirming correct data transmission, error handling, and reconnection. 5. Run performance tests under simulated load and verify latency and throughput meet requirements. 6. Review and update the test coverage matrix to confirm all requirements are mapped to test cases. 7. Monitor for regression in the 30 passing transport tests while expanding coverage to device drivers.",
@@ -769,9 +661,7 @@
             "title": "Design and Implement Unit Tests for Transport and Driver Layers",
             "description": "Develop comprehensive unit tests for individual functions and classes within the transport and driver modules, focusing on edge cases, error handling, and expected behaviors.",
             "status": "done",
-            "dependencies": [
-              1
-            ],
+            "dependencies": [1],
             "details": "Successfully implemented 30 transport tests including reconnection logic tests (10), error handling tests (13), and latency enforcement tests (12). Created mock transport layer with configurable failure injection. Fixed runtime blocking issue in MockTransport::stats(). All transport tests passing.",
             "testStrategy": ""
           },
@@ -780,9 +670,7 @@
             "title": "Design and Implement Integration Tests Across System Components",
             "description": "Create integration tests that validate interactions between transport, driver, and other system modules, ensuring correct data flow and error propagation.",
             "status": "done",
-            "dependencies": [
-              1
-            ],
+            "dependencies": [1],
             "details": "Choose an integration testing approach (top-down, bottom-up, hybrid) suitable for the system architecture. Include negative testing and simulate real-world interaction patterns.\n<info added on 2025-09-05T07:47:04.644Z>\nSuccessfully implemented comprehensive integration test suite with 48 tests across 5 modules. Created tests/integration/ directory with: mod.rs (common utilities), transport_driver.rs (8 tests for transport-driver interactions), device_manager.rs (9 tests for device manager orchestration), scripting_device.rs (10 tests for scripting-device integration), end_to_end.rs (10 tests for complete workflows), error_propagation.rs (11 tests for error handling). Tests cover: connection flows, concurrent operations, error recovery, resource cleanup, performance under load, data integrity, security enforcement, and cascading error scenarios. All tests use the MockTransport infrastructure from earlier work and properly handle async operations with tokio::test macro.\n</info added on 2025-09-05T07:47:04.644Z>",
             "testStrategy": ""
           },
@@ -791,9 +679,7 @@
             "title": "Set Up and Execute Loopback Tests for Each Transport Type",
             "description": "Implement loopback tests to simulate data transmission and reception through each transport (serial, TCP/UDP, SSH), verifying framing, error recovery, and reconnection logic.",
             "status": "done",
-            "dependencies": [
-              1
-            ],
+            "dependencies": [1],
             "details": "Develop test harnesses or use hardware-in-the-loop setups as needed. Automate tests to cover normal and failure scenarios for each transport protocol.\n<info added on 2025-09-05T08:57:48.387Z>\nCOMPLETED: Implemented comprehensive loopback test suite for all transport types. Created 48 tests across serial, TCP, UDP, and SSH transports. Includes TestPatterns with edge cases, stress testing, error recovery, reconnection logic, stats tracking, and frame validation. Added complete HIL documentation and PowerShell test runner script with echo servers. Tests marked with #[ignore] for hardware requirements but fully ready for CI/CD integration with virtual devices.\n</info added on 2025-09-05T08:57:48.387Z>",
             "testStrategy": ""
           },
@@ -802,11 +688,7 @@
             "title": "Design and Execute Performance Validation Tests",
             "description": "Develop and run performance tests to measure latency, throughput, and resource usage under load, ensuring compliance with system requirements.",
             "status": "done",
-            "dependencies": [
-              2,
-              3,
-              4
-            ],
+            "dependencies": [2, 3, 4],
             "details": "Use benchmarking tools and profiling frameworks. Simulate realistic workloads and stress conditions. Collect and analyze performance metrics for bottlenecks.\n<info added on 2025-09-05T14:56:17.761Z>\nSuccessfully implemented comprehensive performance validation test suite with latency benchmarks for all transport types (Serial, TCP, UDP), throughput tests measuring 150+ ops/sec capability, stress tests validating 20+ concurrent sessions with >95% success rate, resource monitoring showing <50% CPU and <200MB memory usage, and complete benchmark runner with report generation. All performance requirements validated and exceeded targets.\n</info added on 2025-09-05T14:56:17.761Z>",
             "testStrategy": ""
           },
@@ -815,12 +697,7 @@
             "title": "Integrate Coverage Tools into CI/CD Pipeline with Windows Compatibility",
             "description": "Configure and integrate code coverage tools into the CI/CD pipeline for automated measurement and reporting, with fallback to manual analysis for Windows compatibility issues.",
             "status": "done",
-            "dependencies": [
-              2,
-              3,
-              4,
-              5
-            ],
+            "dependencies": [2, 3, 4, 5],
             "details": "Implement coverage measurement with cargo-tarpaulin where compatible, use manual analysis approach for Windows environments. Automate test execution and coverage report generation on each commit or pull request. Set up alerts for coverage drops below threshold.\n<info added on 2025-09-05T15:22:10.912Z>\nSuccessfully integrated coverage tools into CI/CD pipeline with comprehensive multi-platform support. Created test-coverage.yml workflow and rust-ci.yml with complete linting, testing, coverage, and security checks. Implemented Windows compatibility through PowerShell fallback script (measure-coverage.ps1). Configured 80% coverage threshold with automatic PR blocking mechanism. Integrated Codecov for centralized coverage tracking and reporting with coverage badges added to README. Created detailed CI/CD coverage documentation. All GitHub Actions workflows are production-ready with proper Windows compatibility handling.\n</info added on 2025-09-05T15:22:10.912Z>",
             "testStrategy": ""
           },
@@ -829,9 +706,7 @@
             "title": "Create and Maintain a Test Coverage Matrix",
             "description": "Develop and regularly update a test coverage matrix to track coverage against requirements and critical code paths, highlighting gaps and prioritizing additional tests.",
             "status": "done",
-            "dependencies": [
-              6
-            ],
+            "dependencies": [6],
             "details": "Map test cases to requirements and code paths. Review and update the matrix after each test cycle or major code change. Track progress from current ~75% to target 80% coverage.\n<info added on 2025-09-05T18:53:43.858Z>\nSuccessfully implemented comprehensive Test Coverage Matrix system achieving 80.2% coverage (exceeding 80% target). Created coverage-matrix.json with detailed requirement mappings across 10 requirement areas, test categories, and gap analysis for all 276 tests spanning unit, integration, loopback, and performance categories. Built PowerShell automation script (update-coverage-matrix.ps1) for continuous matrix updates and integrated with CI/CD pipeline for ongoing tracking. Generated comprehensive documentation in TEST_COVERAGE_MATRIX.md and identified 5 critical gaps (safety violations, UI testing, telemetry) with prioritized closure strategy. Matrix now provides complete test-to-code-path mapping and automated gap analysis capabilities.\n</info added on 2025-09-05T18:53:43.858Z>",
             "testStrategy": ""
           },
@@ -840,9 +715,7 @@
             "title": "Document Test Cases, Expected Outcomes, and Coverage Metrics",
             "description": "Document all test cases, their expected outcomes, and coverage metrics. Facilitate regular reviews with development and QA teams to ensure test effectiveness and address coverage gaps.",
             "status": "done",
-            "dependencies": [
-              7
-            ],
+            "dependencies": [7],
             "details": "Maintain clear, accessible documentation. Include rationale for test design, known limitations, and procedures for updating tests as the codebase evolves. Document the 36 current tests and Windows compatibility considerations.\n<info added on 2025-09-05T19:02:30.250Z>\nSuccessfully documented all 276 test cases with comprehensive documentation including test-cases.yaml with machine-readable specifications, interactive HTML coverage dashboard with real-time metrics, complete TEST_DOCUMENTATION.md with test strategy and procedures, updated tests/README.md with maintenance guidelines, Windows compatibility notes, hardware requirements, known limitations, and update procedures. All test cases now have clear rationale, expected outcomes, and coverage metrics tracked through the interactive dashboard.\n</info added on 2025-09-05T19:02:30.250Z>",
             "testStrategy": ""
           },
@@ -851,9 +724,7 @@
             "title": "Implement Device Driver Tests to Achieve 80% Coverage Target",
             "description": "Develop and implement comprehensive unit tests for device driver modules to bridge the gap from current ~75% coverage to the target 80% coverage.",
             "status": "done",
-            "dependencies": [
-              2
-            ],
+            "dependencies": [2],
             "details": "Focus on device driver test implementation as identified path to reach 80% coverage target. Build upon the successful transport test framework and mock infrastructure. Ensure device driver tests complement the existing 30 transport tests without causing regressions.\n<info added on 2025-09-05T13:38:49.345Z>\nCOMPLETED: Implemented comprehensive device driver test suite achieving 80%+ coverage target. Created 100+ tests across unit and integration levels. Built mock transport infrastructure with controllable failure modes. Implemented driver-specific tests for Arduino Uno/Mega, Raspberry Pi covering all 30+ endpoints. Added integration tests for multi-driver scenarios, hot-swapping, failover, transport reconnection, device manager, plugin loading, safety controller, and performance under load (20 sessions × 50 ops). Tests validate GPIO, PWM, analog, I2C, sensors, telemetry with proper error injection. Infrastructure includes TestEnvironment, performance measurement, stress testing utilities. All tests use proper mocking to avoid hardware dependencies while maintaining realistic behavior.\n</info added on 2025-09-05T13:38:49.345Z>",
             "testStrategy": ""
           }
@@ -866,9 +737,7 @@
         "details": "Modify transports/serial/src/index.ts, specifically lines 59-69 within the send() method, to capture precise timing metrics for each send operation. Use a high-resolution timer (e.g., process.hrtime.bigint() in Node.js or equivalent) to record the start and end time of each send. Calculate the elapsed time for each operation and compare it to the 50ms performance budget. If the latency exceeds 50ms, emit a structured warning event (e.g., 'serial-latency-warning') with details including the measured latency, timestamp, and relevant context. If the operation cannot complete within 50ms, enforce a hard timeout by aborting the send and emitting an error event. Integrate this logic such that it does not introduce significant overhead or interfere with normal operation. Ensure that all timing and warning logic is covered by unit tests and that emitted events are documented for downstream consumers. Consider edge cases such as partial writes, retries, and system clock anomalies. All changes must maintain compatibility with the transport layer's reconnect/backoff and error handling logic.",
         "testStrategy": "1. Write unit tests that simulate send() operations with controlled timing to verify that latency is measured accurately and warnings are emitted when the 50ms threshold is exceeded. 2. Use integration tests to simulate high-latency scenarios (e.g., by injecting artificial delays) and confirm that timeouts are enforced and error events are emitted as specified. 3. Verify that normal send operations under the latency budget do not emit warnings or errors. 4. Ensure that all emitted events contain the correct metadata and are received by downstream listeners. 5. Run soak tests to confirm that the instrumentation does not introduce memory leaks or significant performance overhead.",
         "status": "done",
-        "dependencies": [
-          6
-        ],
+        "dependencies": [6],
         "priority": "high",
         "subtasks": [
           {
@@ -884,9 +753,7 @@
             "id": 2,
             "title": "Implement Warning and Error Event Emission",
             "description": "Emit a structured 'serial-latency-warning' event if the measured latency exceeds 50ms, including details such as measured latency, timestamp, and context. Emit an error event if a hard timeout is enforced.",
-            "dependencies": [
-              "13.1"
-            ],
+            "dependencies": ["13.1"],
             "details": "Ensure events are emitted in a way that is compatible with the existing event system and provide all required contextual information for downstream consumers.",
             "status": "done",
             "testStrategy": ""
@@ -895,10 +762,7 @@
             "id": 3,
             "title": "Enforce Timeout Logic in send()",
             "description": "Implement logic to abort the send operation if it cannot complete within the 50ms latency budget, ensuring a hard timeout is enforced and the appropriate error event is emitted.",
-            "dependencies": [
-              "13.1",
-              "13.2"
-            ],
+            "dependencies": ["13.1", "13.2"],
             "details": "Handle edge cases such as partial writes, retries, and ensure compatibility with reconnect/backoff and error handling logic in the transport layer.",
             "status": "done",
             "testStrategy": ""
@@ -907,11 +771,7 @@
             "id": 4,
             "title": "Write Unit and Integration Tests for Latency and Event Coverage",
             "description": "Develop comprehensive unit and integration tests to verify accurate latency measurement, correct event emission, and proper enforcement of the 50ms timeout under various scenarios.",
-            "dependencies": [
-              "13.1",
-              "13.2",
-              "13.3"
-            ],
+            "dependencies": ["13.1", "13.2", "13.3"],
             "details": "Simulate controlled timing, high-latency scenarios, partial writes, and retries. Ensure all new logic is fully covered by tests.",
             "status": "done",
             "testStrategy": ""
@@ -920,11 +780,7 @@
             "id": 5,
             "title": "Document Event Structure and Update Downstream Consumer Documentation",
             "description": "Document the structure of emitted warning and error events, and update documentation for downstream consumers to reflect the new event types and their usage.",
-            "dependencies": [
-              "13.2",
-              "13.3",
-              "13.4"
-            ],
+            "dependencies": ["13.2", "13.3", "13.4"],
             "details": "Provide clear examples and descriptions of event payloads, and ensure documentation is accessible to all relevant stakeholders.",
             "status": "done",
             "testStrategy": ""
@@ -938,10 +794,7 @@
         "details": "Update all transport modules (serial, TCP/UDP, SSH) to support automatic reconnection when a disconnect is detected, using an exponential backoff strategy. The backoff sequence should start at 1 second and double on each failure (1s, 2s, 4s, 8s, etc.), capping at a maximum delay of 30 seconds. On each disconnect, initiate the reconnection loop, resetting the delay to 1s upon a successful connection. Ensure the logic is resilient to rapid connect/disconnect cycles and does not leak resources (e.g., timers, event listeners). Implement connection state tracking (e.g., 'disconnected', 'connecting', 'connected', 'reconnecting', 'failed') and expose state changes via events or callbacks. Integrate this logic into the transport base class or a shared utility to avoid duplication. Consider adding optional jitter to backoff delays to prevent thundering herd problems in multi-device scenarios. Document the reconnection flow and state transitions clearly in code comments.",
         "testStrategy": "1. Write unit tests for each transport to simulate disconnect events and verify that reconnection attempts occur with the correct exponential backoff timing (1s, 2s, 4s, 8s, up to 30s). 2. Test that the delay resets to 1s after a successful reconnection. 3. Simulate rapid connect/disconnect cycles to ensure no resource leaks or duplicate timers. 4. Verify that connection state transitions are emitted correctly and in the expected order. 5. Use integration tests to simulate real network failures and confirm that transports recover automatically. 6. Optionally, test with multiple transports to ensure jitter (if implemented) prevents synchronized retries.",
         "status": "done",
-        "dependencies": [
-          6,
-          11
-        ],
+        "dependencies": [6, 11],
         "priority": "high",
         "subtasks": [
           {
@@ -957,9 +810,7 @@
             "id": 2,
             "title": "Implement Exponential Backoff and Reconnection for Serial Transport",
             "description": "Integrate the shared reconnection and backoff logic into the serial transport module, triggering reconnection on disconnect events.",
-            "dependencies": [
-              "14.1"
-            ],
+            "dependencies": ["14.1"],
             "details": "Update the serial transport to use the shared logic. Ensure correct handling of serial-specific errors and resource cleanup. Reset backoff delay on successful connection.",
             "status": "done",
             "testStrategy": ""
@@ -968,9 +819,7 @@
             "id": 3,
             "title": "Implement Exponential Backoff and Reconnection for TCP/UDP Transport",
             "description": "Integrate the shared reconnection and backoff logic into the TCP/UDP transport modules, triggering reconnection on disconnect events.",
-            "dependencies": [
-              "14.1"
-            ],
+            "dependencies": ["14.1"],
             "details": "Update TCP and UDP transports to use the shared logic. Handle protocol-specific disconnect scenarios and ensure proper resource management. Reset backoff delay on successful connection.",
             "status": "done",
             "testStrategy": ""
@@ -979,9 +828,7 @@
             "id": 4,
             "title": "Implement Exponential Backoff and Reconnection for SSH Transport",
             "description": "Integrate the shared reconnection and backoff logic into the SSH transport module, triggering reconnection on disconnect events.",
-            "dependencies": [
-              "14.1"
-            ],
+            "dependencies": ["14.1"],
             "details": "Update SSH transport to use the shared logic. Handle SSH-specific disconnects and authentication failures. Ensure resource cleanup and reset backoff delay on successful connection.",
             "status": "done",
             "testStrategy": ""
@@ -990,11 +837,7 @@
             "id": 5,
             "title": "Add Connection State Tracking and Event Emission",
             "description": "Implement connection state tracking (e.g., 'disconnected', 'connecting', 'connected', 'reconnecting', 'failed') and expose state changes via events or callbacks in all transports.",
-            "dependencies": [
-              "14.2",
-              "14.3",
-              "14.4"
-            ],
+            "dependencies": ["14.2", "14.3", "14.4"],
             "details": "Define state enums and ensure all transports update and emit state changes appropriately. Provide a mechanism for consumers to subscribe to state change events.",
             "status": "done",
             "testStrategy": ""
@@ -1003,9 +846,7 @@
             "id": 6,
             "title": "Integrate Optional Jitter into Backoff Delays",
             "description": "Enhance the backoff logic to support optional jitter, reducing the risk of thundering herd problems in multi-device scenarios.",
-            "dependencies": [
-              "14.1"
-            ],
+            "dependencies": ["14.1"],
             "details": "Implement jitter as a configurable option in the shared logic. Ensure all transports can enable or disable jitter as needed.",
             "status": "done",
             "testStrategy": ""
@@ -1014,10 +855,7 @@
             "id": 7,
             "title": "Document Reconnection Flow and State Transitions",
             "description": "Write clear code comments and documentation describing the reconnection flow, backoff sequence, jitter usage, and connection state transitions.",
-            "dependencies": [
-              "14.5",
-              "14.6"
-            ],
+            "dependencies": ["14.5", "14.6"],
             "details": "Ensure documentation covers the reconnection algorithm, state machine, event emission, and integration points for each transport. Include usage examples and configuration guidance.",
             "status": "done",
             "testStrategy": ""
@@ -1031,9 +869,7 @@
         "details": "Review transports/ssh/src/index.ts, focusing on line 12 (stream) and line 66 (connectConfig), where 'any' types are currently used. For each, analyze the actual runtime structure and usage:\n\n- For 'stream', determine its expected properties and methods (e.g., is it a Node.js Stream, SSH2 stream, or custom object?). Define a TypeScript interface or use an existing type from relevant libraries (such as Node.js 'stream.Stream' or SSH2 types) to accurately represent its shape.\n- For 'connectConfig', identify all required and optional configuration fields (host, port, username, authentication, etc.). Create a dedicated interface (e.g., 'SshConnectConfig') that explicitly lists all fields with correct types and documentation.\n- Refactor all code that currently uses 'any' to use these new types, updating function signatures, variable declarations, and return types as needed.\n- Ensure all type definitions are exported and documented for maintainability.\n- Confirm that TypeScript strict mode (including 'noImplicitAny') is fully respected and no 'any' types remain, either explicit or implicit.\n- If third-party types are unavailable, define custom interfaces based on observed usage and documentation.\n- Run a full type check to verify compliance and resolve any new type errors introduced by stricter typing.",
         "testStrategy": "1. Run 'tsc --strict' and confirm that no 'any' types (explicit or implicit) remain in transports/ssh/src/index.ts.\n2. Write unit tests for functions and methods affected by the new types, ensuring correct type enforcement and runtime behavior.\n3. Attempt to assign invalid types to 'stream' and 'connectConfig' in test code and verify that TypeScript raises compile-time errors.\n4. Review code coverage to ensure all branches using the new types are exercised.\n5. Peer review the new interfaces for completeness and clarity.",
         "status": "cancelled",
-        "dependencies": [
-          6
-        ],
+        "dependencies": [6],
         "priority": "medium",
         "subtasks": [
           {
@@ -1049,9 +885,7 @@
             "id": 2,
             "title": "Define and Document TypeScript Interfaces and Types",
             "description": "Create explicit TypeScript interfaces or type aliases for 'stream' and 'connectConfig' based on the analysis. Use existing types from libraries if available, or define custom interfaces. Add documentation comments for maintainability.",
-            "dependencies": [
-              "15.1"
-            ],
+            "dependencies": ["15.1"],
             "details": "Define a dedicated interface (e.g., 'SshConnectConfig') for configuration, and select or create an appropriate type for 'stream'. Ensure all type definitions are exported and include JSDoc comments describing each field.",
             "status": "done",
             "testStrategy": ""
@@ -1060,9 +894,7 @@
             "id": 3,
             "title": "Refactor Code to Use New Types and Ensure Strict Mode Compliance",
             "description": "Replace all 'any' types in transports/ssh/src/index.ts with the newly defined interfaces and types. Update function signatures, variable declarations, and return types. Confirm that TypeScript strict mode (including 'noImplicitAny') is fully respected.",
-            "dependencies": [
-              "15.2"
-            ],
+            "dependencies": ["15.2"],
             "details": "Refactor affected code sections to use explicit types. Run 'tsc --strict' to verify that no explicit or implicit 'any' types remain. Address any type errors introduced by stricter typing.",
             "status": "done",
             "testStrategy": ""
@@ -1071,9 +903,7 @@
             "id": 4,
             "title": "Write and Review Unit Tests for Type Enforcement",
             "description": "Develop unit tests for functions and methods affected by the new types to ensure correct type enforcement and runtime behavior. Attempt to assign invalid types to verify type safety.",
-            "dependencies": [
-              "15.3"
-            ],
+            "dependencies": ["15.3"],
             "details": "Write tests that validate correct usage of 'stream' and 'connectConfig' types, and confirm that TypeScript catches invalid assignments. Review test coverage and update as needed.",
             "status": "done",
             "testStrategy": ""
@@ -1085,9 +915,7 @@
         "title": "Implement Secure Credential Management for SSH Transport",
         "description": "Implement basic SSH key management for personal project use, focusing on simple SSH key file authentication and basic credential handling without complex enterprise security features.",
         "status": "done",
-        "dependencies": [
-          6
-        ],
+        "dependencies": [6],
         "priority": "medium",
         "details": "Refactor transports/ssh/src/index.ts to implement simple SSH key file management for personal use. Replace any plain text password storage with basic SSH key-based authentication using standard SSH key files (~/.ssh/id_rsa, ~/.ssh/id_ed25519, etc.). Implement simple key file discovery and loading mechanisms. Ensure the solution supports common SSH key formats and provides a straightforward user experience for personal projects. Focus on practical usability rather than enterprise-grade security features.",
         "testStrategy": "1. Write unit and integration tests to verify SSH key file loading and authentication works correctly. 2. Test compatibility with common SSH key formats (RSA, Ed25519, ECDSA). 3. Verify SSH connections work with both password and key-based authentication for personal use cases. 4. Test key file discovery from standard SSH directories. 5. Ensure no regression in basic SSH connection functionality.",
@@ -1106,9 +934,7 @@
             "title": "Implement SSH Key File Discovery and Loading",
             "description": "Add functionality to discover and load SSH key files from standard locations (~/.ssh/) and support common key formats.",
             "status": "done",
-            "dependencies": [
-              1
-            ],
+            "dependencies": [1],
             "details": "Implement key file discovery from standard SSH directories, support for RSA, Ed25519, and ECDSA key formats, and basic key file validation.",
             "testStrategy": ""
           },
@@ -1117,9 +943,7 @@
             "title": "Update SSH Transport to Use Key-Based Authentication",
             "description": "Refactor SSH transport to prioritize key-based authentication over password authentication for improved security in personal projects.",
             "status": "done",
-            "dependencies": [
-              2
-            ],
+            "dependencies": [2],
             "details": "Update transports/ssh/src/index.ts to use loaded SSH keys for authentication, with fallback to password authentication when keys are not available.",
             "testStrategy": ""
           },
@@ -1128,9 +952,7 @@
             "title": "Add Basic Configuration for SSH Key Management",
             "description": "Implement simple configuration options for specifying custom SSH key paths and authentication preferences.",
             "status": "done",
-            "dependencies": [
-              3
-            ],
+            "dependencies": [3],
             "details": "Add configuration options to specify custom key file paths, preferred authentication methods, and basic SSH connection settings suitable for personal use.",
             "testStrategy": ""
           },
@@ -1139,9 +961,7 @@
             "title": "Write Tests for SSH Key Authentication",
             "description": "Develop tests to verify SSH key loading, authentication, and connection functionality works correctly for personal use cases.",
             "status": "done",
-            "dependencies": [
-              4
-            ],
+            "dependencies": [4],
             "details": "Create unit and integration tests for key file discovery, loading different key formats, and successful SSH connections using key-based authentication.",
             "testStrategy": ""
           },
@@ -1150,9 +970,7 @@
             "title": "Document SSH Key Setup and Usage",
             "description": "Create user-friendly documentation for setting up and using SSH keys with the transport layer.",
             "status": "done",
-            "dependencies": [
-              5
-            ],
+            "dependencies": [5],
             "details": "Write clear documentation covering SSH key generation, placement, and configuration for personal project use, including troubleshooting common issues.",
             "testStrategy": ""
           }
@@ -1163,9 +981,7 @@
         "title": "Activate and Extend Performance Monitoring in Desktop App",
         "description": "Implement enterprise-grade performance monitoring with comprehensive telemetry, real-time dashboards, and advanced profiling capabilities for the desktop app.",
         "status": "done",
-        "dependencies": [
-          4
-        ],
+        "dependencies": [4],
         "priority": "medium",
         "details": "1. Implement strict startup validation requiring application startup under 2 seconds with detailed timing breakdowns.\n2. Add continuous CPU and RAM monitoring with 1-second polling intervals and historical tracking.\n3. Integrate comprehensive telemetry system with real-time dashboards and performance regression detection.\n4. Implement detailed profiling with flame graphs for performance analysis and bottleneck identification.\n5. Add distributed tracing capabilities for end-to-end operation tracking.\n6. Implement memory leak detection with automatic alerting and detailed memory usage analysis.\n7. Add thread monitoring with deadlock detection and thread pool utilization tracking.\n8. Implement network latency tracking for all network operations with statistical analysis.\n9. Create custom performance counters for application-specific metrics.\n10. Implement alert escalation system with configurable thresholds and notification channels.\n11. Add performance baseline establishment and automated regression detection.\n12. Integrate with existing telemetry infrastructure from Task 9 for unified monitoring.",
         "testStrategy": "1. Automated performance regression tests with strict SLA validation (startup < 2s, memory usage within bounds).\n2. Load testing with synthetic workloads to validate monitoring accuracy under stress.\n3. Memory leak detection tests with long-running scenarios and automatic leak identification.\n4. Thread safety and deadlock detection tests with concurrent operation simulation.\n5. Network latency measurement accuracy tests with known baseline measurements.\n6. Alert system testing with threshold breach simulation and escalation path validation.\n7. Dashboard real-time update testing with high-frequency data streams.\n8. Performance profiling accuracy validation against known performance bottlenecks.\n9. Distributed tracing end-to-end validation across all system components.\n10. Custom performance counter accuracy and reliability testing.",
@@ -1184,9 +1000,7 @@
             "title": "Add Debug Logging for Slow Operations",
             "description": "Implement warning logs when operations exceed reasonable time thresholds, using the existing logging infrastructure.",
             "status": "done",
-            "dependencies": [
-              1
-            ],
+            "dependencies": [1],
             "details": "Define simple thresholds for different operations (e.g., startup > 3s, device connection > 5s, data processing > 1s). When these thresholds are exceeded, log a warning message with operation name, actual duration, and timestamp using the existing logging system.",
             "testStrategy": ""
           },
@@ -1195,9 +1009,7 @@
             "title": "Test and Validate Performance Logging",
             "description": "Verify that the performance logging works correctly and provides useful debugging information without impacting performance.",
             "status": "done",
-            "dependencies": [
-              2
-            ],
+            "dependencies": [2],
             "details": "Test the logging with both normal and artificially slow operations. Ensure log messages are clear and useful, verify that timing overhead is minimal, and confirm that normal operations don't create log noise.",
             "testStrategy": ""
           },
@@ -1206,9 +1018,7 @@
             "title": "Implement Strict Startup Validation",
             "description": "Enhance startup timing to enforce strict 2-second startup requirement with detailed breakdown analysis.",
             "status": "done",
-            "dependencies": [
-              1
-            ],
+            "dependencies": [1],
             "details": "Upgrade basic timing to include detailed startup phase tracking (initialization, UI loading, service startup, etc.). Implement automatic failure detection when startup exceeds 2 seconds with detailed reporting of which phase caused the delay. Add startup performance regression detection.",
             "testStrategy": ""
           },
@@ -1226,9 +1036,7 @@
             "title": "Create Real-Time Performance Dashboard",
             "description": "Develop comprehensive real-time dashboard displaying all performance metrics with interactive charts and alerts.",
             "status": "done",
-            "dependencies": [
-              5
-            ],
+            "dependencies": [5],
             "details": "Build dashboard UI showing real-time CPU, RAM, network, and custom metrics. Include historical trend charts, performance alerts, and drill-down capabilities. Integrate with existing telemetry charts from Task 9 for unified monitoring experience.",
             "testStrategy": ""
           },
@@ -1237,9 +1045,7 @@
             "title": "Implement Advanced Profiling with Flame Graphs",
             "description": "Add detailed performance profiling capabilities with flame graph generation for bottleneck identification.",
             "status": "done",
-            "dependencies": [
-              1
-            ],
+            "dependencies": [1],
             "details": "Implement sampling profiler that captures call stacks and execution times. Generate flame graphs for visual performance analysis. Add on-demand profiling triggers and automatic profiling during performance issues.",
             "testStrategy": ""
           },
@@ -1248,9 +1054,7 @@
             "title": "Implement Distributed Tracing",
             "description": "Add end-to-end operation tracing across all system components for comprehensive performance analysis.",
             "status": "done",
-            "dependencies": [
-              1
-            ],
+            "dependencies": [1],
             "details": "Implement distributed tracing using correlation IDs to track operations across transport layers, device drivers, and UI components. Add trace visualization and performance bottleneck identification across the entire operation chain.",
             "testStrategy": ""
           },
@@ -1259,9 +1063,7 @@
             "title": "Implement Memory Leak Detection",
             "description": "Add comprehensive memory leak detection with automatic alerting and detailed memory usage analysis.",
             "status": "done",
-            "dependencies": [
-              5
-            ],
+            "dependencies": [5],
             "details": "Implement memory usage tracking with leak detection algorithms. Monitor object allocation patterns, garbage collection metrics, and memory growth trends. Add automatic alerts when memory leaks are detected with detailed analysis reports.",
             "testStrategy": ""
           },
@@ -1270,9 +1072,7 @@
             "title": "Implement Thread and Concurrency Monitoring",
             "description": "Add thread pool monitoring, deadlock detection, and concurrency performance analysis.",
             "status": "done",
-            "dependencies": [
-              5
-            ],
+            "dependencies": [5],
             "details": "Monitor thread pool utilization, detect potential deadlocks, track lock contention, and analyze concurrent operation performance. Add alerts for thread starvation and deadlock conditions.",
             "testStrategy": ""
           },
@@ -1281,9 +1081,7 @@
             "title": "Implement Network Latency Tracking",
             "description": "Add comprehensive network operation monitoring with latency analysis and statistical reporting.",
             "status": "done",
-            "dependencies": [
-              1
-            ],
+            "dependencies": [1],
             "details": "Track all network operations (TCP, UDP, SSH) with detailed latency measurements. Implement statistical analysis (percentiles, averages, outliers) and network performance regression detection. Integrate with transport layer monitoring.",
             "testStrategy": ""
           },
@@ -1292,9 +1090,7 @@
             "title": "Implement Custom Performance Counters",
             "description": "Create application-specific performance counters for device operations and business logic metrics.",
             "status": "done",
-            "dependencies": [
-              5
-            ],
+            "dependencies": [5],
             "details": "Define and implement custom counters for device-specific operations (connection success rates, data throughput, error rates). Add counter visualization in dashboard and historical tracking for trend analysis.",
             "testStrategy": ""
           },
@@ -1303,11 +1099,7 @@
             "title": "Implement Alert Escalation System",
             "description": "Create comprehensive alerting system with configurable thresholds and escalation paths.",
             "status": "done",
-            "dependencies": [
-              6,
-              9,
-              10
-            ],
+            "dependencies": [6, 9, 10],
             "details": "Implement multi-level alerting system with configurable thresholds for all monitored metrics. Add escalation paths, notification channels, and alert suppression logic. Include alert correlation and root cause analysis suggestions.",
             "testStrategy": ""
           },
@@ -1316,10 +1108,7 @@
             "title": "Implement Performance Regression Detection",
             "description": "Add automated performance regression detection with baseline establishment and trend analysis.",
             "status": "done",
-            "dependencies": [
-              5,
-              6
-            ],
+            "dependencies": [5, 6],
             "details": "Implement statistical analysis to detect performance regressions automatically. Establish performance baselines, track trends over time, and alert when significant performance degradation is detected. Include regression analysis reports.",
             "testStrategy": ""
           }
@@ -1330,10 +1119,7 @@
         "title": "Implement Arduino Device Driver (IDeviceDriver) with ProbeAsync, OpenAsync, and manifest.json",
         "description": "Develop a fully functional Arduino device driver by implementing the DeviceDriver trait, including ProbeAsync, OpenAsync, and manifest.json, enabling hardware communication with Arduino devices using a hybrid approach - starting with a custom lightweight protocol for MVP, then adding Firmata support later.",
         "status": "done",
-        "dependencies": [
-          5,
-          6
-        ],
+        "dependencies": [5, 6],
         "priority": "high",
         "details": "Begin by reviewing the DeviceDriver trait and its requirements as defined in the completed device abstraction layer (Task 5). Implement the Arduino driver in Rust, ensuring the following:\n\n- **ProbeAsync**: Use the serialport-rs crate to scan available serial ports and detect connected Arduino devices by USB VID/PID. Focus on Arduino Uno/Mega/Nano support with proper device identification and metadata return.\n\n- **OpenAsync**: Establish a connection to the Arduino device using 115200 baud serial communication. Integrate with the completed transport layer that includes automatic reconnection capabilities. Implement robust error handling for connection failures and ensure proper resource cleanup on disconnect.\n\n- **manifest.json**: Create a manifest.json describing the driver, supported Arduino hardware (Uno/Mega/Nano), transport requirements (serial), and configuration parameters. Ensure the manifest is correctly parsed and loaded by the existing plugin system.\n\n- **Custom Lightweight Protocol (MVP)**: Implement a simple custom protocol for basic Arduino communication as the initial MVP. Design it to be lightweight and efficient for fundamental operations like pin control and sensor reading. Structure the implementation to allow easy addition of Firmata support in future iterations.\n\n- **Hardware Integration**: Focus on Arduino Uno, Mega, and Nano boards with 115200 baud rate communication. Implement basic operations such as digital pin control and analog reading using the custom protocol.\n\n- **Documentation**: Document the driver's usage, configuration, Arduino board compatibility, and protocol specifications. Provide example code for basic operations.\n\n- **Extensibility**: Structure the code to support future Firmata integration and other microcontroller families by adhering to the DeviceDriver trait and abstraction patterns established in the completed device abstraction layer.",
         "testStrategy": "1. Write unit tests for ProbeAsync and OpenAsync to simulate device discovery and connection scenarios, including error cases (e.g., device not found, port busy).\n2. Connect physical Arduino Uno/Mega/Nano devices and verify that ProbeAsync correctly detects them using USB VID/PID and OpenAsync establishes working sessions at 115200 baud.\n3. Validate that manifest.json is parsed and loaded by the existing plugin system, and that driver metadata is correctly reported.\n4. Perform end-to-end tests using the custom lightweight protocol by sending commands to Arduino devices (e.g., toggle an LED, read analog pins) and verifying correct hardware response.\n5. Test integration with the completed transport layer's automatic reconnection feature by simulating connection drops and verifying recovery.\n6. Test resource cleanup and error handling by repeatedly connecting/disconnecting devices and simulating communication failures.",
@@ -1352,9 +1138,7 @@
             "title": "Implement ProbeAsync with serialport-rs and USB VID/PID Detection",
             "description": "Develop ProbeAsync method using serialport-rs crate to detect Arduino Uno/Mega/Nano devices via USB VID/PID identification.",
             "status": "done",
-            "dependencies": [
-              1
-            ],
+            "dependencies": [1],
             "details": "Use serialport-rs to enumerate serial ports and identify Arduino boards by their specific USB VID/PID combinations. Return appropriate device metadata for detected Arduino devices. Focus on Uno (VID: 0x2341), Mega, and Nano variants.\n<info added on 2025-09-03T21:51:18.104Z>\nImplement ProbeAsync method that enumerates all available serial ports using serialport-rs::available_ports(). Filter detected ports by checking USB VID/PID combinations: 0x2341 for official Arduino boards, 0x1A86 for CH340-based clones, and 0x0403 for FTDI-based variants. For each matching port, attempt to open a temporary serial connection at 115200 baud, send the probe command \"ARDUINO?\\r\\n\", and wait up to 500ms for a response that starts with \"ARDUINO_\". Return device metadata including port name, VID/PID, and Arduino variant type for successfully probed devices. Handle connection failures gracefully and ensure proper cleanup of temporary serial connections.\n</info added on 2025-09-03T21:51:18.104Z>",
             "testStrategy": ""
           },
@@ -1363,10 +1147,7 @@
             "title": "Implement OpenAsync with 115200 Baud Serial Communication",
             "description": "Create OpenAsync method to establish 115200 baud serial connections to Arduino devices, integrating with the completed transport layer's automatic reconnection.",
             "status": "done",
-            "dependencies": [
-              1,
-              2
-            ],
+            "dependencies": [1, 2],
             "details": "Configure serial communication at 115200 baud rate for Arduino compatibility. Integrate with existing transport layer features including automatic reconnection. Implement proper error handling and resource cleanup.\n<info added on 2025-09-03T21:52:25.507Z>\nImplement OpenAsync method that accepts detected port information from ProbeAsync and creates a SerialTransport instance. Configure serial parameters with 115200 baud rate, 8 data bits, no parity, 1 stop bit (8N1 configuration). Establish connection handshake protocol to verify Arduino device responsiveness. Wrap the transport instance in Arc<Mutex<>> for thread-safe concurrent access across multiple threads. Return ArduinoSession object containing the active transport connection ready for command execution and data exchange.\n</info added on 2025-09-03T21:52:25.507Z>",
             "testStrategy": ""
           },
@@ -1375,9 +1156,7 @@
             "title": "Create manifest.json for Arduino Driver",
             "description": "Design manifest.json specifying Arduino Uno/Mega/Nano support, serial transport requirements, and driver configuration parameters.",
             "status": "done",
-            "dependencies": [
-              1
-            ],
+            "dependencies": [1],
             "details": "Create manifest describing supported Arduino models, required serial transport, baud rate configuration (115200), and driver metadata. Ensure compatibility with existing plugin system from Task 5.\n<info added on 2025-09-03T21:54:35.886Z>\nUSB detection hints with VID/PID lists for common Arduino manufacturers (2341 for Arduino LLC, 1A86 for CH340 chips, 0403 for FTDI chips). Probe command/response patterns for device identification handshake. Serial configuration requirements specifying 115200 baud rate, 8 data bits, no parity, 1 stop bit (8N1). Timeout values with 500ms for probe operations to ensure responsive device detection.\n</info added on 2025-09-03T21:54:35.886Z>",
             "testStrategy": ""
           },
@@ -1386,9 +1165,7 @@
             "title": "Design and Implement Custom Lightweight Protocol (MVP)",
             "description": "Develop a simple custom protocol for basic Arduino communication as MVP, designed for easy future Firmata integration.",
             "status": "done",
-            "dependencies": [
-              3
-            ],
+            "dependencies": [3],
             "details": "Create a lightweight command protocol for basic operations like digital pin control and analog reading. Design protocol structure to be extensible for future Firmata support. Implement message framing and parsing logic.\n<info added on 2025-09-03T21:53:33.783Z>\nImplement custom lightweight text-based protocol for MVP with the following command structure:\n\nPROBE command returns \"ARDUINO_UNO\" to identify device type\nPIN_MODE <pin> <mode> command sets pin mode and returns \"OK\"\nDIGITAL_WRITE <pin> <value> command writes digital value and returns \"OK\"  \nDIGITAL_READ <pin> command reads digital pin and returns \"VALUE:<0|1>\"\nPWM_WRITE <pin> <0-255> command writes PWM value and returns \"OK\"\n\nUse carriage return and line feed (\\r\\n) for message framing between commands and responses. Protocol designed to be simple for MVP while maintaining extensibility for future Firmata protocol integration in later iterations.\n</info added on 2025-09-03T21:53:33.783Z>",
             "testStrategy": ""
           },
@@ -1397,9 +1174,7 @@
             "title": "Implement Basic Arduino Operations",
             "description": "Implement fundamental Arduino operations using the custom protocol: digital pin control, analog reading, and basic I/O functions.",
             "status": "done",
-            "dependencies": [
-              5
-            ],
+            "dependencies": [5],
             "details": "Create functions for digitalWrite, digitalRead, analogRead, and pinMode operations using the custom lightweight protocol. Ensure reliable communication and error handling for hardware operations.",
             "testStrategy": ""
           },
@@ -1408,13 +1183,7 @@
             "title": "Write Documentation and Usage Examples",
             "description": "Document the Arduino driver implementation, supported boards, custom protocol specification, and provide usage examples.",
             "status": "done",
-            "dependencies": [
-              2,
-              3,
-              4,
-              5,
-              6
-            ],
+            "dependencies": [2, 3, 4, 5, 6],
             "details": "Create comprehensive documentation covering Arduino Uno/Mega/Nano support, 115200 baud configuration, custom protocol commands, and example code for basic operations. Include troubleshooting guide and future Firmata integration roadmap.\n<info added on 2025-09-03T21:55:41.701Z>\nAdopt hybrid protocol strategy: implement custom lightweight protocol as MVP foundation (building on 18.5 completion), with structured abstraction layer enabling seamless future migration to Firmata protocol. Design protocol interface abstraction to support easy switching between custom and Firmata implementations. Document architectural extension points and plugin interfaces for ESP32 and Raspberry Pi Pico board support. Include code examples demonstrating protocol abstraction usage and board-specific configuration patterns. Provide migration guide outlining transition path from custom protocol to Firmata integration.\n</info added on 2025-09-03T21:55:41.701Z>",
             "testStrategy": ""
           },
@@ -1423,11 +1192,7 @@
             "title": "Structure for Future Firmata Integration",
             "description": "Organize codebase architecture to facilitate future addition of Firmata protocol support while maintaining the existing custom protocol.",
             "status": "done",
-            "dependencies": [
-              1,
-              5,
-              6
-            ],
+            "dependencies": [1, 5, 6],
             "details": "Design modular protocol abstraction that allows switching between custom lightweight protocol and future Firmata implementation. Document extension points and integration strategy for Firmata support.",
             "testStrategy": ""
           }
@@ -1456,9 +1221,7 @@
             "id": 2,
             "title": "Update Start, Build, and Test Scripts for Runtime Compatibility",
             "description": "Modify Node.js entrypoints and relevant scripts (e.g., in package.json) to use ts-node with tsconfig-paths/register, ensuring path aliases resolve at runtime. Update build tool and test runner configurations (e.g., webpack, Jest) to match the alias setup.",
-            "dependencies": [
-              "19.1"
-            ],
+            "dependencies": ["19.1"],
             "details": "Update 'start' and other scripts to include '-r tsconfig-paths/register'. Adjust build tool and test runner configs to resolve the same aliases.",
             "status": "done",
             "testStrategy": ""
@@ -1467,9 +1230,7 @@
             "id": 3,
             "title": "Verify and Document Alias Usage Across Codebase and Tooling",
             "description": "Search the codebase for imports using the defined aliases and confirm they resolve correctly in the IDE and at runtime. Add documentation to the README explaining the alias setup and usage requirements.",
-            "dependencies": [
-              "19.2"
-            ],
+            "dependencies": ["19.2"],
             "details": "Test imports in development and production builds. Update README with instructions for using tsconfig-paths and correct start/build commands.",
             "status": "done",
             "testStrategy": ""
@@ -1501,9 +1262,7 @@
             "description": "Set up the .cipher directory in project root with required configuration files and folder structure",
             "details": "Create .cipher/ directory in project root\nCreate subdirectories: .cipher/config/, .cipher/memory/, .cipher/logs/, .cipher/prompts/\nAdd appropriate entries to .gitignore (keep config, ignore memory/logs)\nCreate placeholder files for configuration\nDocument directory structure in ref/MCP_SERVERS.md",
             "status": "done",
-            "dependencies": [
-              "21.6"
-            ],
+            "dependencies": ["21.6"],
             "parentTaskId": 21
           },
           {
@@ -1512,9 +1271,7 @@
             "description": "Set up environment variables for Qdrant vector store or configure for local in-memory operation",
             "details": "Option 1: Qdrant Cloud (recommended for production)\n- Sign up for free tier at cloud.qdrant.io\n- Create cluster and get API key/URL\n- Add to .env: QDRANT_URL, QDRANT_API_KEY\n\nOption 2: Local in-memory (development/testing)\n- Set USE_MEMORY_ONLY=true in .env\n- Configure max memory limits\n- Set persistence options\n\nDocument chosen approach and rationale in decision log",
             "status": "done",
-            "dependencies": [
-              "21.7"
-            ],
+            "dependencies": ["21.7"],
             "parentTaskId": 21
           },
           {
@@ -1523,9 +1280,7 @@
             "description": "Create initial cipher.yml configuration file in .cipher directory with basic settings",
             "details": "Create .cipher/cipher.yml with:\n- Basic aggregator configuration\n- Memory persistence settings\n- Logging configuration\n- Transport preferences (stdio, SSE, streamable-http)\n- Placeholder for MCP server configurations\n- Development vs production settings\n\nValidate configuration syntax\nTest basic Cipher functionality",
             "status": "done",
-            "dependencies": [
-              "21.8"
-            ],
+            "dependencies": ["21.8"],
             "parentTaskId": 21
           },
           {
@@ -1534,9 +1289,7 @@
             "description": "Verify Cipher is working correctly with basic operations and configuration validation",
             "details": "Run comprehensive tests:\n- cipher --version (verify installation)\n- cipher validate (validate configuration)\n- cipher memory test (verify memory operations)\n- cipher server list (check server detection)\n- Test basic memory storage and retrieval operations\n\nVerify logs are created in .cipher/logs/\nDocument any issues and resolutions\nCreate troubleshooting notes for common problems",
             "status": "done",
-            "dependencies": [
-              "21.9"
-            ],
+            "dependencies": ["21.9"],
             "parentTaskId": 21
           },
           {
@@ -1545,9 +1298,7 @@
             "description": "Create comprehensive documentation of the Cipher installation and setup process",
             "details": "Update documentation files:\n- Add Cipher section to ref/MCP_SERVERS.md\n- Document installation steps and requirements\n- Create troubleshooting guide\n- Add configuration examples\n- Document vector store options and trade-offs\n\nUpdate docs/decisions/decision-log.md with:\n- Cipher adoption decision\n- Configuration approach chosen\n- Performance and security considerations",
             "status": "done",
-            "dependencies": [
-              "21.10"
-            ],
+            "dependencies": ["21.10"],
             "parentTaskId": 21
           }
         ]
@@ -1559,9 +1310,7 @@
         "details": "**PRIORITY: Work on this AFTER Task 21**\n\nMigration from current 8-server setup to Cipher aggregator mode:\n1. Backup existing .mcp.json configuration\n2. Configure cipher.yml to include all current MCP servers:\n   - TaskMaster AI (task management)\n   - Desktop Commander (file/terminal ops)\n   - Context7 (documentation)\n   - Perplexity Ask (research)\n   - Clear Thought (reasoning)\n   - Time Server (utilities)\n   - FileScope (code analysis)\n3. Handle memory server conflict - disable old memory server, use Cipher's\n4. Update .mcp.json to single Cipher entry with aggregator mode\n5. Test all tools work through Cipher\n6. Document configuration in decision log",
         "testStrategy": "Test each MCP server's tools through Cipher, verify no tool conflicts, measure startup time impact, validate memory persistence works correctly",
         "status": "done",
-        "dependencies": [
-          21
-        ],
+        "dependencies": [21],
         "priority": "high",
         "subtasks": [
           {
@@ -1579,9 +1328,7 @@
             "description": "Add all 8 existing MCP servers to Cipher's aggregator configuration",
             "details": "Add to cipher.yml:\n- TaskMaster AI (task management)\n- Desktop Commander (file/terminal)\n- Context7 (documentation)\n- Perplexity Ask (research)\n- Clear Thought (reasoning)\n- Time Server (utilities)\n- FileScope (code analysis)\n- Memory server (handle conflict)\n\nConfigure each server's transport and authentication\nSet up server priority and fallback options",
             "status": "done",
-            "dependencies": [
-              "22.1"
-            ],
+            "dependencies": ["22.1"],
             "parentTaskId": 22
           },
           {
@@ -1590,9 +1337,7 @@
             "description": "Handle conflict between existing memory server and Cipher's built-in memory system",
             "details": "Disable old memory server in .mcp.json\nMigrate any existing memory data to Cipher format\nUpdate memory-related commands to use Cipher\nTest that Cipher's memory system provides all needed functionality\nDocument migration path for memory operations",
             "status": "done",
-            "dependencies": [
-              "22.2"
-            ],
+            "dependencies": ["22.2"],
             "parentTaskId": 22
           },
           {
@@ -1601,9 +1346,7 @@
             "description": "Replace multi-server MCP configuration with single Cipher aggregator entry",
             "details": "Create new .mcp.json with single Cipher entry\nConfigure Cipher to run in aggregator mode\nEnsure all API keys are passed through to Cipher\nSet up proper transport configuration (stdio/SSE)\nTest that Claude Code recognizes Cipher",
             "status": "done",
-            "dependencies": [
-              "22.3"
-            ],
+            "dependencies": ["22.3"],
             "parentTaskId": 22
           },
           {
@@ -1612,9 +1355,7 @@
             "description": "Verify that all MCP server tools work correctly through the Cipher aggregator",
             "details": "Test each server's primary tools:\n- TaskMaster: get_tasks, set_task_status\n- Desktop Commander: read_file, execute_command\n- Context7: get-library-docs\n- Perplexity: perplexity_ask\n- Clear Thought: sequentialthinking\n- FileScope: list_files\n- Time Server: get_current_time\n\nDocument any tool conflicts or issues\nVerify performance is acceptable",
             "status": "done",
-            "dependencies": [
-              "22.4"
-            ],
+            "dependencies": ["22.4"],
             "parentTaskId": 22
           },
           {
@@ -1623,9 +1364,7 @@
             "description": "Document the Cipher aggregator migration in the decision log and update MCP_SERVERS.md",
             "details": "Update docs/decisions/decision-log.md with:\n- Migration rationale\n- Configuration approach\n- Performance impact\n\nUpdate ref/MCP_SERVERS.md with:\n- New Cipher aggregator setup\n- Tool access patterns\n- Troubleshooting guide",
             "status": "done",
-            "dependencies": [
-              "22.5"
-            ],
+            "dependencies": ["22.5"],
             "parentTaskId": 22
           },
           {
@@ -1643,9 +1382,7 @@
             "description": "Configure cipher.yml to include all existing MCP servers in aggregator mode",
             "details": "Add all servers to cipher.yml aggregator configuration:\n- TaskMaster AI (task management) \n- Desktop Commander (file/terminal operations)\n- Context7 (documentation retrieval)\n- Perplexity Ask (research capabilities)\n- Clear Thought (structured reasoning)\n- Time Server (utilities)\n- FileScope (code analysis)\n- Memory server (handle replacement with Cipher)\n\nConfigure transport types, authentication, and server priorities for each",
             "status": "done",
-            "dependencies": [
-              "22.7"
-            ],
+            "dependencies": ["22.7"],
             "parentTaskId": 22
           },
           {
@@ -1654,9 +1391,7 @@
             "description": "Set up appropriate transport configurations (stdio, SSE, streamable-http) for each MCP server",
             "details": "Configure transports based on server capabilities:\n- TaskMaster AI: stdio transport with environment variables\n- Desktop Commander: stdio transport \n- Context7: SSE or HTTP transport with API key\n- Perplexity Ask: stdio with API key passthrough\n- Clear Thought: stdio transport\n- Time Server: stdio transport\n- FileScope: stdio with base directory configuration\n- Set connection timeouts and retry policies\n- Configure authentication passthrough where needed",
             "status": "done",
-            "dependencies": [
-              "22.8"
-            ],
+            "dependencies": ["22.8"],
             "parentTaskId": 22
           },
           {
@@ -1665,9 +1400,7 @@
             "description": "Verify that Cipher can successfully connect to and aggregate all MCP servers",
             "details": "Run connectivity tests:\n- Test Cipher can start in aggregator mode\n- Verify connection to each MCP server\n- Check that all servers are detected and listed\n- Test basic tool invocation through aggregator\n- Measure startup time and performance impact\n- Verify environment variable passthrough works\n- Document any connection issues and resolutions",
             "status": "done",
-            "dependencies": [
-              "22.9"
-            ],
+            "dependencies": ["22.9"],
             "parentTaskId": 22
           },
           {
@@ -1676,9 +1409,7 @@
             "description": "Comprehensive testing of all MCP server tools through the Cipher aggregator interface",
             "details": "Test critical tools from each server:\n- TaskMaster: get_tasks, set_task_status, add_task\n- Desktop Commander: read_file, write_file, execute_command\n- Context7: resolve-library-id, get-library-docs  \n- Perplexity: perplexity_ask\n- Clear Thought: sequentialthinking, mentalmodel\n- Time Server: get_current_time, convert_time\n- FileScope: list_files, get_file_importance\n\nVerify no tool name conflicts\nTest error handling and timeouts\nEnsure all tools return expected results\nDocument any issues or limitations",
             "status": "done",
-            "dependencies": [
-              "22.10"
-            ],
+            "dependencies": ["22.10"],
             "parentTaskId": 22
           }
         ]
@@ -1690,9 +1421,7 @@
         "details": "**PRIORITY: Work on this AFTER Task 22**\n\nConfigure Cipher's advanced memory capabilities:\n\n1. Vector Store Setup:\n   - Choose between Qdrant Cloud (free tier) or local in-memory start\n   - Configure collections for different knowledge domains\n   - Set up persistence and backup strategy\n\n2. Knowledge Categories Configuration:\n   - Multi-Controller architecture decisions\n   - Rust implementation patterns  \n   - Device driver interfaces (IDeviceDriver, ITransport)\n   - Performance benchmarks and optimizations\n   - Task completion history from Task Master\n\n3. Workspace Memory Setup:\n   - Enable team progress tracking (USE_WORKSPACE_MEMORY=true)\n   - Configure PR summary storage\n   - Set up bug pattern tracking\n   - Device driver knowledge sharing\n\n4. Custom Memory Prompts:\n   - Serial/TCP/UDP transport patterns\n   - Rust async/await patterns with Tokio\n   - egui UI patterns\n   - Performance optimization techniques\n\n5. Integration with existing systems:\n   - Task Master tasks → Cipher memory\n   - Performance benchmarks → Knowledge graph\n   - Decision log → Persistent memory",
         "testStrategy": "Verify memory persistence across sessions, test knowledge retrieval accuracy, validate workspace memory sharing, ensure no token overhead from memory operations",
         "status": "done",
-        "dependencies": [
-          22
-        ],
+        "dependencies": [22],
         "priority": "high",
         "subtasks": [
           {
@@ -1710,9 +1439,7 @@
             "description": "Set up knowledge categories in Cipher for different domains of the Multi-Controller project",
             "details": "Create categories in cipher.yml:\n- architecture_decisions: Tech stack, design patterns\n- rust_patterns: Rust async, egui, memory safety\n- device_drivers: IDeviceDriver, ITransport interfaces\n- performance: Benchmarks, optimizations, budgets\n- task_history: Completed tasks from Task Master\n- bug_patterns: Common issues and fixes\n- transport_protocols: Serial, TCP, UDP, SSH patterns",
             "status": "done",
-            "dependencies": [
-              "23.1"
-            ],
+            "dependencies": ["23.1"],
             "parentTaskId": 23
           },
           {
@@ -1721,9 +1448,7 @@
             "description": "Enable and configure Cipher's workspace memory for team collaboration and progress tracking",
             "details": "Configure in .env:\n- USE_WORKSPACE_MEMORY=true\n- WORKSPACE_NAME=multi-controller\n- TEAM_ID=multi-controller-dev\n\nSet up memory types:\n- PR summaries and reviews\n- Bug tracking and resolutions\n- Task completion history\n- Performance measurement history\n- Device driver implementations",
             "status": "done",
-            "dependencies": [
-              "23.2"
-            ],
+            "dependencies": ["23.2"],
             "parentTaskId": 23
           },
           {
@@ -1732,9 +1457,7 @@
             "description": "Define custom memory prompts for common Multi-Controller development patterns",
             "details": "Create prompts in .cipher/prompts/:\n- serial_transport.md: Serial communication patterns\n- tcp_udp_patterns.md: Network transport best practices\n- rust_async.md: Tokio and async/await patterns\n- egui_ui.md: egui UI component patterns\n- performance_opt.md: Optimization techniques\n- device_driver.md: Driver implementation patterns\n\nTest each prompt with cipher memory query",
             "status": "done",
-            "dependencies": [
-              "23.3"
-            ],
+            "dependencies": ["23.3"],
             "parentTaskId": 23
           },
           {
@@ -1743,9 +1466,7 @@
             "description": "Connect Cipher memory with Task Master, performance monitoring, and decision log",
             "details": "Create integration scripts:\n- scripts/sync-taskmaster-to-cipher.ps1\n- scripts/import-performance-data.ps1\n- scripts/sync-decision-log.ps1\n\nSet up automated syncing:\n- Task completion → Cipher memory\n- Performance benchmarks → Knowledge graph\n- Decision log entries → Persistent memory\n\nTest data migration and verify integrity",
             "status": "done",
-            "dependencies": [
-              "23.4"
-            ],
+            "dependencies": ["23.4"],
             "parentTaskId": 23
           },
           {
@@ -1763,9 +1484,7 @@
             "description": "Set up Cipher's System 1 memory for fast concept and logic storage",
             "details": "Configure System 1 memory in cipher.yml:\n- Enable fast concept storage\n- Configure memory categories for Multi-Controller project:\n  * Architecture decisions and patterns\n  * Rust implementation techniques  \n  * Device driver interfaces (IDeviceDriver, ITransport)\n  * Performance optimization patterns\n  * Common bug patterns and fixes\n- Set up automatic memory persistence\n- Configure memory retrieval thresholds\n- Test concept storage and retrieval speed",
             "status": "done",
-            "dependencies": [
-              "23.6"
-            ],
+            "dependencies": ["23.6"],
             "parentTaskId": 23
           },
           {
@@ -1774,9 +1493,7 @@
             "description": "Set up Cipher's System 2 memory for storing detailed reasoning processes and decision traces",
             "details": "Configure System 2 memory for reasoning storage:\n- Enable reasoning trace storage\n- Configure categories for complex decisions:\n  * Technology choice reasoning (Rust vs C#)\n  * Architecture design decisions  \n  * Performance optimization strategies\n  * Security and safety considerations\n  * Testing and validation approaches\n- Set up trace persistence and retrieval\n- Configure trace linking and relationships\n- Test reasoning trace storage and playback",
             "status": "done",
-            "dependencies": [
-              "23.7"
-            ],
+            "dependencies": ["23.7"],
             "parentTaskId": 23
           },
           {
@@ -1785,9 +1502,7 @@
             "description": "Configure Cipher's workspace memory for team collaboration and shared context",
             "details": "Configure workspace memory in .env and cipher.yml:\n- Enable workspace memory: USE_WORKSPACE_MEMORY=true\n- Set workspace name: WORKSPACE_NAME=multi-controller\n- Configure team ID: TEAM_ID=multi-controller-dev\n- Set up shared memory categories:\n  * Task completion history and patterns\n  * Bug reports and resolutions\n  * Performance benchmarks and optimizations\n  * Code review insights\n  * Development workflow improvements\n- Configure memory sharing permissions\n- Test workspace memory persistence and sharing",
             "status": "done",
-            "dependencies": [
-              "23.8"
-            ],
+            "dependencies": ["23.8"],
             "parentTaskId": 23
           },
           {
@@ -1796,9 +1511,7 @@
             "description": "Set up Cipher's knowledge graph for entity relationships and semantic connections",
             "details": "Configure knowledge graph in cipher.yml:\n- Enable knowledge graph functionality\n- Define entity types for Multi-Controller project:\n  * Components: UI, drivers, transports, devices\n  * Concepts: patterns, interfaces, protocols\n  * Performance: metrics, budgets, optimizations\n  * Dependencies: libraries, tools, services\n- Configure relationship types and semantics\n- Set up graph persistence and querying\n- Configure graph visualization options\n- Test entity creation and relationship mapping",
             "status": "done",
-            "dependencies": [
-              "23.9"
-            ],
+            "dependencies": ["23.9"],
             "parentTaskId": 23
           },
           {
@@ -1807,9 +1520,7 @@
             "description": "Verify that all memory systems persist data correctly across Cipher restarts and sessions",
             "details": "Comprehensive memory persistence testing:\n- Test System 1 memory persistence across restarts\n- Verify System 2 reasoning traces survive sessions\n- Test workspace memory data integrity\n- Verify knowledge graph relationships persist\n- Test memory retrieval after Cipher restart\n- Measure memory load/save performance\n- Validate no data corruption or loss\n- Test backup and recovery procedures\n- Document memory persistence behavior and limitations",
             "status": "done",
-            "dependencies": [
-              "23.10"
-            ],
+            "dependencies": ["23.10"],
             "parentTaskId": 23
           }
         ]
@@ -1839,9 +1550,7 @@
             "description": "Initialize Ruler in the Multi-Controller project root directory",
             "details": "Run: ruler init in project root\nThis creates:\n- .ruler/ directory structure\n- Default ruler.toml configuration\n- .ruler/.gitignore (auto-managed)\n- Initial AGENTS.md template\n\nVerify directory structure is created\nCheck .gitignore is properly configured",
             "status": "done",
-            "dependencies": [
-              "24.1"
-            ],
+            "dependencies": ["24.1"],
             "parentTaskId": 24
           },
           {
@@ -1850,9 +1559,7 @@
             "description": "Set up global Ruler configuration for team-wide standards",
             "details": "Run: ruler init --global\nCreates global config at ~/.ruler/\n\nConfigure global settings:\n- Team coding standards\n- Common MCP servers\n- Shared development patterns\n- Default agent configurations\n\nTest global config is recognized",
             "status": "done",
-            "dependencies": [
-              "24.2"
-            ],
+            "dependencies": ["24.2"],
             "parentTaskId": 24
           },
           {
@@ -1861,9 +1568,7 @@
             "description": "Create the proper directory structure within .ruler for organized rule management",
             "details": "Create subdirectories:\n- .ruler/core/ (fundamental rules)\n- .ruler/patterns/ (code patterns)\n- .ruler/agents/ (agent-specific rules)\n- .ruler/mcp/ (MCP configurations)\n- .ruler/templates/ (reusable templates)\n\nAdd README.md to each directory\nDocument directory purposes",
             "status": "done",
-            "dependencies": [
-              "24.3"
-            ],
+            "dependencies": ["24.3"],
             "parentTaskId": 24
           },
           {
@@ -1872,9 +1577,7 @@
             "description": "Set up the initial ruler.toml configuration for all supported AI agents",
             "details": "Configure in ruler.toml:\n- agents = [\"claude\", \"cursor\", \"copilot\", \"windsurf\"]\n- default_agent = \"claude\"\n- mcp_merge_strategy = \"combine\"\n- output_paths for each agent\n- version_control settings\n\nTest configuration with: ruler validate\nDocument configuration choices",
             "status": "done",
-            "dependencies": [
-              "24.4"
-            ],
+            "dependencies": ["24.4"],
             "parentTaskId": 24
           }
         ]
@@ -1886,9 +1589,7 @@
         "details": "**PRIORITY: Work on this AFTER Task 24**\n\nRestructure existing 2000+ line CLAUDE.md into modular, reusable components:\n\n1. Content Organization:\n   - Keep Multi-Controller specific content in root CLAUDE.md\n   - Extract to .ruler/ directory:\n     * verification_protocols.md (verification-first development)\n     * task_management.md (Task Master workflows)\n     * performance_requirements.md (budgets and validation)\n     * rust_patterns.md (Rust/egui patterns)\n     * agent_workflows.md (parallel execution, CCPM)\n     * mcp_integration.md (MCP server configurations)\n     * quality_gates.md (zero tolerance protocols)\n\n2. Leverage concatenation order:\n   - Root AGENTS.md (executive summary)\n   - .ruler/AGENTS.md (core rules)\n   - Other .ruler/*.md files (detailed guidelines)\n\n3. Maintain separation:\n   - Project-specific → CLAUDE.md\n   - Reusable patterns → .ruler/\n   - Team standards → global ruler config",
         "testStrategy": "Verify no content loss during migration, test concatenation order works correctly, ensure CLAUDE.md still functions properly, validate rule distribution to all agents",
         "status": "done",
-        "dependencies": [
-          24
-        ],
+        "dependencies": [24],
         "priority": "high",
         "subtasks": [
           {
@@ -1906,9 +1607,7 @@
             "description": "Move verification-first development rules to .ruler/verification_protocols.md",
             "details": "Extract to .ruler/core/verification_protocols.md:\n- Verification-first development rules\n- Bullshit detection protocols\n- Implementation vs proposal distinctions\n- Self-verification requirements\n\nKeep in CLAUDE.md:\n- Brief reference to verification rules\n- Link to .ruler/ file",
             "status": "done",
-            "dependencies": [
-              "25.1"
-            ],
+            "dependencies": ["25.1"],
             "parentTaskId": 25
           },
           {
@@ -1917,9 +1616,7 @@
             "description": "Move performance budgets and quality gates to dedicated .ruler files",
             "details": "Create in .ruler/core/:\n- performance_requirements.md (budgets, validation)\n- quality_gates.md (zero tolerance protocols)\n- parallel_execution.md (CCPM integration)\n- agent_workflows.md (agent selection matrix)\n\nUpdate CLAUDE.md to reference these files\nMaintain project-specific thresholds in CLAUDE.md",
             "status": "done",
-            "dependencies": [
-              "25.2"
-            ],
+            "dependencies": ["25.2"],
             "parentTaskId": 25
           },
           {
@@ -1928,9 +1625,7 @@
             "description": "Move Rust, TypeScript, and PowerShell patterns to .ruler/patterns/",
             "details": "Create in .ruler/patterns/:\n- rust_patterns.md (async, egui, memory safety)\n- typescript_patterns.md (type safety, error handling)\n- powershell_patterns.md (script safety, encoding)\n- git_workflows.md (automation, security)\n\nKeep Multi-Controller specific implementations in CLAUDE.md\nTest pattern extraction with ruler apply",
             "status": "done",
-            "dependencies": [
-              "25.3"
-            ],
+            "dependencies": ["25.3"],
             "parentTaskId": 25
           },
           {
@@ -1939,9 +1634,7 @@
             "description": "Move MCP server configurations and integration patterns to .ruler/mcp/",
             "details": "Create in .ruler/mcp/:\n- mcp_integration.md (general MCP patterns)\n- taskmaster_config.md (Task Master specifics)\n- cipher_config.md (Cipher aggregator setup)\n- mcp_servers_list.md (all server configs)\n\nUpdate CLAUDE.md to import these\nTest MCP configuration merging",
             "status": "done",
-            "dependencies": [
-              "25.4"
-            ],
+            "dependencies": ["25.4"],
             "parentTaskId": 25
           },
           {
@@ -1950,9 +1643,7 @@
             "description": "Verify no content loss and proper concatenation after migration to Ruler structure",
             "details": "Validation steps:\n- Run: ruler apply --verbose\n- Check CLAUDE.md still has all needed context\n- Verify concatenation order is correct\n- Test with Claude Code session\n- Compare token usage before/after\n- Document any issues found\n- Create rollback plan if needed",
             "status": "done",
-            "dependencies": [
-              "25.5"
-            ],
+            "dependencies": ["25.5"],
             "parentTaskId": 25
           }
         ]
@@ -1964,9 +1655,7 @@
         "details": "**PRIORITY: Work on this AFTER Task 25**\n\nConfigure Ruler for comprehensive multi-agent support:\n\n1. Configure ruler.toml:\n   - Set default agents: claude, cursor, copilot, windsurf\n   - Define all MCP servers (will work with Cipher aggregator)\n   - Configure agent-specific output paths\n   - Set up merge strategies for MCP configs\n\n2. Workflow Integration:\n   - Add npm scripts for ruler commands:\n     * \"ruler:apply\": \"ruler apply\"\n     * \"ruler:revert\": \"ruler revert\"  \n     * \"ruler:validate\": \"ruler apply --verbose\"\n   - Update git workflow for .ruler/ directory\n   - Document in CONTRIBUTING.md\n\n3. Team Collaboration Setup:\n   - Standardize rule categories\n   - Create templates for different domains\n   - Document when to use .ruler/ vs CLAUDE.md\n   - Set up global configuration for team defaults\n\n4. Integration with Cipher:\n   - Ruler: Static rule distribution\n   - Cipher: Dynamic memory and context\n   - Together: Consistent rules + persistent memory",
         "testStrategy": "Test rule application to all configured agents, verify npm scripts work correctly, validate git workflow handles .ruler/ properly, ensure team documentation is clear and complete",
         "status": "done",
-        "dependencies": [
-          25
-        ],
+        "dependencies": [25],
         "priority": "high",
         "subtasks": [
           {
@@ -1984,9 +1673,7 @@
             "description": "Create npm scripts in package.json for common Ruler operations",
             "details": "Add to package.json scripts:\n- \"ruler:apply\": \"ruler apply\"\n- \"ruler:revert\": \"ruler revert\"\n- \"ruler:validate\": \"ruler apply --verbose\"\n- \"ruler:diff\": \"ruler diff\"\n- \"ruler:status\": \"ruler status\"\n\nTest each script works correctly\nDocument in CONTRIBUTING.md",
             "status": "done",
-            "dependencies": [
-              "26.1"
-            ],
+            "dependencies": ["26.1"],
             "parentTaskId": 26
           },
           {
@@ -1995,9 +1682,7 @@
             "description": "Configure git to properly handle the .ruler/ directory and integrate with workflow",
             "details": "Git configuration:\n- Ensure .ruler/ is tracked (not ignored)\n- Add .ruler/.gitignore for auto-managed files\n- Create pre-commit hook for ruler validate\n- Add post-checkout hook for ruler apply\n\nTest git operations:\n- Commit .ruler/ changes\n- Branch switching applies rules\n- Merge conflicts handled properly",
             "status": "done",
-            "dependencies": [
-              "26.2"
-            ],
+            "dependencies": ["26.2"],
             "parentTaskId": 26
           },
           {
@@ -2006,9 +1691,7 @@
             "description": "Create comprehensive documentation for team usage of Ruler",
             "details": "Document in CONTRIBUTING.md:\n- When to use .ruler/ vs CLAUDE.md\n- Rule categorization guidelines\n- Template creation process\n- Agent-specific customizations\n\nCreate .ruler/README.md:\n- Directory structure explanation\n- Rule priority and merging\n- Common patterns and examples",
             "status": "done",
-            "dependencies": [
-              "26.3"
-            ],
+            "dependencies": ["26.3"],
             "parentTaskId": 26
           },
           {
@@ -2017,9 +1700,7 @@
             "description": "Document and configure how Ruler and Cipher work together for complete AI enhancement",
             "details": "Integration points:\n- Ruler: Static rule distribution to agents\n- Cipher: Dynamic memory and context management\n- Combined: Consistent rules + persistent memory\n\nConfiguration:\n- Ruler manages agent instructions\n- Cipher manages MCP aggregation\n- Both configured in .mcp.json\n\nTest integration:\n- Rules apply correctly\n- Memory persists across sessions\n- No conflicts between systems",
             "status": "done",
-            "dependencies": [
-              "26.4"
-            ],
+            "dependencies": ["26.4"],
             "parentTaskId": 26
           },
           {
@@ -2028,9 +1709,7 @@
             "description": "Verify that all configured AI agents receive correct instructions through Ruler",
             "details": "Test each agent:\n- Claude: Verify CLAUDE.md updated correctly\n- Cursor: Check .cursorrules applied\n- Copilot: Verify GitHub Copilot instructions\n- Windsurf: Check .windsurf/instructions.md\n- Cline: Verify .cline/instructions.md\n\nValidate:\n- All agents have consistent core rules\n- Agent-specific customizations work\n- MCP configurations distributed properly\n- Document test results",
             "status": "done",
-            "dependencies": [
-              "26.5"
-            ],
+            "dependencies": ["26.5"],
             "parentTaskId": 26
           }
         ]
@@ -2049,9 +1728,9 @@
             "id": 1,
             "title": "Design and Implement SerialTransport Struct",
             "description": "Create the SerialTransport struct using the latest stable version of the serialport-rs crate, ensuring it adheres to the existing Transport trait and supports cross-platform serial communication. Implement with obsessive focus on RAII cleanup patterns and spawn_blocking for async operations.",
-            "status": "pending",
+            "status": "done",
             "dependencies": [],
-            "details": "Utilize serialport-rs for port enumeration, opening, configuration, and I/O. Ensure compatibility with Windows, macOS, and Linux. Implement RAII for resource management and async operations using tokio with spawn_blocking for blocking serial operations. Handle NoDevice errors gracefully with proper error propagation.",
+            "details": "Utilize serialport-rs for port enumeration, opening, configuration, and I/O. Ensure compatibility with Windows, macOS, and Linux. Implement RAII for resource management and async operations using tokio with spawn_blocking for blocking serial operations. Handle NoDevice errors gracefully with proper error propagation.\n<info added on 2025-09-07T22:10:26.110Z>\nSuccessfully implemented SerialTransport struct with proper async patterns using spawn_blocking, Arc<Mutex<>> for thread safety, UUID session tracking, and cross-platform port enumeration. The implementation follows RAII patterns, properly handles cleanup_resources(), and includes comprehensive error handling for NoDevice, PermissionDenied, and other serial port errors. Compiles without errors.\n</info added on 2025-09-07T22:10:26.110Z>",
             "testStrategy": "Unit test SerialTransport for port listing, opening, reading, writing, and closing. Validate cross-platform behavior using MockTransport and real hardware. Test NoDevice error scenarios and RAII cleanup patterns."
           },
           {
@@ -2059,9 +1738,7 @@
             "title": "Implement ArduinoDriver and DeviceDriver Trait Integration",
             "description": "Develop the ArduinoDriver struct implementing the DeviceDriver trait, enabling device-specific logic and integration with the SerialTransport for Arduino and microcontroller devices. Focus on proper async patterns and NoDevice error handling.",
             "status": "pending",
-            "dependencies": [
-              1
-            ],
+            "dependencies": [1],
             "details": "Ensure ArduinoDriver can manage device-specific communication, session lifecycle, and error handling. Integrate with SerialTransport for robust serial I/O and session management. Use spawn_blocking for any blocking operations and implement comprehensive NoDevice error handling.",
             "testStrategy": "Unit test ArduinoDriver for trait compliance and device-specific logic. Integration test with real Arduino hardware for communication and error scenarios. Validate NoDevice error handling and async operation patterns."
           },
@@ -2070,9 +1747,7 @@
             "title": "Session Management and Unique Session ID Handling",
             "description": "Implement device session management with unique session IDs, supporting multiple simultaneous connections and ensuring cleanup_resources() is called before disconnect. Emphasize RAII patterns and proper resource cleanup.",
             "status": "pending",
-            "dependencies": [
-              2
-            ],
+            "dependencies": [2],
             "details": "Design session tracking logic to assign and manage unique IDs per device connection. Ensure proper resource cleanup and session lifecycle management, including cancellation support. Implement strict RAII patterns for session resources and handle NoDevice scenarios during session operations.",
             "testStrategy": "Unit test session creation, ID assignment, and cleanup. Integration test with multiple devices to validate concurrent session handling and resource release. Test RAII cleanup patterns and NoDevice error scenarios during session management."
           },
@@ -2081,9 +1756,7 @@
             "title": "Integrate Connection State with Application State Management",
             "description": "Connect device connection lifecycle events (connect, disconnect, reconnect) to the application's state management system, ensuring accurate tracking and error handling with proper async patterns.",
             "status": "pending",
-            "dependencies": [
-              3
-            ],
+            "dependencies": [3],
             "details": "Implement event hooks for connection state changes. Update app state on device events and propagate errors. Ensure async operations are cancellable and memory safe. Use spawn_blocking appropriately and handle NoDevice errors in state transitions.",
             "testStrategy": "Unit test state transitions and event propagation. Integration test with simulated and real device events to verify app state accuracy and error handling. Validate async operation patterns and NoDevice error propagation."
           },
@@ -2092,9 +1765,7 @@
             "title": "Ensure Cross-Platform Compatibility and Robust Error Handling",
             "description": "Validate and refine the implementation for Windows, macOS, and Linux, ensuring robust error handling, proper resource cleanup, and adherence to async best practices with comprehensive NoDevice error handling.",
             "status": "pending",
-            "dependencies": [
-              4
-            ],
+            "dependencies": [4],
             "details": "Test and resolve platform-specific issues in serial communication, session management, and resource cleanup. Implement comprehensive error handling and ensure RAII patterns are followed. Focus on NoDevice error scenarios across all platforms and validate spawn_blocking usage patterns.",
             "testStrategy": "Integration test on all supported platforms with real hardware. Stress test error scenarios, cancellation, and resource cleanup for memory safety. Comprehensive testing of NoDevice error handling and RAII cleanup patterns across platforms."
           }
@@ -2105,9 +1776,7 @@
         "title": "Design and Implement Connection Handshake Protocol",
         "description": "Create a handshake protocol for device identification, capability negotiation, and protocol versioning with robust timeout and error handling. This task is owned by the handshake-protocol-engineer agent, a protocol design expert specializing in state machines, timeout handling, JSON messaging, and version negotiation.",
         "status": "pending",
-        "dependencies": [
-          27
-        ],
+        "dependencies": [27],
         "priority": "high",
         "details": "Define handshake message format using JSON for extensibility. Implement IDENTIFY command and response parsing. Store device capabilities in DeviceInfo structure. Enforce a 5-second handshake timeout and validate firmware compatibility before session establishment. Support protocol versioning for backward compatibility. Provide user feedback on handshake failures. Ensure all handshake logic is async and non-blocking. Agent specializes in obsessive focus on 5-second timeouts, backward compatibility, and firmware validation. Agent location: .claude/agents/handshake-protocol-engineer.md",
         "testStrategy": "Unit test handshake parsing and timeout logic. Integration test with devices of varying firmware versions. Simulate handshake failures and verify user feedback.",
@@ -2126,9 +1795,7 @@
             "title": "Implement IDENTIFY Command and Response Parsing",
             "description": "Develop logic to send the IDENTIFY command, receive responses, and parse device information and capabilities into the DeviceInfo structure.",
             "status": "pending",
-            "dependencies": [
-              1
-            ],
+            "dependencies": [1],
             "details": "Ensure robust parsing of JSON responses, extracting device ID, capabilities, and firmware version. Handle malformed or incomplete responses gracefully. Implement with obsessive attention to timeout boundaries and async patterns.",
             "testStrategy": "Unit test IDENTIFY command transmission and response parsing; simulate various device responses including errors."
           },
@@ -2137,9 +1804,7 @@
             "title": "Enforce Handshake Timeout and Error Handling",
             "description": "Integrate a 5-second timeout for the handshake process and implement error handling for timeouts, invalid responses, and compatibility failures.",
             "status": "pending",
-            "dependencies": [
-              2
-            ],
+            "dependencies": [2],
             "details": "Use async, non-blocking logic to monitor handshake duration. On timeout or error, abort handshake and trigger error reporting. Implement precise 5-second timeout enforcement with state machine transitions.",
             "testStrategy": "Simulate handshake delays and failures; verify timeout enforcement and error detection."
           },
@@ -2148,9 +1813,7 @@
             "title": "Validate Firmware Compatibility and Establish Session",
             "description": "Check device firmware version against supported versions before establishing a session, ensuring only compatible devices proceed.",
             "status": "pending",
-            "dependencies": [
-              3
-            ],
+            "dependencies": [3],
             "details": "Compare parsed firmware version with allowed range; reject incompatible devices and provide detailed error codes. Implement comprehensive backward compatibility validation logic.",
             "testStrategy": "Test with devices of varying firmware versions; confirm session is only established for compatible devices."
           },
@@ -2159,9 +1822,7 @@
             "title": "Provide User Feedback on Handshake Failures",
             "description": "Implement user-facing feedback mechanisms to report handshake errors, including timeout, parsing failures, and compatibility issues.",
             "status": "pending",
-            "dependencies": [
-              4
-            ],
+            "dependencies": [4],
             "details": "Design UI or logging outputs to clearly communicate handshake status and error details to users. Ensure feedback is delivered asynchronously. Provide detailed error reporting for all failure modes including timeout violations.",
             "testStrategy": "Simulate handshake failures and verify user feedback is accurate, timely, and actionable."
           }
@@ -2174,9 +1835,7 @@
         "details": "Use egui widgets (slider, button, text input) for UI. Implement ControlWidget trait for extensibility. Store control states in ManualControlState structure. Ensure value validation and clamping. Emergency stop button should be visually prominent and trigger immediate device command. Integrate widgets with app state and device session for real-time updates. Optimize for responsiveness and minimal UI lag. Owned by ui-controls-architect agent - egui immediate mode GUI expert focused on sliders, toggles, emergency stop, ControlWidget trait. Agent at .claude/agents/ui-controls-architect.md",
         "testStrategy": "UI unit tests for widget behavior and validation. Manual and automated tests for real-time updates and emergency stop. Performance profiling for UI responsiveness.",
         "priority": "high",
-        "dependencies": [
-          28
-        ],
+        "dependencies": [28],
         "status": "pending",
         "subtasks": [
           {
@@ -2192,9 +1851,7 @@
             "id": 2,
             "title": "Implement ControlWidget Trait for Extensibility",
             "description": "Define and implement a ControlWidget trait to standardize widget interfaces, enabling extensibility and consistent integration of new control types.",
-            "dependencies": [
-              "29.1"
-            ],
+            "dependencies": ["29.1"],
             "details": "The trait should encapsulate rendering, value retrieval, and update logic for each widget. Ensure all manual control widgets implement this trait for uniform handling.",
             "status": "pending",
             "testStrategy": "Write trait implementation tests for each widget type. Add a mock widget to validate extensibility."
@@ -2203,9 +1860,7 @@
             "id": 3,
             "title": "Develop ManualControlState Structure and State Management",
             "description": "Create the ManualControlState structure to store and manage the current state of all manual control widgets, supporting real-time updates and synchronization with the application state.",
-            "dependencies": [
-              "29.2"
-            ],
+            "dependencies": ["29.2"],
             "details": "Ensure ManualControlState holds validated values for each widget and supports efficient state updates. Integrate with egui's update loop for immediate feedback.",
             "status": "pending",
             "testStrategy": "Test state updates on widget interaction. Validate synchronization with app state and device session."
@@ -2214,9 +1869,7 @@
             "id": 4,
             "title": "Implement Value Validation and Clamping Logic",
             "description": "Add robust value validation and clamping for all manual control inputs to prevent invalid or out-of-range values, ensuring device safety and UI consistency.",
-            "dependencies": [
-              "29.3"
-            ],
+            "dependencies": ["29.3"],
             "details": "Implement validation logic within the ControlWidget trait or as part of ManualControlState updates. Clamp values to allowed ranges and provide user feedback on invalid input.",
             "status": "pending",
             "testStrategy": "Write tests for boundary conditions and invalid input. Verify clamping and error feedback in the UI."
@@ -2225,9 +1878,7 @@
             "id": 5,
             "title": "Integrate Widgets with Device Session and Optimize Responsiveness",
             "description": "Connect manual control widgets and state management to the device session for real-time command updates, and profile UI performance to minimize lag.",
-            "dependencies": [
-              "29.4"
-            ],
+            "dependencies": ["29.4"],
             "details": "Ensure widget changes trigger immediate device commands, especially for emergency stop. Profile and optimize UI update paths for responsiveness using egui's immediate mode patterns.",
             "status": "pending",
             "testStrategy": "Automated and manual tests for real-time device updates. Performance profiling to ensure minimal UI lag."
@@ -2241,9 +1892,7 @@
         "details": "Create Command enum for all supported command types. Implement command serialization to wire format. Use async/await for non-blocking transmission via established device session. Implement command queue with priority handling and batch transmission. Add acknowledgment and retry logic with user notification on failure. Maintain command history in a circular buffer for debugging and replay. Log all commands with timestamps. Owned by command-processor agent - Command queue and async transmission expert focused on priority queuing, retry logic, acknowledgments. Agent at .claude/agents/command-processor.md",
         "testStrategy": "Unit test command serialization, queuing, and retry logic. Integration test with hardware for command acknowledgment and error handling. Validate command logging and replay.",
         "priority": "high",
-        "dependencies": [
-          29
-        ],
+        "dependencies": [29],
         "status": "pending",
         "subtasks": [
           {
@@ -2259,9 +1908,7 @@
             "id": 2,
             "title": "Implement Asynchronous Command Transmission",
             "description": "Develop non-blocking transmission of serialized commands using async/await over an established device session.",
-            "dependencies": [
-              "30.1"
-            ],
+            "dependencies": ["30.1"],
             "details": "Integrate with the device session abstraction to send commands asynchronously, ensuring transmission does not block the main thread.",
             "status": "pending",
             "testStrategy": "Unit test async transmission logic and integration test with mock device sessions."
@@ -2270,10 +1917,7 @@
             "id": 3,
             "title": "Build Command Queue with Priority and Batch Handling",
             "description": "Design and implement a command queue supporting priority ordering and batch transmission of commands.",
-            "dependencies": [
-              "30.1",
-              "30.2"
-            ],
+            "dependencies": ["30.1", "30.2"],
             "details": "Support prioritization of commands and efficient batch sending. Ensure thread safety and correct ordering for queued commands.",
             "status": "pending",
             "testStrategy": "Unit test queue operations, priority handling, and batch transmission logic."
@@ -2282,10 +1926,7 @@
             "id": 4,
             "title": "Add Acknowledgment, Retry, and User Notification Logic",
             "description": "Implement acknowledgment tracking for transmitted commands, automatic retry on failure, and user notification for persistent errors.",
-            "dependencies": [
-              "30.2",
-              "30.3"
-            ],
+            "dependencies": ["30.2", "30.3"],
             "details": "Track acknowledgments from devices, retry failed transmissions with exponential backoff, and notify users of unrecoverable failures.",
             "status": "pending",
             "testStrategy": "Unit test acknowledgment handling, retry logic, and notification triggers. Integration test with device error scenarios."
@@ -2294,12 +1935,7 @@
             "id": 5,
             "title": "Maintain Command History and Logging",
             "description": "Store command history in a circular buffer for debugging and replay, and log all command transmissions with timestamps.",
-            "dependencies": [
-              "30.1",
-              "30.2",
-              "30.3",
-              "30.4"
-            ],
+            "dependencies": ["30.1", "30.2", "30.3", "30.4"],
             "details": "Implement a fixed-size circular buffer for command history. Log each command transmission event with precise timestamps for audit and replay purposes.",
             "status": "pending",
             "testStrategy": "Unit test circular buffer operations and logging accuracy. Validate replay functionality and log completeness."
@@ -2313,9 +1949,7 @@
         "details": "Create TelemetryParser supporting CSV, JSON, and binary formats. Use ring buffers (capacity 2000+) for data storage. Implement data validation, error correction, and overflow handling. Support configurable sampling rates (10Hz to 1kHz). Store telemetry as time-series data. Implement data decimation for efficient visualization. Ensure thread safety and minimal latency using tokio channels or similar async primitives. Owned by telemetry-collector agent - Lock-free data structures and ring buffer expert focused on multi-format parsing, 2000+ sample buffers, 10Hz-1kHz sampling. Agent at .claude/agents/telemetry-collector.md",
         "testStrategy": "Unit test data parsing and validation for all formats. Stress test buffer overflow and high sampling rates. Integration test with real devices for data integrity.",
         "priority": "medium",
-        "dependencies": [
-          30
-        ],
+        "dependencies": [30],
         "status": "pending",
         "subtasks": [
           {
@@ -2331,9 +1965,7 @@
             "id": 2,
             "title": "Develop Thread-Safe Ring Buffer Storage",
             "description": "Implement ring buffers with a minimum capacity of 2000 samples for time-series telemetry data, ensuring thread safety and minimal latency.",
-            "dependencies": [
-              "31.1"
-            ],
+            "dependencies": ["31.1"],
             "details": "Use async primitives such as tokio channels to manage concurrent access. Ensure efficient buffer operations, including insertion, retrieval, and overflow handling.",
             "status": "pending",
             "testStrategy": "Stress test buffer performance under high sampling rates and concurrent access. Validate correct overflow and data eviction behavior."
@@ -2342,10 +1974,7 @@
             "id": 3,
             "title": "Implement Data Validation and Error Correction",
             "description": "Integrate data validation and error correction mechanisms into the telemetry ingestion pipeline to ensure data integrity.",
-            "dependencies": [
-              "31.1",
-              "31.2"
-            ],
+            "dependencies": ["31.1", "31.2"],
             "details": "Validate incoming data against defined schemas and apply error correction strategies where feasible. Log or discard irrecoverable data with appropriate notifications.",
             "status": "pending",
             "testStrategy": "Unit test validation and correction logic with a variety of corrupted and edge-case data. Verify correct handling and reporting of invalid data."
@@ -2354,10 +1983,7 @@
             "id": 4,
             "title": "Support Configurable Sampling Rates and Data Decimation",
             "description": "Enable configurable sampling rates (10Hz to 1kHz) for data collection and implement data decimation for efficient visualization and storage.",
-            "dependencies": [
-              "31.2",
-              "31.3"
-            ],
+            "dependencies": ["31.2", "31.3"],
             "details": "Allow dynamic adjustment of sampling rates per device or data stream. Implement decimation algorithms to reduce data volume for visualization without losing key trends.",
             "status": "pending",
             "testStrategy": "Integration test sampling rate changes under load. Validate decimation output against original data for accuracy and performance."
@@ -2366,9 +1992,7 @@
             "id": 5,
             "title": "Integrate Telemetry Buffering with Real-Time Processing Pipeline",
             "description": "Connect the buffered telemetry data to downstream consumers for real-time monitoring, visualization, and historical storage.",
-            "dependencies": [
-              "31.4"
-            ],
+            "dependencies": ["31.4"],
             "details": "Ensure seamless data flow from buffers to analytics, dashboards, and storage systems. Maintain low-latency delivery and support backpressure handling.",
             "status": "pending",
             "testStrategy": "Integration test with real devices and simulated data streams. Measure end-to-end latency and verify data integrity across the pipeline."
@@ -2382,9 +2006,7 @@
         "details": "Use egui_plot v0.29 for chart rendering. Implement ChartManager for chart lifecycle and controls (zoom, pan, pause). Decimate data to 300 points per chart for performance. Support multiple data series and digital state indicators with timestamps. Add export functionality (CSV, JSON). Maintain 30 FPS update rate (33ms interval) for smooth visualization. Optimize rendering for minimal CPU usage. Owned by visualization-engineer agent - egui_plot v0.29 specialist focused on real-time charts, decimation to 300 points, 30 FPS rendering. Agent at .claude/agents/visualization-engineer.md",
         "testStrategy": "UI tests for chart rendering, controls, and export. Performance profiling for FPS and CPU usage. Integration test with live telemetry data.",
         "priority": "medium",
-        "dependencies": [
-          31
-        ],
+        "dependencies": [31],
         "status": "pending",
         "subtasks": [
           {
@@ -2400,9 +2022,7 @@
             "id": 2,
             "title": "Develop ChartManager for Lifecycle and Controls",
             "description": "Create ChartManager to manage chart instances, lifecycle, and user controls including zoom, pan, and pause functionality.",
-            "dependencies": [
-              "32.1"
-            ],
+            "dependencies": ["32.1"],
             "details": "Implement ChartManager to handle chart creation, destruction, and control events. Integrate egui_plot's interactive features for zooming and panning.",
             "status": "pending",
             "testStrategy": "UI tests for chart controls. Validate correct chart lifecycle management and control responsiveness."
@@ -2411,9 +2031,7 @@
             "id": 3,
             "title": "Implement Data Decimation and Performance Optimization",
             "description": "Decimate incoming telemetry data to a maximum of 300 points per chart and optimize rendering to maintain 30 FPS with minimal CPU usage.",
-            "dependencies": [
-              "32.2"
-            ],
+            "dependencies": ["32.2"],
             "details": "Apply data decimation algorithms before rendering. Profile and optimize chart updates to ensure smooth visualization at 33ms intervals.",
             "status": "pending",
             "testStrategy": "Performance profiling for FPS and CPU usage. Stress tests with high-frequency data streams."
@@ -2422,9 +2040,7 @@
             "id": 4,
             "title": "Support Multiple Data Series and Digital State Indicators",
             "description": "Enable visualization of multiple telemetry series and digital state indicators, each with accurate timestamp alignment.",
-            "dependencies": [
-              "32.3"
-            ],
+            "dependencies": ["32.3"],
             "details": "Extend chart rendering logic to handle multiple series and overlay digital indicators. Ensure correct timestamp mapping for all data points.",
             "status": "pending",
             "testStrategy": "UI tests for multi-series display and indicator accuracy. Integration tests with live telemetry data."
@@ -2433,9 +2049,7 @@
             "id": 5,
             "title": "Implement Data Export Functionality (CSV, JSON)",
             "description": "Add export options to allow users to save chart data and digital indicators in CSV and JSON formats.",
-            "dependencies": [
-              "32.4"
-            ],
+            "dependencies": ["32.4"],
             "details": "Provide export controls in the UI. Serialize chart data and indicators to CSV and JSON, ensuring correct formatting and timestamp inclusion.",
             "status": "pending",
             "testStrategy": "Functional tests for export features. Validate exported files for data integrity and format compliance."
@@ -2449,9 +2063,7 @@
         "details": "Use existing LoggingSystem with device_io buffer. Implement LogLevel filtering (Debug, Info, Warning, Error). Structure log entries with metadata (timestamps, source, parsing status). Support log export (JSON, CSV, plain text). Implement rolling log buffers and log rotation by size/time. Use tracing crate for structured logging and custom appenders. Enable remote log transmission for diagnostics. Owned by logging-integrator agent - tracing crate expert focused on structured logging, log capture, filtering, export, rotation. Agent at .claude/agents/logging-integrator.md",
         "testStrategy": "Unit test log capture, filtering, and export. Simulate high-frequency events for buffer and rotation logic. Integration test for remote log transmission.",
         "priority": "medium",
-        "dependencies": [
-          30
-        ],
+        "dependencies": [30],
         "status": "pending",
         "subtasks": [
           {
@@ -2467,9 +2079,7 @@
             "id": 2,
             "title": "Implement LogLevel Filtering and Structured Log Entry Metadata",
             "description": "Add LogLevel filtering (Debug, Info, Warning, Error) and structure log entries with metadata such as timestamps, source, and parsing status.",
-            "dependencies": [
-              "33.1"
-            ],
+            "dependencies": ["33.1"],
             "details": "Enable dynamic filtering of logs based on severity. Ensure each log entry includes standardized metadata fields for traceability and analysis.",
             "status": "pending",
             "testStrategy": "Unit test filtering logic for each LogLevel. Validate metadata presence and correctness in log entries."
@@ -2478,9 +2088,7 @@
             "id": 3,
             "title": "Support Log Export in Multiple Formats",
             "description": "Implement export functionality for logs in JSON, CSV, and plain text formats.",
-            "dependencies": [
-              "33.2"
-            ],
+            "dependencies": ["33.2"],
             "details": "Provide interfaces to export filtered and structured logs in user-selectable formats, ensuring data integrity and compatibility with external tools.",
             "status": "pending",
             "testStrategy": "Unit test export for each format. Verify exported files match expected structure and content."
@@ -2489,9 +2097,7 @@
             "id": 4,
             "title": "Implement Rolling Log Buffers and Log Rotation",
             "description": "Add rolling log buffers and log rotation mechanisms based on size and time constraints.",
-            "dependencies": [
-              "33.2"
-            ],
+            "dependencies": ["33.2"],
             "details": "Ensure logs are efficiently managed in memory and on disk, automatically rotating or purging old logs to prevent resource exhaustion.",
             "status": "pending",
             "testStrategy": "Simulate high-frequency logging to test buffer limits and rotation triggers. Verify no data loss and correct log retention."
@@ -2500,10 +2106,7 @@
             "id": 5,
             "title": "Enable Structured Logging, Custom Appenders, and Remote Log Transmission",
             "description": "Integrate the tracing crate for structured logging, implement custom appenders, and enable remote log transmission for diagnostics.",
-            "dependencies": [
-              "33.3",
-              "33.4"
-            ],
+            "dependencies": ["33.3", "33.4"],
             "details": "Adopt structured logging practices using the tracing crate, support extensible log destinations via custom appenders, and implement secure remote log transmission for diagnostic purposes.",
             "status": "pending",
             "testStrategy": "Integration test structured logging and custom appenders. Simulate remote log transmission and verify reliability and security."
@@ -2517,9 +2120,7 @@
         "details": "Use Rhai scripting engine (latest stable) for script execution. Implement ScriptManager for script lifecycle (load, edit, validate, execute). Support script import/export and metadata parsing (TOML format). Expose device control API to scripts in a sandboxed environment. Implement script scheduling, concurrent execution, debugging, and error handling. Enforce script timeout and resource limits for security. Owned by scripting-architect agent - Rhai engine integration expert focused on ScriptManager, sandboxing, device API, concurrent execution. Agent at .claude/agents/scripting-architect.md",
         "testStrategy": "Unit test script loading, validation, and execution. Integration test with device API access. Security audit for sandboxing and resource limits.",
         "priority": "medium",
-        "dependencies": [
-          30
-        ],
+        "dependencies": [30],
         "status": "pending",
         "subtasks": [
           {
@@ -2535,9 +2136,7 @@
             "id": 2,
             "title": "Expose Device Control API to Scripts in a Sandboxed Environment",
             "description": "Integrate device API bindings into the Rhai scripting environment, ensuring only safe, sandboxed access to device functions.",
-            "dependencies": [
-              "34.1"
-            ],
+            "dependencies": ["34.1"],
             "details": "Register device control functions with the Rhai engine, restricting access to only approved APIs. Enforce sandboxing to prevent unauthorized operations and ensure scripts cannot escape the sandbox or access unsafe system resources.",
             "status": "pending",
             "testStrategy": "Integration test device API exposure. Security audit to verify sandboxing and API access restrictions."
@@ -2546,10 +2145,7 @@
             "id": 3,
             "title": "Implement Script Scheduling, Concurrent Execution, and Resource Limits",
             "description": "Enable scheduling and concurrent execution of scripts, enforcing timeouts and resource limits for security and performance.",
-            "dependencies": [
-              "34.1",
-              "34.2"
-            ],
+            "dependencies": ["34.1", "34.2"],
             "details": "Develop a scheduler to manage script execution timing and concurrency. Implement mechanisms to enforce per-script timeouts and resource (CPU, memory) limits, terminating scripts that exceed constraints.",
             "status": "pending",
             "testStrategy": "Stress test concurrent execution and scheduling. Unit test timeout and resource limit enforcement."
@@ -2558,9 +2154,7 @@
             "id": 4,
             "title": "Add Debugging, Error Handling, and Performance Monitoring",
             "description": "Provide debugging tools, robust error handling, and real-time performance monitoring for script execution.",
-            "dependencies": [
-              "34.3"
-            ],
+            "dependencies": ["34.3"],
             "details": "Integrate debugging features such as breakpoints, step execution, and variable inspection. Implement comprehensive error reporting and logging. Monitor script execution metrics (CPU time, memory usage) and expose them for diagnostics.",
             "status": "pending",
             "testStrategy": "Unit and integration test debugging features and error handling. Verify accuracy of performance metrics under load."
@@ -2569,9 +2163,7 @@
             "id": 5,
             "title": "Support Script Import/Export and Metadata Management",
             "description": "Implement functionality for importing and exporting scripts, including parsing and managing script metadata in TOML format.",
-            "dependencies": [
-              "34.1"
-            ],
+            "dependencies": ["34.1"],
             "details": "Allow users to import/export scripts with associated metadata. Parse and validate TOML metadata, ensuring it is correctly associated with each script and available for lifecycle management.",
             "status": "pending",
             "testStrategy": "Unit test import/export operations and TOML metadata parsing. Validate metadata integrity after round-trip operations."
@@ -2585,9 +2177,7 @@
         "details": "Create ProfileManager for CRUD operations. Store profiles in TOML format using serde for serialization. Support multiple named profiles, import/export, and hot-reload via notify crate. Implement profile versioning and migration logic. Match devices to profiles by identifier and auto-apply on connection. Handle profile conflicts and log application events. Owned by profile-manager agent - TOML serialization and hot-reload expert focused on ProfileManager, versioning, auto-apply, conflict resolution. Agent at .claude/agents/profile-manager.md",
         "testStrategy": "Unit test profile CRUD, import/export, and migration. Integration test auto-apply and conflict handling with real devices.",
         "priority": "medium",
-        "dependencies": [
-          30
-        ],
+        "dependencies": [30],
         "status": "pending",
         "subtasks": [
           {
@@ -2603,9 +2193,7 @@
             "id": 2,
             "title": "Enable Profile Import, Export, and Hot-Reload",
             "description": "Add functionality to import and export profiles, and implement hot-reload support using the notify crate to detect changes in profile files.",
-            "dependencies": [
-              "35.1"
-            ],
+            "dependencies": ["35.1"],
             "details": "Allow users to import/export profiles in TOML format. Use the notify crate to watch profile directories and automatically reload profiles on file changes.",
             "status": "pending",
             "testStrategy": "Unit test import/export with valid and invalid files. Integration test hot-reload by modifying files externally and verifying in-app updates."
@@ -2614,9 +2202,7 @@
             "id": 3,
             "title": "Implement Profile Versioning and Migration Logic",
             "description": "Introduce versioning for profiles and develop migration logic to handle upgrades or changes in profile schema over time.",
-            "dependencies": [
-              "35.1"
-            ],
+            "dependencies": ["35.1"],
             "details": "Add a version field to each profile. Implement migration routines to update older profiles to the latest schema, ensuring backward compatibility.",
             "status": "pending",
             "testStrategy": "Unit test migration logic with profiles from previous versions. Verify correct handling of missing or deprecated fields."
@@ -2625,11 +2211,7 @@
             "id": 4,
             "title": "Develop Device Matching and Auto-Apply Mechanism",
             "description": "Create logic to match connected devices to profiles by identifier and automatically apply the appropriate configuration upon device connection.",
-            "dependencies": [
-              "35.1",
-              "35.2",
-              "35.3"
-            ],
+            "dependencies": ["35.1", "35.2", "35.3"],
             "details": "Implement device identification and matching algorithms. Ensure the system can auto-apply the correct profile when a device is detected, supporting multiple simultaneous devices.",
             "status": "pending",
             "testStrategy": "Integration test with simulated and real devices to verify correct profile matching and auto-application."
@@ -2638,9 +2220,7 @@
             "id": 5,
             "title": "Handle Profile Conflicts and Log Application Events",
             "description": "Implement conflict detection and resolution strategies for profile application, and log all profile application events for auditing and troubleshooting.",
-            "dependencies": [
-              "35.4"
-            ],
+            "dependencies": ["35.4"],
             "details": "Detect and resolve conflicts when multiple profiles could apply to a device. Log all profile application attempts, successes, failures, and conflict resolutions.",
             "status": "pending",
             "testStrategy": "Integration test conflict scenarios and verify logs for completeness and accuracy."
@@ -2654,12 +2234,7 @@
         "details": "Investigate sysinfo crate for Windows CPU monitoring; implement custom logic if needed for accurate multi-core reporting. Use rolling average for stable CPU readings. Optimize memory usage with pooling and lazy loading. Ensure idle CPU <2%, memory <150MB, and startup <2s. Implement async UI updates, loading spinners, and operation cancellation. Profile and optimize event loops and rendering for 60 FPS. Add CPU usage trend visualization. Owned by performance-optimizer agent - System optimization expert with 5 sub-specializations focused on CPU monitoring, memory optimization, startup time (<2s), idle CPU (<2%), RAM (<150MB). Agent at .claude/agents/performance-optimizer.md",
         "testStrategy": "Performance profiling on all platforms. Automated tests for CPU/memory usage and startup time. UI tests for responsiveness and cancellation. Soak tests for memory leaks.",
         "priority": "medium",
-        "dependencies": [
-          32,
-          33,
-          34,
-          35
-        ],
+        "dependencies": [32, 33, 34, 35],
         "status": "pending",
         "subtasks": [
           {
@@ -2712,7 +2287,7 @@
     ],
     "metadata": {
       "created": "2025-08-23T18:31:02.168Z",
-      "updated": "2025-09-07T17:30:38.449Z",
+      "updated": "2025-09-07T22:10:32.628Z",
       "description": "Tasks for master context"
     }
   }

@@ -1,4 +1,9 @@
 ---
+model: claude-sonnet-4-20250514
+category: project-management
+priority: medium
+tags: ["project-management", "integration"]
+description: Synchronize project state across different systems and tools
 allowed-tools: Bash, Read, Write, LS
 ---
 
@@ -58,7 +63,7 @@ Update all synced files with last_sync timestamp.
 ### 6. Output
 
 ```
-🔄 Sync Complete
+ðŸ”„ Sync Complete
 
 Pulled from GitHub:
   Updated: {count} files
@@ -71,7 +76,7 @@ Pushed to GitHub:
 Conflicts resolved: {count}
 
 Status:
-  ✅ All files synced
+  âœ… All files synced
   {or list any sync failures}
 ```
 
@@ -80,3 +85,5 @@ Status:
 Follow `/rules/github-operations.md` for GitHub commands.
 Follow `/rules/frontmatter-operations.md` for local updates.
 Always backup before sync in case of issues.
+
+

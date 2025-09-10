@@ -1,13 +1,130 @@
 ---
+model: claude-sonnet-4-20250514
+category: performance-optimization
+priority: high
+tags: ["performance-optimization", "performance"]
+description: Add comprehensive performance monitoring, profiling, and metrics collection to your application
 allowed-tools: Read, Bash, Grep, Glob
 argument-hint: [monitoring-type] | --apm | --rum | --custom
-description: Setup comprehensive application performance monitoring with metrics, alerting, and observability
-model: sonnet
+
+# Enhanced Context-Aware Agent Integration
+enhanced-integration:
+  enabled: true
+  agent-selection-criteria:
+    domain-expertise: ["performance-monitoring", "profiling-analysis", "metrics-collection"]
+    complexity-factors: ["monitoring-scope", "performance-requirements", "integration-complexity"]
+    specialized-tools: ["performance-analysis", "monitoring-setup", "metrics-optimization"]
+  preferred-agents:
+    primary: "rust-performance-monitor"
+    secondary: "general-purpose"
+    fallback: ["performance-optimizer"]
+  tool-requirements:
+    mcp-servers: ["desktop-commander", "FileScopeMCP", "cipher-memory", "context7"]
+    specialized-functions: ["performance-monitoring", "profiling-analysis"]
+
+# Universal Cipher Memory Integration (MANDATORY FOR ALL COMMANDS)
+cipher-memory-integration:
+  enabled: true
+  priority: "high"
+  
+  # Pre-execution Memory Operations
+  pre-execution-memory:
+    context-search:
+      - query-pattern: "performance-monitoring + profiling-analysis + metrics-collection"
+      - tools: ["mcp__cipher-memory__search_nodes", "mcp__cipher-memory__open_nodes"]
+      - context-retrieval: "performance-patterns + monitoring-knowledge"
+    
+    knowledge-preparation:
+      - domain: "performance-monitoring"
+      - pattern-search: "monitoring-strategies + profiling-patterns + metrics-optimization"
+      - tools: ["mcp__cipher-memory__read_graph"]
+  
+  # Execution Memory Operations
+  execution-memory:
+    progress-tracking:
+      - tool: "mcp__cipher-memory__add_observations"
+      - capture-points: ["monitoring-setup", "profiling-configuration", "metrics-implementation"]
+      - entity-updates: "real-time-progress"
+    
+    decision-logging:
+      - tool: "mcp__cipher-memory__create_entities"
+      - log-decisions: "monitoring-strategies + profiling-approaches + metrics-decisions"
+      - pattern-recognition: "performance-monitoring-patterns"
+  
+  # Post-execution Memory Operations
+  post-execution-memory:
+    result-storage:
+      - tools: ["mcp__cipher-memory__create_entities"]
+      - store-patterns: ["monitoring-results", "profiling-insights", "metrics-techniques"]
+      - knowledge-extraction: "performance-methodologies + monitoring-patterns"
+    
+    relationship-creation:
+      - tools: ["mcp__cipher-memory__create_relations"]
+      - link-concepts: ["monitoring-relationships", "profiling-dependencies", "metrics-connections"]
+      - cross-reference: "related-performance-processes"
+    
+    knowledge-refinement:
+      - tools: ["mcp__cipher-memory__add_observations"]
+      - enrich-existing: "performance-knowledge + monitoring-patterns"
+      - continuous-learning: "performance-monitoring-optimization"
+
+# Centralized Logging Integration
+logging-integration:
+  enabled: true
+  log-file: ".claude/command-execution.jsonl"
+  
+  # Comprehensive Execution Logging
+  log-level: "comprehensive"
+  
+  capture-points:
+    - command-initiation
+    - agent-selection-process
+    - memory-operations
+    - monitoring-setup
+    - profiling-configuration
+    - metrics-implementation
+    - performance-analysis
+    - error-handling
+    - completion-status
+  
+  # Structured Log Format
+  log-structure:
+    timestamp: "ISO-8601"
+    command: "add-performance-monitoring"
+    execution-id: "UUID"
+    agent-assignments: "selected-agents-with-reasoning"
+    memory-operations: "cipher-memory-transactions"
+    performance-metrics: "execution-time + memory-usage + success-rate"
+    outcome-summary: "monitoring-results + profiling-insights"
+
+# Cross-Command Learning Integration
+cross-command-learning:
+  enabled: true
+  share-insights: ["monitoring-patterns", "profiling-techniques", "metrics-methodologies"]
+  learn-from: ["rust-performance-monitor", "setup-monitoring-observability", "test-quality-analyzer"]
+  contribute-to: "performance-monitoring-knowledge-base"
+
+# Workflow Integration
+workflow-integration:
+  pre-execution:
+    - validate-monitoring-requirements
+    - prepare-memory-context
+    - select-optimal-agents
+  
+  execution:
+    - parallel-monitoring-setup
+    - continuous-memory-updates
+    - real-time-performance-optimization
+  
+  post-execution:
+    - comprehensive-result-storage
+    - cross-reference-generation
+    - monitoring-pattern-extraction
 ---
 
 # Add Performance Monitoring
 
-Setup application performance monitoring: **$ARGUMENTS**
+Setup comprehensive application performance monitoring with intelligent profiling and advanced metrics collection: **$ARGUMENTS**
 
 ## Instructions
 
@@ -82,3 +199,4 @@ Setup application performance monitoring: **$ARGUMENTS**
     - Create performance optimization prioritization frameworks
 
 Focus on monitoring strategies that provide actionable insights for performance optimization. Ensure monitoring overhead is minimal and doesn't impact application performance.
+

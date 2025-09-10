@@ -1,3 +1,11 @@
+---
+model: claude-sonnet-4-20250514
+category: development-setup
+priority: medium
+tags: ["development-setup", "setup"]
+description: Command for setup-models operations
+---
+
 Run interactive setup to configure AI models.
 
 ## Interactive Model Configuration
@@ -49,3 +57,5 @@ After configuration:
 - Show usage examples
 - Suggest next steps
 - Verify parse-prd works
+
+

@@ -1,4 +1,9 @@
 ---
+model: claude-sonnet-4-20250514
+category: project-management
+priority: medium
+tags: ["project-management", "github"]
+description: Issue Close
 allowed-tools: Bash, Read, Write, LS
 ---
 
@@ -17,7 +22,7 @@ Mark an issue as complete and close it on GitHub.
 
 First check if `.claude/epics/*/$ARGUMENTS.md` exists (new naming).
 If not found, search for task file with `github:.*issues/$ARGUMENTS` in frontmatter (old naming).
-If not found: "❌ No local task for issue #$ARGUMENTS"
+If not found: "âŒ No local task for issue #$ARGUMENTS"
 
 ### 2. Update Local Status
 
@@ -41,7 +46,7 @@ If progress file exists at `.claude/epics/{epic}/updates/$ARGUMENTS/progress.md`
 Add completion comment and close:
 ```bash
 # Add final comment
-echo "✅ Task completed
+echo "âœ… Task completed
 
 $ARGUMENTS
 
@@ -73,7 +78,7 @@ if [ ! -z "$epic_issue" ]; then
   # Update epic issue
   gh issue edit $epic_issue --body-file /tmp/epic-body.md
   
-  echo "✓ Updated epic progress on GitHub"
+  echo "âœ“ Updated epic progress on GitHub"
 fi
 ```
 
@@ -87,7 +92,7 @@ fi
 ### 7. Output
 
 ```
-✅ Closed issue #$ARGUMENTS
+âœ… Closed issue #$ARGUMENTS
   Local: Task marked complete
   GitHub: Issue closed & epic updated
   Epic progress: {new_progress}% ({closed}/{total} tasks complete)
@@ -100,3 +105,5 @@ Next: Run /pm:next for next priority task
 Follow `/rules/frontmatter-operations.md` for updates.
 Follow `/rules/github-operations.md` for GitHub commands.
 Always sync local state before GitHub.
+
+

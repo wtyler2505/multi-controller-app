@@ -1,3 +1,11 @@
+---
+model: claude-sonnet-4-20250514
+category: task-management
+priority: medium
+tags: ["task-management"]
+description: Command for smart-workflow operations
+---
+
 Execute an intelligent workflow based on current project state and recent commands.
 
 This command analyzes:
@@ -21,17 +29,17 @@ Based on context, I'll determine the best workflow:
 ### Smart Execution
 
 If last command was:
-- `status` → Likely starting work → Run daily standup
-- `complete` → Task finished → Find next task
-- `list pending` → Planning → Suggest sprint planning
-- `expand` → Breaking down work → Show complexity analysis
-- `init` → New project → Show onboarding workflow
+- `status` â†’ Likely starting work â†’ Run daily standup
+- `complete` â†’ Task finished â†’ Find next task
+- `list pending` â†’ Planning â†’ Suggest sprint planning
+- `expand` â†’ Breaking down work â†’ Show complexity analysis
+- `init` â†’ New project â†’ Show onboarding workflow
 
 If no recent commands:
-- Morning? → Daily standup workflow
-- Many pending tasks? → Sprint planning
-- Tasks blocked? → Dependency resolution
-- Friday? → Weekly review
+- Morning? â†’ Daily standup workflow
+- Many pending tasks? â†’ Sprint planning
+- Tasks blocked? â†’ Dependency resolution
+- Friday? â†’ Weekly review
 
 ### Workflow Composition
 
@@ -50,6 +58,8 @@ This command learns from your patterns:
 - Adapt to your style
 
 Example flows detected:
-- Morning: standup → next → start
-- After lunch: status → continue task
-- End of day: complete → commit → status
+- Morning: standup â†’ next â†’ start
+- After lunch: status â†’ continue task
+- End of day: complete â†’ commit â†’ status
+
+

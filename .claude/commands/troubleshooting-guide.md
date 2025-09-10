@@ -1,13 +1,175 @@
 ---
-allowed-tools: Read, Write, Edit, Bash
-argument-hint: [system-component] | --application | --database | --network | --deployment | --comprehensive
-description: Generate systematic troubleshooting documentation with diagnostic procedures, common issues, and automated solutions
-model: sonnet
+model: claude-sonnet-4-20250514
+category: utilities-tools
+priority: high
+tags: ["utilities-tools", "debugging", "troubleshooting", "system-diagnosis", "problem-solving"]
+description: Comprehensive troubleshooting guide generation with universal memory integration and intelligent diagnostic pattern recognition
+
+# Enhanced Context-Aware Agent Integration with Universal Memory
+agent-selection:
+  type: "context-aware"
+  domain-hints: ["troubleshooting", "system-diagnosis", "problem-solving", "debugging", "system-administration"]
+  complexity-level: "complex"
+  
+  # Enhanced selection criteria for troubleshooting guide with memory integration
+  selection-criteria:
+    keyword-match: 0.95       # Strong troubleshooting/debugging patterns
+    argument-analysis: 0.85   # System component context critical
+    project-context: 0.90     # Infrastructure type affects troubleshooting approach
+    error-context: 0.95       # Primary use case - system issues
+  
+  # Specialized troubleshooting agents with memory capabilities
+  preferred-agents: ["general-purpose", "rust-async-specialist", "serial-hardware-specialist"]
+  fallback-agents: ["general-purpose"]
+  confidence-threshold: 0.85
+
+# Enhanced Tool Selection with Universal Memory Integration
+tool-selection:
+  type: "intelligent-troubleshooting-workflow"
+  
+  base-tools:
+    - "mcp__desktop-commander__start_process"  # Run diagnostic commands
+    - "mcp__FileScopeMCP__find_important_files"  # Analyze system components
+    - "mcp__cipher-memory__search_nodes"  # Universal memory integration
+  
+  conditional-tools:
+    system-diagnosis:
+      - "mcp__desktop-commander__start_process"  # System diagnostic tools
+      - "mcp__context7__get-library-docs"  # System administration docs
+      - "mcp__cipher-memory__open_nodes"  # Load troubleshooting patterns
+    
+    application-troubleshooting:
+      - "mcp__FileScopeMCP__recalculate_importance"  # Critical application files
+      - "mcp__cipher-memory__create_entities"  # Store troubleshooting insights
+      - "mcp__desktop-commander__search_code"  # Search for error patterns
+    
+    infrastructure-analysis:
+      - "mcp__cipher-memory__add_observations"  # Store infrastructure insights
+      - "mcp__desktop-commander__start_process"  # Infrastructure diagnostic tools
+      - "mcp__cipher-memory__create_relations"  # Connect infrastructure patterns
+    
+    problem-resolution:
+      - "mcp__perplexity-ask__perplexity_ask"  # Research complex issues
+      - "mcp__cipher-memory__create_entities"  # Store resolution patterns
+      - "mcp__taskmaster-ai__add_task"  # Create resolution tasks
+
+# Universal Cipher Memory Integration (MANDATORY FOR ALL COMMANDS)
+cipher-memory-integration:
+  enabled: true
+  priority: "critical"
+  pre-execution-memory:
+    troubleshooting-patterns-search:
+      - query-pattern: "troubleshooting + system-diagnosis + ${system_component}-issues"
+      - tools: ["mcp__cipher-memory__search_nodes"]
+    diagnostic-procedures:
+      - query-pattern: "diagnostic-procedures + problem-solving + ${infrastructure_type}"
+      - tools: ["mcp__cipher-memory__open_nodes"]
+    resolution-strategies:
+      - tools: ["mcp__cipher-memory__read_graph"]
+      - filter: "troubleshooting-related"
+  execution-memory:
+    guide-progress-tracking:
+      - tool: "mcp__cipher-memory__add_observations"
+      - trigger: "troubleshooting-section-completion"
+    pattern-identification:
+      - tool: "mcp__cipher-memory__create_relations"
+      - trigger: "effective-diagnostic-identified"
+    solution-learning:
+      - tool: "mcp__cipher-memory__create_entities"
+      - trigger: "comprehensive-solution-documented"
+  post-execution-memory:
+    guide-methodology-storage:
+      - tools: ["mcp__cipher-memory__create_entities"]
+      - content: "complete-troubleshooting-guide-session-pattern"
+    diagnostic-pattern-mapping:
+      - tools: ["mcp__cipher-memory__create_relations"]
+      - relationships: ["issue-type-to-solution", "diagnostic-to-resolution", "system-to-troubleshooting"]
+    knowledge-enhancement:
+      - tools: ["mcp__cipher-memory__add_observations"]
+      - content: "troubleshooting-insights + diagnostic-strategies + resolution-optimization"
+
+# Centralized Logging Integration (MANDATORY FOR ALL COMMANDS)
+logging-integration:
+  enabled: true
+  log-file: ".claude/logs/command-execution.jsonl"
+  log-level: "comprehensive"
+  
+  log-phases:
+    pre-execution:
+      - command-metadata
+      - troubleshooting-scope-analysis
+      - diagnostic-pattern-search
+      - memory-pattern-analysis
+    
+    execution:
+      - system-analysis-results
+      - diagnostic-procedure-creation
+      - solution-documentation
+      - guide-structure-generation
+      - cross-reference-creation
+    
+    post-execution:
+      - guide-completion-summary
+      - diagnostic-effectiveness-assessment
+      - memory-operations
+      - troubleshooting-recommendations
+  
+  structured-metadata:
+    command-id: "troubleshooting-guide"
+    session-id: "${session_timestamp}"
+    user-context: "${user_request}"
+    project-context: "${project_type}"
+    agent-assigned: "${selected_agent}"
+    tools-used: "${tool_list}"
+    memory-operations: "${cipher_memory_ops}"
+    system-component: "${troubleshooting_scope}"
+    guide-sections-created: "${guide_sections_count}"
+    diagnostic-procedures: "${diagnostic_procedures_count}"
+    solutions-documented: "${solutions_count}"
+    cross-references: "${cross_reference_count}"
+    execution-time: "${duration_ms}"
+    guide-quality-score: "${troubleshooting_effectiveness}"
+
+# Enhanced workflow configuration
+tool-chain: "universal-troubleshooting-workflow"
+auto-deploy: true
+parallel-execution: false
+memory-persistence: true
+cross-command-learning: true
+troubleshooting-pattern-recognition: true
+
+allowed-tools: Read, Write, Edit, Bash, mcp__desktop-commander__*, mcp__FileScopeMCP__*, mcp__context7__*, mcp__cipher-memory__*, mcp__perplexity-ask__*, mcp__taskmaster-ai__*
+
+argument-hint: [system-component] | --application | --database | --network | --deployment | --comprehensive | --interactive
+
+pre-execution:
+  validate-tools: true
+  load-context: true
+  analyze-system-architecture: true
+  search-troubleshooting-patterns: true
+  log-session-start: true
+
+post-execution:
+  store-results: true
+  update-learning: true
+  generate-report: true
+  persist-troubleshooting-knowledge: true
+  log-session-complete: true
+  update-knowledge-graph: true
 ---
 
-# Troubleshooting Guide Generator
+# Troubleshooting Guide Generator (Universal Integration)
 
-Generate troubleshooting documentation: $ARGUMENTS
+Generate comprehensive troubleshooting documentation with universal memory integration and intelligent diagnostic pattern recognition: $ARGUMENTS
+
+**ENHANCED WORKFLOW**: This command utilizes specialized troubleshooting agents (rust-async-specialist, serial-hardware-specialist) with complete Cipher Memory integration for troubleshooting pattern recognition, diagnostic optimization, and resolution methodology persistence.
+
+## Enhanced Pre-Execution Memory Analysis
+Before guide generation, the system will:
+1. **Search troubleshooting patterns**: Query Cipher Memory for effective diagnostic procedures and resolution strategies
+2. **Load system knowledge**: Retrieve system administration best practices and infrastructure troubleshooting patterns
+3. **Analyze diagnostic strategies**: Understanding problem-solving methodologies and systematic diagnosis approaches
+4. **Connect resolution knowledge**: Access comprehensive troubleshooting resolution and prevention patterns
 
 ## Current System Context
 
@@ -368,3 +530,41 @@ Remember to:
 - Collect feedback from users and improve guides
 - Include screenshots and visual aids where helpful
 - Make guides searchable and well-organized
+
+## Universal Memory Integration Outcomes
+
+### Troubleshooting Knowledge Storage
+This command will automatically:
+- **Store comprehensive troubleshooting guide sessions** in Cipher Memory for diagnostic pattern recognition
+- **Create relationships** between problem types, diagnostic procedures, and resolution effectiveness
+- **Document troubleshooting methodologies** and system diagnosis best practices
+- **Build knowledge graph** of issue-resolution mappings and diagnostic optimization strategies
+
+### Cross-Command Learning Enhancement
+Troubleshooting patterns will improve:
+- Future debugging commands through established diagnostic procedure patterns
+- System monitoring commands via documented troubleshooting and resolution insights
+- Setup commands through troubleshooting prevention integration
+- Maintenance commands via proven problem resolution methodologies
+
+### Advanced Troubleshooting Intelligence
+- **Diagnostic Optimization**: Automatic identification of optimal diagnostic procedures based on system characteristics
+- **Resolution Prediction**: Intelligent resolution recommendations based on successful troubleshooting patterns
+- **Problem Prevention**: Smart prevention strategies using proven troubleshooting and system hardening patterns
+- **Escalation Intelligence**: Automated escalation procedure recommendations based on issue complexity and resolution patterns
+
+### Intelligent Guide Enhancement Features
+- **System-Specific Troubleshooting**: Tailored troubleshooting approaches based on infrastructure type and system characteristics
+- **Context-Aware Diagnostics**: Smart diagnostic procedure recommendations considering system complexity and issue patterns
+- **Progressive Troubleshooting Learning**: Each guide generation improves future troubleshooting through pattern accumulation
+- **Cross-System Troubleshooting Knowledge**: Shared troubleshooting insights across different systems and infrastructure types
+
+### Centralized Troubleshooting Logging
+All troubleshooting guide operations logged to `.claude/logs/command-execution.jsonl` including:
+- Complete guide generation methodology and diagnostic procedure creation tracking
+- Resolution documentation results and cross-reference validation
+- Memory operations for troubleshooting pattern capture and learning
+- Guide effectiveness assessment and diagnostic optimization recommendations
+
+**Next Commands**: Enhanced troubleshooting patterns will automatically improve commands like `debug-error`, `setup-monitoring-observability`, `project-health-check`, and `system-behavior-simulator`.
+

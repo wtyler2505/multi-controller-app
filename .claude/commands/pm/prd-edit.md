@@ -1,4 +1,9 @@
 ---
+model: claude-sonnet-4-20250514
+category: project-management
+priority: medium
+tags: ["project-management", "github"]
+description: PRD Edit
 allowed-tools: Read, Write, LS
 ---
 
@@ -50,10 +55,10 @@ If PRD has associated epic:
 ### 5. Output
 
 ```
-✅ Updated PRD: $ARGUMENTS
+âœ… Updated PRD: $ARGUMENTS
   Sections edited: {list_of_sections}
   
-{If has epic}: ⚠️ Epic may need review: {epic_name}
+{If has epic}: âš ï¸ Epic may need review: {epic_name}
 
 Next: /pm:prd-parse $ARGUMENTS to update epic
 ```
@@ -63,3 +68,5 @@ Next: /pm:prd-parse $ARGUMENTS to update epic
 Preserve original creation date.
 Keep version history in frontmatter if needed.
 Follow `/rules/frontmatter-operations.md`.
+
+

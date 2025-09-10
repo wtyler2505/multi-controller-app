@@ -413,12 +413,12 @@ impl TransportFactory {
         let mut available = Vec::new();
         
         // Check for serial ports
-        if let Ok(ports) = serial::SerialTransport::list_ports() {
-            for port in ports {
+        if let Ok(ports) = serial::SerialTransport::list_ports().await {
+            for port_info in ports {
                 available.push(TransportInfo {
                     transport_type: TransportType::Serial,
-                    name: port.clone(),
-                    address: port,
+                    name: port_info.name.clone(),
+                    address: port_info.name,
                     available: true,
                 });
             }

@@ -1,125 +1,125 @@
 ---
-allowed-tools: Bash, Read, Write, LS, Task
----
+model: claude-sonnet-4-20250514
+category: project-management
+priority: high
+tags: ["project-management", "github"]
+description: Command for epic-start-worktree operations
+allowed-tools: Bash, Read, Write, LS, Task, mcp__taskmaster-ai__get_tasks, mcp__desktop-commander__list_directory
+argument-hint: <epic_name> | --max-agents=<number> | --strategy=<execution_strategy>
 
-# Epic Start
+# Enhanced Context-Aware Agent Integration
+enhanced-integration:
+  enabled: true
+  agent-selection-criteria:
+    domain-expertise: ["epic-execution", "worktree-management", "parallel-coordination"]
+    complexity-factors: ["multi-agent-orchestration", "dependency-management", "resource-coordination"]
+    specialized-tools: ["epic-management", "worktree-operations", "agent-coordination"]
+  preferred-agents:
+    primary: "task-orchestrator"
+    secondary: "general-purpose"
+    fallback: ["task-executor"]
+  tool-requirements:
+    mcp-servers: ["taskmaster-ai", "desktop-commander", "cipher-memory"]
+    specialized-functions: ["epic-execution", "parallel-coordination"]
 
-Launch parallel agents to work on epic tasks in a shared worktree.
+# Universal Cipher Memory Integration (MANDATORY FOR ALL COMMANDS)
+cipher-memory-integration:
+  enabled: true
+  priority: "high"
+  
+  # Pre-execution Memory Operations
+  pre-execution-memory:
+    context-search:
+      - query-pattern: "epic-execution + worktree-management + parallel-coordination"
+      - tools: ["mcp__cipher-memory__search_nodes", "mcp__cipher-memory__open_nodes"]
+      - context-retrieval: "execution-patterns + worktree-knowledge + coordination-strategies"
+    
+    knowledge-preparation:
+      - domain: "epic-execution"
+      - pattern-search: "execution-strategies + worktree-patterns + coordination-techniques"
+      - tools: ["mcp__cipher-memory__read_graph"]
+  
+  # Execution Memory Operations
+  execution-memory:
+    progress-tracking:
+      - tool: "mcp__cipher-memory__add_observations"
+      - capture-points: ["worktree-setup", "agent-coordination", "parallel-execution"]
+      - entity-updates: "real-time-progress"
+    
+    decision-logging:
+      - tool: "mcp__cipher-memory__create_entities"
+      - log-decisions: "execution-strategies + coordination-approaches + worktree-decisions"
+      - pattern-recognition: "epic-execution-patterns"
+  
+  # Post-execution Memory Operations
+  post-execution-memory:
+    result-storage:
+      - tools: ["mcp__cipher-memory__create_entities"]
+      - store-patterns: ["execution-results", "coordination-insights", "worktree-techniques"]
+      - knowledge-extraction: "execution-methodologies + coordination-patterns"
+    
+    relationship-creation:
+      - tools: ["mcp__cipher-memory__create_relations"]
+      - link-concepts: ["execution-relationships", "coordination-dependencies", "worktree-connections"]
+      - cross-reference: "related-execution-processes"
+    
+    knowledge-refinement:
+      - tools: ["mcp__cipher-memory__add_observations"]
+      - enrich-existing: "execution-knowledge + coordination-patterns"
+      - continuous-learning: "epic-execution-optimization"
 
-## Usage
-```
-/pm:epic-start <epic_name>
-```
+# Centralized Logging Integration
+logging-integration:
+  enabled: true
+  log-file: ".claude/command-execution.jsonl"
+  
+  # Comprehensive Execution Logging
+  log-level: "comprehensive"
+  
+  capture-points:
+    - command-initiation
+    - agent-selection-process
+    - memory-operations
+    - worktree-setup
+    - agent-coordination
+    - parallel-execution
+    - resource-management
+    - error-handling
+    - completion-status
+  
+  # Structured Log Format
+  log-structure:
+    timestamp: "ISO-8601"
+    command: "pm-epic-start-worktree"
+    execution-id: "UUID"
+    agent-assignments: "selected-agents-with-reasoning"
+    memory-operations: "cipher-memory-transactions"
+    performance-metrics: "execution-time + memory-usage + success-rate"
+    outcome-summary: "execution-results + coordination-insights"
 
-## Quick Check
+# Cross-Command Learning Integration
+cross-command-learning:
+  enabled: true
+  share-insights: ["execution-patterns", "coordination-techniques", "worktree-strategies"]
+  learn-from: ["epic-start", "epic-status", "parallel-execution"]
+  contribute-to: "epic-execution-knowledge-base"
 
-1. **Verify epic exists:**
-   ```bash
-   test -f .claude/epics/$ARGUMENTS/epic.md || echo "❌ Epic not found. Run: /pm:prd-parse $ARGUMENTS"
-   ```
-
-2. **Check GitHub sync:**
-   Look for `github:` field in epic frontmatter.
-   If missing: "❌ Epic not synced. Run: /pm:epic-sync $ARGUMENTS first"
-
-3. **Check for worktree:**
-   ```bash
-   git worktree list | grep "epic-$ARGUMENTS"
-   ```
-
-## Instructions
-
-### 1. Create or Enter Worktree
-
-Follow `/rules/worktree-operations.md`:
-
-```bash
-# If worktree doesn't exist, create it
-if ! git worktree list | grep -q "epic-$ARGUMENTS"; then
-  git checkout main
-  git pull origin main
-  git worktree add ../epic-$ARGUMENTS -b epic/$ARGUMENTS
-  echo "✅ Created worktree: ../epic-$ARGUMENTS"
-else
-  echo "✅ Using existing worktree: ../epic-$ARGUMENTS"
-fi
-```
-
-### 2. Identify Ready Issues
-
-Read all task files in `.claude/epics/$ARGUMENTS/`:
-- Parse frontmatter for `status`, `depends_on`, `parallel` fields
-- Check GitHub issue status if needed
-- Build dependency graph
-
-Categorize issues:
-- **Ready**: No unmet dependencies, not started
-- **Blocked**: Has unmet dependencies
-- **In Progress**: Already being worked on
-- **Complete**: Finished
-
-### 3. Analyze Ready Issues
-
-For each ready issue without analysis:
-```bash
-# Check for analysis
-if ! test -f .claude/epics/$ARGUMENTS/{issue}-analysis.md; then
-  echo "Analyzing issue #{issue}..."
-  # Run analysis (inline or via Task tool)
-fi
-```
-
-### 4. Launch Parallel Agents
-
-For each ready issue with analysis:
-
-```markdown
-## Starting Issue #{issue}: {title}
-
-Reading analysis...
-Found {count} parallel streams:
-  - Stream A: {description} (Agent-{id})
-  - Stream B: {description} (Agent-{id})
-
-Launching agents in worktree: ../epic-$ARGUMENTS/
-```
-
-Use Task tool to launch each stream:
-```yaml
-Task:
-  description: "Issue #{issue} Stream {X}"
-  subagent_type: "{agent_type}"
-  prompt: |
-    Working in worktree: ../epic-$ARGUMENTS/
-    Issue: #{issue} - {title}
-    Stream: {stream_name}
-
-    Your scope:
-    - Files: {file_patterns}
-    - Work: {stream_description}
-
-    Read full requirements from:
-    - .claude/epics/$ARGUMENTS/{task_file}
-    - .claude/epics/$ARGUMENTS/{issue}-analysis.md
-
-    Follow coordination rules in /rules/agent-coordination.md
-
-    Commit frequently with message format:
-    "Issue #{issue}: {specific change}"
-
-    Update progress in:
-    .claude/epics/$ARGUMENTS/updates/{issue}/stream-{X}.md
-```
-
-### 5. Track Active Agents
-
-Create/update `.claude/epics/$ARGUMENTS/execution-status.md`:
-
-```markdown
----
-started: {datetime}
-worktree: ../epic-$ARGUMENTS
-branch: epic/$ARGUMENTS
+# Workflow Integration
+workflow-integration:
+  pre-execution:
+    - validate-epic-state
+    - prepare-memory-context
+    - select-optimal-agents
+  
+  execution:
+    - parallel-coordination-setup
+    - continuous-memory-updates
+    - real-time-execution-monitoring
+  
+  post-execution:
+    - comprehensive-result-storage
+    - cross-reference-generation
+    - execution-pattern-extraction
 ---
 
 # Execution Status
@@ -168,7 +168,7 @@ As agents complete streams:
 ## Output Format
 
 ```
-🚀 Epic Execution Started: $ARGUMENTS
+ðŸš€ Epic Execution Started: $ARGUMENTS
 
 Worktree: ../epic-$ARGUMENTS
 Branch: epic/$ARGUMENTS
@@ -176,13 +176,13 @@ Branch: epic/$ARGUMENTS
 Launching {total} agents across {issue_count} issues:
 
 Issue #1234: Database Schema
-  ├─ Stream A: Schema creation (Agent-1) ✓ Started
-  └─ Stream B: Migrations (Agent-2) ✓ Started
+  â”œâ”€ Stream A: Schema creation (Agent-1) âœ“ Started
+  â””â”€ Stream B: Migrations (Agent-2) âœ“ Started
 
 Issue #1235: API Endpoints
-  ├─ Stream A: User endpoints (Agent-3) ✓ Started
-  ├─ Stream B: Post endpoints (Agent-4) ✓ Started
-  └─ Stream C: Tests (Agent-5) ⏸ Waiting for A & B
+  â”œâ”€ Stream A: User endpoints (Agent-3) âœ“ Started
+  â”œâ”€ Stream B: Post endpoints (Agent-4) âœ“ Started
+  â””â”€ Stream C: Tests (Agent-5) â¸ Waiting for A & B
 
 Blocked Issues (2):
   - #1236: UI Components (depends on #1234)
@@ -195,7 +195,7 @@ Monitor with: /pm:epic-status $ARGUMENTS
 
 If agent launch fails:
 ```
-❌ Failed to start Agent-{id}
+âŒ Failed to start Agent-{id}
   Issue: #{issue}
   Stream: {stream}
   Error: {reason}
@@ -205,7 +205,7 @@ Continue with other agents? (yes/no)
 
 If worktree creation fails:
 ```
-❌ Cannot create worktree
+âŒ Cannot create worktree
   {git error message}
 
 Try: git worktree prune
@@ -219,3 +219,6 @@ Or: Check existing worktrees with: git worktree list
 - Agents work in the SAME worktree (not separate ones)
 - Maximum parallel agents should be reasonable (e.g., 5-10)
 - Monitor system resources if launching many agents
+
+
+

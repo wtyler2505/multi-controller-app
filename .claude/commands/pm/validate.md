@@ -1,4 +1,9 @@
 ---
+model: claude-sonnet-4-20250514
+category: project-management
+priority: medium
+tags: ["project-management"]
+description: Command for validate operations
 allowed-tools: Bash
 ---
 
@@ -9,3 +14,6 @@ Run `bash .claude/scripts/pm/validate.sh` using a sub-agent and show me the comp
 - DO NOT abbreviate.
 - Show ALL lines in full.
 - DO NOT print any other comments.
+
+
+

@@ -1,263 +1,126 @@
-# Code Permutation Tester
+---
+model: claude-sonnet-4-20250514
+category: utilities-tools
+priority: high
+tags: ["utilities-tools", "testing"]
+description: Code Permutation Tester
 
-Test multiple code variations through simulation before implementation with quality gates and performance prediction.
+# Enhanced Context-Aware Agent Integration
+enhanced-integration:
+  enabled: true
+  agent-selection-criteria:
+    domain-expertise: ["code-analysis", "testing-strategies", "algorithmic-comparison"]
+    complexity-factors: ["permutation-testing", "performance-analysis", "comparative-evaluation"]
+    specialized-tools: ["code-testing", "performance-measurement", "comparative-analysis"]
+  preferred-agents:
+    primary: "mock-test-orchestrator"
+    secondary: "general-purpose"
+    fallback: ["task-orchestrator"]
+  tool-requirements:
+    mcp-servers: ["clear-thought", "desktop-commander", "cipher-memory"]
+    specialized-functions: ["code-testing", "performance-analysis"]
 
-## Instructions
+# Universal Cipher Memory Integration (MANDATORY FOR ALL COMMANDS)
+cipher-memory-integration:
+  enabled: true
+  priority: "high"
+  
+  # Pre-execution Memory Operations
+  pre-execution-memory:
+    context-search:
+      - query-pattern: "code-permutation-testing + algorithmic-comparison + performance-analysis"
+      - tools: ["mcp__cipher-memory__search_nodes", "mcp__cipher-memory__open_nodes"]
+      - context-retrieval: "testing-patterns + comparative-analysis-techniques"
+    
+    knowledge-preparation:
+      - domain: "code-testing"
+      - pattern-search: "permutation-testing + algorithm-comparison + performance-evaluation"
+      - tools: ["mcp__cipher-memory__read_graph"]
+  
+  # Execution Memory Operations
+  execution-memory:
+    progress-tracking:
+      - tool: "mcp__cipher-memory__add_observations"
+      - capture-points: ["permutation-generation", "test-execution", "performance-analysis"]
+      - entity-updates: "real-time-progress"
+    
+    decision-logging:
+      - tool: "mcp__cipher-memory__create_entities"
+      - log-decisions: "testing-strategies + comparison-methods + evaluation-criteria"
+      - pattern-recognition: "permutation-testing-patterns"
+  
+  # Post-execution Memory Operations
+  post-execution-memory:
+    result-storage:
+      - tools: ["mcp__cipher-memory__create_entities"]
+      - store-patterns: ["permutation-test-results", "performance-comparisons", "algorithmic-insights"]
+      - knowledge-extraction: "testing-methodologies + comparative-analysis-techniques"
+    
+    relationship-creation:
+      - tools: ["mcp__cipher-memory__create_relations"]
+      - link-concepts: ["algorithm-relationships", "performance-correlations", "testing-dependencies"]
+      - cross-reference: "related-testing-strategies"
+    
+    knowledge-refinement:
+      - tools: ["mcp__cipher-memory__add_observations"]
+      - enrich-existing: "testing-knowledge + algorithmic-patterns"
+      - continuous-learning: "testing-strategy-optimization"
 
-You are tasked with systematically testing multiple code implementation approaches through simulation to optimize decisions before actual development. Follow this approach: **$ARGUMENTS**
+# Centralized Logging Integration
+logging-integration:
+  enabled: true
+  log-file: ".claude/command-execution.jsonl"
+  
+  # Comprehensive Execution Logging
+  log-level: "comprehensive"
+  
+  capture-points:
+    - command-initiation
+    - agent-selection-process
+    - memory-operations
+    - permutation-generation
+    - test-execution
+    - performance-measurement
+    - comparative-analysis
+    - error-handling
+    - completion-status
+  
+  # Structured Log Format
+  log-structure:
+    timestamp: "ISO-8601"
+    command: "code-permutation-tester"
+    execution-id: "UUID"
+    agent-assignments: "selected-agents-with-reasoning"
+    memory-operations: "cipher-memory-transactions"
+    performance-metrics: "execution-time + memory-usage + success-rate"
+    outcome-summary: "permutation-test-results + performance-insights"
 
-### 1. Prerequisites Assessment
+# Cross-Command Learning Integration
+cross-command-learning:
+  enabled: true
+  share-insights: ["testing-patterns", "performance-analysis-techniques", "comparative-methodologies"]
+  learn-from: ["generate-tests", "test-coverage", "setup-comprehensive-testing"]
+  contribute-to: "testing-strategy-knowledge-base"
 
-**Critical Code Context Validation:**
+# Workflow Integration
+workflow-integration:
+  pre-execution:
+    - validate-testing-environment
+    - prepare-memory-context
+    - select-optimal-agents
+  
+  execution:
+    - parallel-permutation-testing
+    - continuous-memory-updates
+    - real-time-performance-tracking
+  
+  post-execution:
+    - comprehensive-result-storage
+    - cross-reference-generation
+    - testing-pattern-extraction
+---
 
-- **Code Scope**: What specific code area/function/feature are you testing variations for?
-- **Variation Types**: What different approaches are you considering?
-- **Quality Criteria**: How will you evaluate which variation is best?
-- **Constraints**: What technical, performance, or resource constraints apply?
-- **Decision Timeline**: When do you need to choose an implementation approach?
-
-**If context is unclear, guide systematically:**
-
-```
-Missing Code Scope:
-"What specific code area needs permutation testing?
-- Algorithm Implementation: Different algorithmic approaches for the same problem
-- Architecture Pattern: Various structural patterns (MVC, microservices, etc.)
-- Performance Optimization: Multiple optimization strategies for bottlenecks
-- API Design: Different interface design approaches
-- Data Structure Choice: Various data organization strategies
-
-Please specify the exact function, module, or system component."
-
-Missing Variation Types:
-"What different implementation approaches are you considering?
-- Algorithmic Variations: Different algorithms solving the same problem
-- Framework/Library Choices: Various tech stack options
-- Design Pattern Applications: Different structural and behavioral patterns
-- Performance Trade-offs: Speed vs. memory vs. maintainability variations
-- Integration Approaches: Different ways to connect with existing systems"
-```
-
-### 2. Code Variation Generation
-
-**Systematically identify and structure implementation alternatives:**
-
-#### Implementation Approach Matrix
-```
-Code Variation Framework:
-
-Algorithmic Variations:
-- Brute Force: Simple, readable implementation
-- Optimized: Performance-focused with complexity trade-offs
-- Hybrid: Balanced approach with configurable optimization
-- Novel: Innovative approaches using new techniques
-
-Architectural Variations:
-- Monolithic: Single deployment unit with tight coupling
-- Modular: Loosely coupled modules within single codebase
-- Microservices: Distributed services with independent deployment
-- Serverless: Function-based with cloud provider management
-
-Technology Stack Variations:
-- Traditional: Established, well-documented technologies
-- Modern: Current best practices and recent frameworks
-- Cutting-edge: Latest technologies with higher risk/reward
-- Hybrid: Mix of established and modern approaches
-
-Performance Profile Variations:
-- Memory-optimized: Minimal memory footprint
-- Speed-optimized: Maximum execution performance  
-- Scalability-optimized: Handles growth efficiently
-- Maintainability-optimized: Easy to modify and extend
-```
-
-#### Variation Specification Framework
-```
-For each code variation:
-
-Implementation Details:
-- Core Algorithm/Approach: [specific technical approach]
-- Key Dependencies: [frameworks, libraries, external services]
-- Architecture Pattern: [structural organization approach]
-- Data Flow Design: [how information moves through system]
-
-Quality Characteristics:
-- Performance Profile: [speed, memory, throughput expectations]
-- Maintainability Score: [ease of modification and extension]
-- Scalability Potential: [growth and load handling capability]
-- Reliability Assessment: [error handling and fault tolerance]
-
-Resource Requirements:
-- Development Time: [estimated implementation effort]
-- Team Skill Requirements: [expertise needed for implementation]
-- Infrastructure Needs: [deployment and operational requirements]
-- Ongoing Maintenance: [long-term support and evolution needs]
-```
-
-### 3. Simulation Framework Design
-
-**Create testing environment for code variations:**
-
-#### Code Simulation Methodology
-```
-Multi-Dimensional Testing Approach:
-
-Performance Simulation:
-- Synthetic workload generation and stress testing
-- Memory usage profiling and leak detection
-- Concurrent execution and race condition testing
-- Resource utilization monitoring and optimization
-
-Maintainability Simulation:
-- Code complexity analysis and metrics calculation
-- Change impact simulation and ripple effect analysis
-- Documentation quality and developer onboarding simulation
-- Debugging and troubleshooting ease assessment
-
-Scalability Simulation:
-- Load growth simulation and performance degradation analysis
-- Horizontal scaling simulation and resource efficiency
-- Data volume growth impact and query performance
-- Integration point stress testing and failure handling
-
-Security Simulation:
-- Attack vector simulation and vulnerability assessment
-- Data protection and privacy compliance testing
-- Authentication and authorization load testing
-- Input validation and sanitization effectiveness
-```
-
-#### Testing Environment Setup
-- Isolated testing environments for each variation
-- Consistent data sets and test scenarios across variations
-- Automated testing pipeline and result collection
-- Realistic production environment simulation
-
-### 4. Quality Gate Framework
-
-**Establish systematic evaluation criteria:**
-
-#### Multi-Criteria Evaluation Matrix
-```
-Code Quality Assessment Framework:
-
-Performance Gates (25% weight):
-- Response Time: [acceptable latency thresholds]
-- Throughput: [minimum requests/transactions per second]
-- Resource Usage: [memory, CPU, storage efficiency]
-- Scalability: [performance degradation under load]
-
-Maintainability Gates (25% weight):
-- Code Complexity: [cyclomatic complexity, nesting levels]
-- Test Coverage: [unit, integration, end-to-end test coverage]
-- Documentation Quality: [code comments, API docs, architecture docs]
-- Change Impact: [blast radius of typical modifications]
-
-Reliability Gates (25% weight):
-- Error Handling: [graceful failure and recovery mechanisms]
-- Fault Tolerance: [system behavior under adverse conditions]
-- Data Integrity: [consistency and corruption prevention]
-- Monitoring/Observability: [debugging and operational visibility]
-
-Business Gates (25% weight):
-- Time to Market: [development speed and delivery timeline]
-- Total Cost of Ownership: [development + operational costs]
-- Risk Assessment: [technical and business risk factors]
-- Strategic Alignment: [fit with long-term technology direction]
-
-Gate Score = (Performance × 0.25) + (Maintainability × 0.25) + (Reliability × 0.25) + (Business × 0.25)
-```
-
-#### Threshold Management
-- Minimum acceptable scores for each quality dimension
-- Trade-off analysis for competing quality attributes
-- Conditional gates based on specific use case requirements
-- Risk-adjusted thresholds for different implementation approaches
-
-### 5. Predictive Performance Modeling
-
-**Forecast real-world behavior before implementation:**
-
-#### Performance Prediction Framework
-```
-Multi-Layer Performance Modeling:
-
-Micro-Benchmarks:
-- Individual function and method performance measurement
-- Algorithm complexity analysis and big-O verification
-- Memory allocation patterns and garbage collection impact
-- CPU instruction efficiency and optimization opportunities
-
-Integration Performance:
-- Inter-module communication overhead and optimization
-- Database query performance and connection pooling
-- External API latency and timeout handling
-- Caching strategy effectiveness and hit ratio analysis
-
-System-Level Performance:
-- End-to-end request processing and user experience
-- Concurrent user simulation and resource contention
-- Peak load handling and graceful degradation
-- Infrastructure scaling behavior and cost implications
-
-Production Environment Prediction:
-- Real-world data volume and complexity simulation
-- Production traffic pattern modeling and capacity planning
-- Deployment and rollback performance impact assessment
-- Operational monitoring and alerting effectiveness
-```
-
-#### Confidence Interval Calculation
-- Statistical analysis of performance variation across test runs
-- Confidence levels for performance predictions under different conditions
-- Sensitivity analysis for key performance parameters
-- Risk assessment for performance-related business impacts
-
-### 6. Risk and Trade-off Analysis
-
-**Systematic evaluation of implementation choices:**
-
-#### Technical Risk Assessment
-```
-Risk Evaluation Framework:
-
-Implementation Risks:
-- Technical Complexity: [difficulty and error probability]
-- Dependency Risk: [external library and service dependencies]
-- Performance Risk: [ability to meet performance requirements]
-- Integration Risk: [compatibility with existing systems]
-
-Operational Risks:
-- Deployment Complexity: [rollout difficulty and rollback capability]
-- Monitoring/Debugging: [operational visibility and troubleshooting]
-- Scaling Challenges: [growth accommodation and resource planning]
-- Maintenance Burden: [ongoing support and evolution requirements]
-
-Business Risks:
-- Timeline Risk: [delivery schedule and market timing impact]
-- Resource Risk: [team capacity and skill requirements]
-- Opportunity Cost: [alternative approaches and strategic alignment]
-- Competitive Risk: [technology choice and market position impact]
-```
-
-#### Trade-off Optimization
-- Pareto frontier analysis for competing objectives
-- Multi-objective optimization for quality attributes
-- Scenario-based trade-off evaluation
-- Stakeholder preference weighting and consensus building
-
-### 7. Decision Matrix and Recommendations
-
-**Generate systematic implementation guidance:**
-
-#### Code Variation Evaluation Summary
-```
-## Code Permutation Analysis: [Feature/Module Name]
-
-### Variation Comparison Matrix
-
-| Variation | Performance | Maintainability | Reliability | Business | Overall Score |
-|-----------|-------------|-----------------|-------------|----------|---------------|
+|
 | Approach A | 85% | 70% | 90% | 75% | 80% |
 | Approach B | 70% | 90% | 80% | 85% | 81% |
 | Approach C | 95% | 60% | 70% | 65% | 73% |
@@ -339,3 +202,5 @@ Business Risks:
 - Decision delay: Not acting on simulation results in timely manner
 
 Transform code implementation from guesswork into systematic, evidence-based decision making through comprehensive variation testing and simulation.
+
+

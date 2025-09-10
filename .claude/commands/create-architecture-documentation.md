@@ -1,8 +1,125 @@
 ---
+model: claude-sonnet-4-20250514
+category: documentation
+priority: high
+tags: ["documentation", "docs"]
+description: Generate comprehensive architecture documentation with diagrams
 allowed-tools: Read, Write, Edit, Bash
 argument-hint: [framework] | --c4-model | --arc42 | --adr | --plantuml | --full-suite
-description: Generate comprehensive architecture documentation with diagrams, ADRs, and interactive visualization
-model: sonnet
+
+# Enhanced Context-Aware Agent Integration
+enhanced-integration:
+  enabled: true
+  agent-selection-criteria:
+    domain-expertise: ["architecture-documentation", "diagram-generation", "technical-writing"]
+    complexity-factors: ["documentation-frameworks", "architectural-modeling", "diagram-automation"]
+    specialized-tools: ["documentation-generation", "diagram-tools", "architecture-analysis"]
+  preferred-agents:
+    primary: "general-purpose"
+    secondary: "agent-expert"
+    fallback: ["task-orchestrator"]
+  tool-requirements:
+    mcp-servers: ["desktop-commander", "context7", "cipher-memory"]
+    specialized-functions: ["documentation-generation", "architectural-analysis"]
+
+# Universal Cipher Memory Integration (MANDATORY FOR ALL COMMANDS)
+cipher-memory-integration:
+  enabled: true
+  priority: "high"
+  
+  # Pre-execution Memory Operations
+  pre-execution-memory:
+    context-search:
+      - query-pattern: "architecture-documentation + diagram-generation + technical-writing"
+      - tools: ["mcp__cipher-memory__search_nodes", "mcp__cipher-memory__open_nodes"]
+      - context-retrieval: "documentation-patterns + architectural-knowledge"
+    
+    knowledge-preparation:
+      - domain: "technical-documentation"
+      - pattern-search: "documentation-frameworks + diagram-patterns + architectural-modeling"
+      - tools: ["mcp__cipher-memory__read_graph"]
+  
+  # Execution Memory Operations
+  execution-memory:
+    progress-tracking:
+      - tool: "mcp__cipher-memory__add_observations"
+      - capture-points: ["documentation-planning", "diagram-creation", "content-generation"]
+      - entity-updates: "real-time-progress"
+    
+    decision-logging:
+      - tool: "mcp__cipher-memory__create_entities"
+      - log-decisions: "documentation-strategies + diagram-approaches + framework-selection"
+      - pattern-recognition: "documentation-generation-patterns"
+  
+  # Post-execution Memory Operations
+  post-execution-memory:
+    result-storage:
+      - tools: ["mcp__cipher-memory__create_entities"]
+      - store-patterns: ["documentation-results", "diagram-techniques", "architectural-insights"]
+      - knowledge-extraction: "documentation-methodologies + architectural-patterns"
+    
+    relationship-creation:
+      - tools: ["mcp__cipher-memory__create_relations"]
+      - link-concepts: ["architecture-relationships", "documentation-dependencies", "diagram-connections"]
+      - cross-reference: "related-documentation-processes"
+    
+    knowledge-refinement:
+      - tools: ["mcp__cipher-memory__add_observations"]
+      - enrich-existing: "documentation-knowledge + architectural-patterns"
+      - continuous-learning: "documentation-process-optimization"
+
+# Centralized Logging Integration
+logging-integration:
+  enabled: true
+  log-file: ".claude/command-execution.jsonl"
+  
+  # Comprehensive Execution Logging
+  log-level: "comprehensive"
+  
+  capture-points:
+    - command-initiation
+    - agent-selection-process
+    - memory-operations
+    - documentation-planning
+    - diagram-generation
+    - content-creation
+    - framework-application
+    - error-handling
+    - completion-status
+  
+  # Structured Log Format
+  log-structure:
+    timestamp: "ISO-8601"
+    command: "create-architecture-documentation"
+    execution-id: "UUID"
+    agent-assignments: "selected-agents-with-reasoning"
+    memory-operations: "cipher-memory-transactions"
+    performance-metrics: "execution-time + memory-usage + success-rate"
+    outcome-summary: "documentation-results + architectural-insights"
+
+# Cross-Command Learning Integration
+cross-command-learning:
+  enabled: true
+  share-insights: ["documentation-patterns", "architectural-knowledge", "diagram-techniques"]
+  learn-from: ["architecture-scenario-explorer", "design-database-schema", "interactive-documentation"]
+  contribute-to: "documentation-knowledge-base"
+
+# Workflow Integration
+workflow-integration:
+  pre-execution:
+    - validate-project-architecture
+    - prepare-memory-context
+    - select-optimal-agents
+  
+  execution:
+    - parallel-documentation-creation
+    - continuous-memory-updates
+    - real-time-content-generation
+  
+  post-execution:
+    - comprehensive-result-storage
+    - cross-reference-generation
+    - documentation-pattern-extraction
 ---
 
 # Architecture Documentation Generator
@@ -93,3 +210,4 @@ Generate comprehensive architecture documentation with modern tooling and best p
     - Create documentation review and approval process
     - Train team on architecture documentation practices and tools
     - Set up documentation versioning and change management
+

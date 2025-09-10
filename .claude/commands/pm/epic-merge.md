@@ -1,5 +1,126 @@
 ---
-allowed-tools: Bash, Read, Write
+model: claude-sonnet-4-20250514
+category: project-management
+priority: high
+tags: ["project-management", "github"]
+description: Command for epic-merge operations
+allowed-tools: Bash, Read, Write, mcp__taskmaster-ai__get_tasks, mcp__desktop-commander__read_file
+argument-hint: <epic_name> | --strategy=<merge_strategy> | --no-cleanup
+
+# Enhanced Context-Aware Agent Integration
+enhanced-integration:
+  enabled: true
+  agent-selection-criteria:
+    domain-expertise: ["epic-merging", "git-workflows", "conflict-resolution"]
+    complexity-factors: ["merge-strategy", "conflict-detection", "branch-management"]
+    specialized-tools: ["git-operations", "merge-tools", "conflict-resolution"]
+  preferred-agents:
+    primary: "task-orchestrator"
+    secondary: "general-purpose"
+    fallback: ["task-executor"]
+  tool-requirements:
+    mcp-servers: ["taskmaster-ai", "desktop-commander", "cipher-memory"]
+    specialized-functions: ["epic-merging", "git-operations"]
+
+# Universal Cipher Memory Integration (MANDATORY FOR ALL COMMANDS)
+cipher-memory-integration:
+  enabled: true
+  priority: "high"
+  
+  # Pre-execution Memory Operations
+  pre-execution-memory:
+    context-search:
+      - query-pattern: "epic-merging + git-workflows + conflict-resolution"
+      - tools: ["mcp__cipher-memory__search_nodes", "mcp__cipher-memory__open_nodes"]
+      - context-retrieval: "merging-patterns + git-knowledge + conflict-strategies"
+    
+    knowledge-preparation:
+      - domain: "epic-merging"
+      - pattern-search: "merging-strategies + git-patterns + conflict-techniques"
+      - tools: ["mcp__cipher-memory__read_graph"]
+  
+  # Execution Memory Operations
+  execution-memory:
+    progress-tracking:
+      - tool: "mcp__cipher-memory__add_observations"
+      - capture-points: ["merge-preparation", "conflict-detection", "resolution-strategies"]
+      - entity-updates: "real-time-progress"
+    
+    decision-logging:
+      - tool: "mcp__cipher-memory__create_entities"
+      - log-decisions: "merging-strategies + conflict-approaches + resolution-decisions"
+      - pattern-recognition: "epic-merging-patterns"
+  
+  # Post-execution Memory Operations
+  post-execution-memory:
+    result-storage:
+      - tools: ["mcp__cipher-memory__create_entities"]
+      - store-patterns: ["merging-results", "conflict-insights", "resolution-techniques"]
+      - knowledge-extraction: "merging-methodologies + git-patterns"
+    
+    relationship-creation:
+      - tools: ["mcp__cipher-memory__create_relations"]
+      - link-concepts: ["merging-relationships", "git-dependencies", "conflict-connections"]
+      - cross-reference: "related-merging-processes"
+    
+    knowledge-refinement:
+      - tools: ["mcp__cipher-memory__add_observations"]
+      - enrich-existing: "merging-knowledge + git-patterns"
+      - continuous-learning: "epic-merging-optimization"
+
+# Centralized Logging Integration
+logging-integration:
+  enabled: true
+  log-file: ".claude/command-execution.jsonl"
+  
+  # Comprehensive Execution Logging
+  log-level: "comprehensive"
+  
+  capture-points:
+    - command-initiation
+    - agent-selection-process
+    - memory-operations
+    - merge-preparation
+    - conflict-detection
+    - resolution-strategies
+    - git-operations
+    - cleanup-procedures
+    - error-handling
+    - completion-status
+  
+  # Structured Log Format
+  log-structure:
+    timestamp: "ISO-8601"
+    command: "pm-epic-merge"
+    execution-id: "UUID"
+    agent-assignments: "selected-agents-with-reasoning"
+    memory-operations: "cipher-memory-transactions"
+    performance-metrics: "execution-time + memory-usage + success-rate"
+    outcome-summary: "merging-results + conflict-insights"
+
+# Cross-Command Learning Integration
+cross-command-learning:
+  enabled: true
+  share-insights: ["merging-patterns", "conflict-techniques", "git-strategies"]
+  learn-from: ["epic-start", "epic-status", "git-operations"]
+  contribute-to: "epic-merging-knowledge-base"
+
+# Workflow Integration
+workflow-integration:
+  pre-execution:
+    - validate-epic-state
+    - prepare-memory-context
+    - select-optimal-agents
+  
+  execution:
+    - parallel-validation-checks
+    - continuous-memory-updates
+    - real-time-conflict-monitoring
+  
+  post-execution:
+    - comprehensive-result-storage
+    - cross-reference-generation
+    - merging-pattern-extraction
 ---
 
 # Epic Merge
@@ -15,12 +136,12 @@ Merge completed epic from worktree back to main branch.
 
 1. **Verify worktree exists:**
    ```bash
-   git worktree list | grep "epic-$ARGUMENTS" || echo "❌ No worktree for epic: $ARGUMENTS"
+   git worktree list | grep "epic-$ARGUMENTS" || echo "âŒ No worktree for epic: $ARGUMENTS"
    ```
 
 2. **Check for active agents:**
    Read `.claude/epics/$ARGUMENTS/execution-status.md`
-   If active agents exist: "⚠️ Active agents detected. Stop them first with: /pm:epic-stop $ARGUMENTS"
+   If active agents exist: "âš ï¸ Active agents detected. Stop them first with: /pm:epic-stop $ARGUMENTS"
 
 ## Instructions
 
@@ -32,7 +153,7 @@ cd ../epic-$ARGUMENTS
 
 # Check for uncommitted changes
 if [[ $(git status --porcelain) ]]; then
-  echo "⚠️ Uncommitted changes in worktree:"
+  echo "âš ï¸ Uncommitted changes in worktree:"
   git status --short
   echo "Commit or stash changes before merging"
   exit 1
@@ -48,9 +169,9 @@ git status -sb
 ```bash
 # Look for test commands
 if [ -f package.json ]; then
-  npm test || echo "⚠️ Tests failed. Continue anyway? (yes/no)"
+  npm test || echo "âš ï¸ Tests failed. Continue anyway? (yes/no)"
 elif [ -f Makefile ]; then
-  make test || echo "⚠️ Tests failed. Continue anyway? (yes/no)"
+  make test || echo "âš ï¸ Tests failed. Continue anyway? (yes/no)"
 fi
 ```
 
@@ -93,7 +214,7 @@ If merge fails with conflicts:
 git status
 
 echo "
-❌ Merge conflicts detected!
+âŒ Merge conflicts detected!
 
 Conflicts in:
 $(git diff --name-only --diff-filter=U)
@@ -124,7 +245,7 @@ git push origin main
 
 # Clean up worktree
 git worktree remove ../epic-$ARGUMENTS
-echo "✅ Worktree removed: ../epic-$ARGUMENTS"
+echo "âœ… Worktree removed: ../epic-$ARGUMENTS"
 
 # Delete branch
 git branch -d epic/$ARGUMENTS
@@ -133,7 +254,7 @@ git push origin --delete epic/$ARGUMENTS 2>/dev/null || true
 # Archive epic locally
 mkdir -p .claude/epics/archived/
 mv .claude/epics/$ARGUMENTS .claude/epics/archived/
-echo "✅ Epic archived: .claude/epics/archived/$ARGUMENTS"
+echo "âœ… Epic archived: .claude/epics/archived/$ARGUMENTS"
 ```
 
 ### 7. Update GitHub Issues
@@ -158,19 +279,19 @@ done
 ### 8. Final Output
 
 ```
-✅ Epic Merged Successfully: $ARGUMENTS
+âœ… Epic Merged Successfully: $ARGUMENTS
 
 Summary:
-  Branch: epic/$ARGUMENTS → main
+  Branch: epic/$ARGUMENTS â†’ main
   Commits merged: {count}
   Files changed: {count}
   Issues closed: {count}
   
 Cleanup completed:
-  ✓ Worktree removed
-  ✓ Branch deleted
-  ✓ Epic archived
-  ✓ GitHub issues closed
+  âœ“ Worktree removed
+  âœ“ Branch deleted
+  âœ“ Epic archived
+  âœ“ GitHub issues closed
   
 Next steps:
   - Deploy changes if needed
@@ -209,3 +330,5 @@ Or abort and try later:
 - Use --no-ff to preserve epic history
 - Archive epic data instead of deleting
 - Close GitHub issues to maintain sync
+
+

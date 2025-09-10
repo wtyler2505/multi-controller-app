@@ -1,4 +1,9 @@
 ---
+model: claude-sonnet-4-20250514
+category: project-management
+priority: medium
+tags: ["project-management", "github"]
+description: Issue Show
 allowed-tools: Bash, Read, LS
 ---
 
@@ -24,21 +29,21 @@ You are displaying comprehensive information about a GitHub issue and related su
 ### 2. Issue Overview
 Display issue header:
 ```
-🎫 Issue #$ARGUMENTS: {Issue Title}
+ðŸŽ« Issue #$ARGUMENTS: {Issue Title}
    Status: {open/closed}
    Labels: {labels}
    Assignee: {assignee}
    Created: {creation_date}
    Updated: {last_update}
    
-📝 Description:
+ðŸ“ Description:
 {issue_description}
 ```
 
 ### 3. Local File Mapping
 If local task file exists:
 ```
-📁 Local Files:
+ðŸ“ Local Files:
    Task file: .claude/epics/{epic_name}/{task_file}
    Updates: .claude/epics/{epic_name}/updates/$ARGUMENTS/
    Last local update: {timestamp}
@@ -47,7 +52,7 @@ If local task file exists:
 ### 4. Sub-Issues and Dependencies
 Show related issues:
 ```
-🔗 Related Issues:
+ðŸ”— Related Issues:
    Parent Epic: #{epic_issue_number}
    Dependencies: #{dep1}, #{dep2}
    Blocking: #{blocked1}, #{blocked2}
@@ -57,7 +62,7 @@ Show related issues:
 ### 5. Recent Activity
 Display recent comments and updates:
 ```
-💬 Recent Activity:
+ðŸ’¬ Recent Activity:
    {timestamp} - {author}: {comment_preview}
    {timestamp} - {author}: {comment_preview}
    
@@ -67,16 +72,16 @@ Display recent comments and updates:
 ### 6. Progress Tracking
 If task file exists, show progress:
 ```
-✅ Acceptance Criteria:
-   ✅ Criterion 1 (completed)
-   🔄 Criterion 2 (in progress)
-   ⏸️ Criterion 3 (blocked)
-   □ Criterion 4 (not started)
+âœ… Acceptance Criteria:
+   âœ… Criterion 1 (completed)
+   ðŸ”„ Criterion 2 (in progress)
+   â¸ï¸ Criterion 3 (blocked)
+   â–¡ Criterion 4 (not started)
 ```
 
 ### 7. Quick Actions
 ```
-🚀 Quick Actions:
+ðŸš€ Quick Actions:
    Start work: /pm:issue-start $ARGUMENTS
    Sync updates: /pm:issue-sync $ARGUMENTS
    Add comment: gh issue comment #$ARGUMENTS --body "your comment"
@@ -89,3 +94,6 @@ If task file exists, show progress:
 - Provide helpful error messages and alternatives
 
 Provide comprehensive issue information to help developers understand context and current status for Issue #$ARGUMENTS.
+
+
+

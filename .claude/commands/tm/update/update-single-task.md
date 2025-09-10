@@ -1,3 +1,11 @@
+---
+model: claude-sonnet-4-20250514
+category: task-management
+priority: medium
+tags: ["task-management", "tasks"]
+description: Command for update-single-task operations
+---
+
 Update a single specific task with new information.
 
 Arguments: $ARGUMENTS
@@ -67,17 +75,17 @@ The AI:
 
 ```
 /project:tm/update/single 5: add rate limiting
-→ Updating Task #5: "Implement API endpoints"
+â†’ Updating Task #5: "Implement API endpoints"
 
 Current: Basic CRUD endpoints
 Adding: Rate limiting requirements
 
 Updated sections:
-✓ Description: Added rate limiting mention
-✓ Details: Added specific limits (100/min)
-✓ Test Strategy: Added rate limit tests
-✓ Complexity: Increased from 5 to 6
-✓ Time Estimate: Increased by 2 hours
+âœ“ Description: Added rate limiting mention
+âœ“ Details: Added specific limits (100/min)
+âœ“ Test Strategy: Added rate limit tests
+âœ“ Complexity: Increased from 5 to 6
+âœ“ Time Estimate: Increased by 2 hours
 
 Suggestion: Also update task #6 (API Gateway) for consistency?
 ```
@@ -105,10 +113,10 @@ Suggestion: Also update task #6 (API Gateway) for consistency?
 ## Field-Specific Updates
 
 Quick syntax for specific fields:
-- "5 priority:high" → Update priority only
-- "5 add-time:4h" → Add to time estimate
-- "5 status:review" → Change status
-- "5 depends:3,4" → Add dependencies
+- "5 priority:high" â†’ Update priority only
+- "5 add-time:4h" â†’ Add to time estimate
+- "5 status:review" â†’ Change status
+- "5 depends:3,4" â†’ Add dependencies
 
 ## Post-Update
 
@@ -117,3 +125,5 @@ Quick syntax for specific fields:
 - Check related tasks
 - Update suggestions
 - Timeline adjustments
+
+

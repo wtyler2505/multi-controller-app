@@ -1,3 +1,124 @@
+---
+model: claude-sonnet-4-20250514
+category: architecture-design
+priority: high
+tags: ["architecture-design"]
+description: Explore architectural decisions through scenario analysis and trade-offs
+
+# Enhanced Context-Aware Agent Integration
+enhanced-integration:
+  enabled: true
+  agent-selection-criteria:
+    domain-expertise: ["architecture-design", "system-thinking", "decision-analysis"]
+    complexity-factors: ["architectural-patterns", "trade-off-analysis", "scenario-modeling"]
+    specialized-tools: ["architectural-modeling", "decision-frameworks", "system-analysis"]
+  preferred-agents:
+    primary: "agent-expert"
+    secondary: "general-purpose"
+    fallback: ["task-orchestrator"]
+  tool-requirements:
+    mcp-servers: ["clear-thought", "memory", "context7"]
+    specialized-functions: ["scenario-analysis", "architectural-modeling"]
+
+# Universal Cipher Memory Integration (MANDATORY FOR ALL COMMANDS)
+cipher-memory-integration:
+  enabled: true
+  priority: "high"
+  
+  # Pre-execution Memory Operations
+  pre-execution-memory:
+    context-search:
+      - query-pattern: "architectural-patterns + design-decisions + scenario-analysis"
+      - tools: ["mcp__cipher-memory__search_nodes", "mcp__cipher-memory__open_nodes"]
+      - context-retrieval: "architectural-knowledge + decision-frameworks"
+    
+    knowledge-preparation:
+      - domain: "system-architecture"
+      - pattern-search: "architectural-patterns + design-patterns + trade-off-analysis"
+      - tools: ["mcp__cipher-memory__read_graph"]
+  
+  # Execution Memory Operations
+  execution-memory:
+    progress-tracking:
+      - tool: "mcp__cipher-memory__add_observations"
+      - capture-points: ["scenario-development", "trade-off-identification", "decision-analysis"]
+      - entity-updates: "real-time-progress"
+    
+    decision-logging:
+      - tool: "mcp__cipher-memory__create_entities"
+      - log-decisions: "architectural-choices + scenario-evaluation + trade-off-decisions"
+      - pattern-recognition: "architectural-decision-patterns"
+  
+  # Post-execution Memory Operations
+  post-execution-memory:
+    result-storage:
+      - tools: ["mcp__cipher-memory__create_entities"]
+      - store-patterns: ["architectural-scenarios", "decision-frameworks", "trade-off-analyses"]
+      - knowledge-extraction: "architectural-patterns + decision-methodologies"
+    
+    relationship-creation:
+      - tools: ["mcp__cipher-memory__create_relations"]
+      - link-concepts: ["architecture-dependencies", "scenario-relationships", "decision-impacts"]
+      - cross-reference: "related-architectural-decisions"
+    
+    knowledge-refinement:
+      - tools: ["mcp__cipher-memory__add_observations"]
+      - enrich-existing: "architectural-knowledge + decision-patterns"
+      - continuous-learning: "architectural-decision-optimization"
+
+# Centralized Logging Integration
+logging-integration:
+  enabled: true
+  log-file: ".claude/command-execution.jsonl"
+  
+  # Comprehensive Execution Logging
+  log-level: "comprehensive"
+  
+  capture-points:
+    - command-initiation
+    - agent-selection-process
+    - memory-operations
+    - scenario-development
+    - trade-off-analysis
+    - architectural-decisions
+    - error-handling
+    - completion-status
+  
+  # Structured Log Format
+  log-structure:
+    timestamp: "ISO-8601"
+    command: "architecture-scenario-explorer"
+    execution-id: "UUID"
+    agent-assignments: "selected-agents-with-reasoning"
+    memory-operations: "cipher-memory-transactions"
+    performance-metrics: "execution-time + memory-usage + success-rate"
+    outcome-summary: "architectural-analysis-results + decision-recommendations"
+
+# Cross-Command Learning Integration
+cross-command-learning:
+  enabled: true
+  share-insights: ["architectural-patterns", "decision-frameworks", "trade-off-methodologies"]
+  learn-from: ["system-behavior-simulator", "design-database-schema", "create-architecture-documentation"]
+  contribute-to: "architectural-knowledge-base"
+
+# Workflow Integration
+workflow-integration:
+  pre-execution:
+    - validate-architectural-context
+    - prepare-memory-context
+    - select-optimal-agents
+  
+  execution:
+    - parallel-scenario-analysis
+    - continuous-memory-updates
+    - real-time-insight-capture
+  
+  post-execution:
+    - comprehensive-result-storage
+    - cross-reference-generation
+    - architectural-pattern-extraction
+---
+
 # Architecture Scenario Explorer
 
 Explore architectural decisions through systematic scenario analysis with trade-off evaluation and future-proofing assessment.
@@ -373,3 +494,5 @@ Strategic Risks:
 - Evolution blindness: Not planning for architectural change and growth
 
 Transform architectural decisions from opinion-based debates into systematic, evidence-driven choices through comprehensive scenario exploration and trade-off analysis.
+
+

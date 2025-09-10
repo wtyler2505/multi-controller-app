@@ -1,7 +1,7 @@
 ---
 name: task-checker
 description: Use this agent to verify that tasks marked as 'review' have been properly implemented according to their specifications. This agent performs quality assurance by checking implementations against requirements, running tests, and ensuring best practices are followed. <example>Context: A task has been marked as 'review' after implementation. user: 'Check if task 118 was properly implemented' assistant: 'I'll use the task-checker agent to verify the implementation meets all requirements.' <commentary>Tasks in 'review' status need verification before being marked as 'done'.</commentary></example> <example>Context: Multiple tasks are in review status. user: 'Verify all tasks that are ready for review' assistant: 'I'll deploy the task-checker to verify all tasks in review status.' <commentary>The checker ensures quality before tasks are marked complete.</commentary></example>
-model: sonnet
+model: claude-3-5-sonnet-latest
 color: yellow
 ---
 

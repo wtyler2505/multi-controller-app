@@ -1,3 +1,11 @@
+---
+model: claude-sonnet-4-20250514
+category: taskmaster-core
+priority: medium
+tags: ["taskmaster-core", "tasks"]
+description: Command for generate-tasks operations
+---
+
 Generate individual task files from tasks.json.
 
 ## Task File Generation
@@ -50,11 +58,11 @@ Create a secure user authentication system with login, logout, and session manag
 Creates structure:
 ```
 .taskmaster/
-└── tasks/
-    ├── task_001.txt
-    ├── task_002.txt
-    ├── task_003.txt
-    └── ...
+â””â”€â”€ tasks/
+    â”œâ”€â”€ task_001.txt
+    â”œâ”€â”€ task_002.txt
+    â”œâ”€â”€ task_003.txt
+    â””â”€â”€ ...
 ```
 
 ## Smart Features
@@ -97,7 +105,7 @@ Based on arguments:
 
 ```
 Task File Generation Complete
-━━━━━━━━━━━━━━━━━━━━━━━━━━
+â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 Generated: 45 task files
 Location: .taskmaster/tasks/
 Total size: 156 KB
@@ -119,3 +127,5 @@ Ready for:
 - AI tool compatibility
 - Offline task access
 - Backup redundancy
+
+

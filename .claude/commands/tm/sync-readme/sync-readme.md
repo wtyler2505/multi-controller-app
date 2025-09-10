@@ -1,3 +1,11 @@
+---
+model: claude-sonnet-4-20250514
+category: documentation
+priority: medium
+tags: ["documentation", "docs", "integration"]
+description: Project Name
+---
+
 Export tasks to README.md with professional formatting.
 
 Arguments: $ARGUMENTS
@@ -11,10 +19,10 @@ Creates or updates README.md with beautifully formatted task information.
 ## Argument Parsing
 
 Optional filters:
-- "pending" → Only pending tasks
-- "with-subtasks" → Include subtask details
-- "by-priority" → Group by priority
-- "sprint" → Current sprint only
+- "pending" â†’ Only pending tasks
+- "with-subtasks" â†’ Include subtask details
+- "by-priority" â†’ Group by priority
+- "sprint" â†’ Current sprint only
 
 ## Execution
 
@@ -28,7 +36,7 @@ task-master sync-readme [--with-subtasks] [--status=<status>]
 ```markdown
 # Project Name
 
-## 📋 Task Progress
+## ðŸ“‹ Task Progress
 
 Last Updated: 2024-01-15 10:30 AM
 
@@ -75,16 +83,16 @@ Organized by status or priority:
 ## Example Output
 
 ```markdown
-## 🚀 Current Sprint
+## ðŸš€ Current Sprint
 
 ### In Progress
-- [ ] 🔄 #5 **Implement user authentication** (60% complete)
-  - Dependencies: API design (#3 ✅)
+- [ ] ðŸ”„ #5 **Implement user authentication** (60% complete)
+  - Dependencies: API design (#3 âœ…)
   - Subtasks: 4 (2 completed)
   - Est: 8h / Spent: 5h
 
 ### Pending (High Priority)
-- [ ] ⚡ #8 **Create dashboard UI**
+- [ ] âš¡ #8 **Create dashboard UI**
   - Blocked by: #5
   - Complexity: High
   - Est: 12h
@@ -115,3 +123,5 @@ Works well with:
 - Project documentation
 - Team updates
 - Client reports
+
+

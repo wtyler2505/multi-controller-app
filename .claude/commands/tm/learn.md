@@ -1,3 +1,11 @@
+---
+model: claude-sonnet-4-20250514
+category: taskmaster-core
+priority: medium
+tags: ["taskmaster-core"]
+description: Command for learn operations
+---
+
 Learn about Task Master capabilities through interactive exploration.
 
 Arguments: $ARGUMENTS
@@ -9,12 +17,12 @@ Based on your input, I'll help you discover capabilities:
 ### 1. **What are you trying to do?**
 
 If $ARGUMENTS contains:
-- "start" / "begin" → Show project initialization workflows
-- "manage" / "organize" → Show task management commands  
-- "automate" / "auto" → Show automation workflows
-- "analyze" / "report" → Show analysis tools
-- "fix" / "problem" → Show troubleshooting commands
-- "fast" / "quick" → Show efficiency shortcuts
+- "start" / "begin" â†’ Show project initialization workflows
+- "manage" / "organize" â†’ Show task management commands  
+- "automate" / "auto" â†’ Show automation workflows
+- "analyze" / "report" â†’ Show analysis tools
+- "fix" / "problem" â†’ Show troubleshooting commands
+- "fast" / "quick" â†’ Show efficiency shortcuts
 
 ### 2. **Intelligent Suggestions**
 
@@ -24,33 +32,33 @@ Based on your project state:
 ```
 You'll want to start with:
 1. /project:task-master:init <prd-file>
-   → Creates tasks from requirements
+   â†’ Creates tasks from requirements
    
 2. /project:task-master:parse-prd <file>
-   → Alternative task generation
+   â†’ Alternative task generation
 
 Try: /project:task-master:init demo-prd.md
 ```
 
 **Have tasks?**
 Let me analyze what you might need...
-- Many pending tasks? → Learn sprint planning
-- Complex tasks? → Learn task expansion
-- Daily work? → Learn workflow automation
+- Many pending tasks? â†’ Learn sprint planning
+- Complex tasks? â†’ Learn task expansion
+- Daily work? â†’ Learn workflow automation
 
 ### 3. **Command Discovery**
 
 **By Category:**
-- 📋 Task Management: list, show, add, update, complete
-- 🔄 Workflows: auto-implement, sprint-plan, daily-standup
-- 🛠️ Utilities: check-health, complexity-report, sync-memory
-- 🔍 Analysis: validate-deps, show dependencies
+- ðŸ“‹ Task Management: list, show, add, update, complete
+- ðŸ”„ Workflows: auto-implement, sprint-plan, daily-standup
+- ðŸ› ï¸ Utilities: check-health, complexity-report, sync-memory
+- ðŸ” Analysis: validate-deps, show dependencies
 
 **By Scenario:**
-- "I want to see what to work on" → `/project:task-master:next`
-- "I need to break this down" → `/project:task-master:expand <id>`
-- "Show me everything" → `/project:task-master:status`
-- "Just do it for me" → `/project:workflows:auto-implement`
+- "I want to see what to work on" â†’ `/project:task-master:next`
+- "I need to break this down" â†’ `/project:task-master:expand <id>`
+- "Show me everything" â†’ `/project:task-master:status`
+- "Just do it for me" â†’ `/project:workflows:auto-implement`
 
 ### 4. **Power User Patterns**
 
@@ -70,7 +78,7 @@ Let me analyze what you might need...
 
 **Automation:**
 ```
-/project:workflows:pipeline init → expand-all → sprint-plan
+/project:workflows:pipeline init â†’ expand-all â†’ sprint-plan
 ```
 
 ### 5. **Learning Path**
@@ -78,21 +86,21 @@ Let me analyze what you might need...
 Based on your experience level:
 
 **Beginner Path:**
-1. init → Create project
-2. status → Understand state
-3. next → Find work
-4. complete → Finish task
+1. init â†’ Create project
+2. status â†’ Understand state
+3. next â†’ Find work
+4. complete â†’ Finish task
 
 **Intermediate Path:**
-1. expand → Break down complex tasks
-2. sprint-plan → Organize work
-3. complexity-report → Understand difficulty
-4. validate-deps → Ensure consistency
+1. expand â†’ Break down complex tasks
+2. sprint-plan â†’ Organize work
+3. complexity-report â†’ Understand difficulty
+4. validate-deps â†’ Ensure consistency
 
 **Advanced Path:**
-1. pipeline → Chain operations
-2. smart-flow → Context-aware automation
-3. Custom commands → Extend the system
+1. pipeline â†’ Chain operations
+2. smart-flow â†’ Context-aware automation
+3. Custom commands â†’ Extend the system
 
 ### 6. **Try This Now**
 
@@ -101,3 +109,5 @@ Based on what you asked about, try:
 
 Want to learn more about a specific command?
 Type: /project:help <command-name>
+
+

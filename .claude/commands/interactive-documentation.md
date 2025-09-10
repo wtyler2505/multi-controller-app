@@ -1,8 +1,125 @@
 ---
+model: claude-sonnet-4-20250514
+category: documentation
+priority: high
+tags: ["documentation", "docs"]
+description: Interactive Documentation Platform
 allowed-tools: Read, Write, Edit, Bash
 argument-hint: [platform] | --docusaurus | --gitbook | --notion | --storybook | --jupyter | --comprehensive
-description: Use PROACTIVELY to create interactive documentation platforms with live examples, code playgrounds, and user engagement features
-model: sonnet
+
+# Enhanced Context-Aware Agent Integration
+enhanced-integration:
+  enabled: true
+  agent-selection-criteria:
+    domain-expertise: ["interactive-documentation", "platform-development", "user-experience"]
+    complexity-factors: ["platform-integration", "interactive-features", "user-engagement"]
+    specialized-tools: ["documentation-platforms", "interactive-development", "engagement-optimization"]
+  preferred-agents:
+    primary: "general-purpose"
+    secondary: "ui-controls-architect"
+    fallback: ["task-orchestrator"]
+  tool-requirements:
+    mcp-servers: ["context7", "desktop-commander", "cipher-memory"]
+    specialized-functions: ["interactive-documentation", "platform-development"]
+
+# Universal Cipher Memory Integration (MANDATORY FOR ALL COMMANDS)
+cipher-memory-integration:
+  enabled: true
+  priority: "high"
+  
+  # Pre-execution Memory Operations
+  pre-execution-memory:
+    context-search:
+      - query-pattern: "interactive-documentation + platform-development + user-experience"
+      - tools: ["mcp__cipher-memory__search_nodes", "mcp__cipher-memory__open_nodes"]
+      - context-retrieval: "documentation-patterns + platform-knowledge"
+    
+    knowledge-preparation:
+      - domain: "interactive-documentation"
+      - pattern-search: "documentation-platforms + interactive-patterns + engagement-strategies"
+      - tools: ["mcp__cipher-memory__read_graph"]
+  
+  # Execution Memory Operations
+  execution-memory:
+    progress-tracking:
+      - tool: "mcp__cipher-memory__add_observations"
+      - capture-points: ["platform-selection", "interactive-development", "user-engagement"]
+      - entity-updates: "real-time-progress"
+    
+    decision-logging:
+      - tool: "mcp__cipher-memory__create_entities"
+      - log-decisions: "platform-choices + interactive-strategies + engagement-approaches"
+      - pattern-recognition: "interactive-documentation-patterns"
+  
+  # Post-execution Memory Operations
+  post-execution-memory:
+    result-storage:
+      - tools: ["mcp__cipher-memory__create_entities"]
+      - store-patterns: ["documentation-platforms", "interactive-insights", "engagement-techniques"]
+      - knowledge-extraction: "documentation-methodologies + interactive-patterns"
+    
+    relationship-creation:
+      - tools: ["mcp__cipher-memory__create_relations"]
+      - link-concepts: ["platform-relationships", "interactive-dependencies", "engagement-connections"]
+      - cross-reference: "related-documentation-processes"
+    
+    knowledge-refinement:
+      - tools: ["mcp__cipher-memory__add_observations"]
+      - enrich-existing: "documentation-knowledge + interactive-patterns"
+      - continuous-learning: "documentation-platform-optimization"
+
+# Centralized Logging Integration
+logging-integration:
+  enabled: true
+  log-file: ".claude/command-execution.jsonl"
+  
+  # Comprehensive Execution Logging
+  log-level: "comprehensive"
+  
+  capture-points:
+    - command-initiation
+    - agent-selection-process
+    - memory-operations
+    - platform-selection
+    - interactive-development
+    - user-engagement-optimization
+    - content-integration
+    - error-handling
+    - completion-status
+  
+  # Structured Log Format
+  log-structure:
+    timestamp: "ISO-8601"
+    command: "interactive-documentation"
+    execution-id: "UUID"
+    agent-assignments: "selected-agents-with-reasoning"
+    memory-operations: "cipher-memory-transactions"
+    performance-metrics: "execution-time + memory-usage + success-rate"
+    outcome-summary: "documentation-platform-results + interactive-insights"
+
+# Cross-Command Learning Integration
+cross-command-learning:
+  enabled: true
+  share-insights: ["documentation-patterns", "interactive-techniques", "platform-development-methods"]
+  learn-from: ["docs-maintenance", "create-architecture-documentation", "create-onboarding-guide"]
+  contribute-to: "documentation-knowledge-base"
+
+# Workflow Integration
+workflow-integration:
+  pre-execution:
+    - validate-documentation-requirements
+    - prepare-memory-context
+    - select-optimal-agents
+  
+  execution:
+    - parallel-platform-development
+    - continuous-memory-updates
+    - real-time-interactive-optimization
+  
+  post-execution:
+    - comprehensive-result-storage
+    - cross-reference-generation
+    - documentation-pattern-extraction
 ---
 
 # Interactive Documentation Platform
@@ -131,3 +248,4 @@ Build comprehensive interactive documentation platform with live code examples, 
 ## Integration Guidelines
 
 Implement with modern documentation platforms and development workflows. Ensure scalability for large content repositories and team collaboration while maintaining optimal performance and user experience across all devices and platforms.
+

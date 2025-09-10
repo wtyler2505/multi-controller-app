@@ -1,6 +1,175 @@
-# Setup Monitoring and Observability
+---
+model: claude-sonnet-4-20250514
+category: development-setup
+priority: high
+tags: ["development-setup", "setup", "performance", "monitoring", "observability", "alerting", "metrics"]
+description: Setup comprehensive monitoring and observability infrastructure with universal memory integration and intelligent pattern recognition
 
-Setup monitoring and observability tools
+# Enhanced Context-Aware Agent Integration with Universal Memory
+agent-selection:
+  type: "context-aware"
+  domain-hints: ["monitoring-setup", "observability", "performance-monitoring", "infrastructure", "alerting"]
+  complexity-level: "complex"
+  
+  # Enhanced selection criteria for monitoring setup with memory integration
+  selection-criteria:
+    keyword-match: 0.90       # Strong monitoring/observability patterns
+    argument-analysis: 0.80   # Monitoring scope context important
+    project-context: 0.95     # Infrastructure type critical for setup
+    error-context: 0.7        # May include monitoring failures
+  
+  # Specialized monitoring agents with memory capabilities
+  preferred-agents: ["general-purpose", "rust-performance-monitor", "logging-integrator"]
+  fallback-agents: ["general-purpose"]
+  confidence-threshold: 0.85
+
+# Enhanced Tool Selection with Universal Memory Integration
+tool-selection:
+  type: "intelligent-monitoring-setup-workflow"
+  
+  base-tools:
+    - "mcp__desktop-commander__start_process"  # Setup monitoring tools
+    - "mcp__FileScopeMCP__find_important_files"  # Analyze system components
+    - "mcp__cipher-memory__search_nodes"  # Universal memory integration
+  
+  conditional-tools:
+    infrastructure-monitoring:
+      - "mcp__desktop-commander__start_process"  # Prometheus, Grafana setup
+      - "mcp__context7__get-library-docs"  # Monitoring tool documentation
+      - "mcp__cipher-memory__open_nodes"  # Load monitoring patterns
+    
+    application-monitoring:
+      - "mcp__FileScopeMCP__recalculate_importance"  # Critical service files
+      - "mcp__cipher-memory__create_entities"  # Store monitoring insights
+      - "mcp__desktop-commander__start_process"  # APM tool configuration
+    
+    alerting-setup:
+      - "mcp__cipher-memory__add_observations"  # Store alerting strategies
+      - "mcp__desktop-commander__start_process"  # Alert manager setup
+      - "mcp__cipher-memory__create_relations"  # Connect alerting patterns
+    
+    observability-integration:
+      - "mcp__desktop-commander__start_process"  # Tracing system setup
+      - "mcp__cipher-memory__create_entities"  # Store observability patterns
+      - "mcp__perplexity-ask__perplexity_ask"  # Research monitoring practices
+
+# Universal Cipher Memory Integration (MANDATORY FOR ALL COMMANDS)
+cipher-memory-integration:
+  enabled: true
+  priority: "critical"
+  pre-execution-memory:
+    monitoring-patterns-search:
+      - query-pattern: "monitoring-setup + observability + ${infrastructure_type}-monitoring"
+      - tools: ["mcp__cipher-memory__search_nodes"]
+    infrastructure-analysis:
+      - query-pattern: "monitoring-infrastructure + alerting + ${technology_stack}"
+      - tools: ["mcp__cipher-memory__open_nodes"]
+    best-practices-load:
+      - tools: ["mcp__cipher-memory__read_graph"]
+      - filter: "monitoring-observability-related"
+  execution-memory:
+    setup-progress-tracking:
+      - tool: "mcp__cipher-memory__add_observations"
+      - trigger: "monitoring-tool-configuration"
+    pattern-discovery:
+      - tool: "mcp__cipher-memory__create_relations"
+      - trigger: "effective-monitoring-identified"
+    optimization-learning:
+      - tool: "mcp__cipher-memory__create_entities"
+      - trigger: "monitoring-baseline-established"
+  post-execution-memory:
+    monitoring-infrastructure-storage:
+      - tools: ["mcp__cipher-memory__create_entities"]
+      - content: "complete-monitoring-setup-session-pattern"
+    observability-pattern-mapping:
+      - tools: ["mcp__cipher-memory__create_relations"]
+      - relationships: ["tool-to-effectiveness", "metric-to-insight", "alert-to-action"]
+    knowledge-enhancement:
+      - tools: ["mcp__cipher-memory__add_observations"]
+      - content: "monitoring-insights + alerting-strategies + observability-optimization"
+
+# Centralized Logging Integration (MANDATORY FOR ALL COMMANDS)
+logging-integration:
+  enabled: true
+  log-file: ".claude/logs/command-execution.jsonl"
+  log-level: "comprehensive"
+  
+  log-phases:
+    pre-execution:
+      - command-metadata
+      - monitoring-setup-scope
+      - infrastructure-analysis
+      - memory-pattern-analysis
+    
+    execution:
+      - tool-installation-progress
+      - configuration-setup
+      - metric-definition
+      - alerting-configuration
+      - dashboard-creation
+    
+    post-execution:
+      - monitoring-validation
+      - alerting-testing
+      - memory-operations
+      - optimization-recommendations
+  
+  structured-metadata:
+    command-id: "setup-monitoring-observability"
+    session-id: "${session_timestamp}"
+    user-context: "${user_request}"
+    project-context: "${project_type}"
+    agent-assigned: "${selected_agent}"
+    tools-used: "${tool_list}"
+    memory-operations: "${cipher_memory_ops}"
+    monitoring-scope: "${setup_arguments}"
+    tools-configured: "${monitoring_tools_count}"
+    metrics-defined: "${metrics_count}"
+    alerts-configured: "${alerts_count}"
+    dashboards-created: "${dashboard_count}"
+    execution-time: "${duration_ms}"
+    setup-quality-score: "${monitoring_effectiveness}"
+
+# Enhanced workflow configuration
+tool-chain: "universal-monitoring-setup-workflow"
+auto-deploy: true
+parallel-execution: false
+memory-persistence: true
+cross-command-learning: true
+monitoring-pattern-recognition: true
+
+allowed-tools: Read, Write, Edit, Bash, mcp__desktop-commander__*, mcp__FileScopeMCP__*, mcp__context7__*, mcp__cipher-memory__*, mcp__perplexity-ask__*, mcp__taskmaster-ai__*
+
+argument-hint: [scope] | --metrics | --logging | --tracing | --alerting | --dashboards | --comprehensive
+
+pre-execution:
+  validate-tools: true
+  load-context: true
+  analyze-infrastructure: true
+  search-monitoring-patterns: true
+  log-session-start: true
+
+post-execution:
+  store-results: true
+  update-learning: true
+  generate-report: true
+  persist-monitoring-knowledge: true
+  log-session-complete: true
+  update-knowledge-graph: true
+---
+
+# Setup Monitoring and Observability (Universal Integration)
+
+Setup comprehensive monitoring and observability infrastructure with universal memory integration and intelligent pattern recognition: $ARGUMENTS
+
+**ENHANCED WORKFLOW**: This command utilizes specialized monitoring agents (rust-performance-monitor, logging-integrator) with complete Cipher Memory integration for monitoring pattern recognition, observability optimization, and infrastructure setup persistence.
+
+## Enhanced Pre-Execution Memory Analysis
+Before monitoring setup, the system will:
+1. **Search monitoring patterns**: Query Cipher Memory for effective monitoring configurations and observability strategies
+2. **Load infrastructure knowledge**: Retrieve monitoring infrastructure best practices and tool configurations
+3. **Analyze alerting strategies**: Understanding alerting patterns and incident response methodologies
+4. **Connect observability knowledge**: Access comprehensive observability implementation and optimization patterns
 
 ## Instructions
 
@@ -74,3 +243,42 @@ Setup monitoring and observability tools
     - Configure post-incident analysis and improvement processes
     - Create monitoring maintenance and optimization procedures
     - Train team on monitoring tools and incident response procedures
+
+## Universal Memory Integration Outcomes
+
+### Monitoring Setup Knowledge Storage
+This command will automatically:
+- **Store comprehensive monitoring setup sessions** in Cipher Memory for observability pattern recognition
+- **Create relationships** between monitoring tools, metrics, and operational insights
+- **Document monitoring methodologies** and alerting best practices
+- **Build knowledge graph** of monitoring-effectiveness mappings and observability optimization strategies
+
+### Cross-Command Learning Enhancement
+Monitoring setup patterns will improve:
+- Future performance commands through established monitoring baseline patterns
+- Debugging commands via documented monitoring and alerting insights
+- Health check commands through monitoring infrastructure integration
+- Setup commands via proven monitoring automation workflows
+
+### Advanced Monitoring Intelligence
+- **Tool Selection Optimization**: Automatic identification of optimal monitoring tools based on infrastructure characteristics
+- **Alert Strategy**: Intelligent alerting configuration based on successful incident response patterns
+- **Dashboard Design**: Smart dashboard creation using proven visualization and metric correlation patterns
+- **Observability Architecture**: Automated observability infrastructure recommendations based on project complexity
+
+### Intelligent Setup Enhancement Features
+- **Infrastructure-Specific Configuration**: Tailored monitoring setup approaches based on technology stack and architecture
+- **Context-Aware Alerting**: Smart alerting rule configuration considering system behavior and incident patterns
+- **Progressive Monitoring Learning**: Each setup session improves future monitoring through pattern accumulation
+- **Cross-Project Monitoring Knowledge**: Shared monitoring insights across different infrastructure types and scales
+
+### Centralized Monitoring Setup Logging
+All monitoring setup operations logged to `.claude/logs/command-execution.jsonl` including:
+- Complete setup methodology and tool configuration tracking
+- Monitoring infrastructure deployment results and validation metrics
+- Memory operations for monitoring pattern capture and learning
+- Alerting configuration effectiveness and observability optimization
+
+**Next Commands**: Enhanced monitoring patterns will automatically improve commands like `project-health-check`, `performance-analysis`, `debug-error`, and `optimize-bundle-size`.
+
+

@@ -1,3 +1,29 @@
+---
+model: claude-sonnet-4-20250514
+category: task-management
+priority: medium
+tags: ["task-management", "tasks"]
+description: Command for expand-task operations
+
+# Agent and Tool Integration
+assigned-agent: task-orchestrator
+required-tools:
+  - "mcp__taskmaster-ai__expand_task"
+  - "mcp__taskmaster-ai__analyze_project_complexity"
+  - "mcp__clear-thought__sequentialthinking"
+tool-chain: task-coordination
+auto-deploy: true
+parallel-execution: true
+
+# Workflow Configuration
+pre-execution:
+  validate-tools: true
+  load-context: true
+post-execution:
+  store-results: true
+  update-tasks: true
+---
+
 Break down a complex task into subtasks.
 
 Arguments: $ARGUMENTS (task ID)
@@ -36,9 +62,9 @@ task-master expand --id=$ARGUMENTS
 ## Enhanced Features
 
 Based on task type:
-- **Feature**: Setup → Implement → Test → Integrate
-- **Bug Fix**: Reproduce → Diagnose → Fix → Verify
-- **Refactor**: Analyze → Plan → Refactor → Validate
+- **Feature**: Setup â†’ Implement â†’ Test â†’ Integrate
+- **Bug Fix**: Reproduce â†’ Diagnose â†’ Fix â†’ Verify
+- **Refactor**: Analyze â†’ Plan â†’ Refactor â†’ Validate
 
 ## Post-Expansion
 
@@ -47,3 +73,5 @@ After expansion:
 2. Update time estimates
 3. Suggest implementation order
 4. Highlight critical path
+
+
