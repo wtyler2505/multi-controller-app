@@ -24,9 +24,7 @@
             "id": 2,
             "title": "Design Handshake State Machine",
             "description": "Model the handshake process as a state machine, defining all states, transitions, and error paths.",
-            "dependencies": [
-              "28.1"
-            ],
+            "dependencies": ["28.1"],
             "details": "Enumerate handshake states (e.g., INIT, IDENTIFY_SENT, CAPABILITIES_NEGOTIATION, VERSION_CHECK, ESTABLISHED, FAILED). Specify transitions for normal and error flows. Include test cases for valid and invalid state transitions, unexpected messages, and premature disconnects.",
             "status": "pending",
             "testStrategy": ""
@@ -35,9 +33,7 @@
             "id": 3,
             "title": "Implement IDENTIFY Command Logic",
             "description": "Develop logic to send, receive, and parse the IDENTIFY command and response, extracting device identity and storing in DeviceInfo.",
-            "dependencies": [
-              "28.2"
-            ],
+            "dependencies": ["28.2"],
             "details": "Handle parsing of IDENTIFY responses, including edge cases such as missing fields or duplicate device IDs. Validate DeviceInfo structure population. Test with devices providing incomplete or malformed identity data.",
             "status": "pending",
             "testStrategy": ""
@@ -46,9 +42,7 @@
             "id": 4,
             "title": "Implement Capability Negotiation",
             "description": "Negotiate device capabilities based on exchanged messages and update DeviceInfo accordingly.",
-            "dependencies": [
-              "28.3"
-            ],
+            "dependencies": ["28.3"],
             "details": "Support negotiation of optional and required capabilities. Handle mismatched or unsupported capabilities gracefully. Test with devices advertising unknown, deprecated, or conflicting capabilities.",
             "status": "pending",
             "testStrategy": ""
@@ -57,9 +51,7 @@
             "id": 5,
             "title": "Enforce 5-Second Handshake Timeout",
             "description": "Implement robust timeout logic to abort handshake if not completed within 5 seconds, ensuring all operations are async and non-blocking.",
-            "dependencies": [
-              "28.4"
-            ],
+            "dependencies": ["28.4"],
             "details": "Trigger error handling and user feedback on timeout. Test with slow, unresponsive, or partially responsive devices. Simulate network delays and verify correct timeout enforcement.",
             "status": "pending",
             "testStrategy": ""
@@ -68,9 +60,7 @@
             "id": 6,
             "title": "Validate Firmware and Protocol Version Compatibility",
             "description": "Check device firmware and protocol version for compatibility before session establishment, supporting backward compatibility.",
-            "dependencies": [
-              "28.5"
-            ],
+            "dependencies": ["28.5"],
             "details": "Implement version negotiation logic. Reject incompatible firmware or protocol versions with clear error reporting. Test with devices running older, newer, and unsupported versions.",
             "status": "pending",
             "testStrategy": ""
@@ -79,9 +69,7 @@
             "id": 7,
             "title": "Implement Async Error Handling and User Feedback",
             "description": "Provide robust async error handling and clear user feedback for all handshake failures, including timeouts, schema errors, and version mismatches.",
-            "dependencies": [
-              "28.6"
-            ],
+            "dependencies": ["28.6"],
             "details": "Ensure all error paths are non-blocking and propagate errors to the user interface or logs. Test with simulated handshake failures, malformed messages, and abrupt disconnects. Verify user feedback is actionable and specific.",
             "status": "pending",
             "testStrategy": ""
@@ -95,10 +83,8 @@
         "details": "Use egui widgets (slider, button, text input) for UI. Implement ControlWidget trait for extensibility. Store control states in ManualControlState structure. Ensure value validation and clamping. Emergency stop button should be visually prominent and trigger immediate device command. Integrate widgets with app state and device session for real-time updates. Optimize for responsiveness and minimal UI lag. Owned by ui-controls-architect agent - egui immediate mode GUI expert focused on sliders, toggles, emergency stop, ControlWidget trait. Agent at .claude/agents/ui-controls-architect.md",
         "testStrategy": "UI unit tests for widget behavior and validation. Manual and automated tests for real-time updates and emergency stop. Performance profiling for UI responsiveness.",
         "priority": "high",
-        "dependencies": [
-          28
-        ],
-        "status": "pending",
+        "dependencies": [28],
+        "status": "in-progress",
         "subtasks": [
           {
             "id": 1,
@@ -113,9 +99,7 @@
             "id": 2,
             "title": "Develop ControlWidget Trait for Widget Abstraction",
             "description": "Define and implement the ControlWidget trait to enable extensibility and uniform handling of different manual control widgets.",
-            "dependencies": [
-              "29.1"
-            ],
+            "dependencies": ["29.1"],
             "details": "Ensure the trait supports common widget behaviors, state updates, and integration with egui's widget system. Document trait methods for future extensibility.",
             "status": "pending",
             "testStrategy": ""
@@ -124,9 +108,7 @@
             "id": 3,
             "title": "Implement ManualControlState Structure for State Management",
             "description": "Create and manage the ManualControlState structure to store and synchronize the states of all manual control widgets.",
-            "dependencies": [
-              "29.2"
-            ],
+            "dependencies": ["29.2"],
             "details": "Ensure the structure supports real-time updates, state persistence, and efficient access for UI rendering and device command logic.",
             "status": "pending",
             "testStrategy": ""
@@ -135,9 +117,7 @@
             "id": 4,
             "title": "Integrate Value Validation and Clamping Logic",
             "description": "Implement robust value validation and clamping for all manual control inputs to prevent invalid or unsafe values.",
-            "dependencies": [
-              "29.3"
-            ],
+            "dependencies": ["29.3"],
             "details": "Ensure validation logic is isolated for testability and reliability. Clamp values to safe ranges before updating state or sending device commands.",
             "status": "pending",
             "testStrategy": ""
@@ -146,9 +126,7 @@
             "id": 5,
             "title": "Implement Emergency Stop Logic and Device Command Trigger",
             "description": "Develop the emergency stop button's logic to immediately trigger a device command and update the app state for safety-critical response.",
-            "dependencies": [
-              "29.4"
-            ],
+            "dependencies": ["29.4"],
             "details": "Ensure the emergency stop action bypasses normal validation and state update flows for immediate effect. Test for responsiveness and reliability.",
             "status": "pending",
             "testStrategy": ""
@@ -157,9 +135,7 @@
             "id": 6,
             "title": "Integrate Real-Time Device Communication and Profile UI Performance",
             "description": "Connect manual control widgets and state management to the device session for real-time updates, and profile UI responsiveness to minimize lag.",
-            "dependencies": [
-              "29.5"
-            ],
+            "dependencies": ["29.5"],
             "details": "Optimize state synchronization and device command dispatch for minimal latency. Profile and address UI performance bottlenecks, especially under rapid user interaction.",
             "status": "pending",
             "testStrategy": ""
@@ -173,9 +149,7 @@
         "details": "Create Command enum for all supported command types. Implement command serialization to wire format. Use async/await for non-blocking transmission via established device session. Implement command queue with priority handling and batch transmission. Add acknowledgment and retry logic with user notification on failure. Maintain command history in a circular buffer for debugging and replay. Log all commands with timestamps. Owned by command-processor agent - Command queue and async transmission expert focused on priority queuing, retry logic, acknowledgments. Agent at .claude/agents/command-processor.md",
         "testStrategy": "Unit test command serialization, queuing, and retry logic. Integration test with hardware for command acknowledgment and error handling. Validate command logging and replay.",
         "priority": "high",
-        "dependencies": [
-          29
-        ],
+        "dependencies": [29],
         "status": "pending",
         "subtasks": [
           {
@@ -191,9 +165,7 @@
             "id": 2,
             "title": "Implement Command Serialization Logic",
             "description": "Develop logic to serialize Command objects into the device-specific wire format for transmission.",
-            "dependencies": [
-              "30.1"
-            ],
+            "dependencies": ["30.1"],
             "details": "Implement serialization methods for each command type, ensuring correct mapping to the device protocol. Include unit tests to validate serialization accuracy and handle edge cases.",
             "status": "pending",
             "testStrategy": ""
@@ -202,9 +174,7 @@
             "id": 3,
             "title": "Develop Asynchronous Command Transmission",
             "description": "Implement non-blocking, async/await-based transmission of serialized commands over the established device session.",
-            "dependencies": [
-              "30.2"
-            ],
+            "dependencies": ["30.2"],
             "details": "Use async/await patterns to send commands without blocking the main thread. Ensure integration with the device session and handle transmission errors gracefully.",
             "status": "pending",
             "testStrategy": ""
@@ -213,9 +183,7 @@
             "id": 4,
             "title": "Implement Priority Command Queue and Batch Handling",
             "description": "Create a command queue supporting priority levels and batch transmission of commands.",
-            "dependencies": [
-              "30.3"
-            ],
+            "dependencies": ["30.3"],
             "details": "Design a queue that orders commands by priority and supports batch sending for efficiency. Ensure thread safety and provide mechanisms for queue inspection and management.",
             "status": "pending",
             "testStrategy": ""
@@ -224,9 +192,7 @@
             "id": 5,
             "title": "Add Acknowledgment and Retry Logic",
             "description": "Implement logic to handle device acknowledgments, retry failed transmissions, and escalate on repeated failures.",
-            "dependencies": [
-              "30.4"
-            ],
+            "dependencies": ["30.4"],
             "details": "Track command acknowledgments, implement configurable retry policies, and escalate or notify on persistent failures. Ensure retries do not block the queue or cause deadlocks.",
             "status": "pending",
             "testStrategy": ""
@@ -235,9 +201,7 @@
             "id": 6,
             "title": "Integrate User Notification on Command Failure",
             "description": "Notify users when command transmission fails after retries, providing actionable feedback.",
-            "dependencies": [
-              "30.5"
-            ],
+            "dependencies": ["30.5"],
             "details": "Design user notification mechanisms (e.g., UI alerts, logs) to inform users of command failures, including error details and suggested actions.",
             "status": "pending",
             "testStrategy": ""
@@ -246,9 +210,7 @@
             "id": 7,
             "title": "Implement Command History and Logging",
             "description": "Maintain a circular buffer for command history and log all command activity with timestamps for debugging and replay.",
-            "dependencies": [
-              "30.6"
-            ],
+            "dependencies": ["30.6"],
             "details": "Store recent commands in a circular buffer, including metadata such as timestamps, status, and results. Implement persistent logging for audit and replay purposes.",
             "status": "pending",
             "testStrategy": ""
@@ -262,9 +224,7 @@
         "details": "Create TelemetryParser supporting CSV, JSON, and binary formats. Use ring buffers (capacity 2000+) for data storage. Implement data validation, error correction, and overflow handling. Support configurable sampling rates (10Hz to 1kHz). Store telemetry as time-series data. Implement data decimation for efficient visualization. Ensure thread safety and minimal latency using tokio channels or similar async primitives. Owned by telemetry-collector agent - Lock-free data structures and ring buffer expert focused on multi-format parsing, 2000+ sample buffers, 10Hz-1kHz sampling. Agent at .claude/agents/telemetry-collector.md",
         "testStrategy": "Unit test data parsing and validation for all formats. Stress test buffer overflow and high sampling rates. Integration test with real devices for data integrity.",
         "priority": "medium",
-        "dependencies": [
-          30
-        ],
+        "dependencies": [30],
         "status": "pending",
         "subtasks": [
           {
@@ -280,9 +240,7 @@
             "id": 2,
             "title": "Design and Implement Thread-Safe Ring Buffer",
             "description": "Create a lock-free, thread-safe ring buffer with a minimum capacity of 2000 samples for buffering parsed telemetry data.",
-            "dependencies": [
-              "31.1"
-            ],
+            "dependencies": ["31.1"],
             "details": "Use lock-free data structures and async primitives (e.g., tokio channels) to ensure minimal latency and safe concurrent access. Validate buffer overflow handling and performance under high-frequency sampling.",
             "status": "pending",
             "testStrategy": ""
@@ -291,9 +249,7 @@
             "id": 3,
             "title": "Develop Data Validation and Error Correction Module",
             "description": "Implement mechanisms to validate incoming telemetry data and apply error correction where possible before buffering.",
-            "dependencies": [
-              "31.1"
-            ],
+            "dependencies": ["31.1"],
             "details": "Define validation rules for each data format. Integrate error correction algorithms for common data issues. Log and report validation failures for monitoring.",
             "status": "pending",
             "testStrategy": ""
@@ -302,10 +258,7 @@
             "id": 4,
             "title": "Implement Configurable Sampling Rate Control",
             "description": "Enable dynamic configuration of telemetry data sampling rates, supporting rates from 10Hz to 1kHz.",
-            "dependencies": [
-              "31.1",
-              "31.2"
-            ],
+            "dependencies": ["31.1", "31.2"],
             "details": "Provide interfaces for runtime sampling rate adjustment. Ensure correct synchronization between data collection, parsing, and buffering at different rates.",
             "status": "pending",
             "testStrategy": ""
@@ -314,10 +267,7 @@
             "id": 5,
             "title": "Implement Data Decimation for Visualization",
             "description": "Develop efficient data decimation algorithms to downsample buffered telemetry data for visualization without losing key trends.",
-            "dependencies": [
-              "31.2",
-              "31.4"
-            ],
+            "dependencies": ["31.2", "31.4"],
             "details": "Support configurable decimation strategies (e.g., averaging, min/max, subsampling). Ensure decimated data preserves time-series integrity for visualization tools.",
             "status": "pending",
             "testStrategy": ""
@@ -326,10 +276,7 @@
             "id": 6,
             "title": "Integrate Telemetry Buffer with Real-Time Processing Pipeline",
             "description": "Connect the thread-safe ring buffer and decimation module to the real-time processing pipeline for downstream analytics and visualization.",
-            "dependencies": [
-              "31.2",
-              "31.5"
-            ],
+            "dependencies": ["31.2", "31.5"],
             "details": "Ensure seamless data flow from buffer to processing modules using async primitives. Validate end-to-end latency and data integrity. Provide integration tests with simulated device input.",
             "status": "pending",
             "testStrategy": ""
@@ -343,9 +290,7 @@
         "details": "Use egui_plot v0.29 for chart rendering. Implement ChartManager for chart lifecycle and controls (zoom, pan, pause). Decimate data to 300 points per chart for performance. Support multiple data series and digital state indicators with timestamps. Add export functionality (CSV, JSON). Maintain 30 FPS update rate (33ms interval) for smooth visualization. Optimize rendering for minimal CPU usage. Owned by visualization-engineer agent - egui_plot v0.29 specialist focused on real-time charts, decimation to 300 points, 30 FPS rendering. Agent at .claude/agents/visualization-engineer.md",
         "testStrategy": "UI tests for chart rendering, controls, and export. Performance profiling for FPS and CPU usage. Integration test with live telemetry data.",
         "priority": "medium",
-        "dependencies": [
-          31
-        ],
+        "dependencies": [31],
         "status": "pending",
         "subtasks": [
           {
@@ -361,9 +306,7 @@
             "id": 2,
             "title": "Develop ChartManager for Lifecycle and Controls",
             "description": "Create ChartManager to manage chart instances, lifecycle, and user controls including zoom, pan, and pause functionality.",
-            "dependencies": [
-              "32.1"
-            ],
+            "dependencies": ["32.1"],
             "details": "Implement ChartManager to handle chart creation, destruction, and control events. Integrate egui_plot's interactive features for zooming and panning.",
             "status": "pending",
             "testStrategy": "UI tests for chart controls. Validate correct chart lifecycle management and control responsiveness."
@@ -372,9 +315,7 @@
             "id": 3,
             "title": "Implement Data Decimation and Performance Optimization",
             "description": "Decimate incoming telemetry data to a maximum of 300 points per chart and optimize rendering to maintain 30 FPS with minimal CPU usage.",
-            "dependencies": [
-              "32.2"
-            ],
+            "dependencies": ["32.2"],
             "details": "Apply data decimation algorithms before rendering. Profile and optimize chart updates to ensure smooth visualization at 33ms intervals.",
             "status": "pending",
             "testStrategy": "Performance profiling for FPS and CPU usage. Stress tests with high-frequency data streams."
@@ -383,9 +324,7 @@
             "id": 4,
             "title": "Support Multiple Data Series and Digital State Indicators",
             "description": "Enable visualization of multiple telemetry series and digital state indicators, each with accurate timestamp alignment.",
-            "dependencies": [
-              "32.3"
-            ],
+            "dependencies": ["32.3"],
             "details": "Extend chart rendering logic to handle multiple series and overlay digital indicators. Ensure correct timestamp mapping for all data points.",
             "status": "pending",
             "testStrategy": "UI tests for multi-series display and indicator accuracy. Integration tests with live telemetry data."
@@ -394,9 +333,7 @@
             "id": 5,
             "title": "Implement Data Export Functionality (CSV, JSON)",
             "description": "Add export options to allow users to save chart data and digital indicators in CSV and JSON formats.",
-            "dependencies": [
-              "32.4"
-            ],
+            "dependencies": ["32.4"],
             "details": "Provide export controls in the UI. Serialize chart data and indicators to CSV and JSON, ensuring correct formatting and timestamp inclusion.",
             "status": "pending",
             "testStrategy": "Functional tests for export features. Validate exported files for data integrity and format compliance."
@@ -410,9 +347,7 @@
         "details": "Use existing LoggingSystem with device_io buffer. Implement LogLevel filtering (Debug, Info, Warning, Error). Structure log entries with metadata (timestamps, source, parsing status). Support log export (JSON, CSV, plain text). Implement rolling log buffers and log rotation by size/time. Use tracing crate for structured logging and custom appenders. Enable remote log transmission for diagnostics. Owned by logging-integrator agent - tracing crate expert focused on structured logging, log capture, filtering, export, rotation. Agent at .claude/agents/logging-integrator.md",
         "testStrategy": "Unit test log capture, filtering, and export. Simulate high-frequency events for buffer and rotation logic. Integration test for remote log transmission.",
         "priority": "medium",
-        "dependencies": [
-          30
-        ],
+        "dependencies": [30],
         "status": "pending",
         "subtasks": [
           {
@@ -428,9 +363,7 @@
             "id": 2,
             "title": "Implement LogLevel Filtering and Structured Log Entry Metadata",
             "description": "Add LogLevel filtering (Debug, Info, Warning, Error) and structure log entries with metadata such as timestamps, source, and parsing status.",
-            "dependencies": [
-              "33.1"
-            ],
+            "dependencies": ["33.1"],
             "details": "Enable dynamic filtering of logs based on severity. Ensure each log entry includes standardized metadata fields for traceability and analysis.",
             "status": "pending",
             "testStrategy": "Unit test filtering logic for each LogLevel. Validate metadata presence and correctness in log entries."
@@ -439,9 +372,7 @@
             "id": 3,
             "title": "Support Log Export in Multiple Formats",
             "description": "Implement export functionality for logs in JSON, CSV, and plain text formats.",
-            "dependencies": [
-              "33.2"
-            ],
+            "dependencies": ["33.2"],
             "details": "Provide interfaces to export filtered and structured logs in user-selectable formats, ensuring data integrity and compatibility with external tools.",
             "status": "pending",
             "testStrategy": "Unit test export for each format. Verify exported files match expected structure and content."
@@ -450,9 +381,7 @@
             "id": 4,
             "title": "Implement Rolling Log Buffers and Log Rotation",
             "description": "Add rolling log buffers and log rotation mechanisms based on size and time constraints.",
-            "dependencies": [
-              "33.2"
-            ],
+            "dependencies": ["33.2"],
             "details": "Ensure logs are efficiently managed in memory and on disk, automatically rotating or purging old logs to prevent resource exhaustion.",
             "status": "pending",
             "testStrategy": "Simulate high-frequency logging to test buffer limits and rotation triggers. Verify no data loss and correct log retention."
@@ -461,10 +390,7 @@
             "id": 5,
             "title": "Enable Structured Logging, Custom Appenders, and Remote Log Transmission",
             "description": "Integrate the tracing crate for structured logging, implement custom appenders, and enable remote log transmission for diagnostics.",
-            "dependencies": [
-              "33.3",
-              "33.4"
-            ],
+            "dependencies": ["33.3", "33.4"],
             "details": "Adopt structured logging practices using the tracing crate, support extensible log destinations via custom appenders, and implement secure remote log transmission for diagnostic purposes.",
             "status": "pending",
             "testStrategy": "Integration test structured logging and custom appenders. Simulate remote log transmission and verify reliability and security."
@@ -478,9 +404,7 @@
         "details": "Use Rhai scripting engine (latest stable) for script execution. Implement ScriptManager for script lifecycle (load, edit, validate, execute). Support script import/export and metadata parsing (TOML format). Expose device control API to scripts in a sandboxed environment. Implement script scheduling, concurrent execution, debugging, and error handling. Enforce script timeout and resource limits for security. Owned by scripting-architect agent - Rhai engine integration expert focused on ScriptManager, sandboxing, device API, concurrent execution. Agent at .claude/agents/scripting-architect.md",
         "testStrategy": "Unit test script loading, validation, and execution. Integration test with device API access. Security audit for sandboxing and resource limits.",
         "priority": "medium",
-        "dependencies": [
-          30
-        ],
+        "dependencies": [30],
         "status": "pending",
         "subtasks": [
           {
@@ -496,9 +420,7 @@
             "id": 2,
             "title": "Rhai Engine Integration",
             "description": "Integrate the latest stable Rhai scripting engine for script execution within the ScriptManager.",
-            "dependencies": [
-              "34.1"
-            ],
+            "dependencies": ["34.1"],
             "details": "Set up Rhai engine initialization, configure script directories, and register Rust functions and types for script access. Ensure compatibility with device API and sandboxing requirements.",
             "status": "pending",
             "testStrategy": ""
@@ -507,9 +429,7 @@
             "id": 3,
             "title": "Device API Sandboxing",
             "description": "Expose device control API to scripts in a secure, sandboxed environment to prevent unauthorized access and ensure safety.",
-            "dependencies": [
-              "34.2"
-            ],
+            "dependencies": ["34.2"],
             "details": "Register only safe device API functions with the Rhai engine, restrict script capabilities, and enforce sandbox boundaries. Audit exposed APIs for security and compliance.",
             "status": "pending",
             "testStrategy": ""
@@ -518,11 +438,7 @@
             "id": 4,
             "title": "Script Scheduling and Concurrency",
             "description": "Implement script scheduling and support for concurrent execution, allowing multiple scripts to run in parallel with proper isolation.",
-            "dependencies": [
-              "34.1",
-              "34.2",
-              "34.3"
-            ],
+            "dependencies": ["34.1", "34.2", "34.3"],
             "details": "Design a scheduler for timed and event-driven script execution. Ensure thread safety and resource isolation using Rust concurrency primitives. Handle script lifecycle events in a concurrent context.",
             "status": "pending",
             "testStrategy": ""
@@ -531,9 +447,7 @@
             "id": 5,
             "title": "Timeout and Resource Limits Enforcement",
             "description": "Enforce script execution timeouts and resource usage limits to maintain system stability and security.",
-            "dependencies": [
-              "34.4"
-            ],
+            "dependencies": ["34.4"],
             "details": "Implement mechanisms to monitor and restrict script CPU time, memory usage, and other resources. Terminate or suspend scripts exceeding limits and log violations for auditing.",
             "status": "pending",
             "testStrategy": ""
@@ -542,11 +456,7 @@
             "id": 6,
             "title": "Debugging and Error Handling",
             "description": "Provide debugging tools and robust error handling for script execution, including detailed error reporting and logging.",
-            "dependencies": [
-              "34.2",
-              "34.4",
-              "34.5"
-            ],
+            "dependencies": ["34.2", "34.4", "34.5"],
             "details": "Integrate debugging hooks, stack traces, and breakpoints. Capture and log runtime errors, validation failures, and resource violations. Expose error information to users and developers.",
             "status": "pending",
             "testStrategy": ""
@@ -555,9 +465,7 @@
             "id": 7,
             "title": "Script Import/Export and Metadata Management",
             "description": "Support script import/export functionality and metadata parsing using TOML format for script organization and portability.",
-            "dependencies": [
-              "34.1"
-            ],
+            "dependencies": ["34.1"],
             "details": "Implement import/export routines for scripts and associated metadata. Parse and validate TOML metadata files, ensuring compatibility with ScriptManager and Rhai engine requirements.",
             "status": "pending",
             "testStrategy": ""
@@ -571,9 +479,7 @@
         "details": "Create ProfileManager for CRUD operations. Store profiles in TOML format using serde for serialization. Support multiple named profiles, import/export, and hot-reload via notify crate. Implement profile versioning and migration logic. Match devices to profiles by identifier and auto-apply on connection. Handle profile conflicts and log application events. Owned by profile-manager agent - TOML serialization and hot-reload expert focused on ProfileManager, versioning, auto-apply, conflict resolution. Agent at .claude/agents/profile-manager.md",
         "testStrategy": "Unit test profile CRUD, import/export, and migration. Integration test auto-apply and conflict handling with real devices.",
         "priority": "medium",
-        "dependencies": [
-          30
-        ],
+        "dependencies": [30],
         "status": "pending",
         "subtasks": [
           {
@@ -589,9 +495,7 @@
             "id": 2,
             "title": "Enable Profile Import, Export, and Hot-Reload",
             "description": "Add functionality to import and export profiles, and implement hot-reload support using the notify crate to detect changes in profile files.",
-            "dependencies": [
-              "35.1"
-            ],
+            "dependencies": ["35.1"],
             "details": "Allow users to import/export profiles in TOML format. Use the notify crate to watch profile directories and automatically reload profiles on file changes.",
             "status": "pending",
             "testStrategy": "Unit test import/export with valid and invalid files. Integration test hot-reload by modifying files externally and verifying in-app updates."
@@ -600,9 +504,7 @@
             "id": 3,
             "title": "Implement Profile Versioning and Migration Logic",
             "description": "Introduce versioning for profiles and develop migration logic to handle upgrades or changes in profile schema over time.",
-            "dependencies": [
-              "35.1"
-            ],
+            "dependencies": ["35.1"],
             "details": "Add a version field to each profile. Implement migration routines to update older profiles to the latest schema, ensuring backward compatibility.",
             "status": "pending",
             "testStrategy": "Unit test migration logic with profiles from previous versions. Verify correct handling of missing or deprecated fields."
@@ -611,11 +513,7 @@
             "id": 4,
             "title": "Develop Device Matching and Auto-Apply Mechanism",
             "description": "Create logic to match connected devices to profiles by identifier and automatically apply the appropriate configuration upon device connection.",
-            "dependencies": [
-              "35.1",
-              "35.2",
-              "35.3"
-            ],
+            "dependencies": ["35.1", "35.2", "35.3"],
             "details": "Implement device identification and matching algorithms. Ensure the system can auto-apply the correct profile when a device is detected, supporting multiple simultaneous devices.",
             "status": "pending",
             "testStrategy": "Integration test with simulated and real devices to verify correct profile matching and auto-application."
@@ -624,9 +522,7 @@
             "id": 5,
             "title": "Handle Profile Conflicts and Log Application Events",
             "description": "Implement conflict detection and resolution strategies for profile application, and log all profile application events for auditing and troubleshooting.",
-            "dependencies": [
-              "35.4"
-            ],
+            "dependencies": ["35.4"],
             "details": "Detect and resolve conflicts when multiple profiles could apply to a device. Log all profile application attempts, successes, failures, and conflict resolutions.",
             "status": "pending",
             "testStrategy": "Integration test conflict scenarios and verify logs for completeness and accuracy."
@@ -640,12 +536,7 @@
         "details": "Investigate sysinfo crate for Windows CPU monitoring; implement custom logic if needed for accurate multi-core reporting. Use rolling average for stable CPU readings. Optimize memory usage with pooling and lazy loading. Ensure idle CPU <2%, memory <150MB, and startup <2s. Implement async UI updates, loading spinners, and operation cancellation. Profile and optimize event loops and rendering for 60 FPS. Add CPU usage trend visualization. Owned by performance-optimizer agent - System optimization expert with 5 sub-specializations focused on CPU monitoring, memory optimization, startup time (<2s), idle CPU (<2%), RAM (<150MB). Agent at .claude/agents/performance-optimizer.md",
         "testStrategy": "Performance profiling on all platforms. Automated tests for CPU/memory usage and startup time. UI tests for responsiveness and cancellation. Soak tests for memory leaks.",
         "priority": "medium",
-        "dependencies": [
-          32,
-          33,
-          34,
-          35
-        ],
+        "dependencies": [32, 33, 34, 35],
         "status": "pending",
         "subtasks": [
           {
@@ -718,9 +609,7 @@
             "id": 2,
             "title": "Configure GitHub Actions Workflow Foundation",
             "description": "Create the core GitHub Actions workflow files for automated CI/CD pipeline with basic job structure and triggers.",
-            "dependencies": [
-              "37.1"
-            ],
+            "dependencies": ["37.1"],
             "details": "Set up workflow triggers for push, pull request, and scheduled events. Create reusable workflow templates. Configure environment variables and secrets management. Establish branch protection rules. Set up workflow permissions and security settings.",
             "status": "pending",
             "testStrategy": ""
@@ -729,9 +618,7 @@
             "id": 3,
             "title": "Implement Build Optimization and Test Parallelization",
             "description": "Configure advanced CI/CD features including build caching, test parallelization, and performance optimization strategies.",
-            "dependencies": [
-              "37.2"
-            ],
+            "dependencies": ["37.2"],
             "details": "Implement build caching strategies using GitHub Actions cache. Configure test parallelization across multiple runners. Set up incremental builds and affected project detection. Optimize Docker layer caching. Configure matrix builds for different environments and Node.js versions.",
             "status": "pending",
             "testStrategy": ""
@@ -740,9 +627,7 @@
             "id": 4,
             "title": "Establish Quality Gates and Docker Environment",
             "description": "Set up automated quality gates including linting, testing, security scanning, and Docker Compose for consistent development environments.",
-            "dependencies": [
-              "37.3"
-            ],
+            "dependencies": ["37.3"],
             "details": "Configure ESLint, Prettier, and TypeScript checking. Set up automated testing with coverage reporting. Implement security scanning with CodeQL. Create Docker Compose files for local development and testing. Configure Dependabot for automated dependency updates. Set up deployment gates and approval processes.",
             "status": "pending",
             "testStrategy": ""
@@ -751,9 +636,7 @@
             "id": 5,
             "title": "Document Setup and Validate CI/CD Pipeline",
             "description": "Create comprehensive documentation and validate the entire CI/CD pipeline through end-to-end testing.",
-            "dependencies": [
-              "37.4"
-            ],
+            "dependencies": ["37.4"],
             "details": "Write detailed README with setup instructions. Document CI/CD pipeline architecture and workflows. Create troubleshooting guides. Validate pipeline by pushing test commits across all tracks. Verify all jobs (lint, test, build, deploy) execute successfully. Confirm local Docker environment matches production. Test Dependabot integration and automated updates.",
             "status": "pending",
             "testStrategy": ""
@@ -767,9 +650,7 @@
         "details": "Use Node.js (v20+) with serialport (v12+) for cross-platform serial communication. Implement protocol handshake logic for device identification. Store device fingerprints and capabilities in a local SQLite (v3.45+) DB. Use TypeScript for type safety. Modularize for extensibility.",
         "testStrategy": "Unit test with MockTransport for all device types. Integration test with physical devices. Validate detection accuracy and capability mapping for at least 3 device types.",
         "priority": "high",
-        "dependencies": [
-          37
-        ],
+        "dependencies": [37],
         "status": "pending",
         "subtasks": [
           {
@@ -785,9 +666,7 @@
             "id": 2,
             "title": "Develop Protocol Handshake for Device Identification",
             "description": "Implement protocol handshake logic to communicate with connected devices and determine their type (Arduino Uno, ESP32, or custom serial device).",
-            "dependencies": [
-              "38.1"
-            ],
+            "dependencies": ["38.1"],
             "details": "For each detected port, initiate a handshake sequence using device-specific protocols. Parse responses to reliably identify device type and readiness. Ensure extensibility for future device protocols.",
             "status": "pending",
             "testStrategy": ""
@@ -796,9 +675,7 @@
             "id": 3,
             "title": "Implement Device Fingerprinting Logic",
             "description": "Extract and generate unique fingerprints for each identified device, capturing distinguishing characteristics for reliable recognition.",
-            "dependencies": [
-              "38.2"
-            ],
+            "dependencies": ["38.2"],
             "details": "Collect device metadata (e.g., serial number, firmware version, vendor/product IDs) during handshake. Normalize and store fingerprints in a consistent format for later lookup and deduplication.",
             "status": "pending",
             "testStrategy": ""
@@ -807,9 +684,7 @@
             "id": 4,
             "title": "Map Device Capabilities and Integrate with SQLite DB",
             "description": "Dynamically determine device capabilities and persist both fingerprints and capabilities in a local SQLite (v3.45+) database.",
-            "dependencies": [
-              "38.3"
-            ],
+            "dependencies": ["38.3"],
             "details": "Query each device for supported features (e.g., available sensors, commands). Design and implement a schema in SQLite to store fingerprints and capability mappings. Ensure atomic updates and efficient queries.",
             "status": "pending",
             "testStrategy": ""
@@ -818,9 +693,7 @@
             "id": 5,
             "title": "Modularize for Extensibility to New Device Types",
             "description": "Refactor and modularize the discovery engine to support easy addition of new device types and protocols.",
-            "dependencies": [
-              "38.4"
-            ],
+            "dependencies": ["38.4"],
             "details": "Abstract device-specific logic into separate modules or classes. Define clear interfaces for scanning, handshake, fingerprinting, and capability mapping. Document extension points and provide a template for new device integrations.",
             "status": "pending",
             "testStrategy": ""
@@ -834,9 +707,7 @@
         "details": "Leverage RxJS (v7+) for reactive streams. Implement periodic health checks and event-driven status updates. Integrate with logging system. Provide REST API endpoints for status queries. Use WebSockets for real-time UI updates.",
         "testStrategy": "Simulate device failures and verify alerts/logs. Test real-time updates in UI and via API. Ensure <100ms latency for status propagation.",
         "priority": "high",
-        "dependencies": [
-          38
-        ],
+        "dependencies": [38],
         "status": "pending",
         "subtasks": []
       },
@@ -847,9 +718,7 @@
         "details": "Implement a coordination scheduler using a priority queue (bullmq v4+). Use mutexes for resource locking. Design a state sync protocol using protobuf for efficiency. Integrate with device status subsystem. Support automated failover and redundancy via agent-based logic.",
         "testStrategy": "Simulate concurrent commands to 5+ devices. Test conflict scenarios and failover. Measure coordination latency and reliability.",
         "priority": "high",
-        "dependencies": [
-          39
-        ],
+        "dependencies": [39],
         "status": "pending",
         "subtasks": []
       },
@@ -860,9 +729,7 @@
         "details": "Implement device-specific config profiles. Use semver (v7+) for firmware version checks. Build a protocol selection module with benchmarking. Add self-healing logic to restore configs after failures. Store config history in DB.",
         "testStrategy": "Test with devices of varying firmware. Simulate config corruption and verify recovery. Benchmark protocol selection for optimal performance.",
         "priority": "medium",
-        "dependencies": [
-          40
-        ],
+        "dependencies": [40],
         "status": "pending",
         "subtasks": []
       },
@@ -873,9 +740,7 @@
         "details": "Use OpenAI GPT-4 API (2025-06 model) for NLU. Fine-tune with domain-specific prompts. Implement fallback to spaCy (v3.7+) for local parsing. Build dialog manager for clarification. Maintain session context in Redis (v7+).",
         "testStrategy": "Test with 50+ user request scenarios. Validate intent accuracy, ambiguity handling, and context retention.",
         "priority": "high",
-        "dependencies": [
-          37
-        ],
+        "dependencies": [37],
         "status": "in-progress",
         "subtasks": [
           {
@@ -891,9 +756,7 @@
             "id": 2,
             "title": "Build Intent Recognition System",
             "description": "Create intent classification system that identifies user goals and maps them to actionable commands with confidence scoring.",
-            "dependencies": [
-              "42.1"
-            ],
+            "dependencies": ["42.1"],
             "details": "Design intent taxonomy for task automation domain. Fine-tune GPT-4 with domain-specific prompts for intent classification. Implement confidence scoring and threshold-based filtering. Create intent mapping to system actions. Build training data collection and validation pipeline.",
             "status": "pending",
             "testStrategy": ""
@@ -902,9 +765,7 @@
             "id": 3,
             "title": "Develop Context Management System",
             "description": "Implement session-based context tracking and management using Redis for maintaining conversation state and user preferences.",
-            "dependencies": [
-              "42.1"
-            ],
+            "dependencies": ["42.1"],
             "details": "Set up Redis (v7+) for session context storage. Design context data structures for user sessions, conversation history, and preferences. Implement context retrieval and update mechanisms. Build context expiration and cleanup policies. Create context-aware query enhancement for better intent recognition.",
             "status": "pending",
             "testStrategy": ""
@@ -913,10 +774,7 @@
             "id": 4,
             "title": "Create Ambiguity Resolution and Dialog Manager",
             "description": "Build dialog management system that handles ambiguous requests through clarification dialogs and user interaction.",
-            "dependencies": [
-              "42.2",
-              "42.3"
-            ],
+            "dependencies": ["42.2", "42.3"],
             "details": "Implement ambiguity detection algorithms for unclear user requests. Design clarification dialog templates and flows. Build interactive dialog state machine for multi-turn conversations. Create response generation for clarification questions. Implement user feedback integration for disambiguation.",
             "status": "pending",
             "testStrategy": ""
@@ -925,11 +783,7 @@
             "id": 5,
             "title": "Develop NLP Integration API and Testing Framework",
             "description": "Create unified API interface for NLP module integration and comprehensive testing framework with 50+ user scenarios.",
-            "dependencies": [
-              "42.2",
-              "42.3",
-              "42.4"
-            ],
+            "dependencies": ["42.2", "42.3", "42.4"],
             "details": "Design REST API endpoints for NLP module access. Implement request/response schemas and validation. Create comprehensive test suite with 50+ user request scenarios. Build automated testing for intent accuracy and context retention. Implement performance monitoring and logging for API usage.",
             "status": "pending",
             "testStrategy": ""
@@ -943,9 +797,7 @@
         "details": "Design a task graph structure using Directed Acyclic Graphs (DAGs). Use dagre (v0.8+) for visualization. Implement dependency resolution and resource estimation logic. Integrate with agent registry for capability lookup.",
         "testStrategy": "Feed 10+ complex tasks and verify correct subtask breakdown, sequencing, and resource allocation.",
         "priority": "high",
-        "dependencies": [
-          42
-        ],
+        "dependencies": [42],
         "status": "pending",
         "subtasks": []
       },
@@ -956,9 +808,7 @@
         "details": "Use event-driven architecture with Kafka (v3.7+) for agent communication. Implement agent selection logic based on task requirements. Add progress reporting and error handling modules. Store execution logs for learning analysis.",
         "testStrategy": "Simulate multi-agent task execution. Inject errors and verify recovery. Confirm learning data is captured for future optimization.",
         "priority": "high",
-        "dependencies": [
-          43
-        ],
+        "dependencies": [43],
         "status": "pending",
         "subtasks": []
       },
@@ -969,9 +819,7 @@
         "details": "Use React (v19+) with Material UI (v6+) for frontend. Integrate with backend via REST and WebSocket APIs. Implement real-time progress updates and error feedback. Add user satisfaction survey after task completion.",
         "testStrategy": "Conduct usability tests with 10+ users. Validate real-time updates and feedback mechanisms. Collect and analyze user satisfaction data.",
         "priority": "medium",
-        "dependencies": [
-          44
-        ],
+        "dependencies": [44],
         "status": "pending",
         "subtasks": []
       },
@@ -982,9 +830,7 @@
         "details": "Curate and encode new task templates. Profile and optimize task breakdown and execution code. Implement caching for frequent task patterns. Monitor performance with Prometheus (v2.50+).",
         "testStrategy": "Benchmark execution time for all tasks. Validate <5s breakdown and <2min execution for standard tasks.",
         "priority": "medium",
-        "dependencies": [
-          45
-        ],
+        "dependencies": [45],
         "status": "pending",
         "subtasks": []
       },
@@ -995,9 +841,7 @@
         "details": "Use Kubernetes (v1.30+) for isolated experiment sandboxes. Implement experiment orchestration with Argo Workflows (v3.5+). Add logging and rollback mechanisms. Visualize agent interactions with D3.js (v8+).",
         "testStrategy": "Run 5+ experiment scenarios. Validate sandboxing, rollback, and data capture. Review visualizations for clarity.",
         "priority": "high",
-        "dependencies": [
-          37
-        ],
+        "dependencies": [37],
         "status": "in-progress",
         "subtasks": [
           {
@@ -1013,9 +857,7 @@
             "id": 2,
             "title": "Set Up Kubernetes-Based Isolated Experiment Sandboxes",
             "description": "Configure Kubernetes namespaces and resource isolation for running controlled agent collaboration experiments.",
-            "dependencies": [
-              "47.1"
-            ],
+            "dependencies": ["47.1"],
             "details": "Create Kubernetes namespace templates with resource quotas and network policies. Implement pod security contexts and resource limits for agent containers. Configure service mesh for controlled inter-agent communication. Set up persistent volumes for experiment data storage and implement cleanup policies for sandbox lifecycle management.",
             "status": "pending",
             "testStrategy": ""
@@ -1024,9 +866,7 @@
             "id": 3,
             "title": "Implement Argo Workflows Experiment Orchestration",
             "description": "Build workflow templates using Argo Workflows for automated experiment execution, monitoring, and rollback capabilities.",
-            "dependencies": [
-              "47.2"
-            ],
+            "dependencies": ["47.2"],
             "details": "Create Argo WorkflowTemplate definitions for experiment lifecycle management. Implement workflow steps for sandbox provisioning, agent deployment, experiment execution, and cleanup. Add conditional logic for experiment success/failure handling and automatic rollback mechanisms. Configure workflow parameters and artifact collection.",
             "status": "pending",
             "testStrategy": ""
@@ -1035,9 +875,7 @@
             "id": 4,
             "title": "Build Comprehensive Telemetry Collection System",
             "description": "Implement logging, metrics collection, and event tracking for capturing agent interactions and emergent behaviors during experiments.",
-            "dependencies": [
-              "47.3"
-            ],
+            "dependencies": ["47.3"],
             "details": "Deploy Prometheus for metrics collection and Grafana for monitoring dashboards. Implement structured logging with Fluentd for agent communication logs. Create custom metrics for interaction patterns, decision trees, and behavioral emergence indicators. Set up distributed tracing with Jaeger for cross-agent communication analysis.",
             "status": "pending",
             "testStrategy": ""
@@ -1046,9 +884,7 @@
             "id": 5,
             "title": "Create D3.js Interactive Behavior Analysis Dashboard",
             "description": "Develop web-based visualization dashboard using D3.js for real-time and post-experiment analysis of agent interactions and emergent behaviors.",
-            "dependencies": [
-              "47.4"
-            ],
+            "dependencies": ["47.4"],
             "details": "Build interactive network graphs showing agent communication patterns using D3.js force-directed layouts. Implement timeline visualizations for behavior emergence tracking. Create heatmaps for interaction intensity and decision correlation matrices. Add filtering and drill-down capabilities for detailed behavior analysis. Integrate with telemetry APIs for real-time data updates.",
             "status": "pending",
             "testStrategy": ""
@@ -1062,9 +898,7 @@
         "details": "Stream experiment data to Apache Spark (v4.0+) for statistical analysis. Use clustering algorithms to detect novel patterns. Integrate with performance monitoring for impact assessment. Document findings in Confluence.",
         "testStrategy": "Analyze data from 10+ experiments. Validate detection of at least 5 emergent behaviors. Review documentation for completeness.",
         "priority": "medium",
-        "dependencies": [
-          47
-        ],
+        "dependencies": [47],
         "status": "pending",
         "subtasks": []
       },
@@ -1075,9 +909,7 @@
         "details": "Establish evaluation criteria for practical application. Use feature flags (LaunchDarkly v4+) for controlled rollout. Update system documentation and training materials. Integrate with Pattern Evolution system for continuous learning.",
         "testStrategy": "Pilot at least 2 emergent behaviors in production. Monitor impact and rollback if issues arise. Validate documentation updates.",
         "priority": "medium",
-        "dependencies": [
-          48
-        ],
+        "dependencies": [48],
         "status": "pending",
         "subtasks": []
       },
@@ -1088,11 +920,7 @@
         "details": "Define gRPC (v1.62+) interfaces for cross-track communication. Implement agent sharing protocol with priority-based allocation. Use Redis for shared state. Document integration contracts and data schemas.",
         "testStrategy": "Simulate cross-track agent/resource conflicts. Validate resolution and data sharing. Review documentation for accuracy.",
         "priority": "high",
-        "dependencies": [
-          41,
-          44,
-          49
-        ],
+        "dependencies": [41, 44, 49],
         "status": "pending",
         "subtasks": []
       },
@@ -1103,9 +931,7 @@
         "details": "Use Jest (v30+) for unit/integration tests. Integrate with OWASP ZAP (v3.0+) for security scanning. Implement performance benchmarks with k6 (v0.48+). Automate excellence validation with custom rule sets.",
         "testStrategy": "Achieve >90% test coverage. Run security and performance tests on all modules. Validate excellence rules on sample outputs.",
         "priority": "high",
-        "dependencies": [
-          50
-        ],
+        "dependencies": [50],
         "status": "pending",
         "subtasks": []
       },
@@ -1116,9 +942,7 @@
         "details": "Use Prometheus and Grafana (v10+) for monitoring and alerting. Implement automated optimization scripts. Integrate predictive maintenance using ML models (scikit-learn v1.5+).",
         "testStrategy": "Simulate system failures and verify alerts. Monitor resource utilization and optimization actions. Validate predictive maintenance predictions.",
         "priority": "medium",
-        "dependencies": [
-          51
-        ],
+        "dependencies": [51],
         "status": "pending",
         "subtasks": []
       },
@@ -1129,9 +953,7 @@
         "details": "Automate meeting scheduling with Google Calendar API. Build Slack bot for reminders and status updates. Integrate with CI/CD for automated integration test triggers on Fridays.",
         "testStrategy": "Verify automated scheduling and reminders. Confirm integration tests run as scheduled. Collect feedback from team on coordination effectiveness.",
         "priority": "medium",
-        "dependencies": [
-          50
-        ],
+        "dependencies": [50],
         "status": "pending",
         "subtasks": []
       },
@@ -1142,9 +964,7 @@
         "details": "Design REST/gRPC APIs for data exchange. Use Docker Compose for shared test environments. Standardize test data formats (JSON Schema v2020-12). Document usage guidelines.",
         "testStrategy": "Test data exchange between tracks. Validate shared test environment setup. Review documentation for clarity.",
         "priority": "medium",
-        "dependencies": [
-          53
-        ],
+        "dependencies": [53],
         "status": "pending",
         "subtasks": []
       },
@@ -1155,9 +975,7 @@
         "details": "Use Docusaurus (v3+) for documentation site. Define templates for agent, API, and system docs. Integrate with Confluence for knowledge capture. Automate doc generation from code comments (Typedoc v0.25+).",
         "testStrategy": "Review documentation for completeness and consistency. Validate automated doc generation. Survey team for knowledge base usability.",
         "priority": "medium",
-        "dependencies": [
-          54
-        ],
+        "dependencies": [54],
         "status": "pending",
         "subtasks": []
       },
@@ -1168,17 +986,14 @@
         "details": "Develop validation scripts for all metrics. Run comprehensive end-to-end tests. Benchmark system performance. Prepare final validation report and handoff documentation.",
         "testStrategy": "Achieve 100% pass rate on validation scripts. Meet or exceed all defined success metrics. Review handoff docs with stakeholders.",
         "priority": "high",
-        "dependencies": [
-          52,
-          55
-        ],
+        "dependencies": [52, 55],
         "status": "pending",
         "subtasks": []
       }
     ],
     "metadata": {
       "created": "2025-08-23T18:31:02.168Z",
-      "updated": "2025-09-10T03:33:37.557Z",
+      "updated": "2025-09-16T02:34:28.105Z",
       "description": "Tasks for master context"
     }
   }
