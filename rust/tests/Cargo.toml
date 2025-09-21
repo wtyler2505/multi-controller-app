@@ -1,0 +1,25 @@
+[package]
+name = "multi-controller-tests"
+version = "1.0.0"
+edition = "2021"
+description = "Integration tests for Multi-Controller App"
+
+[dependencies]
+multi-controller-core = { path = "../core" }
+multi-controller-serial = { path = "../transports/serial" }
+multi-controller-arduino = { path = "../drivers/arduino" }
+tokio = { workspace = true }
+tokio-test = "0.4"
+tracing-subscriber = { workspace = true }
+
+[[test]]
+name = "basic_compilation"
+path = "src/basic_compilation.rs"
+
+[[test]]
+name = "integration_tests"
+path = "src/integration_tests.rs"
+
+[[bin]]
+name = "device_demo"
+path = "src/device_demo.rs"

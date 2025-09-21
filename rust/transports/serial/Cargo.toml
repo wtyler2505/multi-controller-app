@@ -1,0 +1,19 @@
+[package]
+name = "multi-controller-serial"
+version = "1.0.0"
+edition = "2021"
+description = "Serial transport implementation for Multi-Controller App"
+
+[dependencies]
+multi-controller-core = { path = "../../core" }
+serialport = { workspace = true }
+tokio = { workspace = true }
+anyhow = { workspace = true }
+thiserror = { workspace = true }
+async-trait = { workspace = true }
+tracing = { workspace = true }
+serde = { workspace = true }
+
+[dev-dependencies]
+mockall = { workspace = true }
+tokio-test = "0.4"

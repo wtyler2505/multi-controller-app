@@ -1,0 +1,20 @@
+[package]
+name = "multi-controller-core"
+version = "1.0.0"
+edition = "2021"
+description = "Core traits and types for Multi-Controller App"
+
+[dependencies]
+tokio = { workspace = true }
+anyhow = { workspace = true }
+thiserror = { workspace = true }
+async-trait = { workspace = true }
+uuid = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+tracing = { workspace = true }
+serialport = { workspace = true }
+
+[dev-dependencies]
+mockall = { workspace = true }
+tokio-test = "0.4"
