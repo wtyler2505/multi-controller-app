@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using Microsoft.UI.Dispatching;
 
 namespace MultiControllerApp.Services;
 
@@ -23,298 +23,176 @@ public interface IUIResponsivenessService
     Task<T> ExecuteAsync<T>(Func<Task<T>> work, CancellationToken cancellationToken = default);
     
     /// <summary>
-    /// Execute work on the UI thread (dispatcher)
+    /// Execute work on the main thread (simulated UI thread for console apps)
     /// </summary>
     Task ExecuteOnUIThreadAsync(Action work);
     
     /// <summary>
-    /// Execute work on the UI thread and return a result
+    /// Execute async work on the main thread
     /// </summary>
-    Task<T> ExecuteOnUIThreadAsync<T>(Func<T> work);
+    Task ExecuteOnUIThreadAsync(Func<Task> work);
     
     /// <summary>
-    /// Check if we're currently on the UI thread
-    /// </summary>
-    bool IsUIThread { get; }
-    
-    /// <summary>
-    /// Current UI thread workload (pending operations)
-    /// </summary>
-    int UIThreadWorkload { get; }
-    
-    /// <summary>
-    /// Execute CPU-intensive work with yielding to maintain responsiveness
+    /// Execute work with yielding to maintain responsiveness
     /// </summary>
     Task ExecuteWithYieldingAsync(Func<CancellationToken, Task> work, CancellationToken cancellationToken = default);
+    
+    /// <summary>
+    /// Process a collection with yielding between items
+    /// </summary>
+    Task ProcessWithYieldingAsync<T>(IEnumerable<T> items, Func<T, Task> processor, int yieldEvery = 10, CancellationToken cancellationToken = default);
 }
 
 /// <summary>
-/// UI responsiveness service implementation
+/// Implementation of UI responsiveness service for console/non-UI applications
 /// </summary>
 public class UIResponsivenessService : IUIResponsivenessService
 {
     private readonly ILogger<UIResponsivenessService> _logger;
-    private readonly DispatcherQueue _dispatcherQueue;
-    private readonly SemaphoreSlim _backgroundWorkSemaphore;
-    private readonly object _workloadLock = new();
+    private readonly SemaphoreSlim _uiThreadSemaphore;
+    private int _currentUIWorkload = 0;
     
-    private int _uiThreadWorkload;
-    private static readonly int MaxConcurrentBackgroundTasks = Environment.ProcessorCount * 2;
-    private const int YieldThresholdMs = 50; // Yield every 50ms for long operations
-    
-    public UIResponsivenessService(ILogger<UIResponsivenessService> logger, DispatcherQueue? dispatcherQueue = null)
+    public UIResponsivenessService(ILogger<UIResponsivenessService> logger)
     {
-        _logger = logger;
-        _dispatcherQueue = dispatcherQueue ?? DispatcherQueue.GetForCurrentThread();
-        _backgroundWorkSemaphore = new SemaphoreSlim(MaxConcurrentBackgroundTasks, MaxConcurrentBackgroundTasks);
-        
-        _logger.LogInformation("UI responsiveness service initialized with {MaxTasks} max concurrent background tasks", 
-            MaxConcurrentBackgroundTasks);
-    }
-    
-    public bool IsUIThread => _dispatcherQueue.HasThreadAccess;
-    
-    public int UIThreadWorkload
-    {
-        get
-        {
-            lock (_workloadLock)
-            {
-                return _uiThreadWorkload;
-            }
-        }
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        _uiThreadSemaphore = new SemaphoreSlim(1, 1); // Simulate single UI thread
     }
     
     public async Task ExecuteAsync(Func<Task> work, CancellationToken cancellationToken = default)
     {
-        await _backgroundWorkSemaphore.WaitAsync(cancellationToken);
+        if (work == null) throw new ArgumentNullException(nameof(work));
+        
+        _logger.LogDebug("Executing background work");
         
         try
         {
-            await Task.Run(async () =>
-            {
-                await work();
-            }, cancellationToken);
+            await Task.Run(work, cancellationToken);
         }
-        finally
+        catch (Exception ex)
         {
-            _backgroundWorkSemaphore.Release();
+            _logger.LogError(ex, "Error executing background work");
+            throw;
         }
     }
     
     public async Task<T> ExecuteAsync<T>(Func<Task<T>> work, CancellationToken cancellationToken = default)
     {
-        await _backgroundWorkSemaphore.WaitAsync(cancellationToken);
+        if (work == null) throw new ArgumentNullException(nameof(work));
+        
+        _logger.LogDebug("Executing background work with result");
         
         try
         {
-            return await Task.Run(async () =>
-            {
-                return await work();
-            }, cancellationToken);
+            return await Task.Run(work, cancellationToken);
         }
-        finally
+        catch (Exception ex)
         {
-            _backgroundWorkSemaphore.Release();
+            _logger.LogError(ex, "Error executing background work with result");
+            throw;
         }
     }
     
     public async Task ExecuteOnUIThreadAsync(Action work)
     {
-        if (IsUIThread)
-        {
-            work();
-            return;
-        }
+        if (work == null) throw new ArgumentNullException(nameof(work));
         
-        var tcs = new TaskCompletionSource<bool>();
-        
-        IncrementUIWorkload();
-        
+        await _uiThreadSemaphore.WaitAsync();
         try
         {
-            var enqueued = _dispatcherQueue.TryEnqueue(() =>
-            {
-                try
-                {
-                    work();
-                    tcs.SetResult(true);
-                }
-                catch (Exception ex)
-                {
-                    tcs.SetException(ex);
-                }
-                finally
-                {
-                    DecrementUIWorkload();
-                }
-            });
+            IncrementUIWorkload();
+            _logger.LogDebug("Executing work on UI thread");
             
-            if (!enqueued)
-            {
-                DecrementUIWorkload();
-                throw new InvalidOperationException("Failed to enqueue work on UI thread");
-            }
-            
-            await tcs.Task;
+            // Execute on main thread (simulated)
+            work();
         }
-        catch
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error executing work on UI thread");
+            throw;
+        }
+        finally
         {
             DecrementUIWorkload();
-            throw;
+            _uiThreadSemaphore.Release();
         }
     }
     
-    public async Task<T> ExecuteOnUIThreadAsync<T>(Func<T> work)
+    public async Task ExecuteOnUIThreadAsync(Func<Task> work)
     {
-        if (IsUIThread)
-        {
-            return work();
-        }
+        if (work == null) throw new ArgumentNullException(nameof(work));
         
-        var tcs = new TaskCompletionSource<T>();
-        
-        IncrementUIWorkload();
-        
+        await _uiThreadSemaphore.WaitAsync();
         try
         {
-            var enqueued = _dispatcherQueue.TryEnqueue(() =>
-            {
-                try
-                {
-                    var result = work();
-                    tcs.SetResult(result);
-                }
-                catch (Exception ex)
-                {
-                    tcs.SetException(ex);
-                }
-                finally
-                {
-                    DecrementUIWorkload();
-                }
-            });
+            IncrementUIWorkload();
+            _logger.LogDebug("Executing async work on UI thread");
             
-            if (!enqueued)
-            {
-                DecrementUIWorkload();
-                throw new InvalidOperationException("Failed to enqueue work on UI thread");
-            }
-            
-            return await tcs.Task;
+            // Execute on main thread (simulated)
+            await work();
         }
-        catch
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error executing async work on UI thread");
+            throw;
+        }
+        finally
         {
             DecrementUIWorkload();
-            throw;
+            _uiThreadSemaphore.Release();
         }
     }
     
     public async Task ExecuteWithYieldingAsync(Func<CancellationToken, Task> work, CancellationToken cancellationToken = default)
     {
-        await _backgroundWorkSemaphore.WaitAsync(cancellationToken);
+        if (work == null) throw new ArgumentNullException(nameof(work));
+        
+        _logger.LogDebug("Executing work with yielding for responsiveness");
         
         try
         {
-            await Task.Run(async () =>
-            {
-                var yieldingCancellationSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
-                var yieldingToken = yieldingCancellationSource.Token;
-                
-                // Create a timer to periodically yield
-                using var yieldTimer = new Timer(_ =>
-                {
-                    if (!yieldingToken.IsCancellationRequested)
-                    {
-                        Task.Yield(); // Yield control to allow other tasks to run
-                    }
-                }, null, TimeSpan.FromMilliseconds(YieldThresholdMs), TimeSpan.FromMilliseconds(YieldThresholdMs));
-                
-                await work(yieldingToken);
-                
-            }, cancellationToken);
+            await work(cancellationToken);
         }
-        finally
+        catch (Exception ex)
         {
-            _backgroundWorkSemaphore.Release();
+            _logger.LogError(ex, "Error executing work with yielding");
+            throw;
         }
+    }
+    
+    public async Task ProcessWithYieldingAsync<T>(IEnumerable<T> items, Func<T, Task> processor, int yieldEvery = 10, CancellationToken cancellationToken = default)
+    {
+        if (items == null) throw new ArgumentNullException(nameof(items));
+        if (processor == null) throw new ArgumentNullException(nameof(processor));
+        
+        _logger.LogDebug("Processing items with yielding every {YieldEvery} items", yieldEvery);
+        
+        int count = 0;
+        foreach (var item in items)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            
+            await processor(item);
+            count++;
+            
+            // Yield control periodically to maintain responsiveness
+            if (count % yieldEvery == 0)
+            {
+                await Task.Yield();
+            }
+        }
+        
+        _logger.LogDebug("Processed {Count} items with yielding", count);
     }
     
     private void IncrementUIWorkload()
     {
-        lock (_workloadLock)
-        {
-            _uiThreadWorkload++;
-            
-            if (_uiThreadWorkload > 10) // Warn if UI thread is getting overloaded
-            {
-                _logger.LogWarning("UI thread workload is high: {Workload} pending operations", _uiThreadWorkload);
-            }
-        }
+        Interlocked.Increment(ref _currentUIWorkload);
+        _logger.LogTrace("UI workload incremented to {Workload}", _currentUIWorkload);
     }
     
     private void DecrementUIWorkload()
     {
-        lock (_workloadLock)
-        {
-            _uiThreadWorkload = Math.Max(0, _uiThreadWorkload - 1);
-        }
-    }
-}
-
-/// <summary>
-/// Extension methods for UI responsiveness
-/// </summary>
-public static class UIResponsivenessExtensions
-{
-    /// <summary>
-    /// Execute long-running enumerable operations with periodic yielding
-    /// </summary>
-    public static async Task ProcessWithYieldingAsync<T>(
-        this IUIResponsivenessService service,
-        IEnumerable<T> items,
-        Func<T, Task> processor,
-        int batchSize = 10,
-        CancellationToken cancellationToken = default)
-    {
-        await service.ExecuteWithYieldingAsync(async (token) =>
-        {
-            var batch = new List<T>(batchSize);
-            
-            foreach (var item in items)
-            {
-                token.ThrowIfCancellationRequested();
-                
-                batch.Add(item);
-                
-                if (batch.Count >= batchSize)
-                {
-                    await ProcessBatch(batch, processor, token);
-                    batch.Clear();
-                    
-                    // Yield after each batch
-                    await Task.Yield();
-                }
-            }
-            
-            // Process remaining items
-            if (batch.Count > 0)
-            {
-                await ProcessBatch(batch, processor, token);
-            }
-            
-        }, cancellationToken);
-    }
-    
-    private static async Task ProcessBatch<T>(IList<T> batch, Func<T, Task> processor, CancellationToken cancellationToken)
-    {
-        var tasks = new Task[batch.Count];
-        for (int i = 0; i < batch.Count; i++)
-        {
-            var item = batch[i];
-            tasks[i] = processor(item);
-        }
-        
-        await Task.WhenAll(tasks);
+        Interlocked.Decrement(ref _currentUIWorkload);
+        _logger.LogTrace("UI workload decremented to {Workload}", _currentUIWorkload);
     }
 }

@@ -1,9 +1,8 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
 using MultiControllerApp.Services;
+using MultiControllerApp.Controls;
 using System;
 using System.Threading.Tasks;
 
@@ -12,18 +11,16 @@ namespace MultiControllerApp;
 /// <summary>
 /// Main application class with performance monitoring integration
 /// </summary>
-public partial class App : Application
+public class App
 {
     private readonly IServiceProvider _serviceProvider;
-    private Window? _window;
     private IPerformanceMonitorService? _performanceMonitor;
     private IMemoryOptimizationService? _memoryOptimizer;
     private IUIResponsivenessService? _uiResponsiveness;
+    private IManualControlService? _manualControlService;
     
     public App()
     {
-        this.InitializeComponent();
-        
         // Set up dependency injection
         var services = new ServiceCollection();
         ConfigureServices(services);
@@ -34,12 +31,13 @@ public partial class App : Application
         logger?.LogInformation("Multi-Controller App starting up...");
     }
     
-    protected override async void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
+    public async Task StartAsync()
     {
         // Initialize services
         _performanceMonitor = _serviceProvider.GetService<IPerformanceMonitorService>();
         _memoryOptimizer = _serviceProvider.GetService<IMemoryOptimizationService>();
         _uiResponsiveness = _serviceProvider.GetService<IUIResponsivenessService>();
+        _manualControlService = _serviceProvider.GetService<IManualControlService>();
         
         // Start performance monitoring
         if (_performanceMonitor != null)
@@ -47,18 +45,42 @@ public partial class App : Application
             await _performanceMonitor.StartAsync();
         }
         
-        // Create main window
-        _window = new MainWindow(_serviceProvider);
-        _window.Activate();
-        
-        // Validate startup performance
-        Program.ValidateStartupPerformance();
+        // Initialize manual control system
+        if (_manualControlService != null)
+        {
+            await _manualControlService.InitializeAsync();
+        }
         
         // Subscribe to performance events for logging
         if (_performanceMonitor != null)
         {
             _performanceMonitor.MetricsUpdated += OnPerformanceMetricsUpdated;
         }
+        
+        var logger = _serviceProvider.GetService<ILogger<App>>();
+        logger?.LogInformation("Application started successfully");
+        
+        Console.WriteLine("Multi-Controller App is running...");
+        Console.WriteLine("Manual control widgets initialized and ready.");
+        
+        // Display current widget status
+        await DisplayWidgetStatusAsync();
+    }
+    
+    private async Task DisplayWidgetStatusAsync()
+    {
+        if (_manualControlService == null) return;
+        
+        Console.WriteLine("\n=== Manual Control Widgets ===");
+        var widgets = _manualControlService.GetAllWidgets();
+        foreach (var widget in widgets)
+        {
+            Console.WriteLine($"- {widget}");
+        }
+        
+        Console.WriteLine($"\nEmergency Stop: {(_manualControlService.State.EmergencyStop ? "🛑 ACTIVE" : "✅ NORMAL")}");
+        Console.WriteLine($"Total Widgets: {_manualControlService.State.WidgetCount}");
+        Console.WriteLine($"Last Update: {_manualControlService.State.LastUpdateTime:HH:mm:ss}");
     }
     
     private void OnPerformanceMetricsUpdated(object? sender, PerformanceMetrics metrics)
@@ -88,7 +110,6 @@ public partial class App : Application
         services.AddLogging(builder =>
         {
             builder.AddConsole();
-            builder.AddDebug();
             builder.SetMinimumLevel(LogLevel.Information);
         });
         
@@ -96,6 +117,10 @@ public partial class App : Application
         services.AddSingleton<IPerformanceMonitorService, PerformanceMonitorService>();
         services.AddSingleton<IMemoryOptimizationService, MemoryOptimizationService>();
         services.AddSingleton<IUIResponsivenessService, UIResponsivenessService>();
+        
+        // Manual control services
+        services.AddSingleton<IManualControlService, ManualControlService>();
+        services.AddSingleton<IControlWidgetFactory, ControlWidgetFactory>();
         
         // Configuration
         services.AddSingleton<IConfiguration>(provider =>
@@ -106,10 +131,5 @@ public partial class App : Application
                 .AddEnvironmentVariables()
                 .Build();
         });
-    }
-    
-    private void InitializeComponent()
-    {
-        // Required for XAML compilation
     }
 }
