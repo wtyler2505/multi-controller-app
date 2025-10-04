@@ -19,17 +19,13 @@
     "clean": "rimraf dist coverage bin obj"
   },
   "dependencies": {
-    "@multi-controller/core": "workspace:*",
-    "@multi-controller/ui": "workspace:*",
-    "@multi-controller/telemetry": "workspace:*",
-    "@multi-controller/driver-arduino": "workspace:*",
+    "@multi-controller/core": "file:../../packages/core",
+    "@multi-controller/telemetry": "file:../../packages/telemetry",
     "@multi-controller/transport-serial": "workspace:*",
     "@multi-controller/transport-network": "workspace:*",
     "electron": "^31.0.0"
   },
   "devDependencies": {
-    "@multi-controller/tsconfig": "workspace:*",
-    "@multi-controller/eslint-config": "workspace:*",
     "@playwright/test": "^1.48.0",
     "concurrently": "^9.0.0",
     "electron-builder": "^25.0.0"
