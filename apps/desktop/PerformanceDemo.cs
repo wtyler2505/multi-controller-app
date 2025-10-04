@@ -13,7 +13,7 @@ namespace MultiControllerApp.Demo;
 /// </summary>
 public class PerformanceDemo
 {
-    public static async Task Main(string[] args)
+    public static async Task RunDemoAsync()
     {
         Console.WriteLine("Multi-Controller App - Performance Monitoring Demo");
         Console.WriteLine("==================================================");
